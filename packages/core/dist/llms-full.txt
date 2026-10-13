@@ -4,12 +4,12 @@
 > Logiciel propriétaire © Jonathan KABLAN. Ce fichier est le contrat complet de l'API : n'utilise RIEN qui n'y figure pas.
 
 ## Règles pour les agents IA
-1. Composant = une classe : .badge .btn .card .checkbox .field .input .select .switch .textarea.
+1. Composant = une classe : .badge .btn .card .checkbox .field .input .radio .select .switch .textarea.
 2. Variantes UNIQUEMENT via data-tone et data-size. Jamais .btn-primary, .btn-lg, bg-blue-500.
 3. Utilitaires : liste fermée ci-dessous. Une classe absente de la liste n'existe pas.
 4. Effets JS : data-fx="nom". Surface verre : class="fx-glass".
 5. Action → <button class="btn">. Navigation → <a class="btn" href="…">. Un bouton sans texte exige aria-label.
-6. Formulaire : chaque .input, .select, .textarea a un <label for="id"> relié à son id (ou aria-label). Case à cocher et interrupteur : <label class="checkbox|switch"><input type="checkbox"> Texte</label> (role="switch" pour l'interrupteur). Invalide : aria-invalid="true" + aria-describedby vers le .field-error. Regrouper libellé, contrôle, aide et erreur dans .field.
+6. Formulaire : chaque .input, .select, .textarea a un <label for="id"> relié à son id (ou aria-label). Case à cocher et interrupteur : <label class="checkbox|switch"><input type="checkbox"> Texte</label> (role="switch" pour l'interrupteur). Boutons radio : <fieldset class="field"><legend class="field-label">Question</legend><label class="radio"><input type="radio" name="groupe" value="a"> Option</label>…</fieldset> (même name pour toutes les options). Invalide : aria-invalid="true" + aria-describedby vers le .field-error. Regrouper libellé, contrôle, aide et erreur dans .field.
 7. Après génération, exécuter : npx nora check <dossier> --format=json et corriger chaque erreur.
 
 ## Composants
@@ -71,6 +71,16 @@ Champ de saisie sur une ligne. Toujours associé à un <label for> (ou placé da
 - États : focus, invalid, disabled
 - Flutter : NoraInput(tone: NoraTone.x, size: NoraSize.y) · React Native : <NoraInput tone="x" size="y">
 - Exemple : <label class="field-label" for="email">E-mail</label> <input class="input" id="email" type="email" name="email" autocomplete="email">
+
+### radio
+Bouton radio : un <label class="radio"> contenant <input type="radio" name="…"> et son texte (zone cliquable ≥ 44 px). Grouper les options d'une même question dans un <fieldset class="field"> avec <legend class="field-label">.
+- Éléments : label
+- data-tone : primary | neutral | danger | success | warning (défaut primary)
+- data-size : sm | md | lg (défaut md)
+- Tokens surchargeables : --radio-bg, --radio-fg, --radio-radius, --radio-border, --radio-accent, --radio-on-accent, --radio-focus, --radio-invalid, --radio-pad-y, --radio-pad-x, --radio-font
+- États : focus, invalid, disabled
+- Flutter : NoraRadio(tone: NoraTone.x, size: NoraSize.y) · React Native : <NoraRadio tone="x" size="y">
+- Exemple : <fieldset class="field"><legend class="field-label">Livraison</legend><label class="radio"><input type="radio" name="livraison" value="standard" checked> Standard</label><label class="radio"><input type="radio" name="livraison" value="express"> Express</label></fieldset>
 
 ### select
 Liste de choix native. Toujours associée à un <label for>.

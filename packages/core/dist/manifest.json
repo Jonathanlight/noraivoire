@@ -346,6 +346,60 @@
       "flutter": "NoraInput",
       "reactNative": "NoraInput"
     },
+    "radio": {
+      "description": "Bouton radio : un <label class=\"radio\"> contenant <input type=\"radio\" name=\"…\"> et son texte (zone cliquable ≥ 44 px). Grouper les options d'une même question dans un <fieldset class=\"field\"> avec <legend class=\"field-label\">.",
+      "shape": "toggle",
+      "elements": [
+        "label"
+      ],
+      "attributes": {
+        "data-tone": [
+          "primary",
+          "neutral",
+          "danger",
+          "success",
+          "warning"
+        ],
+        "data-size": [
+          "sm",
+          "md",
+          "lg"
+        ]
+      },
+      "defaults": {
+        "tone": "primary",
+        "size": "md"
+      },
+      "tokens": [
+        "--radio-bg",
+        "--radio-fg",
+        "--radio-radius",
+        "--radio-border",
+        "--radio-accent",
+        "--radio-on-accent",
+        "--radio-focus",
+        "--radio-invalid",
+        "--radio-pad-y",
+        "--radio-pad-x",
+        "--radio-font"
+      ],
+      "parts": [],
+      "states": [
+        "focus",
+        "invalid",
+        "disabled"
+      ],
+      "a11y": {
+        "role": "radio",
+        "inputType": "radio",
+        "minTarget": 44,
+        "requiresLabel": true,
+        "anchorRequiresHref": false
+      },
+      "example": "<fieldset class=\"field\"><legend class=\"field-label\">Livraison</legend><label class=\"radio\"><input type=\"radio\" name=\"livraison\" value=\"standard\" checked> Standard</label><label class=\"radio\"><input type=\"radio\" name=\"livraison\" value=\"express\"> Express</label></fieldset>",
+      "flutter": "NoraRadio",
+      "reactNative": "NoraRadio"
+    },
     "select": {
       "description": "Liste de choix native. Toujours associée à un <label for>.",
       "shape": "control",

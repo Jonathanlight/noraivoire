@@ -79,6 +79,7 @@ class _NewsletterCardState extends State<NewsletterCard> {
   final _email = TextEditingController();
   bool _consent = false;
   bool _weekly = true;
+  String? _frequency = 'mensuelle';
   String? _error;
 
   @override
@@ -107,6 +108,20 @@ class _NewsletterCardState extends State<NewsletterCard> {
               hint: 'nom@exemple.ci',
               keyboardType: TextInputType.emailAddress,
               autofillHints: const [AutofillHints.email],
+            ),
+          ),
+          NoraField(
+            label: 'Fréquence',
+            child: NoraRadioGroup<String>(
+              groupValue: _frequency,
+              onChanged: (v) => setState(() => _frequency = v),
+              child: const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  NoraRadio<String>(value: 'mensuelle', child: Text('Mensuelle')),
+                  NoraRadio<String>(value: 'trimestrielle', child: Text('Trimestrielle')),
+                ],
+              ),
             ),
           ),
           NoraSwitch(

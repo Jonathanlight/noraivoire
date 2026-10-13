@@ -57,6 +57,13 @@ final class NoraManifest
             'elements' => ['input'],
             'twig' => 'Nora:Input',
         ],
+        'radio' => [
+            'tones' => ['primary', 'neutral', 'danger', 'success', 'warning'],
+            'sizes' => ['sm', 'md', 'lg'],
+            'defaults' => ['tone' => 'primary', 'size' => 'md'],
+            'elements' => ['label'],
+            'twig' => 'Nora:Radio',
+        ],
         'select' => [
             'tones' => ['neutral'],
             'sizes' => ['sm', 'md', 'lg'],

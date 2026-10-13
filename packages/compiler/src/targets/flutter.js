@@ -613,6 +613,167 @@ ${sizeSwitch(c, tokens, c._sizes)}
 }`;
 }
 
+/**
+ * Bouton radio : `NoraRadioGroup<T>` (sur `RadioGroup`, navigation aux flèches) porte la valeur
+ * du groupe ; chaque `NoraRadio<T>` est une ligne entière cliquable (≥ minTarget), libellé fusionné.
+ * Mouvement réduit : rendu statique (mêmes couleurs, `Semantics` checked + groupe exclusif).
+ */
+function radioWidget(c, tokens) {
+  const cls = `Nora${pascal(c.component)}`;
+  const s = stateValues(c);
+  const haptic = c.feedback?.haptic;
+  return `/// Groupe de boutons radio : valeur sélectionnée et rappel de changement (navigation aux flèches).
+/// À placer dans un \`NoraField\` dont le libellé décrit la question.
+class ${cls}Group<T> extends StatelessWidget {
+  const ${cls}Group({super.key, required this.groupValue, required this.onChanged, required this.child});
+
+  final T? groupValue;
+
+  /// \`null\` : groupe désactivé.
+  final ValueChanged<T?>? onChanged;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final changed = onChanged;
+    return RadioGroup<T>(
+      groupValue: groupValue,
+      onChanged: changed ?? (_) {},
+      child: _${cls}GroupEnabled(enabled: changed != null, child: child),
+    );
+  }
+}
+
+class _${cls}GroupEnabled extends InheritedWidget {
+  const _${cls}GroupEnabled({required this.enabled, required super.child});
+  final bool enabled;
+
+  static bool of(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<_${cls}GroupEnabled>()?.enabled ?? true;
+
+  @override
+  bool updateShouldNotify(_${cls}GroupEnabled oldWidget) => enabled != oldWidget.enabled;
+}
+
+/// ${docComment(c.description)}
+class ${cls}<T> extends StatelessWidget {
+  const ${cls}({
+    super.key,
+    required this.value,
+    required this.child,
+    this.enabled = true,
+    this.tone = NoraTone.${camel(c.defaults.tone)},
+    this.size = NoraSize.${camel(c.defaults.size)},
+    this.invalid,
+    this.haptic = true,
+  });
+
+  /// Valeur représentée par cette option (sélectionnée si égale à la valeur du groupe).
+  final T value;
+
+  /// Libellé visible, fusionné dans la sémantique du contrôle.
+  final Widget child;
+  final bool enabled;
+  final NoraTone tone;
+  final NoraSize size;
+  final bool? invalid;
+  final bool haptic;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = NoraTheme.of(context).colors;
+${toneSwitch(c, tokens, 'accent', c._tones)}
+${toneSwitch(c, tokens, 'on-accent', c._tones)}
+    final bg = ${colorOf(c, tokens, 'bg', 'surface')};
+    final fg = ${colorOf(c, tokens, 'fg', 'text')};
+    final border = ${colorOf(c, tokens, 'border', 'textMuted')};
+    final focus = ${s.focusProp ? colorOf(c, tokens, s.focusProp, 'focus') : 'colors.focus'};
+    final invalidColor = ${s.invalidProp ? colorOf(c, tokens, s.invalidProp, 'danger') : 'colors.danger'};
+${sizeSwitch(c, tokens, c._sizes)}
+    final scope = NoraFieldScope.maybeOf(context);
+    final group = RadioGroup.maybeOf<T>(context);
+    final isInvalid = invalid ?? (scope?.error != null);
+    final isEnabled = enabled && group != null && _${cls}GroupEnabled.of(context) && (scope?.enabled ?? true);
+    final selected = group != null && group.groupValue == value;
+    final reduceMotion = MediaQuery.maybeDisableAnimationsOf(context) ?? false;
+
+    void select() {
+      if (selected) return;
+      ${haptic ? `if (haptic) HapticFeedback.${haptic}Impact();\n      ` : ''}group!.onChanged(value);
+    }
+
+    // Mouvement réduit : Radio Material n'expose pas sa durée d'animation ; rendu statique équivalent.
+    final Widget indicator = reduceMotion
+        ? Semantics(
+            checked: selected,
+            inMutuallyExclusiveGroup: true,
+            enabled: isEnabled,
+            child: SizedBox(
+              width: 40,
+              height: 40,
+              child: Center(
+                child: Container(
+                  width: 20,
+                  height: 20,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: selected ? accent : bg,
+                    border: Border.all(color: selected ? accent : (isInvalid ? invalidColor : border), width: 2),
+                  ),
+                  child: selected
+                      ? Container(width: 8, height: 8, decoration: BoxDecoration(shape: BoxShape.circle, color: onAccent))
+                      : null,
+                ),
+              ),
+            ),
+          )
+        : Radio<T>(
+            value: value,
+            enabled: isEnabled,
+            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            visualDensity: VisualDensity.compact,
+            fillColor: WidgetStateProperty.resolveWith((s) => s.contains(WidgetState.selected) ? accent : (isInvalid ? invalidColor : border)),
+            backgroundColor: WidgetStateProperty.all(bg),
+            focusColor: focus.withValues(alpha: 0.24),
+          );
+
+    return MergeSemantics(
+      child: Opacity(
+        opacity: isEnabled ? 1.0 : ${s.disabled},
+        child: InkWell(
+          onTap: isEnabled ? select : null,
+          // Le Radio porte le focus (flèches du groupe) ; en mouvement réduit, la ligne le reprend.
+          canRequestFocus: reduceMotion,
+          splashFactory: reduceMotion ? NoSplash.splashFactory : null,
+          highlightColor: reduceMotion ? const Color(0x00000000) : null,
+          borderRadius: BorderRadius.circular(NoraRadius.sm),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: ${Number(c.a11y.minTarget).toFixed(1)}),
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: padY),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  indicator,
+                  SizedBox(width: padX),
+                  Flexible(
+                    child: DefaultTextStyle.merge(
+                      style: TextStyle(color: fg, fontSize: fontSize, height: 1.3),
+                      child: child,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}`;
+}
+
 /** Groupe de champ : libellé, contrôle, aide, erreur (annoncée en région live). */
 function fieldWidget(c, tokens) {
   const cls = `Nora${pascal(c.component)}`;
@@ -832,7 +993,7 @@ export function buildFlutter(model, meta) {
     const shape = shapeFromRole(c);
     if (shape === 'interactive') return interactiveWidget(c, model.tokens);
     if (shape === 'control') return controlWidget(c, model.tokens);
-    if (shape === 'toggle') return toggleWidget(c, model.tokens);
+    if (shape === 'toggle') return c.a11y.role === 'radio' ? radioWidget(c, model.tokens) : toggleWidget(c, model.tokens);
     if (shape === 'group') return fieldWidget(c, model.tokens);
     return staticWidget(c, model.tokens, shape);
   });

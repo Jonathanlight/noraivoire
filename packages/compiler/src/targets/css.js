@@ -171,6 +171,7 @@ function formRules(c, tokens, shape) {
     out.push(`  :where(.${n}:disabled, .${n}[aria-disabled="true"]) { opacity: ${opacity}; cursor: not-allowed; }`);
   } else if (shape === 'toggle') {
     const isSwitch = c.a11y.role === 'switch';
+    const isRadio = c.a11y.role === 'radio';
     const box = `:where(.${n}) > :where(input)`;
     out.push(block(`:where(.${n})`, [
       ...componentVars(c, tokens),
@@ -196,6 +197,14 @@ function formRules(c, tokens, shape) {
       ]));
       out.push(`  :where(.${n}) > :where(input:checked)::before { transform: translateX(1em); background: var(--${n}-on-accent); }`);
       out.push(`  :where(.${n}:dir(rtl)) > :where(input:checked)::before { transform: translateX(-1em); }`);
+    } else if (isRadio) {
+      // Bouton radio : pastille centrale (forme portée par le token radius, cercle attendu).
+      out.push(block(`${box}::before`, [
+        'content: "";', 'inline-size: 0.5em;', 'block-size: 0.5em;', 'border-radius: 50%;', `background: var(--${n}-on-accent);`,
+        'transform: scale(0);', `transition: transform ${dur} ease;`,
+      ]));
+      out.push(`  :where(.${n}) > :where(input:checked)::before { transform: scale(1); }`);
+      out.push(`  :where(.${n}) > :where(input:checked) { background-color: var(--${n}-accent); border-color: var(--${n}-accent); }`);
     } else {
       out.push(block(`${box}::before`, [
         'content: "";', 'inline-size: 0.7em;', 'block-size: 0.7em;', `background: var(--${n}-on-accent);`,

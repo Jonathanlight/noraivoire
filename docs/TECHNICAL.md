@@ -208,7 +208,7 @@ Le compilateur (`packages/compiler/src/fx.js`) lit `spec/fx/<paquet>/`, valide c
 
 - `NoraTheme` est une `ThemeExtension` (light/dark, `lerp` pour les transitions de thème).
 - Widgets : `NoraBtn` (Semantics bouton, zone 44 px, `AnimatedScale`, haptique), `NoraCard` (`glass`), `NoraBadge`, `NoraTilt`, `NoraReveal`.
-- Formulaires : `NoraInput`, `NoraTextarea` (`TextField`), `NoraSelect<T>` (`DropdownButton` contrôlé dans un `InputDecorator`), `NoraCheckbox`, `NoraSwitch` (ligne entière cliquable, `MergeSemantics`, haptique), `NoraField` (libellé, aide, erreur en `Semantics(liveRegion)`). `NoraField` publie un `NoraFieldScope` : les contrôles descendants en tirent leur libellé sémantique, leur indication (erreur ou aide), leur état invalide et désactivé — l'équivalent de `<label for>` et `aria-describedby`. Hauteur minimale 44 via `InputDecoration.constraints` ou `ConstrainedBox`.
+- Formulaires : `NoraInput`, `NoraTextarea` (`TextField`), `NoraSelect<T>` (`DropdownButton` contrôlé dans un `InputDecorator`), `NoraCheckbox`, `NoraSwitch` (ligne entière cliquable, `MergeSemantics`, haptique), `NoraRadio<T>` dans `NoraRadioGroup<T>` (sur `RadioGroup` : valeur du groupe, flèches du clavier ; `Semantics(checked, inMutuallyExclusiveGroup)`), `NoraField` (libellé, aide, erreur en `Semantics(liveRegion)`). `NoraField` publie un `NoraFieldScope` : les contrôles descendants en tirent leur libellé sémantique, leur indication (erreur ou aide), leur état invalide et désactivé — l'équivalent de `<label for>` et `aria-describedby`. Hauteur minimale 44 via `InputDecoration.constraints` ou `ConstrainedBox`.
 - `MediaQuery.maybeDisableAnimationsOf` coupe toutes les animations si l'utilisateur l'a demandé.
 - Imports : `dart:*` et `package:flutter/*` uniquement.
 
@@ -216,7 +216,7 @@ Le compilateur (`packages/compiler/src/fx.js`) lit `spec/fx/<paquet>/`, valide c
 
 - `useNoraColors()` suit `useColorScheme()` ou `configureNora({ scheme })`.
 - Composants : `NoraBtn` (Pressable, `accessibilityRole="button"`, `hitSlop`, ressort), `NoraCard`, `NoraBadge`, `NoraTilt`, `NoraReveal`.
-- Formulaires : `NoraInput`, `NoraTextarea` (`TextInput`, bordure de focus), `NoraSelect` (le cœur de React Native n'a pas de liste déroulante : déclencheur `accessibilityRole="combobox"` et choix dans une `Modal`, options `radio`), `NoraCheckbox` et `NoraSwitch` (`Pressable`, rôles `checkbox` / `switch`, `accessibilityState={{ checked, disabled }}`, zone 44, glissement désactivé si mouvement réduit), `NoraField` (contexte `NoraFieldContext` : `accessibilityLabel` et `accessibilityHint` des contrôles ; erreur en `accessibilityLiveRegion="polite"`).
+- Formulaires : `NoraRadioGroup` (contexte : valeur, `onChange`, désactivation ; `accessibilityRole="radiogroup"`) et `NoraRadio` (`accessibilityRole="radio"`, `accessibilityState.checked`) ; `NoraInput`, `NoraTextarea` (`TextInput`, bordure de focus), `NoraSelect` (le cœur de React Native n'a pas de liste déroulante : déclencheur `accessibilityRole="combobox"` et choix dans une `Modal`, options `radio`), `NoraCheckbox` et `NoraSwitch` (`Pressable`, rôles `checkbox` / `switch`, `accessibilityState={{ checked, disabled }}`, zone 44, glissement désactivé si mouvement réduit), `NoraField` (contexte `NoraFieldContext` : `accessibilityLabel` et `accessibilityHint` des contrôles ; erreur en `accessibilityLiveRegion="polite"`).
 - `configureNora({ haptic, orientation })` injecte expo-haptics / expo-sensors sans en dépendre.
 - `useNativeDriver` activé hors web.
 
@@ -272,7 +272,7 @@ Limites connues : une apostrophe dans du texte JSX placé **dans une valeur d'at
 
 ### 7.2 `nora audit`
 
-84 contrôles automatisés : licence, chaîne d'approvisionnement, validité de la spec, déterminisme, en-têtes de propriété (y compris Twig et PHP générés), motifs dangereux (moteur, paquets d'effets et CSS), écritures DOM des paquets d'effets, imports natifs, accessibilité, budgets de poids (dont 2 Kio par paquet d'effets), fraîcheur de `dist`. Voir [AUDIT-REPORT.md](AUDIT-REPORT.md).
+85 contrôles automatisés : licence, chaîne d'approvisionnement, validité de la spec, déterminisme, en-têtes de propriété (y compris Twig et PHP générés), motifs dangereux (moteur, paquets d'effets et CSS), écritures DOM des paquets d'effets, imports natifs, accessibilité, budgets de poids (dont 2 Kio par paquet d'effets), fraîcheur de `dist`. Voir [AUDIT-REPORT.md](AUDIT-REPORT.md).
 
 ### 7.3 Serveur MCP (`packages/mcp`)
 

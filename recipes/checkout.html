@@ -42,12 +42,11 @@
       <section class="card">
       <fieldset class="stack">
         <legend class="text-lg font-bold">Mode de paiement</legend>
-        <div class="cluster" role="radiogroup" aria-label="Moyen de paiement">
-          <input id="carte" name="mode" type="radio" value="carte" checked>
-          <label for="carte">Carte bancaire</label>
-          <input id="mobile" name="mode" type="radio" value="mobile">
-          <label for="mobile">Paiement mobile</label>
-        </div>
+        <fieldset class="field">
+          <legend class="field-label">Moyen de paiement</legend>
+          <label class="radio"><input type="radio" name="mode" value="carte" checked> Carte bancaire</label>
+          <label class="radio"><input type="radio" name="mode" value="mobile"> Paiement mobile</label>
+        </fieldset>
         <p class="text-sm text-muted">Le paiement est confié à votre prestataire certifié : aucune donnée de carte ne transite par cette page.</p>
         <p class="text-lg font-bold">Total : 69,00 €</p>
         <button class="btn w-full" type="submit" data-size="lg">Payer 69,00 €</button>

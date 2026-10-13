@@ -211,6 +211,18 @@ const inputSpec = {
   minTarget: 44,
 } as const;
 
+const radioSpec = {
+  colors: { bg: 'surface', fg: 'text', border: 'textMuted', focus: 'focus', invalid: 'danger' } as const,
+  accent: { primary: 'primary', neutral: 'neutral', danger: 'danger', success: 'success', warning: 'warning' } as Partial<Record<NoraTone, ColorKey>>,
+  onAccent: { primary: 'onPrimary', neutral: 'onNeutral', danger: 'onDanger', success: 'onSuccess', warning: 'onWarning' } as Partial<Record<NoraTone, ColorKey>>,
+  sizes: { sm: { padY: 4, padX: 8, font: 14 }, md: { padY: 6, padX: 10, font: 16 }, lg: { padY: 8, padX: 12, font: 18 } } as Partial<Record<NoraSize, { padY: number; padX: number; font: number }>>,
+  radius: 9999,
+  ring: 2,
+  disabledOpacity: 0.5,
+  defaults: { tone: 'primary' as NoraTone, size: 'md' as NoraSize },
+  minTarget: 44,
+} as const;
+
 const selectSpec = {
   colors: { bg: 'surface', fg: 'text', border: 'textMuted', muted: 'textMuted', focus: 'focus', invalid: 'danger' } as const,
   sizes: { sm: { padY: 6, padX: 10, font: 14 }, md: { padY: 10, padX: 12, font: 16 }, lg: { padY: 12, padX: 16, font: 18 } } as Partial<Record<NoraSize, { padY: number; padX: number; font: number }>>,
@@ -611,6 +623,99 @@ export function NoraInput({ size, invalid, disabled, label, style, onFocus, onBl
       style={[box, { color: colors[inputSpec.colors.fg], fontSize: s.font }, style]}
       {...rest}
     />
+  );
+}
+
+type NoraRadioValue = string | number;
+const NoraRadioContext = React.createContext<{ value: NoraRadioValue | null; onChange?: (v: NoraRadioValue) => void; disabled: boolean } | null>(null);
+
+export type NoraRadioGroupProps<T extends NoraRadioValue> = ViewProps & {
+  value: T | null;
+  /** Absent : groupe en lecture seule. */
+  onChange?: (value: T) => void;
+  disabled?: boolean;
+  children: React.ReactNode;
+};
+
+/** Groupe de boutons radio (rôle radiogroup). À placer dans un NoraField dont le libellé décrit la question. */
+export function NoraRadioGroup<T extends NoraRadioValue>({ value, onChange, disabled, children, ...rest }: NoraRadioGroupProps<T>) {
+  const ctx = React.useMemo(
+    () => ({ value, onChange: onChange as ((v: NoraRadioValue) => void) | undefined, disabled: !!disabled }),
+    [value, onChange, disabled],
+  );
+  return (
+    <NoraRadioContext.Provider value={ctx}>
+      <View accessibilityRole="radiogroup" {...rest}>
+        {children}
+      </View>
+    </NoraRadioContext.Provider>
+  );
+}
+
+export type NoraRadioProps<T extends NoraRadioValue> = Omit<PressableProps, 'children' | 'style' | 'onPress'> & {
+  value: T;
+  /** Libellé visible (lu avec le contrôle). */
+  children: React.ReactNode;
+  tone?: NoraTone;
+  size?: NoraSize;
+  invalid?: boolean;
+  haptic?: boolean;
+  style?: StyleProp<ViewStyle>;
+};
+
+/** Bouton radio : un <label class="radio"> contenant <input type="radio" name="…"> et son texte (zone cliquable ≥ 44 px). Grouper les options d'une même question dans un <fieldset class="field"> avec <legend class="field-label">. */
+export function NoraRadio<T extends NoraRadioValue>({ value, children, tone, size, invalid, haptic = true, disabled, style, ...rest }: NoraRadioProps<T>) {
+  const colors = useNoraColors();
+  const field = useNoraField();
+  const group = React.useContext(NoraRadioContext);
+  const s = radioSpec.sizes[size ?? radioSpec.defaults.size] ?? radioSpec.sizes[radioSpec.defaults.size]!;
+  const t = tone ?? radioSpec.defaults.tone;
+  const accent = colors[radioSpec.accent[t] ?? radioSpec.accent[radioSpec.defaults.tone]!];
+  const onAccent = colors[radioSpec.onAccent[t] ?? radioSpec.onAccent[radioSpec.defaults.tone]!];
+  const isInvalid = invalid ?? !!field?.error;
+  const checked = group?.value === value;
+  const isDisabled = !!disabled || !!field?.disabled || !group || group.disabled || !group.onChange;
+  return (
+    <Pressable
+      accessibilityRole="radio"
+      accessibilityState={{ checked, disabled: isDisabled }}
+      accessibilityHint={field?.error ?? field?.help}
+      disabled={isDisabled}
+      hitSlop={4}
+      onPress={() => {
+        if (checked) return;
+        if (haptic) noraConfig.haptic?.('light');
+        group?.onChange?.(value);
+      }}
+      style={[
+        {
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: s.padX,
+          minHeight: radioSpec.minTarget,
+          paddingVertical: s.padY,
+          opacity: isDisabled ? radioSpec.disabledOpacity : 1,
+        },
+        style,
+      ]}
+      {...rest}
+    >
+      <View
+        style={{
+          width: s.font * 1.25,
+          height: s.font * 1.25,
+          borderRadius: s.font,
+          borderWidth: 2,
+          borderColor: checked ? accent : isInvalid ? colors[radioSpec.colors.invalid] : colors[radioSpec.colors.border],
+          backgroundColor: checked ? accent : colors[radioSpec.colors.bg],
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        {checked ? <View style={{ width: s.font * 0.5, height: s.font * 0.5, borderRadius: s.font, backgroundColor: onAccent }} /> : null}
+      </View>
+      {typeof children === 'string' ? <Text style={{ color: colors[radioSpec.colors.fg], fontSize: s.font, flexShrink: 1 }}>{children}</Text> : children}
+    </Pressable>
   );
 }
 

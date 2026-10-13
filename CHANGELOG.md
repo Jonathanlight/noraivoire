@@ -20,6 +20,7 @@
 - CSS : un badge (forme `label`) ne s'étire plus dans une pile flex ou une grille (`align-self: flex-start`, parité avec React Native) ; captures web et goldens Flutter clairs régénérés après le changement de `color.primary`. 1 test.
 - Flutter (règle 8, mouvement réduit) : `NoraCheckbox` / `NoraSwitch` rendus statiquement quand les animations sont désactivées, `InkWell` des boutons et toggles sans onde ni fondu ; 4 tests Flutter, 1 test node.
 - Sécurité : les gabarits de formulaire Flutter / React Native passent aussi par `docComment()` ; le test d'injection couvre désormais tous les composants et effets, et le retour chariot seul.
+- Composant `radio` : CSS (pastille, focus, invalide, désactivé, contraste forcé), Flutter `NoraRadio<T>` / `NoraRadioGroup<T>` (sur `RadioGroup`, rendu statique en mouvement réduit), React Native `NoraRadio` / `NoraRadioGroup` (`radiogroup` / `radio`), Twig `Nora:Radio` généré ; règle `nora check` `a11y-radio-name` (avertissement) ; recette `checkout.html` migrée ; groupe radio dans les modèles HTML, Flutter et React Native. Flutter 3.35+ requis (`RadioGroup`). 2 tests node, 5 tests Flutter.
 
 ## 0.1.0 — 14 octobre 2026
 

@@ -361,6 +361,104 @@ ${indicator}
 }`;
 }
 
+/** Bouton radio : NoraRadioGroup (contexte : valeur, rappel, désactivation) + NoraRadio par option. */
+function radioComp(c) {
+  const n = camel(c.component);
+  const P = `Nora${pascal(c.component)}`;
+  const haptic = c.feedback?.haptic ? lit(c.feedback.haptic) : null;
+  return `type ${P}Value = string | number;
+const ${P}Context = React.createContext<{ value: ${P}Value | null; onChange?: (v: ${P}Value) => void; disabled: boolean } | null>(null);
+
+export type ${P}GroupProps<T extends ${P}Value> = ViewProps & {
+  value: T | null;
+  /** Absent : groupe en lecture seule. */
+  onChange?: (value: T) => void;
+  disabled?: boolean;
+  children: React.ReactNode;
+};
+
+/** Groupe de boutons radio (rôle radiogroup). À placer dans un NoraField dont le libellé décrit la question. */
+export function ${P}Group<T extends ${P}Value>({ value, onChange, disabled, children, ...rest }: ${P}GroupProps<T>) {
+  const ctx = React.useMemo(
+    () => ({ value, onChange: onChange as ((v: ${P}Value) => void) | undefined, disabled: !!disabled }),
+    [value, onChange, disabled],
+  );
+  return (
+    <${P}Context.Provider value={ctx}>
+      <View accessibilityRole="radiogroup" {...rest}>
+        {children}
+      </View>
+    </${P}Context.Provider>
+  );
+}
+
+export type ${P}Props<T extends ${P}Value> = Omit<PressableProps, 'children' | 'style' | 'onPress'> & {
+  value: T;
+  /** Libellé visible (lu avec le contrôle). */
+  children: React.ReactNode;
+  tone?: NoraTone;
+  size?: NoraSize;
+  invalid?: boolean;
+  haptic?: boolean;
+  style?: StyleProp<ViewStyle>;
+};
+
+/** ${docComment(c.description)} */
+export function ${P}<T extends ${P}Value>({ value, children, tone, size, invalid, haptic = true, disabled, style, ...rest }: ${P}Props<T>) {
+  const colors = useNoraColors();
+  const field = useNoraField();
+  const group = React.useContext(${P}Context);
+  ${sizeLine(n)}
+  const t = tone ?? ${n}Spec.defaults.tone;
+  const accent = colors[${n}Spec.accent[t] ?? ${n}Spec.accent[${n}Spec.defaults.tone]!];
+  const onAccent = colors[${n}Spec.onAccent[t] ?? ${n}Spec.onAccent[${n}Spec.defaults.tone]!];
+  const isInvalid = invalid ?? !!field?.error;
+  const checked = group?.value === value;
+  const isDisabled = !!disabled || !!field?.disabled || !group || group.disabled || !group.onChange;
+  return (
+    <Pressable
+      accessibilityRole="radio"
+      accessibilityState={{ checked, disabled: isDisabled }}
+      accessibilityHint={field?.error ?? field?.help}
+      disabled={isDisabled}
+      hitSlop={4}
+      onPress={() => {
+        if (checked) return;
+${haptic ? `        if (haptic) noraConfig.haptic?.(${haptic});\n` : ''}        group?.onChange?.(value);
+      }}
+      style={[
+        {
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: s.padX,
+          minHeight: ${n}Spec.minTarget,
+          paddingVertical: s.padY,
+          opacity: isDisabled ? ${n}Spec.disabledOpacity : 1,
+        },
+        style,
+      ]}
+      {...rest}
+    >
+      <View
+        style={{
+          width: s.font * 1.25,
+          height: s.font * 1.25,
+          borderRadius: s.font,
+          borderWidth: 2,
+          borderColor: checked ? accent : isInvalid ? colors[${n}Spec.colors.invalid] : colors[${n}Spec.colors.border],
+          backgroundColor: checked ? accent : colors[${n}Spec.colors.bg],
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        {checked ? <View style={{ width: s.font * 0.5, height: s.font * 0.5, borderRadius: s.font, backgroundColor: onAccent }} /> : null}
+      </View>
+      {typeof children === 'string' ? <Text style={{ color: colors[${n}Spec.colors.fg], fontSize: s.font, flexShrink: 1 }}>{children}</Text> : children}
+    </Pressable>
+  );
+}`;
+}
+
 function fieldComp(c) {
   const n = camel(c.component);
   const P = `Nora${pascal(c.component)}`;
@@ -594,7 +692,7 @@ export function buildReactNative(model, meta) {
     const shape = shapeFromRole(c);
     if (shape === 'interactive') return interactive(c);
     if (shape === 'control') return controlComp(c);
-    if (shape === 'toggle') return toggleComp(c);
+    if (shape === 'toggle') return c.a11y.role === 'radio' ? radioComp(c) : toggleComp(c);
     if (shape === 'group') return fieldComp(c);
     return staticComp(c, shape);
   });

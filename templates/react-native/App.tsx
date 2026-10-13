@@ -9,6 +9,8 @@ import {
   NoraCheckbox,
   NoraField,
   NoraInput,
+  NoraRadio,
+  NoraRadioGroup,
   NoraReveal,
   NoraSelect,
   NoraSwitch,
@@ -32,6 +34,7 @@ function DeliveryForm() {
   const [phone, setPhone] = React.useState('');
   const [city, setCity] = React.useState<string | null>('abidjan');
   const [express, setExpress] = React.useState(false);
+  const [slot, setSlot] = React.useState<'matin' | 'soir'>('matin');
   const [terms, setTerms] = React.useState(false);
   const [error, setError] = React.useState<string | undefined>();
   return (
@@ -50,6 +53,12 @@ function DeliveryForm() {
             { label: 'Yamoussoukro', value: 'yamoussoukro' },
           ]}
         />
+      </NoraField>
+      <NoraField label="Créneau">
+        <NoraRadioGroup value={slot} onChange={setSlot}>
+          <NoraRadio value="matin">Matin (8 h – 12 h)</NoraRadio>
+          <NoraRadio value="soir">Soir (16 h – 20 h)</NoraRadio>
+        </NoraRadioGroup>
       </NoraField>
       <NoraSwitch checked={express} onChange={setExpress}>Livraison express</NoraSwitch>
       <NoraCheckbox checked={terms} onChange={setTerms}>J'accepte les conditions de vente</NoraCheckbox>

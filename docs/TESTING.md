@@ -5,10 +5,10 @@ Version 0.1.0 · 14 octobre 2026 · © Jonathan KABLAN — Propriétaire
 ## 1. Commandes
 
 ```bash
-npm test                    # 142 tests (node:test, aucun framework)
+npm test                    # 144 tests (node:test, aucun framework)
 npm run test:visual         # 18 tests Playwright : 12 captures + axe-core + rendu sans JS (navigateurs requis)
 npm run check               # valide les modèles et les recettes
-npm run audit:security      # 84 contrôles
+npm run audit:security      # 85 contrôles
 npm run verify              # tout, dans l'ordre
 ```
 
@@ -17,8 +17,8 @@ npm run verify              # tout, dans l'ordre
 | Fichier | Tests | Couvre |
 |---|---|---|
 | `tests/unit/compiler.test.js` | 24 | Compilation des 4 cibles, déterminisme, layers, thème, mouvement réduit, Flutter, React Native, manifest, intégrité, **7 tests de sécurité** |
-| `tests/unit/check.test.js` | 8 | Modèles livrés sans erreur, 14 règles déclenchées sur la fixture, suggestions, valeurs dynamiques, JSX, numéros de ligne |
-| `tests/unit/forms.test.js` | 13 | Composants de formulaire : spec et manifest (ajouts seulement), liste blanche (états, parties, forme, `minTarget`, `inputType`), CSS (focus, invalide, désactivé, 44 px, `:where()`), Flutter (widgets, sémantique, `NoraFieldScope`), React Native (rôles, états, imports), règles `nora check` (label associé, case/interrupteur, `aria-invalid`, `.field`) |
+| `tests/unit/check.test.js` | 8 | Modèles livrés sans erreur, 15 règles déclenchées sur la fixture, suggestions, valeurs dynamiques, JSX, numéros de ligne |
+| `tests/unit/forms.test.js` | 15 | Composants de formulaire : spec et manifest (ajouts seulement), liste blanche (états, parties, forme, `minTarget`, `inputType`), CSS (focus, invalide, désactivé, 44 px, `:where()`), Flutter (widgets, sémantique, `NoraFieldScope`), React Native (rôles, états, imports), règles `nora check` (label associé, case/interrupteur, `aria-invalid`, `.field`) |
 | `tests/unit/tokenize.test.js` | 19 | Tokenizer de `nora check` : valeurs sans guillemets, attributs multi-lignes, JSX imbriqué (blocs, gabarits, balises en valeur d'attribut), commentaires HTML/Twig/JSP, Twig et EL dans les valeurs, `<script>`/`<style>` bruts, liaisons Vue/Angular, boutons auto-fermants, constructions non fermées, relations `label`/`id`/parent, **8 entrées pathologiques** (temps linéaire) |
 | `tests/unit/engine.test.js` | 8 | Analyse des options (bornes, types, pollution, troncature), liste d'effets, enregistrement, SSR |
 | `tests/unit/engine-dom.test.js` | 6 | Moteur dans un DOM (jsdom) : montage initial, montage SPA, tilt, démontage, changement d'attribut, isolation des erreurs |
@@ -30,10 +30,11 @@ npm run verify              # tout, dans l'ordre
 | `tests/unit/recipes.test.js` | 8 | Recettes : format de l'index, 20 écrans, unicité des ids et des intentions, fichiers confinés, `components` cohérents avec le markup et le manifest, `nora check` sans avertissement, accessibilité (h1, labels), aucun JS inline ni ressource externe, champs portés par les composants de formulaire |
 | `tests/unit/contrast.test.js` | 3 | Contraste WCAG AA (4,5:1) de chaque ton / `on-*` et du texte sur les surfaces, clair et sombre |
 | `tests/unit/visual-serve.test.js` | 3 | Serveur statique des tests visuels : confinement au dépôt (traversée, octet nul, `node_modules`, `.git`), 127.0.0.1, lecture seule |
-| `tests/unit/audit.test.js` | 1 | L'audit complet passe (84/84) |
+| `tests/unit/audit.test.js` | 1 | L'audit complet passe (85/85) |
 | `examples/flutter_app/test/fx_test.dart` (Flutter) | 3 | `NoraScramble` : texte final, label sémantique, mouvement réduit ; `NoraParallax` : décalage au défilement, aucun en mouvement réduit |
-| `adapters/symfony-bundle/tests/` (PHPUnit) | 51 | Code PHP généré (enums, `NoraManifest`, `safeHref`), rendu réel des Twig Components dans un noyau Symfony (listes blanches, URL dangereuses, attributs verrouillés, échappement), AssetMapper, commande `nora:check` (texte, JSON, chemins refusés) |
+| `adapters/symfony-bundle/tests/` (PHPUnit) | 52 | Code PHP généré (enums, `NoraManifest`, `safeHref`), rendu réel des Twig Components dans un noyau Symfony (listes blanches, URL dangereuses, attributs verrouillés, échappement), AssetMapper, commande `nora:check` (texte, JSON, chemins refusés) |
 | `examples/flutter_app/test/goldens_test.dart` (Flutter) | 8 | Goldens `NoraBtn` (5 tons × 3 tailles), `NoraCard(glass: true)`, `NoraBadge`, clair et sombre ; sémantique bouton et zone ≥ 44 ; montage du modèle `templates/flutter/main.dart` (formulaire compris) |
+| `examples/flutter_app/test/radio_test.dart` (Flutter) | 5 | Goldens `NoraRadio` (sélectionné, invalide, désactivé, ton), clair et sombre ; sémantique checked + groupe exclusif, sélection au toucher, zone ≥ 44, en mouvement normal et réduit (aucune animation) ; groupe désactivé |
 | `examples/flutter_app/test/reduced_motion_test.dart` (Flutter) | 4 | Mouvement réduit : `NoraCheckbox` / `NoraSwitch` statiques, aucune animation au changement, sémantique checked / toggled et libellé ; contrôle Material conservé sinon |
 | `examples/flutter_app/test/forms_test.dart` (Flutter) | 7 | Goldens `NoraField` + `NoraInput` / `NoraSelect` / `NoraTextarea` (aide, erreur, désactivé) et `NoraCheckbox` / `NoraSwitch` (tons, invalide, désactivé), clair et sombre ; sémantique : libellé et erreur du champ portés par le `TextField`, case cochée/libellé fusionné/bascule au toucher, interrupteur désactivé ; zones ≥ 44 |
 

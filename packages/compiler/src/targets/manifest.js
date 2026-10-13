@@ -88,7 +88,7 @@ export function buildLlms(manifest) {
 3. Utilitaires : liste fermée ci-dessous. Une classe absente de la liste n'existe pas.
 4. Effets JS : data-fx="nom". Surface verre : class="fx-glass".
 5. Action → <button class="btn">. Navigation → <a class="btn" href="…">. Un bouton sans texte exige aria-label.
-6. Formulaire : chaque .input, .select, .textarea a un <label for="id"> relié à son id (ou aria-label). Case à cocher et interrupteur : <label class="checkbox|switch"><input type="checkbox"> Texte</label> (role="switch" pour l'interrupteur). Invalide : aria-invalid="true" + aria-describedby vers le .field-error. Regrouper libellé, contrôle, aide et erreur dans .field.
+6. Formulaire : chaque .input, .select, .textarea a un <label for="id"> relié à son id (ou aria-label). Case à cocher et interrupteur : <label class="checkbox|switch"><input type="checkbox"> Texte</label> (role="switch" pour l'interrupteur). Boutons radio : <fieldset class="field"><legend class="field-label">Question</legend><label class="radio"><input type="radio" name="groupe" value="a"> Option</label>…</fieldset> (même name pour toutes les options). Invalide : aria-invalid="true" + aria-describedby vers le .field-error. Regrouper libellé, contrôle, aide et erreur dans .field.
 7. Après génération, exécuter : npx nora check <dossier> --format=json et corriger chaque erreur.
 
 ## Composants

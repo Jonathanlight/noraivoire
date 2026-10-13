@@ -7,13 +7,13 @@ Version 0.1.0 · 14 octobre 2026 · © Jonathan KABLAN — Propriétaire
 | Environnement | Mode d'intégration | Build requis | Adaptateur | État 0.1 |
 |---|---|---|---|---|
 | HTML statique | `<link>` + `<script type="module">` | Non | Aucun | Modèle fourni, validé par `nora check` |
-| Twig / Symfony 7.3+ (PHP 8.4+) | Bundle : Twig Components `<twig:Nora:*>` générés, enums `NoraTone` / `NoraSize`, AssetMapper (`noraivoire/…`), `bin/console nora:check` | Non | `adapters/symfony-bundle/` (sans bundle : `templates/twig/components/Nora/Btn.html.twig`) | Généré depuis le manifest ; **51 tests PHPUnit exécutés** (PHP 8.5, Symfony 8.1, UX TwigComponent 2.36) ; CI PHP 8.4 et 8.5 |
+| Twig / Symfony 7.3+ (PHP 8.4+) | Bundle : Twig Components `<twig:Nora:*>` générés, enums `NoraTone` / `NoraSize`, AssetMapper (`noraivoire/…`), `bin/console nora:check` | Non | `adapters/symfony-bundle/` (sans bundle : `templates/twig/components/Nora/Btn.html.twig`) | Généré depuis le manifest ; **52 tests PHPUnit exécutés** (PHP 8.5, Symfony 8.1, UX TwigComponent 2.36) ; CI PHP 8.4 et 8.5 |
 | JSP / Jakarta EE / Spring | Fichiers statiques + tag file `<nora:btn>` | Non | `templates/jsp/WEB-INF/tags/nora/btn.tag` | Modèle fourni, non exécuté dans un conteneur |
 | React (Vite) | Import CSS + `start()` ; hook `useFx` | Oui (projet) | `templates/react/useFx.ts` | Modèle fourni |
 | Next.js App Router | CSS dans `layout.tsx` ; `<NoraEngine/>` client | Oui (projet) | `templates/nextjs/components/NoraEngine.tsx` | Modèle fourni |
 | Vue 3 / Nuxt | Import CSS ; directive `v-fx` | Oui (projet) | `templates/vue/vFx.ts` | Modèle fourni |
 | Angular 17+ | `angular.json › styles` ; directive `[noraFx]` | Oui (projet) | `templates/angular/nora-fx.directive.ts` | Modèle fourni |
-| Flutter 3.27+ | Copie de `noraivoire.dart` | Non | — | Généré ; `flutter analyze` sans problème et goldens (`examples/flutter_app/`) |
+| Flutter 3.35+ | Copie de `noraivoire.dart` | Non | — | Généré ; `flutter analyze` sans problème et goldens (`examples/flutter_app/`) |
 | React Native 0.76+ / Expo | Copie de `noraivoire.tsx` | Non | `configureNora()` | Généré ; **TypeScript strict vérifié** (RN 0.81, React 19) |
 
 ## 2. Politique de support navigateurs
@@ -56,6 +56,7 @@ Le seul attribut posé sur `<html>` par le moteur est `data-nora-engine` (d'où 
 | Champ texte | `<input>` natif stylé | `TextField` | `TextInput` | Focus : contour 2 px (web, Flutter) ; bordure 2 px (RN) |
 | Liste de choix | `<select>` natif (`appearance: none`) | `DropdownButton` (menu Material) | `Modal` + options | RN : pas de liste déroulante dans le cœur ; adaptateur natif possible hors cœur |
 | Case à cocher | `<input type="checkbox">` dessiné en CSS | `Checkbox` Material | Vue dessinée + `✓` | Coche : tracé CSS / icône Material / glyphe texte |
+| Bouton radio | `<input type="radio">` dessiné en CSS (pastille), groupe en `<fieldset>` + `<legend>` | `Radio<T>` Material sous `RadioGroup<T>` (`NoraRadioGroup`, flèches du clavier) ; rendu statique en mouvement réduit | Vue dessinée (pastille), `NoraRadioGroup` en `accessibilityRole="radiogroup"` | Flutter : en mouvement réduit, la navigation aux flèches du groupe n'est plus disponible (Tab + Entrée / Espace restent) |
 | Interrupteur | `<input role="switch">` dessiné en CSS | `Switch` Material 3 | Piste + pouce animés | Proportions du `Switch` Material 3 différentes (pouce agrandi quand actif) |
 | Association libellé | `<label for>` / `aria-describedby` | `NoraFieldScope` (sémantique) | `NoraFieldContext` (`accessibilityLabel` / `Hint`) | Même contrat, mécanisme propre à chaque plateforme |
 | Mouvement réduit (formulaires) | Transitions coupées (`prefers-reduced-motion`) | Case et interrupteur rendus statiquement (mêmes couleurs, `Semantics` checked / toggled), `InkWell` sans onde ni fondu | Glissement du pouce coupé | Flutter : `Checkbox` / `Switch` Material n'exposent pas leur durée, d'où le rendu statique quand `MediaQuery.disableAnimations` est vrai |
@@ -78,7 +79,7 @@ Limites : `NoraParallax` (RN) doit être un enfant direct du contenu du `ScrollV
 |---|---|---|
 | CSS | Aucune | Très faible (standards) |
 | Moteur web | Aucune | Très faible |
-| Flutter | SDK Flutter | API utilisées stables ; `Color.withValues` impose Flutter 3.27+ |
+| Flutter | SDK Flutter | API utilisées stables ; `Color.withValues` impose Flutter 3.27+, `RadioGroup` (boutons radio) Flutter 3.35+ |
 | React Native | `react`, `react-native` | `Animated` et `Pressable` sont des API publiques stables |
 | Symfony | `symfony/*` (framework, twig, console, process, asset-mapper), `symfony/ux-twig-component`, `twig/twig` — MIT / BSD-3 | Syntaxe `<twig:…>` et `attributes.without()` d'UX TwigComponent 2.x ; `nora:check` exige Node.js (développement et CI seulement) |
 

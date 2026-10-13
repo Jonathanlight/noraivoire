@@ -807,6 +807,174 @@ class NoraInput extends StatelessWidget {
   }
 }
 
+/// Groupe de boutons radio : valeur sélectionnée et rappel de changement (navigation aux flèches).
+/// À placer dans un `NoraField` dont le libellé décrit la question.
+class NoraRadioGroup<T> extends StatelessWidget {
+  const NoraRadioGroup({super.key, required this.groupValue, required this.onChanged, required this.child});
+
+  final T? groupValue;
+
+  /// `null` : groupe désactivé.
+  final ValueChanged<T?>? onChanged;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final changed = onChanged;
+    return RadioGroup<T>(
+      groupValue: groupValue,
+      onChanged: changed ?? (_) {},
+      child: _NoraRadioGroupEnabled(enabled: changed != null, child: child),
+    );
+  }
+}
+
+class _NoraRadioGroupEnabled extends InheritedWidget {
+  const _NoraRadioGroupEnabled({required this.enabled, required super.child});
+  final bool enabled;
+
+  static bool of(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<_NoraRadioGroupEnabled>()?.enabled ?? true;
+
+  @override
+  bool updateShouldNotify(_NoraRadioGroupEnabled oldWidget) => enabled != oldWidget.enabled;
+}
+
+/// Bouton radio : un <label class="radio"> contenant <input type="radio" name="…"> et son texte (zone cliquable ≥ 44 px). Grouper les options d'une même question dans un <fieldset class="field"> avec <legend class="field-label">.
+class NoraRadio<T> extends StatelessWidget {
+  const NoraRadio({
+    super.key,
+    required this.value,
+    required this.child,
+    this.enabled = true,
+    this.tone = NoraTone.primary,
+    this.size = NoraSize.md,
+    this.invalid,
+    this.haptic = true,
+  });
+
+  /// Valeur représentée par cette option (sélectionnée si égale à la valeur du groupe).
+  final T value;
+
+  /// Libellé visible, fusionné dans la sémantique du contrôle.
+  final Widget child;
+  final bool enabled;
+  final NoraTone tone;
+  final NoraSize size;
+  final bool? invalid;
+  final bool haptic;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = NoraTheme.of(context).colors;
+    final accent = switch (tone) {
+      NoraTone.primary => colors.primary,
+      NoraTone.neutral => colors.neutral,
+      NoraTone.danger => colors.danger,
+      NoraTone.success => colors.success,
+      NoraTone.warning => colors.warning,
+    };
+    final onAccent = switch (tone) {
+      NoraTone.primary => colors.onPrimary,
+      NoraTone.neutral => colors.onNeutral,
+      NoraTone.danger => colors.onDanger,
+      NoraTone.success => colors.onSuccess,
+      NoraTone.warning => colors.onWarning,
+    };
+    final bg = colors.surface;
+    final fg = colors.text;
+    final border = colors.textMuted;
+    final focus = colors.focus;
+    final invalidColor = colors.danger;
+    final (padY, padX, fontSize) = switch (size) {
+      NoraSize.sm => (4.0, 8.0, 14.0),
+      NoraSize.md => (6.0, 10.0, 16.0),
+      NoraSize.lg => (8.0, 12.0, 18.0),
+    };
+    final scope = NoraFieldScope.maybeOf(context);
+    final group = RadioGroup.maybeOf<T>(context);
+    final isInvalid = invalid ?? (scope?.error != null);
+    final isEnabled = enabled && group != null && _NoraRadioGroupEnabled.of(context) && (scope?.enabled ?? true);
+    final selected = group != null && group.groupValue == value;
+    final reduceMotion = MediaQuery.maybeDisableAnimationsOf(context) ?? false;
+
+    void select() {
+      if (selected) return;
+      if (haptic) HapticFeedback.lightImpact();
+      group!.onChanged(value);
+    }
+
+    // Mouvement réduit : Radio Material n'expose pas sa durée d'animation ; rendu statique équivalent.
+    final Widget indicator = reduceMotion
+        ? Semantics(
+            checked: selected,
+            inMutuallyExclusiveGroup: true,
+            enabled: isEnabled,
+            child: SizedBox(
+              width: 40,
+              height: 40,
+              child: Center(
+                child: Container(
+                  width: 20,
+                  height: 20,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: selected ? accent : bg,
+                    border: Border.all(color: selected ? accent : (isInvalid ? invalidColor : border), width: 2),
+                  ),
+                  child: selected
+                      ? Container(width: 8, height: 8, decoration: BoxDecoration(shape: BoxShape.circle, color: onAccent))
+                      : null,
+                ),
+              ),
+            ),
+          )
+        : Radio<T>(
+            value: value,
+            enabled: isEnabled,
+            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            visualDensity: VisualDensity.compact,
+            fillColor: WidgetStateProperty.resolveWith((s) => s.contains(WidgetState.selected) ? accent : (isInvalid ? invalidColor : border)),
+            backgroundColor: WidgetStateProperty.all(bg),
+            focusColor: focus.withValues(alpha: 0.24),
+          );
+
+    return MergeSemantics(
+      child: Opacity(
+        opacity: isEnabled ? 1.0 : 0.5,
+        child: InkWell(
+          onTap: isEnabled ? select : null,
+          // Le Radio porte le focus (flèches du groupe) ; en mouvement réduit, la ligne le reprend.
+          canRequestFocus: reduceMotion,
+          splashFactory: reduceMotion ? NoSplash.splashFactory : null,
+          highlightColor: reduceMotion ? const Color(0x00000000) : null,
+          borderRadius: BorderRadius.circular(NoraRadius.sm),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: 44.0),
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: padY),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  indicator,
+                  SizedBox(width: padX),
+                  Flexible(
+                    child: DefaultTextStyle.merge(
+                      style: TextStyle(color: fg, fontSize: fontSize, height: 1.3),
+                      child: child,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 /// Liste de choix native. Toujours associée à un <label for>.
 class NoraSelect<T> extends StatefulWidget {
   const NoraSelect({
