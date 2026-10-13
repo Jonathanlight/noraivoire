@@ -1,0 +1,69 @@
+{
+  "$nora": "component",
+  "$version": "1.0.0",
+  "component": "field",
+  "shape": "group",
+  "description": "Groupe de champ : libellé (.field-label), contrôle, aide (.field-help) et erreur (.field-error). Relier aide et erreur au contrôle par aria-describedby.",
+  "elements": [
+    "div",
+    "fieldset"
+  ],
+  "parts": [
+    "label",
+    "help",
+    "error"
+  ],
+  "variants": {
+    "tone": [
+      "neutral"
+    ],
+    "size": [
+      "sm",
+      "md",
+      "lg"
+    ]
+  },
+  "defaults": {
+    "tone": "neutral",
+    "size": "md"
+  },
+  "tokens": {
+    "fg": "{color.text}",
+    "muted": "{color.text-muted}",
+    "invalid": "{color.danger}"
+  },
+  "sizes": {
+    "sm": {
+      "pad-y": 4,
+      "pad-x": 0,
+      "font": "{font.sm}"
+    },
+    "md": {
+      "pad-y": 6,
+      "pad-x": 0,
+      "font": "{font.md}"
+    },
+    "lg": {
+      "pad-y": 8,
+      "pad-x": 0,
+      "font": "{font.lg}"
+    }
+  },
+  "states": {
+    "invalid": {
+      "token": "invalid"
+    },
+    "disabled": {
+      "opacity": 0.5
+    }
+  },
+  "motion": {},
+  "a11y": {
+    "role": "group",
+    "minTarget": 0,
+    "requiresLabel": true,
+    "anchorRequiresHref": false
+  },
+  "feedback": {},
+  "example": "<div class=\"field\"><label class=\"field-label\" for=\"email\">E-mail</label><input class=\"input\" id=\"email\" type=\"email\" aria-describedby=\"email-aide\"><p class=\"field-help\" id=\"email-aide\">Professionnel de préférence.</p></div>"
+}

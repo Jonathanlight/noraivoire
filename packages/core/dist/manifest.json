@@ -92,6 +92,8 @@
         "--badge-pad-x",
         "--badge-font"
       ],
+      "parts": [],
+      "states": [],
       "a11y": {
         "role": "status",
         "minTarget": 0,
@@ -135,6 +137,11 @@
         "--btn-pad-x",
         "--btn-font"
       ],
+      "parts": [],
+      "states": [
+        "pressed",
+        "disabled"
+      ],
       "a11y": {
         "role": "button",
         "minTarget": 44,
@@ -177,6 +184,8 @@
         "--card-pad-x",
         "--card-font"
       ],
+      "parts": [],
+      "states": [],
       "a11y": {
         "role": "none",
         "minTarget": 0,
@@ -186,6 +195,306 @@
       "example": "<article class=\"card\" data-size=\"md\">…</article>",
       "flutter": "NoraCard",
       "reactNative": "NoraCard"
+    },
+    "checkbox": {
+      "description": "Case à cocher : un <label class=\"checkbox\"> contenant <input type=\"checkbox\"> et son texte (zone cliquable ≥ 44 px).",
+      "shape": "toggle",
+      "elements": [
+        "label"
+      ],
+      "attributes": {
+        "data-tone": [
+          "primary",
+          "neutral",
+          "danger",
+          "success",
+          "warning"
+        ],
+        "data-size": [
+          "sm",
+          "md",
+          "lg"
+        ]
+      },
+      "defaults": {
+        "tone": "primary",
+        "size": "md"
+      },
+      "tokens": [
+        "--checkbox-bg",
+        "--checkbox-fg",
+        "--checkbox-radius",
+        "--checkbox-border",
+        "--checkbox-accent",
+        "--checkbox-on-accent",
+        "--checkbox-focus",
+        "--checkbox-invalid",
+        "--checkbox-pad-y",
+        "--checkbox-pad-x",
+        "--checkbox-font"
+      ],
+      "parts": [],
+      "states": [
+        "focus",
+        "invalid",
+        "disabled"
+      ],
+      "a11y": {
+        "role": "checkbox",
+        "inputType": "checkbox",
+        "minTarget": 44,
+        "requiresLabel": true,
+        "anchorRequiresHref": false
+      },
+      "example": "<label class=\"checkbox\"><input type=\"checkbox\" name=\"cgu\" required> J'accepte les conditions</label>",
+      "flutter": "NoraCheckbox",
+      "reactNative": "NoraCheckbox"
+    },
+    "field": {
+      "description": "Groupe de champ : libellé (.field-label), contrôle, aide (.field-help) et erreur (.field-error). Relier aide et erreur au contrôle par aria-describedby.",
+      "shape": "group",
+      "elements": [
+        "div",
+        "fieldset"
+      ],
+      "attributes": {
+        "data-tone": [
+          "neutral"
+        ],
+        "data-size": [
+          "sm",
+          "md",
+          "lg"
+        ]
+      },
+      "defaults": {
+        "tone": "neutral",
+        "size": "md"
+      },
+      "tokens": [
+        "--field-fg",
+        "--field-muted",
+        "--field-invalid",
+        "--field-pad-y",
+        "--field-pad-x",
+        "--field-font"
+      ],
+      "parts": [
+        "field-label",
+        "field-help",
+        "field-error"
+      ],
+      "states": [
+        "invalid",
+        "disabled"
+      ],
+      "a11y": {
+        "role": "group",
+        "minTarget": 0,
+        "requiresLabel": true,
+        "anchorRequiresHref": false
+      },
+      "example": "<div class=\"field\"><label class=\"field-label\" for=\"email\">E-mail</label><input class=\"input\" id=\"email\" type=\"email\" aria-describedby=\"email-aide\"><p class=\"field-help\" id=\"email-aide\">Professionnel de préférence.</p></div>",
+      "flutter": "NoraField",
+      "reactNative": "NoraField"
+    },
+    "input": {
+      "description": "Champ de saisie sur une ligne. Toujours associé à un <label for> (ou placé dans un .field). Invalide : aria-invalid=\"true\" + aria-describedby vers le message.",
+      "shape": "control",
+      "elements": [
+        "input"
+      ],
+      "attributes": {
+        "data-tone": [
+          "neutral"
+        ],
+        "data-size": [
+          "sm",
+          "md",
+          "lg"
+        ]
+      },
+      "defaults": {
+        "tone": "neutral",
+        "size": "md"
+      },
+      "tokens": [
+        "--input-bg",
+        "--input-fg",
+        "--input-radius",
+        "--input-border",
+        "--input-muted",
+        "--input-focus",
+        "--input-invalid",
+        "--input-pad-y",
+        "--input-pad-x",
+        "--input-font"
+      ],
+      "parts": [],
+      "states": [
+        "focus",
+        "invalid",
+        "disabled"
+      ],
+      "a11y": {
+        "role": "textbox",
+        "minTarget": 44,
+        "requiresLabel": true,
+        "anchorRequiresHref": false
+      },
+      "example": "<label class=\"field-label\" for=\"email\">E-mail</label> <input class=\"input\" id=\"email\" type=\"email\" name=\"email\" autocomplete=\"email\">",
+      "flutter": "NoraInput",
+      "reactNative": "NoraInput"
+    },
+    "select": {
+      "description": "Liste de choix native. Toujours associée à un <label for>.",
+      "shape": "control",
+      "elements": [
+        "select"
+      ],
+      "attributes": {
+        "data-tone": [
+          "neutral"
+        ],
+        "data-size": [
+          "sm",
+          "md",
+          "lg"
+        ]
+      },
+      "defaults": {
+        "tone": "neutral",
+        "size": "md"
+      },
+      "tokens": [
+        "--select-bg",
+        "--select-fg",
+        "--select-radius",
+        "--select-border",
+        "--select-muted",
+        "--select-focus",
+        "--select-invalid",
+        "--select-pad-y",
+        "--select-pad-x",
+        "--select-font"
+      ],
+      "parts": [],
+      "states": [
+        "focus",
+        "invalid",
+        "disabled"
+      ],
+      "a11y": {
+        "role": "combobox",
+        "minTarget": 44,
+        "requiresLabel": true,
+        "anchorRequiresHref": false
+      },
+      "example": "<label class=\"field-label\" for=\"pays\">Pays</label> <select class=\"select\" id=\"pays\" name=\"pays\"><option>Côte d'Ivoire</option></select>",
+      "flutter": "NoraSelect",
+      "reactNative": "NoraSelect"
+    },
+    "switch": {
+      "description": "Interrupteur marche/arrêt : un <label class=\"switch\"> contenant <input type=\"checkbox\" role=\"switch\"> et son texte. Effet immédiat, sans bouton Valider.",
+      "shape": "toggle",
+      "elements": [
+        "label"
+      ],
+      "attributes": {
+        "data-tone": [
+          "primary",
+          "neutral",
+          "danger",
+          "success",
+          "warning"
+        ],
+        "data-size": [
+          "sm",
+          "md",
+          "lg"
+        ]
+      },
+      "defaults": {
+        "tone": "primary",
+        "size": "md"
+      },
+      "tokens": [
+        "--switch-bg",
+        "--switch-fg",
+        "--switch-radius",
+        "--switch-border",
+        "--switch-accent",
+        "--switch-on-accent",
+        "--switch-focus",
+        "--switch-invalid",
+        "--switch-pad-y",
+        "--switch-pad-x",
+        "--switch-font"
+      ],
+      "parts": [],
+      "states": [
+        "focus",
+        "invalid",
+        "disabled"
+      ],
+      "a11y": {
+        "role": "switch",
+        "inputType": "checkbox",
+        "minTarget": 44,
+        "requiresLabel": true,
+        "anchorRequiresHref": false
+      },
+      "example": "<label class=\"switch\"><input type=\"checkbox\" role=\"switch\" name=\"notif\"> Notifications</label>",
+      "flutter": "NoraSwitch",
+      "reactNative": "NoraSwitch"
+    },
+    "textarea": {
+      "description": "Zone de texte sur plusieurs lignes, redimensionnable verticalement. Toujours associée à un <label for>.",
+      "shape": "control",
+      "elements": [
+        "textarea"
+      ],
+      "attributes": {
+        "data-tone": [
+          "neutral"
+        ],
+        "data-size": [
+          "sm",
+          "md",
+          "lg"
+        ]
+      },
+      "defaults": {
+        "tone": "neutral",
+        "size": "md"
+      },
+      "tokens": [
+        "--textarea-bg",
+        "--textarea-fg",
+        "--textarea-radius",
+        "--textarea-border",
+        "--textarea-muted",
+        "--textarea-focus",
+        "--textarea-invalid",
+        "--textarea-pad-y",
+        "--textarea-pad-x",
+        "--textarea-font"
+      ],
+      "parts": [],
+      "states": [
+        "focus",
+        "invalid",
+        "disabled"
+      ],
+      "a11y": {
+        "role": "textbox",
+        "minTarget": 44,
+        "requiresLabel": true,
+        "anchorRequiresHref": false
+      },
+      "example": "<label class=\"field-label\" for=\"msg\">Message</label> <textarea class=\"textarea\" id=\"msg\" name=\"msg\" rows=\"4\"></textarea>",
+      "flutter": "NoraTextarea",
+      "reactNative": "NoraTextarea"
     }
   },
   "effects": {

@@ -69,9 +69,31 @@ Types acceptés : `color` (`#RRGGBB` ou `#RRGGBBAA`), `dimension` (px, 0–10000
 | `defaults` | Valeurs par défaut (doivent appartenir aux variantes) |
 | `tokens` | Variables du composant, références `{color.$tone}` |
 | `sizes` | `pad-y`, `pad-x`, `font` par taille (nombre ou référence) |
+| `shape` | Forme explicite (facultative) : `interactive`, `container`, `label`, `control`, `toggle`, `group` |
+| `parts` | Sous-éléments stylés, liste fermée `label`, `help`, `error` → classes `.{composant}-{partie}` (ex. `.field-error`) |
+| `states` | Liste fermée : `pressed`, `disabled`, `focus`, `invalid` (toute autre clé est refusée) |
 | `states.pressed` | `scale`, `darken` (%) |
 | `states.disabled` | `opacity` |
-| `a11y` | `role` (détermine la forme : `button`→interactive, `status`→label, sinon container), `minTarget`, `requiresLabel`, `anchorRequiresHref` |
+| `states.focus` | `ring` (épaisseur 1–8 px), `token` (clé de `tokens` du composant, ex. `focus`) |
+| `states.invalid` | `token` (clé de `tokens` du composant, ex. `invalid`) — jamais une couleur libre |
+| `a11y` | `role` (détermine la forme si `shape` est absent : `button`→interactive, `status`→label, `textbox`/`combobox`→control, `checkbox`/`switch`→toggle, `group`→group, sinon container), `minTarget`, `requiresLabel`, `anchorRequiresHref`, `inputType` (toggle) |
+
+Un contrôle de formulaire (`control`, `toggle`) exige `a11y.minTarget ≥ 44` et `a11y.requiresLabel: true` ; un `toggle` exige `a11y.inputType`. La compilation échoue sinon.
+
+### 3.2.1 Composants de formulaire
+
+| Composant | Forme | Balisage web | États |
+|---|---|---|---|
+| `.input` | control | `<input class="input" id="x">` + `<label for="x">` | `:focus-visible`, `aria-invalid="true"`, `:disabled` / `aria-disabled` |
+| `.select` | control | `<select class="select" id="x">` (flèche dessinée en CSS, `appearance: none`) | idem |
+| `.textarea` | control | `<textarea class="textarea" id="x">` (redimensionnable verticalement) | idem |
+| `.checkbox` | toggle | `<label class="checkbox"><input type="checkbox"> Texte</label>` | coché, indéterminé, focus, invalide, désactivé |
+| `.switch` | toggle | `<label class="switch"><input type="checkbox" role="switch"> Texte</label>` | activé, focus, invalide, désactivé ; sens RTL |
+| `.field` | group | `<div class="field">` (ou `<fieldset>`) : `.field-label`, contrôle, `.field-help`, `.field-error` | `.field-error:empty` masqué ; libellé atténué si le contrôle est désactivé |
+
+La case et l'interrupteur portent la classe sur le `<label>` : toute la ligne (case + texte) est la zone cliquable de 44 px minimum, et l'association label/contrôle est implicite. Les tons (`data-tone`) colorent la case cochée et l'interrupteur actif. En mode `forced-colors`, les contrôles natifs reprennent leur apparence système.
+
+Un champ invalide porte `aria-invalid="true"` et `aria-describedby` vers son `.field-error`.
 | `feedback.haptic` | `light` / `medium` / `heavy` (mobile) |
 
 ### 3.3 Effets (`spec/effects/*.nora.json`)
@@ -186,6 +208,7 @@ Le compilateur (`packages/compiler/src/fx.js`) lit `spec/fx/<paquet>/`, valide c
 
 - `NoraTheme` est une `ThemeExtension` (light/dark, `lerp` pour les transitions de thème).
 - Widgets : `NoraBtn` (Semantics bouton, zone 44 px, `AnimatedScale`, haptique), `NoraCard` (`glass`), `NoraBadge`, `NoraTilt`, `NoraReveal`.
+- Formulaires : `NoraInput`, `NoraTextarea` (`TextField`), `NoraSelect<T>` (`DropdownButton` contrôlé dans un `InputDecorator`), `NoraCheckbox`, `NoraSwitch` (ligne entière cliquable, `MergeSemantics`, haptique), `NoraField` (libellé, aide, erreur en `Semantics(liveRegion)`). `NoraField` publie un `NoraFieldScope` : les contrôles descendants en tirent leur libellé sémantique, leur indication (erreur ou aide), leur état invalide et désactivé — l'équivalent de `<label for>` et `aria-describedby`. Hauteur minimale 44 via `InputDecoration.constraints` ou `ConstrainedBox`.
 - `MediaQuery.maybeDisableAnimationsOf` coupe toutes les animations si l'utilisateur l'a demandé.
 - Imports : `dart:*` et `package:flutter/*` uniquement.
 
@@ -193,6 +216,7 @@ Le compilateur (`packages/compiler/src/fx.js`) lit `spec/fx/<paquet>/`, valide c
 
 - `useNoraColors()` suit `useColorScheme()` ou `configureNora({ scheme })`.
 - Composants : `NoraBtn` (Pressable, `accessibilityRole="button"`, `hitSlop`, ressort), `NoraCard`, `NoraBadge`, `NoraTilt`, `NoraReveal`.
+- Formulaires : `NoraInput`, `NoraTextarea` (`TextInput`, bordure de focus), `NoraSelect` (le cœur de React Native n'a pas de liste déroulante : déclencheur `accessibilityRole="combobox"` et choix dans une `Modal`, options `radio`), `NoraCheckbox` et `NoraSwitch` (`Pressable`, rôles `checkbox` / `switch`, `accessibilityState={{ checked, disabled }}`, zone 44, glissement désactivé si mouvement réduit), `NoraField` (contexte `NoraFieldContext` : `accessibilityLabel` et `accessibilityHint` des contrôles ; erreur en `accessibilityLiveRegion="polite"`).
 - `configureNora({ haptic, orientation })` injecte expo-haptics / expo-sensors sans en dépendre.
 - `useNativeDriver` activé hors web.
 
@@ -223,6 +247,13 @@ Analyse les templates (`.html .twig .jsp .jsx .tsx .vue` et `*.component.html`) 
 | `orphan-variant` | avertissement | `data-tone` sans composant |
 | `unexpected-element` | avertissement | `.btn` sur `<div>` |
 | `possible-typo` | avertissement | `stak` ressemble à `stack` |
+| `a11y-form-label` | erreur | `<input class="input">` sans `<label for>` relié à son `id`, sans `<label>` parent ni `aria-label(ledby)` ; `<label class="checkbox">` sans texte |
+| `a11y-toggle-input` | erreur | `<label class="checkbox">` sans `<input type="checkbox">` (ou d'un autre type) |
+| `a11y-switch-role` | erreur | `<label class="switch"><input type="checkbox">` sans `role="switch"` |
+| `a11y-invalid-message` | avertissement | `aria-invalid="true"` sans `aria-describedby` ni `aria-errormessage` |
+| `field-label-missing` | avertissement | `.field` sans `<label>`, `<legend>` ni `.field-label` |
+
+Pour l'association label/contrôle, un `id` ou un `for` calculé (`:id`, `id="{{ … }}"`, ``htmlFor={`${id}-x`}``) n'est pas signalé ; un composant de framework (`<Checkbox />`) dans un `.checkbox` non plus, son contenu étant inconnu.
 
 Les valeurs dynamiques (`{{ }}`, `${ }`, `{expr}`, `:attr`, `[attr.x]`) ne sont jamais signalées.
 
@@ -241,7 +272,7 @@ Limites connues : une apostrophe dans du texte JSX placé **dans une valeur d'at
 
 ### 7.2 `nora audit`
 
-78 contrôles automatisés : licence, chaîne d'approvisionnement, validité de la spec, déterminisme, en-têtes de propriété (y compris Twig et PHP générés), motifs dangereux (moteur, paquets d'effets et CSS), écritures DOM des paquets d'effets, imports natifs, accessibilité, budgets de poids (dont 2 Kio par paquet d'effets), fraîcheur de `dist`. Voir [AUDIT-REPORT.md](AUDIT-REPORT.md).
+84 contrôles automatisés : licence, chaîne d'approvisionnement, validité de la spec, déterminisme, en-têtes de propriété (y compris Twig et PHP générés), motifs dangereux (moteur, paquets d'effets et CSS), écritures DOM des paquets d'effets, imports natifs, accessibilité, budgets de poids (dont 2 Kio par paquet d'effets), fraîcheur de `dist`. Voir [AUDIT-REPORT.md](AUDIT-REPORT.md).
 
 ### 7.3 Serveur MCP (`packages/mcp`)
 
@@ -300,7 +331,7 @@ Correspondance : l'intention et chaque formulation (`id`, `title`, `intents`) so
 3. Ajouter un exemple dans `templates/html/index.html` et les tests dans `tests/unit/compiler.test.js`. Le Twig Component `Nora:<Nom>` et les cas d'enum PHP sont générés automatiquement ; `npm run symfony:sync` puis PHPUnit dans `adapters/symfony-bundle/` les vérifient.
 4. `npm run verify`.
 
-Si le composant exige une forme nouvelle (ni interactive, ni label, ni container), étendre `shapeFromRole` puis les trois cibles **dans le même commit**, avec un test par cible.
+Si le composant exige une forme nouvelle (ni interactive, ni label, ni container, ni control, ni toggle, ni group), l'ajouter à `SHAPES` et `shapeFromRole` puis aux trois cibles **dans le même commit**, avec un test par cible.
 
 ## 9. Versionnage
 

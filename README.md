@@ -17,7 +17,7 @@ NoraIvoire est un langage de design universel. Une **spec** (tokens, composants,
 
 ```bash
 npm ci --ignore-scripts
-npm run verify        # build + 113 tests + validation des modèles + audit (78 contrôles)
+npm run verify        # build + 125 tests + validation des modèles + audit (84 contrôles)
 ```
 
 Commandes unitaires :
@@ -63,7 +63,7 @@ packages/core/dist/   Sorties compilées, versionnées (usage sans build)
 templates/            Modèles : html, twig, jsp, react, nextjs, vue, angular, flutter, react-native
 examples/flutter_app/ Projet Flutter : analyse et golden tests du Dart généré (npm run flutter:sync)
 adapters/symfony-bundle/ Bundle Symfony : Twig Components Nora:*, enums PHP, AssetMapper, nora:check (npm run symfony:sync)
-tests/                113 tests (compilateur, sécurité, validateur, moteur, DOM, audit)
+tests/                125 tests (compilateur, sécurité, validateur, moteur, DOM, audit)
 docs/                 Documentation technique, portabilité, sécurité, audit, tests, licence
 PROMPT.md             Prompt complet pour poursuivre le projet avec un agent IA
 ```

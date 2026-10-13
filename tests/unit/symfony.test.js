@@ -64,7 +64,9 @@ test('symfony : listes blanches et attributs verrouillés dans les Twig Componen
   for (const name of Object.keys(manifest.components)) {
     const twig = Object.entries(files).find(([k]) => k.toLowerCase().endsWith(`/${name}.html.twig`))[1];
     assert.match(twig, /attributes\.without\('data-tone', 'data-size'/, name);
-    assert.match(twig, /\{% block content %\}\{% endblock %\}/, name);
+    // Élément vide (input…) : aucun bloc de contenu, couvert par le test dédié.
+    if (/^<input\b/m.test(twig)) assert.doesNotMatch(twig, /block content/, name);
+    else assert.match(twig, /\{% block content %\}\{% endblock %\}/, name);
   }
 });
 

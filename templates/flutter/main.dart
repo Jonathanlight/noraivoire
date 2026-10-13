@@ -58,8 +58,70 @@ class ProductsPage extends StatelessWidget {
                 ),
               ),
             ),
+            const SizedBox(height: NoraSpace.s4),
+            const NewsletterCard(),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// Formulaire : NoraField relie libellé, aide et erreur au contrôle (sémantique incluse).
+class NewsletterCard extends StatefulWidget {
+  const NewsletterCard({super.key});
+
+  @override
+  State<NewsletterCard> createState() => _NewsletterCardState();
+}
+
+class _NewsletterCardState extends State<NewsletterCard> {
+  final _email = TextEditingController();
+  bool _consent = false;
+  bool _weekly = true;
+  String? _error;
+
+  @override
+  void dispose() {
+    _email.dispose();
+    super.dispose();
+  }
+
+  void _submit() => setState(() => _error = _email.text.contains('@') ? null : 'Adresse e-mail invalide.');
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = NoraTheme.of(context).colors;
+    return NoraCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Lettre d\'information', style: TextStyle(fontSize: NoraFont.lg, fontWeight: FontWeight.w700, color: colors.text)),
+          const SizedBox(height: NoraSpace.s3),
+          NoraField(
+            label: 'E-mail',
+            help: 'Une lettre par mois, pas plus.',
+            error: _error,
+            child: NoraInput(
+              controller: _email,
+              hint: 'nom@exemple.ci',
+              keyboardType: TextInputType.emailAddress,
+              autofillHints: const [AutofillHints.email],
+            ),
+          ),
+          NoraSwitch(
+            value: _weekly,
+            onChanged: (v) => setState(() => _weekly = v),
+            child: const Text('Résumé hebdomadaire'),
+          ),
+          NoraCheckbox(
+            value: _consent,
+            onChanged: (v) => setState(() => _consent = v),
+            child: const Text('J\'accepte de recevoir la lettre'),
+          ),
+          const SizedBox(height: NoraSpace.s2),
+          NoraBtn(onPressed: _consent ? _submit : null, child: const Text('S\'abonner')),
+        ],
       ),
     );
   }

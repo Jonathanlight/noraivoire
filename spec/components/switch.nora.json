@@ -1,0 +1,83 @@
+{
+  "$nora": "component",
+  "$version": "1.0.0",
+  "component": "switch",
+  "shape": "toggle",
+  "description": "Interrupteur marche/arrêt : un <label class=\"switch\"> contenant <input type=\"checkbox\" role=\"switch\"> et son texte. Effet immédiat, sans bouton Valider.",
+  "elements": [
+    "label"
+  ],
+  "variants": {
+    "tone": [
+      "primary",
+      "neutral",
+      "danger",
+      "success",
+      "warning"
+    ],
+    "size": [
+      "sm",
+      "md",
+      "lg"
+    ]
+  },
+  "defaults": {
+    "tone": "primary",
+    "size": "md"
+  },
+  "tokens": {
+    "bg": "{color.surface}",
+    "fg": "{color.text}",
+    "radius": "{radius.full}",
+    "border": "{color.text-muted}",
+    "accent": "{color.$tone}",
+    "on-accent": "{color.on-$tone}",
+    "focus": "{color.focus}",
+    "invalid": "{color.danger}"
+  },
+  "sizes": {
+    "sm": {
+      "pad-y": 4,
+      "pad-x": 8,
+      "font": "{font.sm}"
+    },
+    "md": {
+      "pad-y": 6,
+      "pad-x": 10,
+      "font": "{font.md}"
+    },
+    "lg": {
+      "pad-y": 8,
+      "pad-x": 12,
+      "font": "{font.lg}"
+    }
+  },
+  "states": {
+    "focus": {
+      "ring": 2,
+      "token": "focus"
+    },
+    "invalid": {
+      "token": "invalid"
+    },
+    "disabled": {
+      "opacity": 0.5
+    }
+  },
+  "motion": {
+    "press": {
+      "duration": "{duration.fast}"
+    }
+  },
+  "a11y": {
+    "role": "switch",
+    "inputType": "checkbox",
+    "minTarget": 44,
+    "requiresLabel": true,
+    "anchorRequiresHref": false
+  },
+  "feedback": {
+    "haptic": "light"
+  },
+  "example": "<label class=\"switch\"><input type=\"checkbox\" role=\"switch\" name=\"notif\"> Notifications</label>"
+}

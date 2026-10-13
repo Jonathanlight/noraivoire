@@ -32,14 +32,23 @@ final class TestKernel extends Kernel
         return \dirname(__DIR__, 2);
     }
 
+    /**
+     * Cache propre à chaque copie du dépôt (worktree, CI) : un conteneur compilé ailleurs
+     * garderait d'autres chemins et une autre liste de composants.
+     */
+    private function tmpDir(): string
+    {
+        return sys_get_temp_dir().'/noraivoire-bundle-tests/'.hash('xxh128', $this->getProjectDir());
+    }
+
     public function getCacheDir(): string
     {
-        return sys_get_temp_dir().'/noraivoire-bundle-tests/cache/'.$this->environment;
+        return $this->tmpDir().'/cache/'.$this->environment;
     }
 
     public function getLogDir(): string
     {
-        return sys_get_temp_dir().'/noraivoire-bundle-tests/log';
+        return $this->tmpDir().'/log';
     }
 
     protected function configureContainer(ContainerConfigurator $container): void

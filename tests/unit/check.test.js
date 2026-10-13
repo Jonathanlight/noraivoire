@@ -20,7 +20,8 @@ test('les modèles livrés (HTML, Twig, JSP, React, Next, Vue, Angular) sont val
 test('la fixture « réflexes Bootstrap/Tailwind » déclenche toutes les règles', () => {
   const text = readFileSync(join(root, 'tests', 'fixtures', 'bad-template.html'), 'utf8');
   const r = rules(checkSource(text, 'bad.html', manifest));
-  for (const rule of ['foreign-class', 'invalid-variant', 'a11y-anchor-href', 'a11y-label', 'unknown-effect', 'unknown-utility', 'unknown-surface', 'orphan-variant', 'possible-typo']) {
+  for (const rule of ['foreign-class', 'invalid-variant', 'a11y-anchor-href', 'a11y-label', 'unknown-effect', 'unknown-utility', 'unknown-surface', 'orphan-variant', 'possible-typo',
+    'a11y-form-label', 'a11y-invalid-message', 'field-label-missing', 'a11y-switch-role', 'a11y-toggle-input']) {
     assert.ok(r.includes(rule), `règle ${rule} attendue`);
   }
 });

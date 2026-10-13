@@ -36,6 +36,48 @@ final class NoraManifest
             'elements' => ['div', 'article', 'section', 'li'],
             'twig' => 'Nora:Card',
         ],
+        'checkbox' => [
+            'tones' => ['primary', 'neutral', 'danger', 'success', 'warning'],
+            'sizes' => ['sm', 'md', 'lg'],
+            'defaults' => ['tone' => 'primary', 'size' => 'md'],
+            'elements' => ['label'],
+            'twig' => 'Nora:Checkbox',
+        ],
+        'field' => [
+            'tones' => ['neutral'],
+            'sizes' => ['sm', 'md', 'lg'],
+            'defaults' => ['tone' => 'neutral', 'size' => 'md'],
+            'elements' => ['div', 'fieldset'],
+            'twig' => 'Nora:Field',
+        ],
+        'input' => [
+            'tones' => ['neutral'],
+            'sizes' => ['sm', 'md', 'lg'],
+            'defaults' => ['tone' => 'neutral', 'size' => 'md'],
+            'elements' => ['input'],
+            'twig' => 'Nora:Input',
+        ],
+        'select' => [
+            'tones' => ['neutral'],
+            'sizes' => ['sm', 'md', 'lg'],
+            'defaults' => ['tone' => 'neutral', 'size' => 'md'],
+            'elements' => ['select'],
+            'twig' => 'Nora:Select',
+        ],
+        'switch' => [
+            'tones' => ['primary', 'neutral', 'danger', 'success', 'warning'],
+            'sizes' => ['sm', 'md', 'lg'],
+            'defaults' => ['tone' => 'primary', 'size' => 'md'],
+            'elements' => ['label'],
+            'twig' => 'Nora:Switch',
+        ],
+        'textarea' => [
+            'tones' => ['neutral'],
+            'sizes' => ['sm', 'md', 'lg'],
+            'defaults' => ['tone' => 'neutral', 'size' => 'md'],
+            'elements' => ['textarea'],
+            'twig' => 'Nora:Textarea',
+        ],
     ];
 
     /** @var list<string> */

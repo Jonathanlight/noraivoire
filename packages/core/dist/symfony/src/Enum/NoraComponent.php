@@ -14,6 +14,12 @@ enum NoraComponent: string
     case Badge = 'badge';
     case Btn = 'btn';
     case Card = 'card';
+    case Checkbox = 'checkbox';
+    case Field = 'field';
+    case Input = 'input';
+    case Select = 'select';
+    case Switch = 'switch';
+    case Textarea = 'textarea';
 
     /** @return list<string> */
     public static function values(): array
