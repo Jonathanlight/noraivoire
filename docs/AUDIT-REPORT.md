@@ -1,7 +1,7 @@
 # NoraIvoire — Rapport d'audit
 
 **Version auditée :** 0.1.0 · **Date :** 14 octobre 2026 · **Périmètre :** dépôt complet
-**Méthode :** audit automatisé (`nora audit`, 67 contrôles), 77 tests node et 8 tests Flutter, vérification TypeScript stricte, `npm audit`, revue manuelle du code.
+**Méthode :** audit automatisé (`nora audit`, 67 contrôles), 91 tests node et 8 tests Flutter, vérification TypeScript stricte, `npm audit`, revue manuelle du code.
 © Jonathan KABLAN — Document confidentiel
 
 ## 1. Synthèse

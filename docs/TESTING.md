@@ -5,7 +5,7 @@ Version 0.1.0 · 14 octobre 2026 · © Jonathan KABLAN — Propriétaire
 ## 1. Commandes
 
 ```bash
-npm test                    # 77 tests (node:test, aucun framework)
+npm test                    # 91 tests (node:test, aucun framework)
 npm run check               # valide tous les modèles
 npm run audit:security      # 67 contrôles
 npm run verify              # tout, dans l'ordre
