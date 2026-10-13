@@ -105,10 +105,10 @@
       "gzip": 537
     },
     "symfony/templates/components/Nora/Field.html.twig": {
-      "sha256": "af1e1bdb0a65d399b5109726314109135043512da01fb5f002fbb3c42e2540b0",
-      "sri": "sha384-MqwD8xGrHsvuwrtM7gKC1BQSKKUloXtrILYiioXJJvXdzcLRpE2zzL9YWi5JcpI7",
-      "bytes": 2222,
-      "gzip": 963
+      "sha256": "6d019a2c220639141164de152eaf33824f0174a3bdbe928e0b2c88ef78f7f85a",
+      "sri": "sha384-KuRGpUGsQtMOCYc+05BjmPM0/QoyQ8A3XsrVGXyz9w7EL69T4Sfc++VjdOHIDk41",
+      "bytes": 2684,
+      "gzip": 1143
     },
     "symfony/templates/components/Nora/Input.html.twig": {
       "sha256": "d0311043dd881920f5ac5b33aa866a33fb897670eb8b4a59325264b78ea9dae2",

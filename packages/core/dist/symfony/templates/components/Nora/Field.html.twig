@@ -3,8 +3,9 @@
  # © 2026 Jonathan KABLAN — Logiciel propriétaire, tous droits réservés.
  # Usage soumis au contrat de licence NoraIvoire. Redistribution interdite.
  #}
-{# Twig Component anonyme : <twig:Nora:Field id="email" label="…" help="…" error="…">contrôle</twig:Nora:Field>
-   Le contrôle porte id="<id>" et aria-describedby="{{ describedby }}" (aide et erreur), aria-invalid="true" si erreur.
+{# Twig Component anonyme : <twig:Nora:Field id="email" label="…" help="…" error="…"><twig:Nora:Input {{ ...control }} /></twig:Nora:Field>
+   `control` (visible dans le contenu) porte id, aria-describedby (aide et erreur) et aria-invalid="true" si erreur ;
+   `controlHtml` en est la forme texte échappée pour un <input> brut : <input type="checkbox" {{ controlHtml }}>.
    Textes échappés par Twig ; id hors motif → libellé et messages non reliés (jamais d'attribut forgé). #}
 {% props tone = 'neutral', size = 'md', as = 'div', id = null, label = null, help = null, error = null %}
 {% set tone = tone in ['neutral'] ? tone : 'neutral' %}
@@ -18,6 +19,10 @@
 {% set helpId = id and help|default ? id ~ '-aide' : null %}
 {% set errorId = id and error|default ? id ~ '-erreur' : null %}
 {% set describedby = [helpId, errorId]|filter(v => v)|join(' ') %}
+{% set control = id ? {id: id} : {} %}
+{% set control = describedby ? control|merge({'aria-describedby': describedby}) : control %}
+{% set control = error|default ? control|merge({'aria-invalid': 'true'}) : control %}
+{% set controlHtml %}{% for k, v in control %} {{ k }}="{{ v|e('html_attr') }}"{% endfor %}{% endset %}
 {% set attrs = attributes.without('data-tone', 'data-size') %}
 {% if as == 'div' %}<div {{ attrs.defaults({class: 'field', 'data-tone': tone, 'data-size': size}) }}>{% else %}<fieldset {{ attrs.defaults({class: 'field', 'data-tone': tone, 'data-size': size}) }}>{% endif %}
 {% if label %}{% if as == 'fieldset' %}<legend class="field-label">{{ label }}</legend>{% else %}<label class="field-label"{% if id %} for="{{ id }}"{% endif %}>{{ label }}</label>{% endif %}{% endif %}

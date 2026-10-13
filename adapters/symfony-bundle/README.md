@@ -66,15 +66,21 @@ $tone->isAllowedFor('btn'); // true
 
 ### Groupe de champ
 
-`Nora:Field` rend le libellé, l'aide et l'erreur, et les relie au contrôle par son `id` :
+`Nora:Field` rend le libellé, l'aide et l'erreur, les relie au contrôle par son `id`, et expose dans son contenu les attributs à poser sur le contrôle :
 
 ```twig
 <twig:Nora:Field id="email" label="E-mail" help="Professionnel de préférence." error="{{ erreur }}">
-  <twig:Nora:Input id="email" type="email" aria-describedby="email-aide email-erreur" aria-invalid="{{ erreur ? 'true' : 'false' }}" />
+  <twig:Nora:Input type="email" {{ ...control }} />
+</twig:Nora:Field>
+
+<twig:Nora:Field id="cgu" error="{{ erreurCgu }}">
+  <twig:Nora:Checkbox><input type="checkbox" name="cgu" {{ controlHtml }}> J'accepte les conditions</twig:Nora:Checkbox>
 </twig:Nora:Field>
 ```
 
-Aide : `id="<id>-aide"` ; erreur : `id="<id>-erreur"` et `role="alert"`. Un `id` hors du motif `^[A-Za-z][A-Za-z0-9_-]{0,63}$` est ignoré (libellé et messages non reliés). `as="fieldset"` remplace le `<label>` par une `<legend>` (groupe de cases ou d'interrupteurs).
+- `control` : `id`, `aria-describedby` (`<id>-aide`, `<id>-erreur` selon ce qui est affiché) et `aria-invalid="true"` si `error` est renseigné ; à étaler sur un Twig Component (`{{ ...control }}`).
+- `controlHtml` : la même chose sous forme d'attributs HTML échappés, pour un `<input>` brut (case, radio).
+- Aide : `id="<id>-aide"` ; erreur : `id="<id>-erreur"` et `role="alert"`. Un `id` hors du motif `^[A-Za-z][A-Za-z0-9_-]{0,63}$` est ignoré : libellé et messages ne sont alors pas reliés, seul `aria-invalid` est transmis. `as="fieldset"` remplace le `<label>` par une `<legend>` (groupe de cases, d'interrupteurs ou de radios).
 
 ### Garanties de sécurité
 

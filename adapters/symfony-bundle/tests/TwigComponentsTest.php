@@ -158,4 +158,28 @@ final class TwigComponentsTest extends KernelTestCase
         self::assertStringContainsString('<legend class="field-label">Préférences</legend>', $html);
         self::assertStringEndsWith('</fieldset>', $html);
     }
+
+    public function testChampTransmetSesAttributsAuControleParEtalement(): void
+    {
+        $html = $this->render('<twig:Nora:Field id="email" label="E-mail" help="Aide." error="Invalide."><twig:Nora:Input type="email" {{ ...control }} /></twig:Nora:Field>');
+        self::assertMatchesRegularExpression('/<input [^>]*id="email"[^>]*aria-describedby="email-aide email-erreur"[^>]*aria-invalid="true"/', $html);
+
+        $ok = $this->render('<twig:Nora:Field id="nom" label="Nom" help="Aide."><twig:Nora:Input {{ ...control }} /></twig:Nora:Field>');
+        self::assertMatchesRegularExpression('/<input [^>]*id="nom"[^>]*aria-describedby="nom-aide"/', $ok);
+        self::assertStringNotContainsString('aria-invalid', $ok);
+
+        // Sans id valide : aucun attribut transmis, et surtout aucun attribut booléen parasite.
+        $none = $this->render('<twig:Nora:Field id="1 x" label="L" error="E"><twig:Nora:Input {{ ...control }} /></twig:Nora:Field>');
+        self::assertMatchesRegularExpression('/<input class="input" data-tone="neutral" data-size="md" aria-invalid="true">/', $none);
+        self::assertStringNotContainsString('="true" id', $none);
+        self::assertStringNotContainsString('aria-describedby', $none);
+    }
+
+    public function testChampTransmetAussiAuxCasesEtRadios(): void
+    {
+        $html = $this->render('<twig:Nora:Field id="cgu" error="Obligatoire."><twig:Nora:Checkbox><input type="checkbox" {{ controlHtml }}> J\'accepte</twig:Nora:Checkbox></twig:Nora:Field>');
+        self::assertStringContainsString('aria-describedby="cgu-erreur"', $html);
+        self::assertStringContainsString('aria-invalid="true"', $html);
+        self::assertStringContainsString('<input type="checkbox" id="cgu" aria-describedby="cgu-erreur" aria-invalid="true">', $html);
+    }
 }

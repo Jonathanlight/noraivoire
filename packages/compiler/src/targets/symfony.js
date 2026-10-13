@@ -62,8 +62,9 @@ function buildGroup(name, c, meta) {
   for (const p of ['label', 'help', 'error']) if (has(p)) props.push(`${p} = null`);
   const L = [
     header('twig', meta),
-    `{# Twig Component anonyme : <twig:${tag} id="email" label="…" help="…" error="…">contrôle</twig:${tag}>`,
-    '   Le contrôle porte id="<id>" et aria-describedby="{{ describedby }}" (aide et erreur), aria-invalid="true" si erreur.',
+    `{# Twig Component anonyme : <twig:${tag} id="email" label="…" help="…" error="…"><twig:Nora:Input {{ ...control }} /></twig:${tag}>`,
+    '   `control` (visible dans le contenu) porte id, aria-describedby (aide et erreur) et aria-invalid="true" si erreur ;',
+    '   `controlHtml` en est la forme texte échappée pour un <input> brut : <input type="checkbox" {{ controlHtml }}>.',
     '   Textes échappés par Twig ; id hors motif → libellé et messages non reliés (jamais d\'attribut forgé). #}',
     `{% props ${props.join(', ')} %}`,
     `{% set tone = tone in ${list(tones, `${name}.tone`)} ? tone : ${phpQuote(tone)} %}`,
@@ -76,6 +77,13 @@ function buildGroup(name, c, meta) {
   L.push(`{% set helpId = id and help|default ? id ~ '-aide' : null %}`);
   L.push(`{% set errorId = id and error|default ? id ~ '-erreur' : null %}`);
   L.push("{% set describedby = [helpId, errorId]|filter(v => v)|join(' ') %}");
+  // Attributs prêts à étaler sur le contrôle : <twig:Nora:Input {{ ...control }} />.
+  // Aucune clé à null : ComponentAttributes rendrait un attribut booléen.
+  L.push('{% set control = id ? {id: id} : {} %}');
+  L.push("{% set control = describedby ? control|merge({'aria-describedby': describedby}) : control %}");
+  if (has('error')) L.push("{% set control = error|default ? control|merge({'aria-invalid': 'true'}) : control %}");
+  // Même chose pour un <input> brut (case, radio) : <input type="checkbox" {{ controlHtml }}>.
+  L.push("{% set controlHtml %}{% for k, v in control %} {{ k }}=\"{{ v|e('html_attr') }}\"{% endfor %}{% endset %}");
   L.push("{% set attrs = attributes.without('data-tone', 'data-size') %}");
   const defaults = `{class: ${phpQuote(name)}, 'data-tone': tone, 'data-size': size}`;
   const open = elements.map((el, i) => `${i === 0 ? `{% if as == ${phpQuote(el)} %}` : i === elements.length - 1 ? '{% else %}' : `{% elseif as == ${phpQuote(el)} %}`}<${el} {{ attrs.defaults(${defaults}) }}>`);

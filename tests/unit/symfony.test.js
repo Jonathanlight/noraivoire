@@ -126,4 +126,9 @@ test('symfony : le groupe de champ relie libellé, aide et erreur au contrôle',
   assert.match(field, /role="alert"/);
   assert.match(field, /id matches '\/\^\[A-Za-z\]/);
   assert.equal((field.match(/\{% block content %\}/g) ?? []).length, 1);
+  // Attributs transmis au contrôle (A-12) : jamais de clé à null, valeurs échappées pour attribut.
+  assert.match(field, /\{% set control = id \? \{id: id\} : \{\} %\}/);
+  assert.match(field, /'aria-invalid': 'true'/);
+  assert.match(field, /v\|e\('html_attr'\)/);
+  assert.doesNotMatch(field, /: null\}/);
 });
