@@ -5,7 +5,7 @@ Version 0.1.0 · 14 octobre 2026 · © Jonathan KABLAN — Propriétaire
 ## 1. Commandes
 
 ```bash
-npm test                    # 44 tests (node:test, aucun framework)
+npm test                    # 57 tests (node:test, aucun framework)
 npm run check               # valide tous les modèles
 npm run audit:security      # 50 contrôles
 npm run verify              # tout, dans l'ordre
@@ -19,6 +19,7 @@ npm run verify              # tout, dans l'ordre
 | `tests/unit/check.test.js` | 8 | Modèles livrés sans erreur, 9 règles déclenchées sur la fixture, suggestions, valeurs dynamiques, JSX, numéros de ligne |
 | `tests/unit/engine.test.js` | 8 | Analyse des options (bornes, types, pollution, troncature), liste d'effets, enregistrement, SSR |
 | `tests/unit/engine-dom.test.js` | 6 | Moteur dans un DOM (jsdom) : montage initial, montage SPA, tilt, démontage, changement d'attribut, isolation des erreurs |
+| `tests/unit/bench.test.js` | 13 | Benchmark IA : tâches, requêtes, extraction, score, agrégation, retry, concurrence, masquage des clés, pipeline simulé |
 | `tests/unit/audit.test.js` | 1 | L'audit complet passe (50/50) |
 
 Vérifications complémentaires effectuées lors de la création :
@@ -26,13 +27,17 @@ Vérifications complémentaires effectuées lors de la création :
 - **TypeScript strict** sur `noraivoire.tsx` et `noraivoire.types.ts` avec React 19 et React Native 0.81 : 0 erreur.
 - `npm audit` : 0 vulnérabilité.
 
-## 3. Jobs CI (`.github/workflows/ci.yml`)
+## 3. Benchmark IA
+
+`npm run bench:dry` exécute tout le pipeline de `bench/` avec des réponses simulées (aucun réseau). Les appels réels exigent les clés en variables d'environnement et `--yes`. Voir `bench/README.md`.
+
+## 4. Jobs CI (`.github/workflows/ci.yml`)
 
 1. `verify` (Node 20 et 22) : build, `dist` identique à la spec, tests, check, audit, `npm audit`.
 2. `flutter` : `flutter analyze` du Dart généré dans un projet vierge.
 3. `react-native-types` : TypeScript strict du TSX généré.
 
-## 4. Prochaines étapes (par priorité)
+## 5. Prochaines étapes (par priorité)
 
 | Priorité | Test | Outil |
 |---|---|---|
@@ -44,8 +49,8 @@ Vérifications complémentaires effectuées lors de la création :
 | P2 | Parité cross-cible : capture web, golden Flutter et capture RN de la même carte, comparées avec tolérance | Script maison |
 | P3 | Exécution réelle des modèles Twig (Symfony) et JSP (Tomcat) | Projets d'exemple en CI |
 | P3 | Fuzzing du parseur de spec et de `parseOptions` | `fast-check` |
-| P3 | Benchmark « IA » : 100 tâches UI générées par plusieurs LLM, taux de `nora check` sans erreur | Script + API des modèles |
+| P3 | Benchmark « IA » : exécution réelle des 50 tâches de `bench/` (code livré, voir `bench/README.md`) | `npm run bench -- --yes` |
 
-## 5. Règle de contribution
+## 6. Règle de contribution
 
 Toute modification d'une cible (CSS, Flutter, RN) doit être accompagnée d'un test qui échoue sans elle. Toute nouvelle règle de `nora check` doit être ajoutée à la fixture `tests/fixtures/bad-template.html`.
