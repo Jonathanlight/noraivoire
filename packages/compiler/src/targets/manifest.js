@@ -18,6 +18,8 @@ export function buildManifest(model, meta) {
       attributes: { 'data-tone': c.variants.tone, 'data-size': c.variants.size },
       defaults: c.defaults,
       tokens: [...Object.keys(c.tokens), 'pad-y', 'pad-x', 'font'].map((k) => `--${c.component}-${k}`),
+      parts: (c.parts ?? []).map((p) => `${c.component}-${p}`),
+      states: Object.keys(c.states ?? {}),
       a11y: c.a11y,
       example: c.example ?? null,
       flutter: `Nora${pascal(c.component)}`,
@@ -70,7 +72,7 @@ export function buildManifest(model, meta) {
 
 export function buildLlms(manifest) {
   const comp = Object.entries(manifest.components).map(([n, c]) =>
-    `### ${n}\n${c.description}\n- Éléments : ${c.elements.join(', ')}\n- data-tone : ${c.attributes['data-tone'].join(' | ')} (défaut ${c.defaults.tone})\n- data-size : ${c.attributes['data-size'].join(' | ')} (défaut ${c.defaults.size})\n- Tokens surchargeables : ${c.tokens.join(', ')}\n- Flutter : ${c.flutter}(tone: NoraTone.x, size: NoraSize.y) · React Native : <${c.reactNative} tone="x" size="y">\n- Exemple : ${c.example ?? '—'}`).join('\n\n');
+    `### ${n}\n${c.description}\n- Éléments : ${c.elements.join(', ')}\n- data-tone : ${c.attributes['data-tone'].join(' | ')} (défaut ${c.defaults.tone})\n- data-size : ${c.attributes['data-size'].join(' | ')} (défaut ${c.defaults.size})\n- Tokens surchargeables : ${c.tokens.join(', ')}\n${c.parts.length ? `- Parties : ${c.parts.map((p) => `.${p}`).join(', ')}\n` : ''}${c.states.length ? `- États : ${c.states.join(', ')}\n` : ''}- Flutter : ${c.flutter}(tone: NoraTone.x, size: NoraSize.y) · React Native : <${c.reactNative} tone="x" size="y">\n- Exemple : ${c.example ?? '—'}`).join('\n\n');
   const fx = Object.entries(manifest.effects).map(([n, e]) => {
     const opts = Object.entries(e.options).map(([k, o]) => `${k} (${o.type}, défaut ${o.default}${o.type === 'number' ? `, ${o.min}–${o.max}` : ''})`).join(', ');
     return `- ${n} : ${e.description} Usage : ${e.usage}. Options : ${opts || 'aucune'}.`;
@@ -86,7 +88,8 @@ export function buildLlms(manifest) {
 3. Utilitaires : liste fermée ci-dessous. Une classe absente de la liste n'existe pas.
 4. Effets JS : data-fx="nom". Surface verre : class="fx-glass".
 5. Action → <button class="btn">. Navigation → <a class="btn" href="…">. Un bouton sans texte exige aria-label.
-6. Après génération, exécuter : npx nora check <dossier> --format=json et corriger chaque erreur.
+6. Formulaire : chaque .input, .select, .textarea a un <label for="id"> relié à son id (ou aria-label). Case à cocher et interrupteur : <label class="checkbox|switch"><input type="checkbox"> Texte</label> (role="switch" pour l'interrupteur). Invalide : aria-invalid="true" + aria-describedby vers le .field-error. Regrouper libellé, contrôle, aide et erreur dans .field.
+7. Après génération, exécuter : npx nora check <dossier> --format=json et corriger chaque erreur.
 
 ## Composants
 ${comp}

@@ -23,8 +23,16 @@ export const PATTERNS = Object.freeze({
 });
 
 const FORBIDDEN_KEYS = new Set(['__proto__', 'prototype', 'constructor']);
-const SHAPES = new Set(['interactive', 'container', 'label']);
+const SHAPES = new Set(['interactive', 'container', 'label', 'control', 'toggle', 'group']);
+const STATES = new Set(['pressed', 'disabled', 'focus', 'invalid']);
+// Sous-éléments stylés d'un composant (classe `.{composant}-{partie}`) : liste fermée.
+const PARTS = new Set(['label', 'help', 'error']);
 const EFFECT_KINDS = new Set(['orientation-transform', 'scroll-reveal', 'surface-glass']);
+// Effets des paquets optionnels (spec/fx/<paquet>/) : jamais compilés dans le cœur.
+export const FX_PACKAGE_KINDS = Object.freeze({
+  'fx-scroll': new Set(['scroll-pin', 'scroll-scrub', 'scroll-parallax']),
+  'fx-text': new Set(['text-split', 'text-scramble']),
+});
 const OPTION_TYPES = new Set(['number', 'boolean']);
 const REDUCED = new Set(['disable', 'keep']);
 const HAPTICS = new Set(['light', 'medium', 'heavy']);
@@ -120,7 +128,12 @@ export function validateComponent(spec, file) {
   assertText(spec.description, file, 'description');
   assert(Array.isArray(spec.elements) && spec.elements.length > 0, file, 'elements', 'liste non vide attendue');
   spec.elements.forEach((e, i) => assertName(e, file, `elements[${i}]`));
-  assert(SHAPES.has(spec.shape ?? shapeFromRole(spec)), file, 'shape', 'interactive | container | label');
+  assert(SHAPES.has(spec.shape ?? shapeFromRole(spec)), file, 'shape', [...SHAPES].join(' | '));
+  if (spec.parts !== undefined) {
+    assert(Array.isArray(spec.parts) && spec.parts.length <= PARTS.size, file, 'parts', 'liste attendue');
+    spec.parts.forEach((p, i) => assert(PARTS.has(p), file, `parts[${i}]`, `partie inconnue (${[...PARTS].join(' | ')})`));
+    assert(new Set(spec.parts).size === spec.parts.length, file, 'parts', 'partie en double');
+  }
 
   assert(isObj(spec.variants), file, 'variants', 'objet attendu');
   for (const axis of ['tone', 'size']) {
@@ -144,6 +157,24 @@ export function validateComponent(spec, file) {
     for (const k of ['pad-y', 'pad-x', 'font']) assertNumOrRef(def[k], file, `sizes.${s}.${k}`);
   }
 
+  if (spec.states !== undefined) {
+    assert(isObj(spec.states), file, 'states', 'objet attendu');
+    for (const k of Object.keys(spec.states)) assert(STATES.has(k), file, `states.${k}`, `état inconnu (${[...STATES].join(' | ')})`);
+  }
+  // Un état qui désigne une couleur le fait par une clé de `tokens` du composant, jamais par une valeur libre.
+  const stateToken = (st, path) => {
+    if (st.token === undefined) return;
+    assert(typeof st.token === 'string' && Object.hasOwn(spec.tokens, st.token), file, `${path}.token`, 'clé de tokens du composant attendue');
+  };
+  if (spec.states?.focus) {
+    const f = spec.states.focus;
+    assert(isObj(f) && isNum(f.ring) && f.ring >= 1 && f.ring <= 8, file, 'states.focus.ring', 'épaisseur 1–8 px attendue');
+    stateToken(f, 'states.focus');
+  }
+  if (spec.states?.invalid) {
+    assert(isObj(spec.states.invalid), file, 'states.invalid', 'objet attendu');
+    stateToken(spec.states.invalid, 'states.invalid');
+  }
   if (spec.states?.pressed) {
     const pr = spec.states.pressed;
     assert(isNum(pr.scale) && pr.scale <= 1, file, 'states.pressed.scale', 'nombre ≤ 1 attendu');
@@ -157,15 +188,30 @@ export function validateComponent(spec, file) {
   assert(isObj(spec.a11y), file, 'a11y', 'objet attendu');
   assertName(spec.a11y.role, file, 'a11y.role');
   assert(isNum(spec.a11y.minTarget), file, 'a11y.minTarget', 'nombre attendu');
+  if (spec.a11y.inputType !== undefined) assertName(spec.a11y.inputType, file, 'a11y.inputType');
+  const shape = shapeFromRole(spec);
+  if (shape === 'control' || shape === 'toggle') {
+    assert(spec.a11y.minTarget >= 44, file, 'a11y.minTarget', 'un contrôle de formulaire exige une zone ≥ 44 px');
+    assert(spec.a11y.requiresLabel === true, file, 'a11y.requiresLabel', 'un contrôle de formulaire exige un label');
+  }
+  if (shape === 'toggle') assert(spec.a11y.inputType !== undefined, file, 'a11y.inputType', 'type d\'input attendu (ex. checkbox)');
   if (spec.feedback?.haptic !== undefined) assert(HAPTICS.has(spec.feedback.haptic), file, 'feedback.haptic', 'light | medium | heavy');
   if (spec.example !== undefined) assertText(spec.example, file, 'example');
   return spec;
 }
 
-export function validateEffect(spec, file) {
+export function validateEffect(spec, file, pkg = null) {
   assertHeader(spec, 'effect', file);
   assertName(spec.effect, file, 'effect');
-  assert(EFFECT_KINDS.has(spec.kind), file, 'kind', `type d'effet inconnu (${[...EFFECT_KINDS].join(' | ')})`);
+  if (pkg === null) {
+    assert(spec.package === undefined, file, 'package', 'réservé aux effets de spec/fx/');
+    assert(EFFECT_KINDS.has(spec.kind), file, 'kind', `type d'effet inconnu (${[...EFFECT_KINDS].join(' | ')})`);
+  } else {
+    const kinds = FX_PACKAGE_KINDS[pkg];
+    assert(kinds !== undefined && Object.hasOwn(FX_PACKAGE_KINDS, pkg), file, 'package', 'paquet d\'effets inconnu');
+    assert(spec.package === pkg, file, 'package', `doit valoir « ${pkg} »`);
+    assert(kinds.has(spec.kind), file, 'kind', `type d'effet inconnu pour ${pkg} (${[...kinds].join(' | ')})`);
+  }
   assertText(spec.description, file, 'description');
   assertName(spec.input, file, 'input');
   assert(REDUCED.has(spec.reducedMotion), file, 'reducedMotion', 'disable | keep');
@@ -193,5 +239,8 @@ export function shapeFromRole(spec) {
   const role = spec.a11y?.role;
   if (role === 'button') return 'interactive';
   if (role === 'status') return 'label';
+  if (role === 'textbox' || role === 'combobox') return 'control';
+  if (role === 'checkbox' || role === 'switch') return 'toggle';
+  if (role === 'group') return 'group';
   return 'container';
 }

@@ -92,6 +92,8 @@
         "--badge-pad-x",
         "--badge-font"
       ],
+      "parts": [],
+      "states": [],
       "a11y": {
         "role": "status",
         "minTarget": 0,
@@ -135,6 +137,11 @@
         "--btn-pad-x",
         "--btn-font"
       ],
+      "parts": [],
+      "states": [
+        "pressed",
+        "disabled"
+      ],
       "a11y": {
         "role": "button",
         "minTarget": 44,
@@ -177,6 +184,8 @@
         "--card-pad-x",
         "--card-font"
       ],
+      "parts": [],
+      "states": [],
       "a11y": {
         "role": "none",
         "minTarget": 0,
@@ -186,6 +195,306 @@
       "example": "<article class=\"card\" data-size=\"md\">…</article>",
       "flutter": "NoraCard",
       "reactNative": "NoraCard"
+    },
+    "checkbox": {
+      "description": "Case à cocher : un <label class=\"checkbox\"> contenant <input type=\"checkbox\"> et son texte (zone cliquable ≥ 44 px).",
+      "shape": "toggle",
+      "elements": [
+        "label"
+      ],
+      "attributes": {
+        "data-tone": [
+          "primary",
+          "neutral",
+          "danger",
+          "success",
+          "warning"
+        ],
+        "data-size": [
+          "sm",
+          "md",
+          "lg"
+        ]
+      },
+      "defaults": {
+        "tone": "primary",
+        "size": "md"
+      },
+      "tokens": [
+        "--checkbox-bg",
+        "--checkbox-fg",
+        "--checkbox-radius",
+        "--checkbox-border",
+        "--checkbox-accent",
+        "--checkbox-on-accent",
+        "--checkbox-focus",
+        "--checkbox-invalid",
+        "--checkbox-pad-y",
+        "--checkbox-pad-x",
+        "--checkbox-font"
+      ],
+      "parts": [],
+      "states": [
+        "focus",
+        "invalid",
+        "disabled"
+      ],
+      "a11y": {
+        "role": "checkbox",
+        "inputType": "checkbox",
+        "minTarget": 44,
+        "requiresLabel": true,
+        "anchorRequiresHref": false
+      },
+      "example": "<label class=\"checkbox\"><input type=\"checkbox\" name=\"cgu\" required> J'accepte les conditions</label>",
+      "flutter": "NoraCheckbox",
+      "reactNative": "NoraCheckbox"
+    },
+    "field": {
+      "description": "Groupe de champ : libellé (.field-label), contrôle, aide (.field-help) et erreur (.field-error). Relier aide et erreur au contrôle par aria-describedby.",
+      "shape": "group",
+      "elements": [
+        "div",
+        "fieldset"
+      ],
+      "attributes": {
+        "data-tone": [
+          "neutral"
+        ],
+        "data-size": [
+          "sm",
+          "md",
+          "lg"
+        ]
+      },
+      "defaults": {
+        "tone": "neutral",
+        "size": "md"
+      },
+      "tokens": [
+        "--field-fg",
+        "--field-muted",
+        "--field-invalid",
+        "--field-pad-y",
+        "--field-pad-x",
+        "--field-font"
+      ],
+      "parts": [
+        "field-label",
+        "field-help",
+        "field-error"
+      ],
+      "states": [
+        "invalid",
+        "disabled"
+      ],
+      "a11y": {
+        "role": "group",
+        "minTarget": 0,
+        "requiresLabel": true,
+        "anchorRequiresHref": false
+      },
+      "example": "<div class=\"field\"><label class=\"field-label\" for=\"email\">E-mail</label><input class=\"input\" id=\"email\" type=\"email\" aria-describedby=\"email-aide\"><p class=\"field-help\" id=\"email-aide\">Professionnel de préférence.</p></div>",
+      "flutter": "NoraField",
+      "reactNative": "NoraField"
+    },
+    "input": {
+      "description": "Champ de saisie sur une ligne. Toujours associé à un <label for> (ou placé dans un .field). Invalide : aria-invalid=\"true\" + aria-describedby vers le message.",
+      "shape": "control",
+      "elements": [
+        "input"
+      ],
+      "attributes": {
+        "data-tone": [
+          "neutral"
+        ],
+        "data-size": [
+          "sm",
+          "md",
+          "lg"
+        ]
+      },
+      "defaults": {
+        "tone": "neutral",
+        "size": "md"
+      },
+      "tokens": [
+        "--input-bg",
+        "--input-fg",
+        "--input-radius",
+        "--input-border",
+        "--input-muted",
+        "--input-focus",
+        "--input-invalid",
+        "--input-pad-y",
+        "--input-pad-x",
+        "--input-font"
+      ],
+      "parts": [],
+      "states": [
+        "focus",
+        "invalid",
+        "disabled"
+      ],
+      "a11y": {
+        "role": "textbox",
+        "minTarget": 44,
+        "requiresLabel": true,
+        "anchorRequiresHref": false
+      },
+      "example": "<label class=\"field-label\" for=\"email\">E-mail</label> <input class=\"input\" id=\"email\" type=\"email\" name=\"email\" autocomplete=\"email\">",
+      "flutter": "NoraInput",
+      "reactNative": "NoraInput"
+    },
+    "select": {
+      "description": "Liste de choix native. Toujours associée à un <label for>.",
+      "shape": "control",
+      "elements": [
+        "select"
+      ],
+      "attributes": {
+        "data-tone": [
+          "neutral"
+        ],
+        "data-size": [
+          "sm",
+          "md",
+          "lg"
+        ]
+      },
+      "defaults": {
+        "tone": "neutral",
+        "size": "md"
+      },
+      "tokens": [
+        "--select-bg",
+        "--select-fg",
+        "--select-radius",
+        "--select-border",
+        "--select-muted",
+        "--select-focus",
+        "--select-invalid",
+        "--select-pad-y",
+        "--select-pad-x",
+        "--select-font"
+      ],
+      "parts": [],
+      "states": [
+        "focus",
+        "invalid",
+        "disabled"
+      ],
+      "a11y": {
+        "role": "combobox",
+        "minTarget": 44,
+        "requiresLabel": true,
+        "anchorRequiresHref": false
+      },
+      "example": "<label class=\"field-label\" for=\"pays\">Pays</label> <select class=\"select\" id=\"pays\" name=\"pays\"><option>Côte d'Ivoire</option></select>",
+      "flutter": "NoraSelect",
+      "reactNative": "NoraSelect"
+    },
+    "switch": {
+      "description": "Interrupteur marche/arrêt : un <label class=\"switch\"> contenant <input type=\"checkbox\" role=\"switch\"> et son texte. Effet immédiat, sans bouton Valider.",
+      "shape": "toggle",
+      "elements": [
+        "label"
+      ],
+      "attributes": {
+        "data-tone": [
+          "primary",
+          "neutral",
+          "danger",
+          "success",
+          "warning"
+        ],
+        "data-size": [
+          "sm",
+          "md",
+          "lg"
+        ]
+      },
+      "defaults": {
+        "tone": "primary",
+        "size": "md"
+      },
+      "tokens": [
+        "--switch-bg",
+        "--switch-fg",
+        "--switch-radius",
+        "--switch-border",
+        "--switch-accent",
+        "--switch-on-accent",
+        "--switch-focus",
+        "--switch-invalid",
+        "--switch-pad-y",
+        "--switch-pad-x",
+        "--switch-font"
+      ],
+      "parts": [],
+      "states": [
+        "focus",
+        "invalid",
+        "disabled"
+      ],
+      "a11y": {
+        "role": "switch",
+        "inputType": "checkbox",
+        "minTarget": 44,
+        "requiresLabel": true,
+        "anchorRequiresHref": false
+      },
+      "example": "<label class=\"switch\"><input type=\"checkbox\" role=\"switch\" name=\"notif\"> Notifications</label>",
+      "flutter": "NoraSwitch",
+      "reactNative": "NoraSwitch"
+    },
+    "textarea": {
+      "description": "Zone de texte sur plusieurs lignes, redimensionnable verticalement. Toujours associée à un <label for>.",
+      "shape": "control",
+      "elements": [
+        "textarea"
+      ],
+      "attributes": {
+        "data-tone": [
+          "neutral"
+        ],
+        "data-size": [
+          "sm",
+          "md",
+          "lg"
+        ]
+      },
+      "defaults": {
+        "tone": "neutral",
+        "size": "md"
+      },
+      "tokens": [
+        "--textarea-bg",
+        "--textarea-fg",
+        "--textarea-radius",
+        "--textarea-border",
+        "--textarea-muted",
+        "--textarea-focus",
+        "--textarea-invalid",
+        "--textarea-pad-y",
+        "--textarea-pad-x",
+        "--textarea-font"
+      ],
+      "parts": [],
+      "states": [
+        "focus",
+        "invalid",
+        "disabled"
+      ],
+      "a11y": {
+        "role": "textbox",
+        "minTarget": 44,
+        "requiresLabel": true,
+        "anchorRequiresHref": false
+      },
+      "example": "<label class=\"field-label\" for=\"msg\">Message</label> <textarea class=\"textarea\" id=\"msg\" name=\"msg\" rows=\"4\"></textarea>",
+      "flutter": "NoraTextarea",
+      "reactNative": "NoraTextarea"
     }
   },
   "effects": {
@@ -266,6 +575,135 @@
       },
       "flutter": "NoraTilt",
       "reactNative": "NoraTilt"
+    },
+    "parallax": {
+      "usage": "data-fx=\"parallax\" data-fx-parallax=\"clé:valeur;…\" — paquet optionnel @noraivoire/fx-scroll : charger fx/fx-scroll.css et appeler install(moteur) depuis fx/fx-scroll.js",
+      "kind": "scroll-parallax",
+      "package": "@noraivoire/fx-scroll",
+      "input": "scroll",
+      "description": "Décale verticalement l'élément selon sa position dans la fenêtre (effet de profondeur).",
+      "options": {
+        "speed": {
+          "type": "number",
+          "default": 20,
+          "min": 0,
+          "max": 100
+        },
+        "reverse": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "reducedMotion": "disable",
+      "platforms": {
+        "web": "animation-timeline: view() avec repli JS (défilement passif + rAF)",
+        "react-native": "NoraParallax : Animated.Value du ScrollView + interpolate",
+        "flutter": "NoraParallax : écoute de la ScrollPosition + Transform.translate"
+      },
+      "flutter": "NoraParallax",
+      "reactNative": "NoraParallax"
+    },
+    "pin": {
+      "usage": "data-fx=\"pin\" data-fx-pin=\"clé:valeur;…\" — paquet optionnel @noraivoire/fx-scroll : charger fx/fx-scroll.css et appeler install(moteur) depuis fx/fx-scroll.js",
+      "kind": "scroll-pin",
+      "package": "@noraivoire/fx-scroll",
+      "input": "scroll",
+      "description": "Épingle l'élément (position: sticky) pendant le défilement de son parent et expose la progression dans --fx-pin-progress.",
+      "options": {
+        "top": {
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 400
+        }
+      },
+      "reducedMotion": "keep",
+      "platforms": {
+        "web": "position: sticky (sans JS) + data-fx-pinned et --fx-pin-progress (JS)",
+        "react-native": "non généré : ScrollView stickyHeaderIndices est l'équivalent natif",
+        "flutter": "non généré : SliverPersistentHeader(pinned: true) est l'équivalent natif"
+      },
+      "flutter": null,
+      "reactNative": null
+    },
+    "scrub": {
+      "usage": "data-fx=\"scrub\" data-fx-scrub=\"clé:valeur;…\" — paquet optionnel @noraivoire/fx-scroll : charger fx/fx-scroll.css et appeler install(moteur) depuis fx/fx-scroll.js",
+      "kind": "scroll-scrub",
+      "package": "@noraivoire/fx-scroll",
+      "input": "scroll",
+      "description": "Expose la progression de l'élément dans la fenêtre (0 → 1) dans --fx-progress, pour piloter une animation CSS au défilement.",
+      "options": {
+        "start": {
+          "type": "number",
+          "default": 0,
+          "min": 0,
+          "max": 100
+        },
+        "end": {
+          "type": "number",
+          "default": 100,
+          "min": 0,
+          "max": 100
+        }
+      },
+      "reducedMotion": "disable",
+      "platforms": {
+        "web": "défilement passif + requestAnimationFrame ; mouvement réduit → --fx-progress: 1",
+        "react-native": "web uniquement : Animated.Value du ScrollView + interpolate fait la même chose sans abstraction",
+        "flutter": "web uniquement : ScrollController + AnimatedBuilder fait la même chose sans abstraction"
+      },
+      "flutter": null,
+      "reactNative": null
+    },
+    "scramble": {
+      "usage": "data-fx=\"scramble\" data-fx-scramble=\"clé:valeur;…\" — paquet optionnel @noraivoire/fx-text : charger fx/fx-text.css et appeler install(moteur) depuis fx/fx-text.js",
+      "kind": "text-scramble",
+      "package": "@noraivoire/fx-text",
+      "input": "visibility",
+      "description": "Révèle un texte court en faisant défiler des caractères aléatoires ; le texte réel est exposé aux lecteurs d'écran.",
+      "options": {
+        "duration": {
+          "type": "number",
+          "default": 800,
+          "min": 0,
+          "max": 5000
+        }
+      },
+      "reducedMotion": "disable",
+      "platforms": {
+        "web": "requestAnimationFrame sur un nœud texte aria-hidden, DOM restauré à la fin",
+        "react-native": "NoraScramble : Text + accessibilityLabel",
+        "flutter": "NoraScramble : AnimationController + Semantics(label)"
+      },
+      "flutter": "NoraScramble",
+      "reactNative": "NoraScramble"
+    },
+    "split": {
+      "usage": "data-fx=\"split\" data-fx-split=\"clé:valeur;…\" — paquet optionnel @noraivoire/fx-text : charger fx/fx-text.css et appeler install(moteur) depuis fx/fx-text.js",
+      "kind": "text-split",
+      "package": "@noraivoire/fx-text",
+      "input": "visibility",
+      "description": "Découpe un texte en lettres ou en mots animés en cascade à l'apparition ; le texte complet reste lu une seule fois par les lecteurs d'écran.",
+      "options": {
+        "words": {
+          "type": "boolean",
+          "default": false
+        },
+        "stagger": {
+          "type": "number",
+          "default": 30,
+          "min": 0,
+          "max": 200
+        }
+      },
+      "reducedMotion": "disable",
+      "platforms": {
+        "web": "éléments span créés par createElement/textContent, DOM restauré au démontage",
+        "react-native": "web uniquement : un Text par caractère casse la césure et l'accessibilité natives",
+        "flutter": "web uniquement : un widget par caractère casse la césure et la sémantique natives"
+      },
+      "flutter": null,
+      "reactNative": null
     }
   },
   "surfaces": [

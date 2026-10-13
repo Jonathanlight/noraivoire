@@ -1,7 +1,7 @@
 # NoraIvoire — Rapport d'audit
 
 **Version auditée :** 0.1.0 · **Date :** 14 octobre 2026 · **Périmètre :** dépôt complet
-**Méthode :** audit automatisé (`nora audit`, 50 contrôles), 84 tests node et 8 tests Flutter, vérification TypeScript stricte, `npm audit`, revue manuelle du code.
+**Méthode :** audit automatisé (`nora audit`, 84 contrôles), 133 tests node, 18 tests Flutter et 48 tests PHPUnit, vérification TypeScript stricte, `npm audit`, revue manuelle du code.
 © Jonathan KABLAN — Document confidentiel
 
 ## 1. Synthèse
@@ -13,10 +13,10 @@
 | Sécurité du compilateur | ✅ Conforme | Liste blanche stricte ; 7 tests d'attaque (injection, pollution de prototype, DoS, symlink) |
 | Sécurité du moteur web | ✅ Conforme | 11 motifs dangereux absents ; écriture limitée aux variables `--fx-*` |
 | Sécurité du CSS généré | ✅ Conforme | Aucun `@import`, `url()` externe, `javascript:`, `expression()`, `!important` |
-| Accessibilité | ✅ Conforme (base) | Mouvement réduit sur 4 cibles, focus visible, zone tactile 44 px sur 3 cibles |
-| Performance | ✅ Sous budget | CSS 3,2 Kio gzip (budget 15) ; moteur 3,0 Kio gzip (budget 4) |
+| Accessibilité | ✅ Conforme (base) | Mouvement réduit sur 4 cibles, focus visible, zone tactile 44 px sur 3 cibles ; formulaires : label associé obligatoire (`nora check`), `aria-invalid` relié au message, sémantique Flutter / React Native vérifiée |
+| Performance | ✅ Sous budget | CSS 4,7 Kio gzip (budget 15) ; moteur 3,0 Kio gzip (budget 4) |
 | Déterminisme | ✅ Conforme | Deux compilations : octets identiques |
-| Portabilité native | ✅ Conforme | TSX vérifié (TypeScript strict, RN 0.81) ; Dart analysé (`flutter analyze --fatal-infos`, 0 problème) et rendu par 8 tests de widgets dont 6 goldens (Flutter 3.47) |
+| Portabilité native | ✅ Conforme | TSX vérifié (TypeScript strict, RN 0.81) ; Dart analysé (`flutter analyze --fatal-infos`, 0 problème) et rendu par 15 tests de widgets dont 10 goldens (Flutter 3.47) |
 
 **Verdict : apte pour un usage interne et une phase pilote.** Trois points doivent être levés avant toute licence commerciale (section 4).
 
@@ -24,20 +24,22 @@
 
 | Indicateur | Valeur |
 |---|---|
-| Tests | 84 / 84 réussis (node) · 8 / 8 (Flutter, dont 6 goldens) |
-| Contrôles d'audit | 50 / 50 réussis |
+| Tests | 133 / 133 réussis (node) · 18 / 18 (Flutter, dont 10 goldens) · 48 / 48 (PHPUnit, bundle Symfony) |
+| Contrôles d'audit | 84 / 84 réussis |
 | Modèles validés par `nora check` | 13 fichiers + 20 recettes, 0 erreur, 0 avertissement |
 | Erreurs TypeScript (strict) sur le TSX généré | 0 |
 | Vulnérabilités `npm audit` | 0 |
 
 | Fichier distribué | Taille | gzip |
 |---|---|---|
-| `noraivoire.css` | 13,4 Kio | 3,4 Kio |
-| `noraivoire.min.css` | 11,5 Kio | 3,2 Kio |
+| `noraivoire.css` | 26,0 Kio | 5,1 Kio |
+| `noraivoire.min.css` | 22,7 Kio | 4,7 Kio |
 | `noraivoire.engine.js` | 8,8 Kio | 3,0 Kio |
 | `noraivoire.auto.js` | 0,5 Kio | 0,4 Kio |
-| `flutter/noraivoire.dart` | 15,6 Kio | 4,2 Kio |
-| `react-native/noraivoire.tsx` | 12,9 Kio | 3,9 Kio |
+| `flutter/noraivoire.dart` | 35,2 Kio | 6,8 Kio |
+| `react-native/noraivoire.tsx` | 32,6 Kio | 6,9 Kio |
+| `fx/fx-scroll.js` (optionnel) | 3,6 Kio | 1,3 Kio (budget 2) |
+| `fx/fx-text.js` (optionnel) | 3,8 Kio | 1,6 Kio (budget 2) |
 
 ## 3. Constats
 

@@ -105,10 +105,31 @@ test('chaque recette : accessible, sans JS inline, sans ressource externe, avec 
       }
     }
     // Tout champ de formulaire visible a un libellé associé.
-    const ids = new Set(elements.filter((e) => e.name === 'label').map((e) => e.attrs.for));
+    const ids = new Set(elements.filter((e) => e.name === 'label' && typeof e.attrs.for === 'string').map((e) => e.attrs.for));
+    const inLabel = (el) => { for (let p = el.parent; p; p = p.parent) if (p.name === 'label') return true; return false; };
     for (const el of elements.filter((e) => ['input', 'select', 'textarea'].includes(e.name))) {
       if (el.attrs.type === 'hidden') continue;
-      assert.ok(ids.has(el.attrs.id) || el.attrs['aria-label'] !== undefined, `${r.file}:${el.line} : <${el.name}> sans label`);
+      assert.ok((typeof el.attrs.id === 'string' && ids.has(el.attrs.id)) || inLabel(el) || el.attrs['aria-label'] !== undefined,
+        `${r.file}:${el.line} : <${el.name}> sans label`);
+    }
+  }
+});
+
+test('chaque champ de formulaire utilise un composant NoraIvoire (input, select, textarea, checkbox, switch, field)', () => {
+  const classes = (el) => (typeof el.attrs.class === 'string' ? el.attrs.class.split(/\s+/) : []);
+  for (const r of index.recipes) {
+    for (const el of parseDocument(read(r)).elements) {
+      const where = `${r.file}:${el.line}`;
+      if (el.name === 'select') assert.ok(classes(el).includes('select'), `${where} : <select> sans .select`);
+      if (el.name === 'textarea') assert.ok(classes(el).includes('textarea'), `${where} : <textarea> sans .textarea`);
+      if (el.name !== 'input') continue;
+      const type = el.attrs.type ?? 'text';
+      if (type === 'checkbox') {
+        const p = el.parent;
+        assert.ok(p?.name === 'label' && (classes(p).includes('checkbox') || classes(p).includes('switch')), `${where} : case hors de .checkbox/.switch`);
+      } else if (!['radio', 'hidden', 'submit'].includes(type)) {
+        assert.ok(classes(el).includes('input'), `${where} : <input type="${type}"> sans .input`);
+      }
     }
   }
 });

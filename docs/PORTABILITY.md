@@ -7,7 +7,7 @@ Version 0.1.0 · 14 octobre 2026 · © Jonathan KABLAN — Propriétaire
 | Environnement | Mode d'intégration | Build requis | Adaptateur | État 0.1 |
 |---|---|---|---|---|
 | HTML statique | `<link>` + `<script type="module">` | Non | Aucun | Modèle fourni, validé par `nora check` |
-| Twig / Symfony | AssetMapper + importmap ; composant anonyme `<twig:Nora:Btn>` | Non | `templates/twig/components/Nora/Btn.html.twig` | Modèle fourni, non exécuté dans Symfony |
+| Twig / Symfony 7.3+ (PHP 8.4+) | Bundle : Twig Components `<twig:Nora:*>` générés, enums `NoraTone` / `NoraSize`, AssetMapper (`noraivoire/…`), `bin/console nora:check` | Non | `adapters/symfony-bundle/` (sans bundle : `templates/twig/components/Nora/Btn.html.twig`) | Généré depuis le manifest ; **48 tests PHPUnit exécutés** (PHP 8.5, Symfony 8.1, UX TwigComponent 2.36) ; CI PHP 8.4 et 8.5 |
 | JSP / Jakarta EE / Spring | Fichiers statiques + tag file `<nora:btn>` | Non | `templates/jsp/WEB-INF/tags/nora/btn.tag` | Modèle fourni, non exécuté dans un conteneur |
 | React (Vite) | Import CSS + `start()` ; hook `useFx` | Oui (projet) | `templates/react/useFx.ts` | Modèle fourni |
 | Next.js App Router | CSS dans `layout.tsx` ; `<NoraEngine/>` client | Oui (projet) | `templates/nextjs/components/NoraEngine.tsx` | Modèle fourni |
@@ -53,6 +53,24 @@ Le seul attribut posé sur `<html>` par le moteur est `data-nora-engine` (d'où 
 | Typographie | Pile système | Police du thème | Police système | Volontaire (respect de la plateforme) |
 | Ripple | Non | Oui (InkWell) | Non | Convention Android de Material |
 | Flou `glass` | `backdrop-filter` | `BackdropFilter` | Alpha seul | Flou RN via adaptateur (expo-blur) |
+| Champ texte | `<input>` natif stylé | `TextField` | `TextInput` | Focus : contour 2 px (web, Flutter) ; bordure 2 px (RN) |
+| Liste de choix | `<select>` natif (`appearance: none`) | `DropdownButton` (menu Material) | `Modal` + options | RN : pas de liste déroulante dans le cœur ; adaptateur natif possible hors cœur |
+| Case à cocher | `<input type="checkbox">` dessiné en CSS | `Checkbox` Material | Vue dessinée + `✓` | Coche : tracé CSS / icône Material / glyphe texte |
+| Interrupteur | `<input role="switch">` dessiné en CSS | `Switch` Material 3 | Piste + pouce animés | Proportions du `Switch` Material 3 différentes (pouce agrandi quand actif) |
+| Association libellé | `<label for>` / `aria-describedby` | `NoraFieldScope` (sémantique) | `NoraFieldContext` (`accessibilityLabel` / `Hint`) | Même contrat, mécanisme propre à chaque plateforme |
+| Mouvement réduit (formulaires) | Transitions coupées (`prefers-reduced-motion`) | Animations internes de `Checkbox` / `Switch` Material | Glissement du pouce coupé | Flutter : animations Material non pilotées par NoraIvoire (150–200 ms) |
+
+### 4.1 Effets optionnels (paquets `fx-scroll`, `fx-text`)
+
+| Effet | Web | Flutter | React Native | Justification |
+|---|---|---|---|---|
+| `parallax` | `animation-timeline: view()`, repli JS | `NoraParallax` (écoute de la `ScrollPosition`) | `NoraParallax` (`scrollY` + `interpolate`) | — |
+| `scramble` | rAF, DOM restauré | `NoraScramble` (`Semantics(label)`) | `NoraScramble` (`accessibilityLabel`) | — |
+| `pin` | `position: sticky` + JS | **Non généré** | **Non généré** | Équivalents natifs de la plateforme : `SliverPersistentHeader(pinned: true)` et `ScrollView stickyHeaderIndices`. Un widget NoraIvoire n'apporterait rien. |
+| `scrub` | `--fx-progress` | **Web uniquement** | **Web uniquement** | Le natif expose déjà la progression : `ScrollController` + `AnimatedBuilder` (Flutter), `Animated.Value` + `interpolate` (RN). L'effet web n'existe que parce que CSS n'a pas de variable de défilement universelle. |
+| `split` | `<span>` par lettre ou mot | **Web uniquement** | **Web uniquement** | Un widget ou un `Text` par caractère casse la césure, le crénage et la sémantique natives ; l'animation par lettre se fait au cas par cas (`TextSpan`, `Animated`). |
+
+Limites : `NoraParallax` (RN) doit être un enfant direct du contenu du `ScrollView` (position mesurée par `onLayout`) ; la version Flutter mesure sa position après chaque frame, avec un frame de décalage.
 
 ## 5. Dépendances et pérennité
 
@@ -62,11 +80,12 @@ Le seul attribut posé sur `<html>` par le moteur est `data-nora-engine` (d'où 
 | Moteur web | Aucune | Très faible |
 | Flutter | SDK Flutter | API utilisées stables ; `Color.withValues` impose Flutter 3.27+ |
 | React Native | `react`, `react-native` | `Animated` et `Pressable` sont des API publiques stables |
+| Symfony | `symfony/*` (framework, twig, console, process, asset-mapper), `symfony/ux-twig-component`, `twig/twig` — MIT / BSD-3 | Syntaxe `<twig:…>` et `attributes.without()` d'UX TwigComponent 2.x ; `nora:check` exige Node.js (développement et CI seulement) |
 
 ## 6. Limites de la version 0.1
 
 1. Le Dart généré est analysé et rendu en test (goldens Flutter, `examples/flutter_app/`) mais pas exécuté sur appareil réel.
 2. Pas de régression visuelle cross-cible (comparaison web / Flutter / RN, prévue, voir TESTING.md).
-3. Pas de composant de formulaire (input, select) : les champs utilisent les styles du navigateur.
-4. Pas de CSS de secours pour les navigateurs sans `@layer`.
-5. Les modèles Twig, JSP, Vue et Angular sont validés syntaxiquement par `nora check`, pas exécutés dans leur framework.
+3. Pas de CSS de secours pour les navigateurs sans `@layer`.
+4. Les modèles JSP, Vue et Angular sont validés syntaxiquement par `nora check`, pas exécutés dans leur framework. Les Twig Components, eux, sont rendus par Symfony dans les tests PHPUnit du bundle.
+5. Bundle Symfony : testé localement en PHP 8.5 / Symfony 8.1 ; PHP 8.4 est couvert par la matrice CI (non exécuté localement), Symfony 7.3 n'est couvert que par la contrainte Composer. Un composant de formulaire reçoit un Twig Component générique (élément, ton, taille) ; un rendu composé (label + aide + erreur pour `field`) demandera d'étendre `targets/symfony.js`.

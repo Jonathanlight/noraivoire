@@ -6,13 +6,17 @@ import * as React from 'react';
 import {
   AccessibilityInfo,
   Animated,
+  Modal,
   Platform,
   Pressable,
   Text,
+  TextInput,
   View,
   useColorScheme,
   type PressableProps,
   type StyleProp,
+  type TextInputProps,
+  type TextStyle,
   type ViewProps,
   type ViewStyle,
 } from 'react-native';
@@ -174,6 +178,79 @@ const cardSpec = {
   defaults: { tone: 'neutral' as NoraTone, size: 'md' as NoraSize },
   minTarget: 0,
 } as const;
+
+const checkboxSpec = {
+  colors: { bg: 'surface', fg: 'text', border: 'textMuted', focus: 'focus', invalid: 'danger' } as const,
+  accent: { primary: 'primary', neutral: 'neutral', danger: 'danger', success: 'success', warning: 'warning' } as Partial<Record<NoraTone, ColorKey>>,
+  onAccent: { primary: 'onPrimary', neutral: 'onNeutral', danger: 'onDanger', success: 'onSuccess', warning: 'onWarning' } as Partial<Record<NoraTone, ColorKey>>,
+  sizes: { sm: { padY: 4, padX: 8, font: 14 }, md: { padY: 6, padX: 10, font: 16 }, lg: { padY: 8, padX: 12, font: 18 } } as Partial<Record<NoraSize, { padY: number; padX: number; font: number }>>,
+  radius: 4,
+  ring: 2,
+  disabledOpacity: 0.5,
+  defaults: { tone: 'primary' as NoraTone, size: 'md' as NoraSize },
+  minTarget: 44,
+} as const;
+
+const fieldSpec = {
+  colors: { fg: 'text', muted: 'textMuted', invalid: 'danger' } as const,
+  sizes: { sm: { padY: 4, padX: 0, font: 14 }, md: { padY: 6, padX: 0, font: 16 }, lg: { padY: 8, padX: 0, font: 18 } } as Partial<Record<NoraSize, { padY: number; padX: number; font: number }>>,
+  radius: 0,
+  ring: 2,
+  disabledOpacity: 0.5,
+  defaults: { tone: 'neutral' as NoraTone, size: 'md' as NoraSize },
+  minTarget: 0,
+} as const;
+
+const inputSpec = {
+  colors: { bg: 'surface', fg: 'text', border: 'textMuted', muted: 'textMuted', focus: 'focus', invalid: 'danger' } as const,
+  sizes: { sm: { padY: 6, padX: 10, font: 14 }, md: { padY: 10, padX: 12, font: 16 }, lg: { padY: 12, padX: 16, font: 18 } } as Partial<Record<NoraSize, { padY: number; padX: number; font: number }>>,
+  radius: 8,
+  ring: 2,
+  disabledOpacity: 0.5,
+  defaults: { tone: 'neutral' as NoraTone, size: 'md' as NoraSize },
+  minTarget: 44,
+} as const;
+
+const selectSpec = {
+  colors: { bg: 'surface', fg: 'text', border: 'textMuted', muted: 'textMuted', focus: 'focus', invalid: 'danger' } as const,
+  sizes: { sm: { padY: 6, padX: 10, font: 14 }, md: { padY: 10, padX: 12, font: 16 }, lg: { padY: 12, padX: 16, font: 18 } } as Partial<Record<NoraSize, { padY: number; padX: number; font: number }>>,
+  radius: 8,
+  ring: 2,
+  disabledOpacity: 0.5,
+  defaults: { tone: 'neutral' as NoraTone, size: 'md' as NoraSize },
+  minTarget: 44,
+} as const;
+
+const switchSpec = {
+  colors: { bg: 'surface', fg: 'text', border: 'textMuted', focus: 'focus', invalid: 'danger' } as const,
+  accent: { primary: 'primary', neutral: 'neutral', danger: 'danger', success: 'success', warning: 'warning' } as Partial<Record<NoraTone, ColorKey>>,
+  onAccent: { primary: 'onPrimary', neutral: 'onNeutral', danger: 'onDanger', success: 'onSuccess', warning: 'onWarning' } as Partial<Record<NoraTone, ColorKey>>,
+  sizes: { sm: { padY: 4, padX: 8, font: 14 }, md: { padY: 6, padX: 10, font: 16 }, lg: { padY: 8, padX: 12, font: 18 } } as Partial<Record<NoraSize, { padY: number; padX: number; font: number }>>,
+  radius: 9999,
+  ring: 2,
+  disabledOpacity: 0.5,
+  defaults: { tone: 'primary' as NoraTone, size: 'md' as NoraSize },
+  minTarget: 44,
+} as const;
+
+const textareaSpec = {
+  colors: { bg: 'surface', fg: 'text', border: 'textMuted', muted: 'textMuted', focus: 'focus', invalid: 'danger' } as const,
+  sizes: { sm: { padY: 6, padX: 10, font: 14 }, md: { padY: 10, padX: 12, font: 16 }, lg: { padY: 12, padX: 16, font: 18 } } as Partial<Record<NoraSize, { padY: number; padX: number; font: number }>>,
+  radius: 8,
+  ring: 2,
+  disabledOpacity: 0.5,
+  defaults: { tone: 'neutral' as NoraTone, size: 'md' as NoraSize },
+  minTarget: 44,
+} as const;
+
+export type NoraFieldContextValue = { label: string; help?: string; error?: string; disabled?: boolean };
+
+/** Contexte d'un NoraField : équivalent de <label for> et aria-describedby pour les contrôles descendants. */
+export const NoraFieldContext = React.createContext<NoraFieldContextValue | null>(null);
+
+export function useNoraField() {
+  return React.useContext(NoraFieldContext);
+}
 
 export const noraGlass = { blur: 16, opacity: 0.6 } as const;
 
@@ -374,5 +451,400 @@ export function NoraCard({ children, tone, size, glass = false, style, ...rest }
         children
       )}
     </View>
+  );
+}
+
+export type NoraCheckboxProps = Omit<PressableProps, 'children' | 'style' | 'onPress'> & {
+  checked: boolean;
+  /** Absent : lecture seule. */
+  onChange?: (checked: boolean) => void;
+  /** Libellé visible (lu avec le contrôle). */
+  children: React.ReactNode;
+  tone?: NoraTone;
+  size?: NoraSize;
+  invalid?: boolean;
+  haptic?: boolean;
+  style?: StyleProp<ViewStyle>;
+};
+
+/** Case à cocher : un <label class="checkbox"> contenant <input type="checkbox"> et son texte (zone cliquable ≥ 44 px). */
+export function NoraCheckbox({ checked, onChange, children, tone, size, invalid, haptic = true, disabled, style, ...rest }: NoraCheckboxProps) {
+  const colors = useNoraColors();
+  const field = useNoraField();
+  const s = checkboxSpec.sizes[size ?? checkboxSpec.defaults.size] ?? checkboxSpec.sizes[checkboxSpec.defaults.size]!;
+  const t = tone ?? checkboxSpec.defaults.tone;
+  const accent = colors[checkboxSpec.accent[t] ?? checkboxSpec.accent[checkboxSpec.defaults.tone]!];
+  const onAccent = colors[checkboxSpec.onAccent[t] ?? checkboxSpec.onAccent[checkboxSpec.defaults.tone]!];
+  const isInvalid = invalid ?? !!field?.error;
+  const isDisabled = !!disabled || !!field?.disabled || !onChange;
+
+  return (
+    <Pressable
+      accessibilityRole="checkbox"
+      accessibilityState={{ checked, disabled: isDisabled }}
+      accessibilityHint={field?.error ?? field?.help}
+      disabled={isDisabled}
+      hitSlop={4}
+      onPress={() => {
+        if (haptic) noraConfig.haptic?.('light');
+        onChange?.(!checked);
+      }}
+      style={[
+        {
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: s.padX,
+          minHeight: checkboxSpec.minTarget,
+          paddingVertical: s.padY,
+          opacity: isDisabled ? checkboxSpec.disabledOpacity : 1,
+        },
+        style,
+      ]}
+      {...rest}
+    >
+      <View
+        style={{
+          width: s.font * 1.25,
+          height: s.font * 1.25,
+          borderRadius: checkboxSpec.radius,
+          borderWidth: 2,
+          borderColor: checked ? accent : isInvalid ? colors[checkboxSpec.colors.invalid] : colors[checkboxSpec.colors.border],
+          backgroundColor: checked ? accent : colors[checkboxSpec.colors.bg],
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        {checked ? <Text style={{ color: onAccent, fontSize: s.font * 0.85, fontWeight: '700', lineHeight: s.font }}>✓</Text> : null}
+      </View>
+      {typeof children === 'string' ? <Text style={{ color: colors[checkboxSpec.colors.fg], fontSize: s.font, flexShrink: 1 }}>{children}</Text> : children}
+    </Pressable>
+  );
+}
+
+export type NoraFieldProps = ViewProps & {
+  label: string;
+  help?: string;
+  error?: string;
+  disabled?: boolean;
+  size?: NoraSize;
+  children: React.ReactNode;
+};
+
+/** Groupe de champ : libellé (.field-label), contrôle, aide (.field-help) et erreur (.field-error). Relier aide et erreur au contrôle par aria-describedby. */
+export function NoraField({ label, help, error, disabled, size, children, style, ...rest }: NoraFieldProps) {
+  const colors = useNoraColors();
+  const s = fieldSpec.sizes[size ?? fieldSpec.defaults.size] ?? fieldSpec.sizes[fieldSpec.defaults.size]!;
+  const value = React.useMemo(() => ({ label, help, error, disabled }), [label, help, error, disabled]);
+  return (
+    <NoraFieldContext.Provider value={value}>
+      <View style={[{ gap: s.padY }, style]} {...rest}>
+        {/* Le libellé et l'aide sont portés par le contrôle (contexte) : pas de double lecture. */}
+        <Text
+          importantForAccessibility="no"
+          accessibilityElementsHidden
+          style={{ color: colors[fieldSpec.colors.fg], fontSize: s.font, fontWeight: '600', opacity: disabled ? fieldSpec.disabledOpacity : 1 }}
+        >
+          {label}
+        </Text>
+        {children}
+        {help ? (
+          <Text importantForAccessibility="no" accessibilityElementsHidden style={{ color: colors[fieldSpec.colors.muted], fontSize: s.font * 0.875 }}>
+            {help}
+          </Text>
+        ) : null}
+        {error ? (
+          <Text accessibilityLiveRegion="polite" style={{ color: colors[fieldSpec.colors.invalid], fontSize: s.font * 0.875, fontWeight: '600' }}>
+            {error}
+          </Text>
+        ) : null}
+      </View>
+    </NoraFieldContext.Provider>
+  );
+}
+
+export type NoraInputProps = Omit<TextInputProps, 'style' | 'editable'> & {
+  size?: NoraSize;
+  /** Invalide ; par défaut : le NoraField parent affiche une erreur. */
+  invalid?: boolean;
+  disabled?: boolean;
+  /** Libellé lu par les lecteurs d'écran ; par défaut celui du NoraField parent. */
+  label?: string;
+  style?: StyleProp<TextStyle>;
+};
+
+/** Champ de saisie sur une ligne. Toujours associé à un <label for> (ou placé dans un .field). Invalide : aria-invalid="true" + aria-describedby vers le message. */
+export function NoraInput({ size, invalid, disabled, label, style, onFocus, onBlur, ...rest }: NoraInputProps) {
+  const colors = useNoraColors();
+  const field = useNoraField();
+  const [focused, setFocused] = React.useState(false);
+  const s = inputSpec.sizes[size ?? inputSpec.defaults.size] ?? inputSpec.sizes[inputSpec.defaults.size]!;
+  const isInvalid = invalid ?? !!field?.error;
+  const isDisabled = disabled ?? field?.disabled ?? false;
+  const ring = focused ? inputSpec.ring : 1;
+  const borderColor = colors[isInvalid ? inputSpec.colors.invalid : focused ? inputSpec.colors.focus : inputSpec.colors.border];
+  const box = {
+    minHeight: inputSpec.minTarget,
+    paddingVertical: Math.max(0, s.padY - (ring - 1)),
+    paddingHorizontal: Math.max(0, s.padX - (ring - 1)),
+    borderWidth: ring,
+    borderColor,
+    borderRadius: inputSpec.radius,
+    backgroundColor: colors[inputSpec.colors.bg],
+    opacity: isDisabled ? inputSpec.disabledOpacity : 1,
+  };
+  return (
+    <TextInput
+      accessibilityLabel={label ?? field?.label}
+      accessibilityHint={field?.error ?? field?.help}
+      accessibilityState={{ disabled: isDisabled }}
+      editable={!isDisabled}
+      placeholderTextColor={colors[inputSpec.colors.muted]}
+      selectionColor={colors[inputSpec.colors.focus]}
+      onFocus={(e) => {
+        setFocused(true);
+        onFocus?.(e);
+      }}
+      onBlur={(e) => {
+        setFocused(false);
+        onBlur?.(e);
+      }}
+      style={[box, { color: colors[inputSpec.colors.fg], fontSize: s.font }, style]}
+      {...rest}
+    />
+  );
+}
+
+export type NoraSelectOption = { label: string; value: string };
+
+export type NoraSelectProps = {
+  options: NoraSelectOption[];
+  value?: string | null;
+  onChange?: (value: string) => void;
+  placeholder?: string;
+  size?: NoraSize;
+  /** Invalide ; par défaut : le NoraField parent affiche une erreur. */
+  invalid?: boolean;
+  disabled?: boolean;
+  /** Libellé lu par les lecteurs d'écran ; par défaut celui du NoraField parent. */
+  label?: string;
+  style?: StyleProp<ViewStyle>;
+};
+
+/** Liste de choix native. Toujours associée à un <label for>. Liste native de React Native absente du cœur : sélection dans une fenêtre modale. */
+export function NoraSelect({ options, value, onChange, placeholder, size, invalid, disabled, label, style }: NoraSelectProps) {
+  const colors = useNoraColors();
+  const field = useNoraField();
+  const [focused, setFocused] = React.useState(false);
+  const s = selectSpec.sizes[size ?? selectSpec.defaults.size] ?? selectSpec.sizes[selectSpec.defaults.size]!;
+  const isInvalid = invalid ?? !!field?.error;
+  const isDisabled = disabled ?? field?.disabled ?? false;
+  const ring = focused ? selectSpec.ring : 1;
+  const borderColor = colors[isInvalid ? selectSpec.colors.invalid : focused ? selectSpec.colors.focus : selectSpec.colors.border];
+  const box = {
+    minHeight: selectSpec.minTarget,
+    paddingVertical: Math.max(0, s.padY - (ring - 1)),
+    paddingHorizontal: Math.max(0, s.padX - (ring - 1)),
+    borderWidth: ring,
+    borderColor,
+    borderRadius: selectSpec.radius,
+    backgroundColor: colors[selectSpec.colors.bg],
+    opacity: isDisabled ? selectSpec.disabledOpacity : 1,
+  };
+  const reduce = useReducedMotion();
+  const [open, setOpen] = React.useState(false);
+  const selected = options.find((o) => o.value === value);
+  const close = () => {
+    setOpen(false);
+    setFocused(false);
+  };
+  return (
+    <>
+      <Pressable
+        accessibilityRole="combobox"
+        accessibilityLabel={label ?? field?.label}
+        accessibilityHint={field?.error ?? field?.help}
+        accessibilityValue={{ text: selected?.label ?? placeholder ?? '' }}
+        accessibilityState={{ disabled: isDisabled, expanded: open }}
+        disabled={isDisabled}
+        onPress={() => {
+          setFocused(true);
+          setOpen(true);
+        }}
+        style={[box, { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }, style]}
+      >
+        <Text style={{ color: colors[selected ? selectSpec.colors.fg : selectSpec.colors.muted], fontSize: s.font, flexShrink: 1 }} numberOfLines={1}>
+          {selected?.label ?? placeholder ?? ''}
+        </Text>
+        <Text importantForAccessibility="no" accessibilityElementsHidden style={{ color: colors[selectSpec.colors.fg], fontSize: s.font, marginLeft: s.padX }}>
+          ▾
+        </Text>
+      </Pressable>
+      <Modal visible={open} transparent animationType={reduce ? 'none' : 'fade'} onRequestClose={close}>
+        <Pressable accessibilityRole="button" accessibilityLabel="Fermer" onPress={close} style={{ flex: 1, justifyContent: 'center', padding: 24, backgroundColor: 'rgba(0, 0, 0, 0.4)' }}>
+          <View accessibilityRole="list" style={{ backgroundColor: colors[selectSpec.colors.bg], borderRadius: selectSpec.radius, paddingVertical: 4 }}>
+            {options.map((o) => {
+              const checked = o.value === value;
+              return (
+                <Pressable
+                  key={o.value}
+                  accessibilityRole="radio"
+                  accessibilityState={{ checked }}
+                  onPress={() => {
+                    onChange?.(o.value);
+                    close();
+                  }}
+                  style={({ pressed }) => ({
+                    minHeight: selectSpec.minTarget,
+                    justifyContent: 'center',
+                    paddingHorizontal: s.padX,
+                    backgroundColor: pressed ? withAlpha(colors[selectSpec.colors.focus], 0.12) : 'transparent',
+                  })}
+                >
+                  <Text style={{ color: colors[selectSpec.colors.fg], fontSize: s.font, fontWeight: checked ? '700' : '400' }}>{o.label}</Text>
+                </Pressable>
+              );
+            })}
+          </View>
+        </Pressable>
+      </Modal>
+    </>
+  );
+}
+
+export type NoraSwitchProps = Omit<PressableProps, 'children' | 'style' | 'onPress'> & {
+  checked: boolean;
+  /** Absent : lecture seule. */
+  onChange?: (checked: boolean) => void;
+  /** Libellé visible (lu avec le contrôle). */
+  children: React.ReactNode;
+  tone?: NoraTone;
+  size?: NoraSize;
+  invalid?: boolean;
+  haptic?: boolean;
+  style?: StyleProp<ViewStyle>;
+};
+
+/** Interrupteur marche/arrêt : un <label class="switch"> contenant <input type="checkbox" role="switch"> et son texte. Effet immédiat, sans bouton Valider. */
+export function NoraSwitch({ checked, onChange, children, tone, size, invalid, haptic = true, disabled, style, ...rest }: NoraSwitchProps) {
+  const colors = useNoraColors();
+  const field = useNoraField();
+  const s = switchSpec.sizes[size ?? switchSpec.defaults.size] ?? switchSpec.sizes[switchSpec.defaults.size]!;
+  const t = tone ?? switchSpec.defaults.tone;
+  const accent = colors[switchSpec.accent[t] ?? switchSpec.accent[switchSpec.defaults.tone]!];
+  const onAccent = colors[switchSpec.onAccent[t] ?? switchSpec.onAccent[switchSpec.defaults.tone]!];
+  const isInvalid = invalid ?? !!field?.error;
+  const isDisabled = !!disabled || !!field?.disabled || !onChange;
+  const reduce = useReducedMotion();
+  const x = React.useRef(new Animated.Value(checked ? 1 : 0)).current;
+  React.useEffect(() => {
+    if (reduce) {
+      x.setValue(checked ? 1 : 0);
+      return;
+    }
+    Animated.timing(x, { toValue: checked ? 1 : 0, duration: 150, useNativeDriver: Platform.OS !== 'web' }).start();
+  }, [checked, reduce]);
+
+  return (
+    <Pressable
+      accessibilityRole="switch"
+      accessibilityState={{ checked, disabled: isDisabled }}
+      accessibilityHint={field?.error ?? field?.help}
+      disabled={isDisabled}
+      hitSlop={4}
+      onPress={() => {
+        if (haptic) noraConfig.haptic?.('light');
+        onChange?.(!checked);
+      }}
+      style={[
+        {
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: s.padX,
+          minHeight: switchSpec.minTarget,
+          paddingVertical: s.padY,
+          opacity: isDisabled ? switchSpec.disabledOpacity : 1,
+        },
+        style,
+      ]}
+      {...rest}
+    >
+      <View
+        style={{
+          width: s.font * 2.25,
+          height: s.font * 1.25,
+          borderRadius: switchSpec.radius,
+          borderWidth: 2,
+          borderColor: checked ? accent : isInvalid ? colors[switchSpec.colors.invalid] : colors[switchSpec.colors.border],
+          backgroundColor: checked ? accent : colors[switchSpec.colors.border],
+          justifyContent: 'center',
+        }}
+      >
+        <Animated.View
+          style={{
+            width: s.font * 1.25 - 8,
+            height: s.font * 1.25 - 8,
+            marginLeft: 2,
+            borderRadius: switchSpec.radius,
+            backgroundColor: checked ? onAccent : colors[switchSpec.colors.bg],
+            transform: [{ translateX: x.interpolate({ inputRange: [0, 1], outputRange: [0, s.font] }) }],
+          }}
+        />
+      </View>
+      {typeof children === 'string' ? <Text style={{ color: colors[switchSpec.colors.fg], fontSize: s.font, flexShrink: 1 }}>{children}</Text> : children}
+    </Pressable>
+  );
+}
+
+export type NoraTextareaProps = Omit<TextInputProps, 'style' | 'editable' | 'multiline'> & {
+  size?: NoraSize;
+  /** Invalide ; par défaut : le NoraField parent affiche une erreur. */
+  invalid?: boolean;
+  disabled?: boolean;
+  /** Libellé lu par les lecteurs d'écran ; par défaut celui du NoraField parent. */
+  label?: string;
+  style?: StyleProp<TextStyle>;
+};
+
+/** Zone de texte sur plusieurs lignes, redimensionnable verticalement. Toujours associée à un <label for>. */
+export function NoraTextarea({ size, invalid, disabled, label, style, onFocus, onBlur, ...rest }: NoraTextareaProps) {
+  const colors = useNoraColors();
+  const field = useNoraField();
+  const [focused, setFocused] = React.useState(false);
+  const s = textareaSpec.sizes[size ?? textareaSpec.defaults.size] ?? textareaSpec.sizes[textareaSpec.defaults.size]!;
+  const isInvalid = invalid ?? !!field?.error;
+  const isDisabled = disabled ?? field?.disabled ?? false;
+  const ring = focused ? textareaSpec.ring : 1;
+  const borderColor = colors[isInvalid ? textareaSpec.colors.invalid : focused ? textareaSpec.colors.focus : textareaSpec.colors.border];
+  const box = {
+    minHeight: textareaSpec.minTarget,
+    paddingVertical: Math.max(0, s.padY - (ring - 1)),
+    paddingHorizontal: Math.max(0, s.padX - (ring - 1)),
+    borderWidth: ring,
+    borderColor,
+    borderRadius: textareaSpec.radius,
+    backgroundColor: colors[textareaSpec.colors.bg],
+    opacity: isDisabled ? textareaSpec.disabledOpacity : 1,
+  };
+  return (
+    <TextInput
+      accessibilityLabel={label ?? field?.label}
+      accessibilityHint={field?.error ?? field?.help}
+      accessibilityState={{ disabled: isDisabled }}
+      editable={!isDisabled}
+      multiline
+      textAlignVertical="top"
+      placeholderTextColor={colors[textareaSpec.colors.muted]}
+      selectionColor={colors[textareaSpec.colors.focus]}
+      onFocus={(e) => {
+        setFocused(true);
+        onFocus?.(e);
+      }}
+      onBlur={(e) => {
+        setFocused(false);
+        onBlur?.(e);
+      }}
+      style={[box, { color: colors[textareaSpec.colors.fg], fontSize: s.font, minHeight: Math.max(96, textareaSpec.minTarget) }, style]}
+      {...rest}
+    />
   );
 }

@@ -43,6 +43,14 @@ export const pascal = (name) => {
   return c.charAt(0).toUpperCase() + c.slice(1);
 };
 
+/**
+ * Ramène un texte libre de la spec à une ligne de commentaire sûre (Dart `///`, JS `/** *\/`) :
+ * aucun saut de ligne (\r, \n, U+2028/2029) ni fin de bloc `*\/` ne peut en sortir.
+ */
+export function docComment(str) {
+  return String(str).replace(/[\r\n\u2028\u2029]+/g, ' ').replace(/\*\//g, '* /');
+}
+
 /** Échappe une chaîne pour un littéral Dart ou JS entre apostrophes. */
 export function quote(str) {
   return `'${String(str)

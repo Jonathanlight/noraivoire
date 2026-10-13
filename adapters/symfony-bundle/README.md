@@ -1,0 +1,115 @@
+# NoraIvoire — bundle Symfony
+
+© 2026 Jonathan KABLAN — Logiciel propriétaire, tous droits réservés. Distribution réservée aux licenciés : ce paquet n'est **jamais** publié sur Packagist.
+
+Intègre NoraIvoire dans une application Symfony 7.3+ (PHP 8.4+) :
+
+- **Twig Components** `<twig:Nora:Btn>`, `<twig:Nora:Card>`, `<twig:Nora:Badge>`… générés depuis le manifest (un composant ajouté à la spec apparaît automatiquement) ;
+- **enums PHP** `NoraTone`, `NoraSize`, `NoraComponent` et classe `NoraManifest` ;
+- **AssetMapper** : `noraivoire.css`, `noraivoire.min.css` et le moteur d'effets sous le préfixe `noraivoire/` ;
+- **`bin/console nora:check`** : validation des templates Twig avec les règles NoraIvoire.
+
+Rien dans `generated/` n'est écrit à la main : tout vient de `npm run build` puis `npm run symfony:sync` à la racine du dépôt.
+
+## Installation
+
+1. Préparer la sortie générée (dépôt NoraIvoire) :
+
+   ```bash
+   npm run build && npm run symfony:sync
+   ```
+
+2. Déclarer le bundle comme dépôt Composer privé (chemin local ou registre privé) dans l'application :
+
+   ```json
+   "repositories": [{ "type": "path", "url": "../noraivoire/adapters/symfony-bundle" }]
+   ```
+
+   ```bash
+   composer require noraivoire/symfony-bundle
+   ```
+
+3. Activer le bundle (`config/bundles.php`) :
+
+   ```php
+   NoraIvoire\SymfonyBundle\NoraIvoireBundle::class => ['all' => true],
+   ```
+
+4. Charger les ressources (`templates/base.html.twig`) :
+
+   ```twig
+   <link rel="stylesheet" href="{{ asset('noraivoire/noraivoire.min.css') }}">
+   {{ importmap(['app', 'noraivoire/auto']) }}
+   ```
+
+   et dans `importmap.php` :
+
+   ```php
+   'noraivoire/auto' => ['path' => 'noraivoire/noraivoire.auto.js'],
+   ```
+
+## Utilisation
+
+```twig
+<twig:Nora:Btn tone="danger" size="lg" type="submit">Supprimer</twig:Nora:Btn>
+<twig:Nora:Btn href="{{ path('product_show', {id: product.id}) }}">Voir</twig:Nora:Btn>
+<twig:Nora:Card as="article" class="fx-glass" data-fx="tilt reveal">…</twig:Nora:Card>
+<twig:Nora:Badge :tone="product.inStock ? 'success' : 'warning'">…</twig:Nora:Badge>
+```
+
+```php
+use NoraIvoire\SymfonyBundle\Generated\Enum\NoraTone;
+
+$tone = NoraTone::tryFrom($request->query->getString('tone')) ?? NoraTone::Primary;
+$tone->isAllowedFor('btn'); // true
+```
+
+### Garanties de sécurité
+
+| Entrée | Traitement |
+|---|---|
+| `tone`, `size` | Liste blanche du manifest ; valeur inconnue → valeur par défaut |
+| `href` | Schémas autorisés : `/`, `#`, `https://`, `http://`, `mailto:`, `tel:` ; `//hôte` et `/\hôte` refusés ; sinon rendu en `<button>` |
+| `type` (bouton) | `button`, `submit` ou `reset` ; sinon `button` |
+| `as` (carte…) | Éléments déclarés dans le manifest ; sinon le premier |
+| `data-tone`, `data-size`, `href`, `type` passés comme attributs | Ignorés (`attributes.without`) : impossible de contourner la liste blanche |
+| Contenu et autres attributs | Échappement Twig automatique |
+
+## `nora:check`
+
+```bash
+bin/console nora:check                 # chemins de noraivoire.check_paths (défaut : templates)
+bin/console nora:check templates/shop --format=json
+```
+
+La commande délègue au CLI NoraIvoire (Node.js) pour partager exactement les mêmes règles que `npm run check` et la CI. Node n'est nécessaire qu'en développement et en intégration continue, jamais en production.
+
+- `Process` reçoit un tableau d'arguments : aucun shell ;
+- chaque chemin est résolu (`realpath`) et doit rester dans le projet ; il est transmis en absolu et ne peut donc pas être lu comme une option ;
+- `NODE_OPTIONS` est retiré de l'environnement du processus ;
+- durée bornée (`timeout`), sortie JSON vérifiée, messages échappés avant affichage.
+
+Code de sortie : `0` sans erreur, `1` si des erreurs sont trouvées ou si l'analyse est impossible, `2` pour un format inconnu.
+
+## Configuration
+
+```yaml
+# config/packages/noraivoire.yaml
+noraivoire:
+    node_binary: node                 # nom dans le PATH ou chemin absolu
+    cli_path: null                    # défaut : %kernel.project_dir%/node_modules/@noraivoire/cli/src/cli.js
+    check_paths: [templates]
+    timeout: 60                       # secondes, 1 à 600
+```
+
+## Tests
+
+```bash
+npm run build && npm run symfony:sync      # à la racine du dépôt
+cd adapters/symfony-bundle
+composer install
+vendor/bin/phpunit
+composer licenses --format=json | php tool/check-licenses.php
+```
+
+Dépendances : `symfony/*` et `twig/*` (MIT, BSD-3) ; PHPUnit (BSD-3) en développement. Aucune licence copyleft (contrôlé en CI).

@@ -25,28 +25,26 @@
       <section class="card">
       <fieldset class="stack">
         <legend class="text-lg font-bold">Livraison</legend>
-        <div class="stack gap-1">
-          <label for="nom">Nom complet</label>
-          <input id="nom" name="nom" type="text" autocomplete="name" required>
+        <div class="field">
+          <label class="field-label" for="nom">Nom complet</label>
+          <input class="input" id="nom" name="nom" type="text" autocomplete="name" required>
         </div>
-        <div class="stack gap-1">
-          <label for="adresse">Adresse</label>
-          <input id="adresse" name="adresse" type="text" autocomplete="street-address" required>
+        <div class="field">
+          <label class="field-label" for="adresse">Adresse</label>
+          <input class="input" id="adresse" name="adresse" type="text" autocomplete="street-address" required>
         </div>
-        <div class="stack gap-1">
-          <label for="ville">Ville</label>
-          <input id="ville" name="ville" type="text" autocomplete="address-level2" required>
+        <div class="field">
+          <label class="field-label" for="ville">Ville</label>
+          <input class="input" id="ville" name="ville" type="text" autocomplete="address-level2" required>
         </div>
       </fieldset>
       </section>
       <section class="card">
       <fieldset class="stack">
         <legend class="text-lg font-bold">Mode de paiement</legend>
-        <div class="cluster">
+        <div class="cluster" role="radiogroup" aria-label="Moyen de paiement">
           <input id="carte" name="mode" type="radio" value="carte" checked>
           <label for="carte">Carte bancaire</label>
-        </div>
-        <div class="cluster">
           <input id="mobile" name="mode" type="radio" value="mobile">
           <label for="mobile">Paiement mobile</label>
         </div>

@@ -1,0 +1,75 @@
+{
+  "$nora": "component",
+  "$version": "1.0.0",
+  "component": "input",
+  "shape": "control",
+  "description": "Champ de saisie sur une ligne. Toujours associé à un <label for> (ou placé dans un .field). Invalide : aria-invalid=\"true\" + aria-describedby vers le message.",
+  "elements": [
+    "input"
+  ],
+  "variants": {
+    "tone": [
+      "neutral"
+    ],
+    "size": [
+      "sm",
+      "md",
+      "lg"
+    ]
+  },
+  "defaults": {
+    "tone": "neutral",
+    "size": "md"
+  },
+  "tokens": {
+    "bg": "{color.surface}",
+    "fg": "{color.text}",
+    "radius": "{radius.md}",
+    "border": "{color.text-muted}",
+    "muted": "{color.text-muted}",
+    "focus": "{color.focus}",
+    "invalid": "{color.danger}"
+  },
+  "sizes": {
+    "sm": {
+      "pad-y": 6,
+      "pad-x": 10,
+      "font": "{font.sm}"
+    },
+    "md": {
+      "pad-y": 10,
+      "pad-x": 12,
+      "font": "{font.md}"
+    },
+    "lg": {
+      "pad-y": 12,
+      "pad-x": 16,
+      "font": "{font.lg}"
+    }
+  },
+  "states": {
+    "focus": {
+      "ring": 2,
+      "token": "focus"
+    },
+    "invalid": {
+      "token": "invalid"
+    },
+    "disabled": {
+      "opacity": 0.5
+    }
+  },
+  "motion": {
+    "press": {
+      "duration": "{duration.fast}"
+    }
+  },
+  "a11y": {
+    "role": "textbox",
+    "minTarget": 44,
+    "requiresLabel": true,
+    "anchorRequiresHref": false
+  },
+  "feedback": {},
+  "example": "<label class=\"field-label\" for=\"email\">E-mail</label> <input class=\"input\" id=\"email\" type=\"email\" name=\"email\" autocomplete=\"email\">"
+}

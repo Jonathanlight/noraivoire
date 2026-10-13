@@ -19,6 +19,7 @@
     "audit:deps": "npm audit --omit=dev --audit-level=moderate",
     "audit:security": "node packages/cli/src/cli.js audit",
     "flutter:sync": "node examples/flutter_app/tool/sync.mjs",
+    "symfony:sync": "node adapters/symfony-bundle/tool/sync.mjs",
     "verify": "npm run build && npm test && npm run check && npm run audit:security",
     "bench": "node bench/run.js",
     "bench:dry": "node bench/run.js --dry-run"

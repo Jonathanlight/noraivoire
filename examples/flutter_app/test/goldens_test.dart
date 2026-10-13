@@ -133,8 +133,11 @@ void main() {
     await tester.pumpWidget(const app.DemoApp());
     await tester.pump(const Duration(seconds: 2));
     expect(find.text('Boutique'), findsOneWidget);
-    expect(find.byType(NoraCard), findsOneWidget);
-    expect(find.byType(NoraBtn), findsNWidgets(2));
+    expect(find.byType(NoraCard), findsNWidgets(2));
+    expect(find.byType(NoraBtn), findsNWidgets(3));
+    expect(find.byType(NoraInput), findsOneWidget);
+    expect(find.byType(NoraSwitch), findsOneWidget);
+    expect(find.byType(NoraCheckbox), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 }

@@ -15,7 +15,10 @@
       "file": "login.html",
       "components": [
         "btn",
-        "card"
+        "card",
+        "checkbox",
+        "field",
+        "input"
       ]
     },
     {
@@ -34,7 +37,10 @@
       "file": "signup.html",
       "components": [
         "btn",
-        "card"
+        "card",
+        "checkbox",
+        "field",
+        "input"
       ]
     },
     {
@@ -51,7 +57,9 @@
       "file": "forgot-password.html",
       "components": [
         "btn",
-        "card"
+        "card",
+        "field",
+        "input"
       ]
     },
     {
@@ -112,7 +120,9 @@
       "components": [
         "badge",
         "btn",
-        "card"
+        "card",
+        "field",
+        "select"
       ]
     },
     {
@@ -131,7 +141,9 @@
       "components": [
         "badge",
         "btn",
-        "card"
+        "card",
+        "field",
+        "input"
       ]
     },
     {
@@ -168,7 +180,9 @@
       "components": [
         "badge",
         "btn",
-        "card"
+        "card",
+        "field",
+        "input"
       ]
     },
     {
@@ -206,7 +220,10 @@
       "components": [
         "badge",
         "btn",
-        "card"
+        "card",
+        "field",
+        "input",
+        "textarea"
       ]
     },
     {
@@ -225,7 +242,10 @@
       "components": [
         "badge",
         "btn",
-        "card"
+        "card",
+        "field",
+        "select",
+        "switch"
       ]
     },
     {
@@ -264,7 +284,8 @@
       "components": [
         "badge",
         "btn",
-        "card"
+        "card",
+        "input"
       ]
     },
     {
@@ -378,7 +399,11 @@
       "components": [
         "badge",
         "btn",
-        "card"
+        "card",
+        "field",
+        "input",
+        "select",
+        "textarea"
       ]
     }
   ]

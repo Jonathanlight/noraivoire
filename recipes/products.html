@@ -22,14 +22,18 @@
   <main class="container stack py-8">
     <h1 class="text-xl font-bold">Catalogue</h1>
     <form class="cluster" action="#" method="get" aria-label="Filtrer le catalogue">
-      <label for="categorie">Catégorie</label>
-      <select id="categorie" name="categorie">
-        <option>Toutes</option><option>Maison</option><option>Bureau</option>
-      </select>
-      <label for="tri">Trier par</label>
-      <select id="tri" name="tri">
-        <option>Pertinence</option><option>Prix croissant</option><option>Prix décroissant</option>
-      </select>
+      <div class="field" data-size="sm">
+        <label class="field-label" for="categorie">Catégorie</label>
+        <select class="select" id="categorie" name="categorie" data-size="sm">
+          <option>Toutes</option><option>Maison</option><option>Bureau</option>
+        </select>
+      </div>
+      <div class="field" data-size="sm">
+        <label class="field-label" for="tri">Trier par</label>
+        <select class="select" id="tri" name="tri" data-size="sm">
+          <option>Pertinence</option><option>Prix croissant</option><option>Prix décroissant</option>
+        </select>
+      </div>
       <button class="btn" data-tone="neutral" type="submit">Filtrer</button>
     </form>
     <section class="grid-auto" aria-label="Produits">

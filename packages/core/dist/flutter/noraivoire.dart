@@ -512,3 +512,596 @@ class NoraCard extends StatelessWidget {
     return box;
   }
 }
+
+/// Case à cocher : un <label class="checkbox"> contenant <input type="checkbox"> et son texte (zone cliquable ≥ 44 px).
+class NoraCheckbox extends StatelessWidget {
+  const NoraCheckbox({
+    super.key,
+    required this.value,
+    required this.onChanged,
+    required this.child,
+    this.tone = NoraTone.primary,
+    this.size = NoraSize.md,
+    this.invalid,
+    this.haptic = true,
+  });
+
+  final bool value;
+
+  /// `null` : désactivé.
+  final ValueChanged<bool>? onChanged;
+
+  /// Libellé visible, fusionné dans la sémantique du contrôle.
+  final Widget child;
+  final NoraTone tone;
+  final NoraSize size;
+  final bool? invalid;
+  final bool haptic;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = NoraTheme.of(context).colors;
+    final accent = switch (tone) {
+      NoraTone.primary => colors.primary,
+      NoraTone.neutral => colors.neutral,
+      NoraTone.danger => colors.danger,
+      NoraTone.success => colors.success,
+      NoraTone.warning => colors.warning,
+    };
+    final onAccent = switch (tone) {
+      NoraTone.primary => colors.onPrimary,
+      NoraTone.neutral => colors.onNeutral,
+      NoraTone.danger => colors.onDanger,
+      NoraTone.success => colors.onSuccess,
+      NoraTone.warning => colors.onWarning,
+    };
+    final bg = colors.surface;
+    final fg = colors.text;
+    final border = colors.textMuted;
+    final focus = colors.focus;
+    final invalidColor = colors.danger;
+    final (padY, padX, fontSize) = switch (size) {
+      NoraSize.sm => (4.0, 8.0, 14.0),
+      NoraSize.md => (6.0, 10.0, 16.0),
+      NoraSize.lg => (8.0, 12.0, 18.0),
+    };
+    final scope = NoraFieldScope.maybeOf(context);
+    final isInvalid = invalid ?? (scope?.error != null);
+    final enabled = onChanged != null && (scope?.enabled ?? true);
+
+    void toggle() {
+      if (haptic) HapticFeedback.lightImpact();
+      onChanged!(!value);
+    }
+
+    return MergeSemantics(
+      child: Opacity(
+        opacity: enabled ? 1.0 : 0.5,
+        child: InkWell(
+          onTap: enabled ? toggle : null,
+          borderRadius: BorderRadius.circular(NoraRadius.sm),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: 44.0),
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: padY),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Checkbox(
+                    value: value,
+                    onChanged: enabled ? (_) => toggle() : null,
+                    isError: isInvalid,
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    visualDensity: VisualDensity.compact,
+                    checkColor: onAccent,
+                    fillColor: WidgetStateProperty.resolveWith((s) => s.contains(WidgetState.selected) ? accent : bg),
+                    side: WidgetStateBorderSide.resolveWith(
+                      (s) => BorderSide(color: s.contains(WidgetState.selected) ? accent : (isInvalid ? invalidColor : border), width: 2),
+                    ),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(NoraRadius.sm)),
+                    focusColor: focus.withValues(alpha: 0.24),
+                  ),
+                  SizedBox(width: padX),
+                  Flexible(
+                    child: DefaultTextStyle.merge(
+                      style: TextStyle(color: fg, fontSize: fontSize, height: 1.3),
+                      child: child,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Groupe de champ : libellé (.field-label), contrôle, aide (.field-help) et erreur (.field-error). Relier aide et erreur au contrôle par aria-describedby.
+class NoraField extends StatelessWidget {
+  const NoraField({
+    super.key,
+    required this.label,
+    required this.child,
+    this.help,
+    this.error,
+    this.enabled = true,
+    this.size = NoraSize.md,
+  });
+
+  final String label;
+  final Widget child;
+  final String? help;
+  final String? error;
+  final bool enabled;
+  final NoraSize size;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = NoraTheme.of(context).colors;
+    final fg = colors.text;
+    final muted = colors.textMuted;
+    final invalidColor = colors.danger;
+    final (padY, _, fontSize) = switch (size) {
+      NoraSize.sm => (4.0, 0.0, 14.0),
+      NoraSize.md => (6.0, 0.0, 16.0),
+      NoraSize.lg => (8.0, 0.0, 18.0),
+    };
+    final help = this.help;
+    final error = this.error;
+    return NoraFieldScope(
+      label: label,
+      help: help,
+      error: error,
+      enabled: enabled,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Le libellé est porté par la sémantique du contrôle (NoraFieldScope) : pas de double lecture.
+          ExcludeSemantics(
+            child: Opacity(
+              opacity: enabled ? 1.0 : 0.5,
+              child: Text(label, style: TextStyle(color: fg, fontSize: fontSize, fontWeight: FontWeight.w600, height: 1.3)),
+            ),
+          ),
+          SizedBox(height: padY),
+          child,
+          if (help != null) ...[
+            SizedBox(height: padY),
+            ExcludeSemantics(child: Text(help, style: TextStyle(color: muted, fontSize: fontSize * 0.875))),
+          ],
+          if (error != null) ...[
+            SizedBox(height: padY),
+            Semantics(
+              liveRegion: true,
+              child: Text(error, style: TextStyle(color: invalidColor, fontSize: fontSize * 0.875, fontWeight: FontWeight.w600)),
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+/// Champ de saisie sur une ligne. Toujours associé à un <label for> (ou placé dans un .field). Invalide : aria-invalid="true" + aria-describedby vers le message.
+class NoraInput extends StatelessWidget {
+  const NoraInput({
+    super.key,
+    this.controller,
+    this.focusNode,
+    this.onChanged,
+    this.onSubmitted,
+    this.keyboardType,
+    this.textInputAction,
+    this.autofillHints,
+    this.obscureText = false,
+    this.size = NoraSize.md,
+    this.semanticLabel,
+    this.hint,
+    this.invalid,
+    this.enabled = true,
+  });
+
+  final TextEditingController? controller;
+  final FocusNode? focusNode;
+  final ValueChanged<String>? onChanged;
+  final ValueChanged<String>? onSubmitted;
+  final TextInputType? keyboardType;
+  final TextInputAction? textInputAction;
+  final Iterable<String>? autofillHints;
+  final bool obscureText;
+  final NoraSize size;
+
+  /// Libellé lu par les lecteurs d'écran ; par défaut celui du [NoraField] parent.
+  final String? semanticLabel;
+  final String? hint;
+
+  /// État invalide ; par défaut : le [NoraField] parent affiche une erreur.
+  final bool? invalid;
+  final bool enabled;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = NoraTheme.of(context).colors;
+    final bg = colors.surface;
+    final fg = colors.text;
+    final border = colors.textMuted;
+    final muted = colors.textMuted;
+    final focus = colors.focus;
+    final invalidColor = colors.danger;
+    final (padY, padX, fontSize) = switch (size) {
+      NoraSize.sm => (6.0, 10.0, 14.0),
+      NoraSize.md => (10.0, 12.0, 16.0),
+      NoraSize.lg => (12.0, 16.0, 18.0),
+    };
+    final scope = NoraFieldScope.maybeOf(context);
+    final isInvalid = invalid ?? (scope?.error != null);
+    final isEnabled = enabled && (scope?.enabled ?? true);
+    final radius = BorderRadius.circular(NoraRadius.md);
+    OutlineInputBorder outline(Color color, [double width = 1.0]) =>
+        OutlineInputBorder(borderRadius: radius, borderSide: BorderSide(color: color, width: width));
+    final decoration = InputDecoration(
+      isDense: true,
+      filled: true,
+      fillColor: bg,
+      hintText: hint,
+      hintStyle: TextStyle(color: muted, fontSize: fontSize),
+      contentPadding: EdgeInsets.symmetric(vertical: padY, horizontal: padX),
+      constraints: const BoxConstraints(minHeight: 44.0),
+      enabledBorder: outline(isInvalid ? invalidColor : border),
+      disabledBorder: outline(border),
+      focusedBorder: outline(isInvalid ? invalidColor : focus, 2.0),
+    );
+    return Semantics(
+      label: semanticLabel ?? scope?.label,
+      hint: scope?.error ?? scope?.help,
+      child: Opacity(
+        opacity: isEnabled ? 1.0 : 0.5,
+        child: TextField(
+          controller: controller,
+          focusNode: focusNode,
+          enabled: isEnabled,
+          onChanged: onChanged,
+          onSubmitted: onSubmitted,
+          keyboardType: keyboardType,
+          textInputAction: textInputAction,
+          autofillHints: autofillHints,
+          obscureText: obscureText,
+          cursorColor: focus,
+          style: TextStyle(color: fg, fontSize: fontSize, height: 1.4),
+          decoration: decoration,
+        ),
+      ),
+    );
+  }
+}
+
+/// Liste de choix native. Toujours associée à un <label for>.
+class NoraSelect<T> extends StatefulWidget {
+  const NoraSelect({
+    super.key,
+    required this.items,
+    required this.value,
+    required this.onChanged,
+    this.size = NoraSize.md,
+    this.semanticLabel,
+    this.hint,
+    this.invalid,
+    this.enabled = true,
+  });
+
+  final List<DropdownMenuItem<T>> items;
+  final T? value;
+  final ValueChanged<T?>? onChanged;
+  final NoraSize size;
+
+  /// Libellé lu par les lecteurs d'écran ; par défaut celui du [NoraField] parent.
+  final String? semanticLabel;
+  final String? hint;
+
+  /// État invalide ; par défaut : le [NoraField] parent affiche une erreur.
+  final bool? invalid;
+  final bool enabled;
+
+  @override
+  State<NoraSelect<T>> createState() => _NoraSelectState<T>();
+}
+
+class _NoraSelectState<T> extends State<NoraSelect<T>> {
+  bool _focused = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = NoraTheme.of(context).colors;
+    final size = widget.size;
+    final hint = widget.hint;
+    final invalid = widget.invalid;
+    final enabled = widget.enabled && widget.onChanged != null;
+    final bg = colors.surface;
+    final fg = colors.text;
+    final border = colors.textMuted;
+    final muted = colors.textMuted;
+    final focus = colors.focus;
+    final invalidColor = colors.danger;
+    final (padY, padX, fontSize) = switch (size) {
+      NoraSize.sm => (6.0, 10.0, 14.0),
+      NoraSize.md => (10.0, 12.0, 16.0),
+      NoraSize.lg => (12.0, 16.0, 18.0),
+    };
+    final scope = NoraFieldScope.maybeOf(context);
+    final isInvalid = invalid ?? (scope?.error != null);
+    final isEnabled = enabled && (scope?.enabled ?? true);
+    final radius = BorderRadius.circular(NoraRadius.md);
+    OutlineInputBorder outline(Color color, [double width = 1.0]) =>
+        OutlineInputBorder(borderRadius: radius, borderSide: BorderSide(color: color, width: width));
+    final decoration = InputDecoration(
+      isDense: true,
+      filled: true,
+      fillColor: bg,
+      hintText: hint,
+      hintStyle: TextStyle(color: muted, fontSize: fontSize),
+      contentPadding: EdgeInsets.symmetric(vertical: padY, horizontal: padX),
+      constraints: const BoxConstraints(minHeight: 44.0),
+      enabledBorder: outline(isInvalid ? invalidColor : border),
+      disabledBorder: outline(border),
+      focusedBorder: outline(isInvalid ? invalidColor : focus, 2.0),
+    );
+    return Semantics(
+      label: widget.semanticLabel ?? scope?.label,
+      hint: scope?.error ?? scope?.help,
+      enabled: isEnabled,
+      child: Opacity(
+        opacity: isEnabled ? 1.0 : 0.5,
+        child: Focus(
+          canRequestFocus: false,
+          skipTraversal: true,
+          onFocusChange: (v) => setState(() => _focused = v),
+          child: InputDecorator(
+            decoration: decoration,
+            isFocused: _focused,
+            isEmpty: widget.value == null,
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<T>(
+                value: widget.value,
+                items: widget.items,
+                onChanged: isEnabled ? widget.onChanged : null,
+                hint: hint == null ? null : Text(hint, style: TextStyle(color: muted)),
+                isDense: true,
+                isExpanded: true,
+                dropdownColor: bg,
+                iconEnabledColor: fg,
+                iconDisabledColor: muted,
+                borderRadius: radius,
+                style: TextStyle(color: fg, fontSize: fontSize),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Interrupteur marche/arrêt : un <label class="switch"> contenant <input type="checkbox" role="switch"> et son texte. Effet immédiat, sans bouton Valider.
+class NoraSwitch extends StatelessWidget {
+  const NoraSwitch({
+    super.key,
+    required this.value,
+    required this.onChanged,
+    required this.child,
+    this.tone = NoraTone.primary,
+    this.size = NoraSize.md,
+    this.invalid,
+    this.haptic = true,
+  });
+
+  final bool value;
+
+  /// `null` : désactivé.
+  final ValueChanged<bool>? onChanged;
+
+  /// Libellé visible, fusionné dans la sémantique du contrôle.
+  final Widget child;
+  final NoraTone tone;
+  final NoraSize size;
+  final bool? invalid;
+  final bool haptic;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = NoraTheme.of(context).colors;
+    final accent = switch (tone) {
+      NoraTone.primary => colors.primary,
+      NoraTone.neutral => colors.neutral,
+      NoraTone.danger => colors.danger,
+      NoraTone.success => colors.success,
+      NoraTone.warning => colors.warning,
+    };
+    final onAccent = switch (tone) {
+      NoraTone.primary => colors.onPrimary,
+      NoraTone.neutral => colors.onNeutral,
+      NoraTone.danger => colors.onDanger,
+      NoraTone.success => colors.onSuccess,
+      NoraTone.warning => colors.onWarning,
+    };
+    final bg = colors.surface;
+    final fg = colors.text;
+    final border = colors.textMuted;
+    final focus = colors.focus;
+    final invalidColor = colors.danger;
+    final (padY, padX, fontSize) = switch (size) {
+      NoraSize.sm => (4.0, 8.0, 14.0),
+      NoraSize.md => (6.0, 10.0, 16.0),
+      NoraSize.lg => (8.0, 12.0, 18.0),
+    };
+    final scope = NoraFieldScope.maybeOf(context);
+    final isInvalid = invalid ?? (scope?.error != null);
+    final enabled = onChanged != null && (scope?.enabled ?? true);
+
+    void toggle() {
+      if (haptic) HapticFeedback.lightImpact();
+      onChanged!(!value);
+    }
+
+    return MergeSemantics(
+      child: Opacity(
+        opacity: enabled ? 1.0 : 0.5,
+        child: InkWell(
+          onTap: enabled ? toggle : null,
+          borderRadius: BorderRadius.circular(NoraRadius.sm),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: 44.0),
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: padY),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Switch(
+                    value: value,
+                    onChanged: enabled ? (_) => toggle() : null,
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    thumbColor: WidgetStateProperty.resolveWith((s) => s.contains(WidgetState.selected) ? onAccent : bg),
+                    trackColor: WidgetStateProperty.resolveWith((s) => s.contains(WidgetState.selected) ? accent : border),
+                    trackOutlineColor: WidgetStateProperty.resolveWith(
+                      (s) => s.contains(WidgetState.selected) ? accent : (isInvalid ? invalidColor : border),
+                    ),
+                    focusColor: focus.withValues(alpha: 0.24),
+                  ),
+                  SizedBox(width: padX),
+                  Flexible(
+                    child: DefaultTextStyle.merge(
+                      style: TextStyle(color: fg, fontSize: fontSize, height: 1.3),
+                      child: child,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Zone de texte sur plusieurs lignes, redimensionnable verticalement. Toujours associée à un <label for>.
+class NoraTextarea extends StatelessWidget {
+  const NoraTextarea({
+    super.key,
+    this.controller,
+    this.focusNode,
+    this.onChanged,
+    this.onSubmitted,
+    this.keyboardType,
+    this.textInputAction,
+    this.autofillHints,
+    this.minLines = 3,
+    this.maxLines = 8,
+    this.size = NoraSize.md,
+    this.semanticLabel,
+    this.hint,
+    this.invalid,
+    this.enabled = true,
+  });
+
+  final TextEditingController? controller;
+  final FocusNode? focusNode;
+  final ValueChanged<String>? onChanged;
+  final ValueChanged<String>? onSubmitted;
+  final TextInputType? keyboardType;
+  final TextInputAction? textInputAction;
+  final Iterable<String>? autofillHints;
+  final int minLines;
+  final int maxLines;
+  final NoraSize size;
+
+  /// Libellé lu par les lecteurs d'écran ; par défaut celui du [NoraField] parent.
+  final String? semanticLabel;
+  final String? hint;
+
+  /// État invalide ; par défaut : le [NoraField] parent affiche une erreur.
+  final bool? invalid;
+  final bool enabled;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = NoraTheme.of(context).colors;
+    final bg = colors.surface;
+    final fg = colors.text;
+    final border = colors.textMuted;
+    final muted = colors.textMuted;
+    final focus = colors.focus;
+    final invalidColor = colors.danger;
+    final (padY, padX, fontSize) = switch (size) {
+      NoraSize.sm => (6.0, 10.0, 14.0),
+      NoraSize.md => (10.0, 12.0, 16.0),
+      NoraSize.lg => (12.0, 16.0, 18.0),
+    };
+    final scope = NoraFieldScope.maybeOf(context);
+    final isInvalid = invalid ?? (scope?.error != null);
+    final isEnabled = enabled && (scope?.enabled ?? true);
+    final radius = BorderRadius.circular(NoraRadius.md);
+    OutlineInputBorder outline(Color color, [double width = 1.0]) =>
+        OutlineInputBorder(borderRadius: radius, borderSide: BorderSide(color: color, width: width));
+    final decoration = InputDecoration(
+      isDense: true,
+      filled: true,
+      fillColor: bg,
+      hintText: hint,
+      hintStyle: TextStyle(color: muted, fontSize: fontSize),
+      contentPadding: EdgeInsets.symmetric(vertical: padY, horizontal: padX),
+      constraints: const BoxConstraints(minHeight: 44.0),
+      enabledBorder: outline(isInvalid ? invalidColor : border),
+      disabledBorder: outline(border),
+      focusedBorder: outline(isInvalid ? invalidColor : focus, 2.0),
+    );
+    return Semantics(
+      label: semanticLabel ?? scope?.label,
+      hint: scope?.error ?? scope?.help,
+      child: Opacity(
+        opacity: isEnabled ? 1.0 : 0.5,
+        child: TextField(
+          controller: controller,
+          focusNode: focusNode,
+          enabled: isEnabled,
+          onChanged: onChanged,
+          onSubmitted: onSubmitted,
+          keyboardType: keyboardType ?? TextInputType.multiline,
+          textInputAction: textInputAction,
+          autofillHints: autofillHints,
+          minLines: minLines,
+          maxLines: maxLines,
+          cursorColor: focus,
+          style: TextStyle(color: fg, fontSize: fontSize, height: 1.4),
+          decoration: decoration,
+        ),
+      ),
+    );
+  }
+}
+
+/// Transmet le libellé, l'aide, l'erreur et l'état d'un [NoraField] aux contrôles
+/// descendants (équivalent Flutter de `<label for>` et `aria-describedby`).
+class NoraFieldScope extends InheritedWidget {
+  const NoraFieldScope({
+    super.key,
+    required this.label,
+    this.help,
+    this.error,
+    this.enabled = true,
+    required super.child,
+  });
+
+  final String label;
+  final String? help;
+  final String? error;
+  final bool enabled;
+
+  static NoraFieldScope? maybeOf(BuildContext context) => context.dependOnInheritedWidgetOfExactType<NoraFieldScope>();
+
+  @override
+  bool updateShouldNotify(NoraFieldScope oldWidget) =>
+      label != oldWidget.label || help != oldWidget.help || error != oldWidget.error || enabled != oldWidget.enabled;
+}

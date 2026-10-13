@@ -6,7 +6,7 @@ import { join, resolve, sep, basename } from 'node:path';
 import { safeParse, validateTokens, validateComponent, validateEffect, SpecError } from './validate.js';
 
 /** Liste les fichiers *.nora.json d'un sous-dossier, sans suivre les liens symboliques. */
-function listSpecs(root, sub) {
+export function listSpecs(root, sub) {
   const dir = join(root, sub);
   let names = [];
   try { names = readdirSync(dir); } catch { return []; }

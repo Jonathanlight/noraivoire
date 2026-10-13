@@ -179,3 +179,21 @@ test('resolve : substitution $tone et identifiants sûrs', () => {
   assert.equal(camel('on-primary'), 'onPrimary');
   assert.equal(camel('4'), 's4');
 });
+
+test('sécurité : une description multi-ligne ne peut pas injecter de code natif', () => {
+  const payload = 'Bouton.\r\nvoid pirate() {}\n*/ export const pirate = 1; /* x';
+  const dir = tempSpec((s) => {
+    for (const f of ['components/btn.nora.json', 'effects/tilt.nora.json', 'effects/reveal.nora.json']) {
+      const p = join(s, f);
+      const spec = JSON.parse(readFileSync(p, 'utf8'));
+      spec.description = payload;
+      writeFileSync(p, JSON.stringify(spec));
+    }
+  });
+  const { files } = compile(dir);
+  const dart = files['flutter/noraivoire.dart'];
+  const tsx = files['react-native/noraivoire.tsx'];
+  assert.ok(!/^void pirate/m.test(dart), 'code Dart injecté hors commentaire');
+  assert.ok(!/^\s*\*\/ export const pirate/m.test(tsx) && !tsx.includes('*/ export const pirate'), 'fin de bloc TSX non neutralisée');
+  for (const line of dart.split(/\r?\n/)) if (line.includes('pirate')) assert.match(line, /^\s*\/\/\//);
+});

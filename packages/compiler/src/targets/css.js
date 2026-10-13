@@ -85,10 +85,158 @@ const LAYOUT = `@layer nora.layout {
   :where(.cq) { container-type: inline-size; }
 }`;
 
+/** Variables d'un composant : tokens, espacements et police de la taille par défaut. */
+function componentVars(c, tokens) {
+  const n = c.component;
+  const where = `component:${n}`;
+  const vars = { tone: c.defaults.tone, size: c.defaults.size };
+  const decl = Object.entries(c.tokens).map(([k, ref]) => `--${n}-${k}: ${toCssValue(resolveRef(ref, tokens, vars, where))};`);
+  const size = c.sizes[c.defaults.size];
+  for (const k of ['pad-y', 'pad-x', 'font']) decl.push(`--${n}-${k}: ${toCssValue(resolveRef(size[k], tokens, vars, where))};`);
+  return decl;
+}
+
+/** Règles de variantes : tons (tokens dépendant de $tone) et tailles (espacements, police). */
+function variantRules(c, tokens) {
+  const n = c.component;
+  const where = `component:${n}`;
+  const d = c.defaults;
+  const out = [];
+  for (const tone of c.variants.tone) {
+    if (tone === d.tone) continue;
+    const tv = { tone, size: d.size };
+    const lines = Object.entries(c.tokens).filter(([, ref]) => ref.includes('$tone'))
+      .map(([k, ref]) => `--${n}-${k}: ${toCssValue(resolveRef(ref, tokens, tv, where))};`);
+    if (lines.length) out.push(`  :where(.${n}[data-tone="${tone}"]) { ${lines.join(' ')} }`);
+  }
+  for (const s of c.variants.size) {
+    if (s === d.size) continue;
+    const sz = c.sizes[s];
+    const sv = { tone: d.tone, size: s };
+    out.push(`  :where(.${n}[data-size="${s}"]) { --${n}-pad-y: ${toCssValue(resolveRef(sz['pad-y'], tokens, sv, where))}; --${n}-pad-x: ${toCssValue(resolveRef(sz['pad-x'], tokens, sv, where))}; --${n}-font: ${toCssValue(resolveRef(sz.font, tokens, sv, where))}; }`);
+  }
+  return out;
+}
+
+const block = (sel, decl) => `  ${sel} {\n${decl.map((x) => `    ${x}`).join('\n')}\n  }`;
+
+/** Durée d'interaction d'un composant (référence de token ou nombre en ms). */
+function pressDuration(c, tokens) {
+  const d = c.motion?.press?.duration;
+  if (d === undefined) return 'var(--nora-duration-fast)';
+  if (typeof d === 'number') return `${d}ms`;
+  return toCssValue(resolveRef(d, tokens, {}, `component:${c.component}`));
+}
+
+/**
+ * Composants de formulaire. États : focus visible (:focus-visible), invalide
+ * (aria-invalid="true"), désactivé (:disabled / aria-disabled). Zone ≥ minTarget.
+ */
+function formRules(c, tokens, shape) {
+  const n = c.component;
+  const dur = pressDuration(c, tokens);
+  const st = c.states ?? {};
+  const ring = st.focus?.ring ?? 2;
+  const focusVar = st.focus?.token ? `var(--${n}-${st.focus.token})` : 'var(--nora-color-focus)';
+  const invalidVar = st.invalid?.token ? `var(--${n}-${st.invalid.token})` : 'var(--nora-color-danger)';
+  const opacity = st.disabled?.opacity ?? 0.5;
+  const el = c.elements[0];
+  const out = [];
+
+  if (shape === 'control') {
+    out.push(block(`:where(.${n})`, [
+      ...componentVars(c, tokens),
+      'display: block;', 'inline-size: 100%;',
+      el === 'textarea' ? 'min-block-size: 6rem;' : `min-block-size: ${c.a11y.minTarget}px;`,
+      `padding-block: var(--${n}-pad-y);`, `padding-inline: var(--${n}-pad-x);`, `font-size: var(--${n}-font);`, 'line-height: 1.4;',
+      `color: var(--${n}-fg);`, `background-color: var(--${n}-bg);`,
+      c.tokens.border ? `border: 1px solid var(--${n}-border);` : 'border: 0;',
+      c.tokens.radius ? `border-radius: var(--${n}-radius);` : 'border-radius: 0;',
+      `transition: border-color ${dur} ease, outline-color ${dur} ease;`,
+      ...(el === 'textarea' ? ['resize: vertical;'] : []),
+      ...(el === 'select' ? [
+        'appearance: none;',
+        `padding-inline-end: calc(var(--${n}-pad-x) + 1.25em);`,
+        'background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%);',
+        `background-position: calc(100% - var(--${n}-pad-x) - 0.375em) 50%, calc(100% - var(--${n}-pad-x)) 50%;`,
+        'background-size: 0.375em 0.375em;', 'background-repeat: no-repeat;',
+      ] : []),
+    ]));
+    out.push(...variantRules(c, tokens));
+    if (el === 'select') out.push(`  :where(.${n}[multiple], .${n}[size]) { background-image: none; padding-inline-end: var(--${n}-pad-x); }`);
+    if (c.tokens.muted) out.push(`  :where(.${n})::placeholder { color: var(--${n}-muted); opacity: 1; }`);
+    out.push(`  :where(.${n}:focus-visible) { outline: ${ring}px solid ${focusVar}; outline-offset: 1px; border-color: ${focusVar}; }`);
+    out.push(`  :where(.${n}[aria-invalid="true"]) { border-color: ${invalidVar}; }`);
+    out.push(`  :where(.${n}[aria-invalid="true"]:focus-visible) { outline-color: ${invalidVar}; }`);
+    out.push(`  :where(.${n}:disabled, .${n}[aria-disabled="true"]) { opacity: ${opacity}; cursor: not-allowed; }`);
+  } else if (shape === 'toggle') {
+    const isSwitch = c.a11y.role === 'switch';
+    const box = `:where(.${n}) > :where(input)`;
+    out.push(block(`:where(.${n})`, [
+      ...componentVars(c, tokens),
+      'display: inline-flex;', 'align-items: center;', `gap: var(--${n}-pad-x);`,
+      `min-block-size: ${c.a11y.minTarget}px;`, `padding-block: var(--${n}-pad-y);`,
+      `font-size: var(--${n}-font);`, 'line-height: 1.3;', `color: var(--${n}-fg);`, 'cursor: pointer;',
+      '-webkit-tap-highlight-color: transparent;',
+    ]));
+    out.push(...variantRules(c, tokens));
+    out.push(block(box, [
+      'appearance: none;', 'flex: none;', 'margin: 0;', 'padding: 0;', 'cursor: inherit;',
+      isSwitch ? 'display: inline-flex;' : 'display: inline-grid;',
+      isSwitch ? 'align-items: center;' : 'place-content: center;',
+      isSwitch ? 'inline-size: 2.25em;' : 'inline-size: 1.25em;', 'block-size: 1.25em;',
+      `background-color: var(--${n}-${isSwitch ? 'border' : 'bg'});`,
+      `border: 2px solid var(--${n}-border);`, `border-radius: var(--${n}-radius);`,
+      `transition: background-color ${dur} ease, border-color ${dur} ease;`,
+    ]));
+    if (isSwitch) {
+      out.push(block(`${box}::before`, [
+        'content: "";', 'inline-size: calc(1.25em - 8px);', 'block-size: calc(1.25em - 8px);', 'margin-inline-start: 2px;',
+        'border-radius: 50%;', `background: var(--${n}-bg);`, `transition: transform ${dur} ease;`,
+      ]));
+      out.push(`  :where(.${n}) > :where(input:checked)::before { transform: translateX(1em); background: var(--${n}-on-accent); }`);
+      out.push(`  :where(.${n}:dir(rtl)) > :where(input:checked)::before { transform: translateX(-1em); }`);
+    } else {
+      out.push(block(`${box}::before`, [
+        'content: "";', 'inline-size: 0.7em;', 'block-size: 0.7em;', `background: var(--${n}-on-accent);`,
+        'clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);',
+        'transform: scale(0);', `transition: transform ${dur} ease;`,
+      ]));
+      out.push(`  :where(.${n}) > :where(input:indeterminate)::before { clip-path: inset(40% 0); transform: scale(1); }`);
+      out.push(`  :where(.${n}) > :where(input:checked)::before { transform: scale(1); }`);
+      out.push(`  :where(.${n}) > :where(input:checked, input:indeterminate) { background-color: var(--${n}-accent); border-color: var(--${n}-accent); }`);
+    }
+    if (isSwitch) out.push(`  :where(.${n}) > :where(input:checked) { background-color: var(--${n}-accent); border-color: var(--${n}-accent); }`);
+    out.push(`  :where(.${n}) > :where(input:focus-visible) { outline: ${ring}px solid ${focusVar}; outline-offset: 2px; }`);
+    out.push(`  :where(.${n}) > :where(input[aria-invalid="true"]) { border-color: ${invalidVar}; }`);
+    out.push(`  :where(.${n}:has(> input:disabled), .${n}[aria-disabled="true"]) { opacity: ${opacity}; cursor: not-allowed; }`);
+    out.push(`  @media (forced-colors: active) {\n    ${box} { appearance: auto; }\n  }`);
+  } else {
+    // group : libellé, aide, erreur
+    out.push(block(`:where(.${n})`, [
+      ...componentVars(c, tokens),
+      'display: flex;', 'flex-direction: column;', `gap: var(--${n}-pad-y);`, 'min-inline-size: 0;',
+      'margin: 0;', 'padding: 0;', 'border: 0;', `font-size: var(--${n}-font);`,
+      c.tokens.fg ? `color: var(--${n}-fg);` : 'color: inherit;',
+    ]));
+    out.push(...variantRules(c, tokens));
+    const parts = new Set(c.parts ?? []);
+    if (parts.has('label')) out.push(`  :where(.${n}-label) { font-weight: 600; line-height: 1.3; padding: 0; }`);
+    if (parts.has('help')) out.push(`  :where(.${n}-help) { margin: 0; font-size: 0.875em; color: ${c.tokens.muted ? `var(--${n}-muted)` : 'inherit'}; }`);
+    if (parts.has('error')) {
+      out.push(`  :where(.${n}-error) { margin: 0; font-size: 0.875em; font-weight: 600; color: ${invalidVar}; }`);
+      out.push(`  :where(.${n}-error:empty) { display: none; }`);
+    }
+    if (parts.has('label')) out.push(`  :where(.${n}:has(:disabled)) > :where(.${n}-label) { opacity: ${opacity}; }`);
+  }
+  return out.join('\n');
+}
+
 function componentRules(c, tokens) {
   const n = c.component;
   const where = `component:${n}`;
   const shape = shapeFromRole(c);
+  if (shape === 'control' || shape === 'toggle' || shape === 'group') return formRules(c, tokens, shape);
   const d = c.defaults;
   const vars = { tone: d.tone, size: d.size };
   const decl = [];

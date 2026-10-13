@@ -33,9 +33,45 @@
       <article class="card" data-fx="reveal">
         <form class="stack" action="#" method="post">
           <h2 class="text-lg font-bold">Connexion</h2>
-          <label class="stack gap-1">E-mail <input type="email" name="email" autocomplete="email" required></label>
-          <label class="stack gap-1">Mot de passe <input type="password" name="password" autocomplete="current-password" required></label>
+          <div class="field">
+            <label class="field-label" for="login-email">E-mail</label>
+            <input class="input" id="login-email" type="email" name="email" autocomplete="email" required aria-describedby="login-email-aide">
+            <p class="field-help" id="login-email-aide">L'adresse de votre compte.</p>
+          </div>
+          <div class="field">
+            <label class="field-label" for="login-password">Mot de passe</label>
+            <input class="input" id="login-password" type="password" name="password" autocomplete="current-password" required>
+          </div>
+          <label class="checkbox"><input type="checkbox" name="remember"> Rester connecté</label>
           <button class="btn w-full" type="submit" data-size="lg">Se connecter</button>
+        </form>
+      </article>
+
+      <article class="card" data-fx="reveal">
+        <form class="stack" action="#" method="post">
+          <h2 class="text-lg font-bold">États des champs</h2>
+          <div class="field">
+            <label class="field-label" for="demo-pays">Pays</label>
+            <select class="select" id="demo-pays" name="pays">
+              <option value="ci">Côte d'Ivoire</option>
+              <option value="sn">Sénégal</option>
+              <option value="cm">Cameroun</option>
+            </select>
+          </div>
+          <div class="field">
+            <label class="field-label" for="demo-code">Code promo</label>
+            <input class="input" id="demo-code" type="text" name="code" value="NORA-0" aria-invalid="true" aria-describedby="demo-code-erreur">
+            <p class="field-error" id="demo-code-erreur">Ce code a expiré.</p>
+          </div>
+          <div class="field">
+            <label class="field-label" for="demo-ref">Référence</label>
+            <input class="input" id="demo-ref" type="text" name="ref" value="CMD-2026-0042" disabled>
+          </div>
+          <div class="field">
+            <label class="field-label" for="demo-message">Message</label>
+            <textarea class="textarea" id="demo-message" name="message" rows="3" placeholder="Votre demande…"></textarea>
+          </div>
+          <label class="switch"><input type="checkbox" role="switch" name="notifications" checked> Notifications par e-mail</label>
         </form>
       </article>
 

@@ -23,21 +23,21 @@
     <section class="card stack" aria-labelledby="titre">
       <h1 id="titre" class="text-xl font-bold">Nous contacter</h1>
       <form class="stack" action="#" method="post">
-        <div class="stack gap-1">
-          <label for="nom">Nom</label>
-          <input id="nom" name="nom" type="text" autocomplete="name" required>
+        <div class="field">
+          <label class="field-label" for="nom">Nom</label>
+          <input class="input" id="nom" name="nom" type="text" autocomplete="name" required>
         </div>
-        <div class="stack gap-1">
-          <label for="email">Adresse e-mail</label>
-          <input id="email" name="email" type="email" autocomplete="email" required>
+        <div class="field">
+          <label class="field-label" for="email">Adresse e-mail</label>
+          <input class="input" id="email" name="email" type="email" autocomplete="email" required>
         </div>
-        <div class="stack gap-1">
-          <label for="sujet">Sujet</label>
-          <select id="sujet" name="sujet"><option>Commande</option><option>Partenariat</option><option>Autre</option></select>
+        <div class="field">
+          <label class="field-label" for="sujet">Sujet</label>
+          <select class="select" id="sujet" name="sujet"><option>Commande</option><option>Partenariat</option><option>Autre</option></select>
         </div>
-        <div class="stack gap-1">
-          <label for="message">Message</label>
-          <textarea id="message" name="message" rows="6" required></textarea>
+        <div class="field">
+          <label class="field-label" for="message">Message</label>
+          <textarea class="textarea" id="message" name="message" rows="6" required></textarea>
         </div>
         <button class="btn" type="submit">Envoyer</button>
       </form>

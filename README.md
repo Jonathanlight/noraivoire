@@ -17,7 +17,7 @@ NoraIvoire est un langage de design universel. Une **spec** (tokens, composants,
 
 ```bash
 npm ci --ignore-scripts
-npm run verify        # build + 84 tests + validation des modèles + audit (50 contrôles)
+npm run verify        # build + 133 tests + validation des modèles + audit (84 contrôles)
 ```
 
 Commandes unitaires :
@@ -55,12 +55,17 @@ NoraTilt(child: NoraCard(glass: true, child: NoraBtn(tone: NoraTone.primary, onP
 spec/                 Source unique de vérité (*.nora.json)
 packages/compiler/    noractl : spec → CSS, Dart, TSX, manifest, llms, intégrité
 packages/engine/      Moteur d'effets web (defineEffect, data-fx), zéro dépendance
+packages/fx-scroll/   Effets optionnels pin, scrub, parallax (chargés à la demande)
+packages/fx-text/     Effets optionnels split, scramble (chargés à la demande)
 packages/cli/         nora check (validateur de templates) · nora audit
+packages/mcp/         Serveur MCP en lecture seule pour agents IA (voir packages/mcp/README.md)
 packages/core/dist/   Sorties compilées, versionnées (usage sans build)
 templates/            Modèles : html, twig, jsp, react, nextjs, vue, angular, flutter, react-native
 recipes/              20 écrans de référence indexés par intention (recipes/index.json)
 examples/flutter_app/ Projet Flutter : analyse et golden tests du Dart généré (npm run flutter:sync)
-tests/                84 tests (compilateur, sécurité, validateur, moteur, DOM, audit)
+recipes/              20 écrans de référence indexés par intention (recipes/index.json)
+adapters/symfony-bundle/ Bundle Symfony : Twig Components Nora:*, enums PHP, AssetMapper, nora:check (npm run symfony:sync)
+tests/                133 tests (compilateur, sécurité, validateur, moteur, DOM, audit)
 docs/                 Documentation technique, portabilité, sécurité, audit, tests, licence
 PROMPT.md             Prompt complet pour poursuivre le projet avec un agent IA
 ```

@@ -24,24 +24,22 @@
     <section class="card" aria-labelledby="pref">
     <form class="stack" action="#" method="post">
       <h2 id="pref" class="text-lg font-bold">Préférences</h2>
-      <div class="stack gap-1">
-        <label for="langue">Langue</label>
-        <select id="langue" name="langue"><option>Français</option><option>English</option></select>
+      <div class="field">
+        <label class="field-label" for="langue">Langue</label>
+        <select class="select" id="langue" name="langue"><option>Français</option><option>English</option></select>
       </div>
-      <div class="stack gap-1">
-        <label for="theme">Thème</label>
-        <select id="theme" name="theme"><option>Système</option><option>Clair</option><option>Sombre</option></select>
-      </div>
-      <div class="cluster">
-        <input id="notif-email" name="notif-email" type="checkbox" checked>
-        <label for="notif-email">Recevoir les notifications par e-mail</label>
-      </div>
-      <div class="cluster">
-        <input id="reduce" name="reduce" type="checkbox">
-        <label for="reduce">Réduire les animations</label>
+      <div class="field">
+        <label class="field-label" for="theme">Thème</label>
+        <select class="select" id="theme" name="theme"><option>Système</option><option>Clair</option><option>Sombre</option></select>
       </div>
       <button class="btn" type="submit">Enregistrer</button>
     </form>
+    </section>
+    <section class="card stack" aria-labelledby="notif">
+      <h2 id="notif" class="text-lg font-bold">Notifications et confort</h2>
+      <p class="text-sm text-muted">Ces réglages s'appliquent immédiatement.</p>
+      <label class="switch"><input type="checkbox" role="switch" name="notif-email" checked> Recevoir les notifications par e-mail</label>
+      <label class="switch"><input type="checkbox" role="switch" name="reduce"> Réduire les animations</label>
     </section>
     <section class="card stack" aria-labelledby="danger">
       <h2 id="danger" class="text-lg font-bold">Zone de danger</h2>

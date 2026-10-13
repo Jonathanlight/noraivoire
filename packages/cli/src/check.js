@@ -78,10 +78,12 @@ function hasAccessibleContent(text, tokens, el) {
 export function checkSource(text, file, manifest) {
   const issues = [];
   const components = manifest.components;
-  const utilities = new Set([...manifest.utilities, ...manifest.layout, ...manifest.surfaces]);
+  const parts = Object.values(components).flatMap((c) => c.parts ?? []);
+  const utilities = new Set([...manifest.utilities, ...manifest.layout, ...manifest.surfaces, ...parts]);
   const effects = new Set(Object.entries(manifest.effects).filter(([, e]) => e.kind !== 'surface-glass').map(([n]) => n));
   const allKnown = [...Object.keys(components), ...utilities];
   const { tokens, elements } = parseDocument(text);
+  const form = formIndex(elements);
 
   for (const el of elements) {
     const push = (level, rule, message, fix) => issues.push({ file, line: el.line, level, rule, message, ...(fix ? { fix } : {}) });
@@ -150,9 +152,106 @@ export function checkSource(text, file, manifest) {
         && !hasAccessibleContent(text, tokens, el)) {
         push('error', 'a11y-label', `<button class="${comp}"> sans texte ni aria-label`, 'ajouter un texte ou aria-label="…"');
       }
+      checkFormComponent(comp, spec, el, text, tokens, elements, form, push);
+    }
+
+    if (attrs['aria-invalid'] === 'true' && attrs['aria-describedby'] === undefined && attrs['aria-errormessage'] === undefined) {
+      push('warning', 'a11y-invalid-message', `<${tag} aria-invalid="true"> sans message d'erreur relié`,
+        'ajouter aria-describedby="id-du-message" vers un <p class="field-error" id="id-du-message">');
     }
   }
   return issues;
+}
+
+// ───────────── Formulaires ─────────────
+
+const NOT_LABELLABLE = new Set(['hidden', 'submit', 'button', 'reset', 'image']);
+const isStatic = (v) => typeof v === 'string' && v !== DYNAMIC && !TEMPLATE_EXPR.test(v);
+
+/** Index des libellés du document : <label for> statiques, présence de for dynamiques. */
+function formIndex(elements) {
+  const labelFor = new Set();
+  let dynamicFor = false;
+  for (const el of elements) {
+    if (el.name !== 'label') continue;
+    const f = el.attrs.for ?? el.attrs.htmlFor;
+    if (f === undefined) continue;
+    if (isStatic(f)) labelFor.add(f);
+    else dynamicFor = true;
+  }
+  return { labelFor, dynamicFor };
+}
+
+function ancestor(el, pred) {
+  for (let p = el.parent; p; p = p.parent) if (pred(p)) return p;
+  return null;
+}
+
+/** Descendants d'un élément : contigus après lui dans l'ordre du document. */
+function descendants(el, elements) {
+  const out = [];
+  for (let j = elements.indexOf(el) + 1; j < elements.length; j++) {
+    if (!ancestor(elements[j], (p) => p === el)) break;
+    out.push(elements[j]);
+  }
+  return out;
+}
+
+/** Un contrôle a-t-il un nom accessible : aria-label(ledby), <label> ancêtre ou <label for> relié à son id ? */
+function hasFormLabel(el, form) {
+  const a = el.attrs;
+  if ((a['aria-label'] !== undefined && a['aria-label'] !== '') || a['aria-labelledby'] !== undefined) return true;
+  if (ancestor(el, (p) => p.name === 'label')) return true;
+  const id = a.id;
+  if (id === undefined) return false;
+  if (!isStatic(id)) return form.dynamicFor || form.labelFor.size > 0; // identifiant calculé : on ne conclut pas
+  return form.labelFor.has(id) || form.dynamicFor;
+}
+
+/** Règles des composants de formulaire : label associé, input attendu, rôle d'interrupteur. */
+function checkFormComponent(comp, spec, el, text, tokens, elements, form, push) {
+  const shape = spec.shape;
+  const tag = el.name;
+  const opaque = (d) => /^[A-Z]/.test(d.rawName) || /[-:.]/.test(d.rawName); // composant de framework : contenu inconnu
+  if (shape === 'control') {
+    if (!spec.elements.includes(tag)) return;
+    if (tag === 'input' && isStatic(el.attrs.type) && NOT_LABELLABLE.has(el.attrs.type)) return;
+    if (!hasFormLabel(el, form)) {
+      const id = isStatic(el.attrs.id) ? el.attrs.id : 'mon-champ';
+      push('error', 'a11y-form-label', `<${tag} class="${comp}"> sans label associé`,
+        `ajouter <label for="${id}">…</label>${el.attrs.id === undefined ? ` et id="${id}"` : ''}, ou aria-label="…"`);
+    }
+  } else if (shape === 'toggle') {
+    if (tag !== 'label') return;
+    const inner = descendants(el, elements);
+    const inputType = spec.a11y?.inputType ?? 'checkbox';
+    const input = inner.find((d) => d.name === 'input');
+    if (!input) {
+      if (!inner.some(opaque)) {
+        const role = spec.a11y?.role && spec.a11y.role !== inputType ? ` role="${spec.a11y.role}"` : '';
+        push('error', 'a11y-toggle-input', `<label class="${comp}"> sans <input type="${inputType}">`, `<label class="${comp}"><input type="${inputType}"${role}> Texte</label>`);
+      }
+      return;
+    }
+    if (isStatic(input.attrs.type) && input.attrs.type !== inputType) {
+      push('error', 'a11y-toggle-input', `<input type="${input.attrs.type}"> dans .${comp} : type="${inputType}" attendu`, `type="${inputType}"`);
+    }
+    const role = spec.a11y?.role;
+    if (role && role !== inputType && input.attrs.role !== DYNAMIC && input.attrs.role !== role) {
+      push('error', 'a11y-switch-role', `<input> de .${comp} sans role="${role}"`, `ajouter role="${role}" sur l'input`);
+    }
+    const named = input.attrs['aria-label'] !== undefined || input.attrs['aria-labelledby'] !== undefined;
+    if (!named && !hasAccessibleContent(text, tokens, el)) {
+      push('error', 'a11y-form-label', `<label class="${comp}"> sans texte`, 'ajouter le texte du libellé dans le <label>');
+    }
+  } else if (shape === 'group') {
+    const inner = descendants(el, elements);
+    const hasLabel = inner.some((d) => d.name === 'label' || d.name === 'legend'
+      || (isStatic(d.attrs.class) && d.attrs.class.split(/\s+/).includes(`${comp}-label`)));
+    if (!hasLabel && !inner.some(opaque)) {
+      push('warning', 'field-label-missing', `.${comp} sans libellé`, `ajouter <label class="${comp}-label" for="…">…</label> (ou <legend> dans un <fieldset>)`);
+    }
+  }
 }
 
 function walk(dir, out) {
