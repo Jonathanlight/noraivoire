@@ -14,6 +14,12 @@
       "bytes": 23320,
       "gzip": 4864
     },
+    "noraivoire.legacy.min.css": {
+      "sha256": "a372fcd2c65f129f3646f11e58fccb7fc8950ab7333692b17019d1bc3a16920f",
+      "sri": "sha384-613lGsJf9XROxq8k5hMV5iKq3+QgdPQGColY52Rwpavsai5dVKK2AkCAL15yeDz3",
+      "bytes": 23073,
+      "gzip": 4773
+    },
     "noraivoire.engine.js": {
       "sha256": "0e3b958be6b32ef2669c64399689bbcf9e06ec64b793f2668a1c0e518eae3645",
       "sri": "sha384-6ehvPfJcr/G0h+otDZYlDsMxEztndp4zL141UAMhJBBSuJx1RWa0Bz/2Sy+ElVr7",

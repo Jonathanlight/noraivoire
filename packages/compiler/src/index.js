@@ -31,6 +31,50 @@ export function minifyCss(css) {
     .trim() + '\n';
 }
 
+/**
+ * Variante sans cascade layers pour les navigateurs antérieurs à 2022 (constat A-06),
+ * qui ignorent tout bloc `@layer`. Les blocs sont déroulés dans l'ordre de déclaration,
+ * qui est l'ordre de priorité des couches ; `:where()` garde une spécificité nulle.
+ * Parcours caractère par caractère : commentaires et chaînes ne sont jamais interprétés.
+ */
+export function unwrapLayers(css) {
+  let out = '';
+  const closers = []; // pour chaque « { » ouvert : true si c'est un bloc @layer à retirer
+  for (let i = 0; i < css.length; i++) {
+    const ch = css[i];
+    if (ch === '/' && css[i + 1] === '*') {
+      const end = css.indexOf('*/', i + 2);
+      const stop = end === -1 ? css.length : end + 2;
+      out += css.slice(i, stop);
+      i = stop - 1;
+    } else if (ch === '"' || ch === "'") {
+      let j = i + 1;
+      while (j < css.length && css[j] !== ch) j += css[j] === '\\' ? 2 : 1;
+      out += css.slice(i, j + 1);
+      i = j;
+    } else if (ch === '@' && css.startsWith('@layer', i) && !/[\w-]/.test(css[i + 6] ?? '')) {
+      const semi = css.indexOf(';', i);
+      const brace = css.indexOf('{', i);
+      if (semi !== -1 && (brace === -1 || semi < brace)) {
+        i = semi; // déclaration d'ordre « @layer a, b; » : supprimée
+        while (css[i + 1] === '\n') i++;
+      } else {
+        closers.push(true);
+        i = brace; // ouverture « @layer x { » : supprimée
+        while (css[i + 1] === '\n') i++;
+      }
+    } else if (ch === '{') {
+      closers.push(false);
+      out += ch;
+    } else if (ch === '}') {
+      if (closers.pop()) { while (css[i + 1] === '\n') i++; } else out += ch;
+    } else {
+      out += ch;
+    }
+  }
+  return out;
+}
+
 /** Retire uniquement les commentaires de ligne entière et les blocs JSDoc (le code reste intact). */
 export function stripJsComments(js) {
   return js
@@ -63,6 +107,7 @@ export function compile(specDir, { version = VERSION } = {}) {
   const files = {
     'noraivoire.css': css,
     'noraivoire.min.css': minifyCss(css),
+    'noraivoire.legacy.min.css': minifyCss(unwrapLayers(css)),
     ...engineFiles(meta),
     'noraivoire.types.ts': buildWebTypes(manifest, meta),
     'flutter/noraivoire.dart': buildFlutter(model, meta),

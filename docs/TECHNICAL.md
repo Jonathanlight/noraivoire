@@ -35,6 +35,7 @@ Principes non négociables :
      │               │                   │                    │                 │
  noraivoire.css  noraivoire.dart     noraivoire.tsx       manifest.json      noraivoire.engine.js
  noraivoire.min.css                                       llms-full.txt      noraivoire.auto.js
+ noraivoire.legacy.min.css (sans @layer)
                                                           noraivoire.types.ts
                                                                 │
                                                      targets/symfony.js (depuis le manifest)
@@ -272,7 +273,7 @@ Limites connues : une apostrophe dans du texte JSX placé **dans une valeur d'at
 
 ### 7.2 `nora audit`
 
-84 contrôles automatisés : licence, chaîne d'approvisionnement, validité de la spec, déterminisme, en-têtes de propriété (y compris Twig et PHP générés), motifs dangereux (moteur, paquets d'effets et CSS), écritures DOM des paquets d'effets, imports natifs, accessibilité, budgets de poids (dont 2 Kio par paquet d'effets), fraîcheur de `dist`. Voir [AUDIT-REPORT.md](AUDIT-REPORT.md).
+85 contrôles automatisés : licence, chaîne d'approvisionnement, validité de la spec, déterminisme, en-têtes de propriété (y compris Twig et PHP générés), motifs dangereux (moteur, paquets d'effets et CSS), écritures DOM des paquets d'effets, imports natifs, accessibilité, budgets de poids (dont 2 Kio par paquet d'effets), fraîcheur de `dist`. Voir [AUDIT-REPORT.md](AUDIT-REPORT.md).
 
 ### 7.3 Serveur MCP (`packages/mcp`)
 

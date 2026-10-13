@@ -5,7 +5,7 @@ import { mkdtempSync, readFileSync, writeFileSync, cpSync, symlinkSync, readdirS
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { compile, minifyCss } from '../../packages/compiler/src/index.js';
+import { compile, minifyCss, unwrapLayers } from '../../packages/compiler/src/index.js';
 import { safeParse, validateComponent, validateTokens, validateEffect } from '../../packages/compiler/src/validate.js';
 import { resolveRef, camel, quote } from '../../packages/compiler/src/resolve.js';
 
@@ -209,4 +209,22 @@ test('css : une étiquette (badge) ne s\'étire pas dans une pile flex (parité 
   assert.match(badge, /align-self: flex-start;/);
   assert.match(badge, /justify-self: start;/);
   assert.match(files['react-native/noraivoire.tsx'], /alignSelf: 'flex-start'/);
+});
+
+test('css legacy : variante sans @layer, mêmes règles dans le même ordre (A-06)', () => {
+  const { files } = compile(SPEC);
+  const legacy = files['noraivoire.legacy.min.css'];
+  const min = files['noraivoire.min.css'];
+  assert.ok(!/@layer/.test(legacy));
+  assert.ok(legacy.startsWith('/*!') && legacy.slice(0, 400).includes('Jonathan KABLAN'));
+  // Même contenu que la version minifiée, une fois les enveloppes @layer retirées à la main.
+  const layerBlocks = (min.match(/@layer [a-z.]+\{/g) ?? []).length;
+  assert.ok(layerBlocks >= 7);
+  const count = (s, c) => s.split(c).length - 1;
+  assert.equal(count(legacy, '{'), count(min, '{') - layerBlocks);
+  assert.equal(count(legacy, '{'), count(legacy, '}'));
+  assert.ok(legacy.includes(':where(.btn)') && legacy.includes('@media (prefers-reduced-motion: reduce)'));
+  assert.ok(!/!important/.test(legacy));
+  // Chaînes et commentaires ne sont pas interprétés.
+  assert.equal(unwrapLayers('@layer a{x{content:"@layer b{"}/* @layer c{ */}'), 'x{content:"@layer b{"}/* @layer c{ */');
 });

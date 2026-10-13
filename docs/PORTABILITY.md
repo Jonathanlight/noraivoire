@@ -30,7 +30,7 @@ Le cœur cible les fonctionnalités **Baseline « largement disponibles »**. Le
 | `animation-timeline: view()` | `reveal` | IntersectionObserver ; contenu masqué **seulement** si le moteur tourne |
 | `DeviceOrientationEvent` | `tilt` mobile | Pointeur/toucher ; iOS (permission requise) → pointeur |
 
-Navigateurs minimaux attendus pour le cœur : Chrome/Edge 111+, Firefox 113+, Safari 16.4+ (iOS 16.4+). En dessous, `@layer` n'est pas compris et les styles sont ignorés : il faut alors un CSS de secours (non fourni en 0.1).
+Navigateurs minimaux attendus pour le cœur : Chrome/Edge 111+, Firefox 113+, Safari 16.4+ (iOS 16.4+). En dessous, `@layer` n'est pas compris et les styles sont ignorés : servir alors `noraivoire.legacy.min.css`, la même feuille sans cascade layers (blocs déroulés dans l'ordre des couches, `:where()` garde une spécificité nulle). Différence à connaître : sans couches, une règle de l'application de même spécificité ne l'emporte que si elle est chargée **après** NoraIvoire. Un test Playwright vérifie que la page de démo est rendue au pixel près à l'identique avec les deux feuilles.
 
 ## 3. Compatibilité SSR et hydratation
 
@@ -86,6 +86,5 @@ Limites : `NoraParallax` (RN) doit être un enfant direct du contenu du `ScrollV
 
 1. Le Dart généré est analysé et rendu en test (goldens Flutter, `examples/flutter_app/`) mais pas exécuté sur appareil réel.
 2. Pas de régression visuelle cross-cible (comparaison web / Flutter / RN, prévue, voir TESTING.md).
-3. Pas de CSS de secours pour les navigateurs sans `@layer`.
-4. Les modèles JSP, Vue et Angular sont validés syntaxiquement par `nora check`, pas exécutés dans leur framework. Les Twig Components, eux, sont rendus par Symfony dans les tests PHPUnit du bundle.
-5. Bundle Symfony : testé localement en PHP 8.5 / Symfony 8.1 ; PHP 8.4 est couvert par la matrice CI (non exécuté localement), Symfony 7.3 n'est couvert que par la contrainte Composer. Les contrôles (`input`, `select`, `textarea`, `checkbox`, `switch`) reçoivent un Twig Component générique (élément, ton, taille, attributs libres) ; `Nora:Field` est composé : `label`, `help` et `error` sont rendus et reliés au contrôle par `id` (`<label for>`, `<id>-aide`, `<id>-erreur`), mais `aria-describedby` et `aria-invalid` restent à poser sur le contrôle (variable `describedby` fournie).
+3. Les modèles JSP, Vue et Angular sont validés syntaxiquement par `nora check`, pas exécutés dans leur framework. Les Twig Components, eux, sont rendus par Symfony dans les tests PHPUnit du bundle.
+4. Bundle Symfony : testé localement en PHP 8.5 / Symfony 8.1 ; PHP 8.4 est couvert par la matrice CI (non exécuté localement), Symfony 7.3 n'est couvert que par la contrainte Composer. Les contrôles (`input`, `select`, `textarea`, `checkbox`, `switch`) reçoivent un Twig Component générique (élément, ton, taille, attributs libres) ; `Nora:Field` est composé : `label`, `help` et `error` sont rendus et reliés au contrôle par `id` (`<label for>`, `<id>-aide`, `<id>-erreur`), mais `aria-describedby` et `aria-invalid` restent à poser sur le contrôle (variable `describedby` fournie).

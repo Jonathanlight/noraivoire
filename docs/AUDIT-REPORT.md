@@ -1,7 +1,7 @@
 # NoraIvoire — Rapport d'audit
 
 **Version auditée :** 0.1.0 · **Date :** 14 octobre 2026 · **Périmètre :** dépôt complet
-**Méthode :** audit automatisé (`nora audit`, 84 contrôles), 143 tests node, 22 tests Flutter et 51 tests PHPUnit, 18 tests Playwright (captures + axe-core), vérification TypeScript stricte, `npm audit`, revue manuelle du code.
+**Méthode :** audit automatisé (`nora audit`, 85 contrôles), 144 tests node, 22 tests Flutter et 51 tests PHPUnit, 20 tests Playwright (captures + axe-core), vérification TypeScript stricte, `npm audit`, revue manuelle du code.
 © Jonathan KABLAN — Document confidentiel
 
 ## 1. Synthèse
@@ -26,8 +26,8 @@
 
 | Indicateur | Valeur |
 |---|---|
-| Tests | 143 / 143 réussis (node) · 22 / 22 (Flutter, dont 10 goldens) · 51 / 51 (PHPUnit, bundle Symfony) · 18 / 18 (Playwright : 12 captures, 4 axe-core, 2 sans JS) |
-| Contrôles d'audit | 84 / 84 réussis |
+| Tests | 144 / 144 réussis (node) · 22 / 22 (Flutter, dont 10 goldens) · 51 / 51 (PHPUnit, bundle Symfony) · 20 / 20 (Playwright : 12 captures, 4 axe-core, 2 sans JS, 2 legacy) |
+| Contrôles d'audit | 85 / 85 réussis |
 | Modèles validés par `nora check` | 13 fichiers + 20 recettes, 0 erreur, 0 avertissement |
 | Erreurs TypeScript (strict) sur le TSX généré | 0 |
 | Vulnérabilités `npm audit` | 0 |
@@ -36,6 +36,7 @@
 |---|---|---|
 | `noraivoire.css` | 26,0 Kio | 5,1 Kio |
 | `noraivoire.min.css` | 22,7 Kio | 4,7 Kio |
+| `noraivoire.legacy.min.css` | 22,5 Kio | 4,7 Kio |
 | `noraivoire.engine.js` | 9,6 Kio | 3,3 Kio |
 | `noraivoire.auto.js` | 0,5 Kio | 0,4 Kio |
 | `flutter/noraivoire.dart` | 35,2 Kio | 6,8 Kio |
@@ -52,7 +53,7 @@
 | A-03 | Faible | `nora check` reposait sur des expressions régulières, pas sur un parseur complet : des cas exotiques (JSX très imbriqué, attributs multi-lignes complexes) pouvaient échapper à l'analyse. | **Corrigé** — tokenizer tolérant écrit à la main (`tokenize.js`), temps linéaire, 19 tests de cas limites dont des entrées pathologiques |
 | A-04 | Faible | Si un effet personnalisé lève une exception **après** avoir modifié l'élément, ces modifications n'étaient pas annulées (l'erreur est isolée, les autres effets continuent). | **Corrigé** — relevé des variables `--fx-*` et attributs `data-fx-*` avant le montage, restauration si `mount()` lève ; test jsdom |
 | A-05 | Faible | `tilt` sur iOS ne peut pas utiliser le gyroscope sans demande de permission explicite : repli sur le toucher. | Accepté — limite de la plateforme |
-| A-06 | Faible | Pas de CSS de secours pour les navigateurs sans `@layer` (antérieurs à 2022). | Ouvert |
+| A-06 | Faible | Pas de CSS de secours pour les navigateurs sans `@layer` (antérieurs à 2022). | **Corrigé** — `noraivoire.legacy.min.css` généré (blocs `@layer` déroulés dans l'ordre) ; rendu identique au pixel vérifié par Playwright |
 | A-07 | Info | Un token de composant (`--btn-bg`) défini sur un parent n'est pas hérité. | Documenté (TECHNICAL §4.2) |
 | A-08 | Info | `reveal` sur Flutter et React Native se déclenche au montage, pas au scroll, faute de dépendance de visibilité. | Documenté ; paramètre `visible` fourni |
 | A-09 | Info | Le modèle HTML a été nettoyé de tout JS inline pour rester compatible avec une CSP stricte. | Corrigé |
