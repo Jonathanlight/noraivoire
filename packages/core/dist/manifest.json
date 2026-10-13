@@ -1,0 +1,365 @@
+{
+  "$schema": "https://noraivoire.local/schema/manifest-1.json",
+  "name": "NoraIvoire",
+  "version": "0.1.0",
+  "license": "UNLICENSED — propriétaire, © Jonathan KABLAN",
+  "grammar": {
+    "component": ".{composant}",
+    "tone": "data-tone=\"{valeur}\"",
+    "size": "data-size=\"{valeur}\"",
+    "utility": "{propriété}-{échelle}",
+    "surface": "fx-{nom}",
+    "effect": "data-fx=\"{nom} {nom}\" + data-fx-{nom}=\"clé:valeur;clé:valeur\"",
+    "token": "--nora-{groupe}-{clé} | --{composant}-{clé}"
+  },
+  "tokens": {
+    "color": [
+      "--nora-color-primary",
+      "--nora-color-on-primary",
+      "--nora-color-neutral",
+      "--nora-color-on-neutral",
+      "--nora-color-danger",
+      "--nora-color-on-danger",
+      "--nora-color-success",
+      "--nora-color-on-success",
+      "--nora-color-warning",
+      "--nora-color-on-warning",
+      "--nora-color-surface",
+      "--nora-color-surface-2",
+      "--nora-color-text",
+      "--nora-color-text-muted",
+      "--nora-color-border",
+      "--nora-color-focus"
+    ],
+    "space": [
+      "--nora-space-0",
+      "--nora-space-1",
+      "--nora-space-2",
+      "--nora-space-3",
+      "--nora-space-4",
+      "--nora-space-6",
+      "--nora-space-8",
+      "--nora-space-12"
+    ],
+    "radius": [
+      "--nora-radius-none",
+      "--nora-radius-sm",
+      "--nora-radius-md",
+      "--nora-radius-lg",
+      "--nora-radius-full"
+    ],
+    "font": [
+      "--nora-font-sm",
+      "--nora-font-md",
+      "--nora-font-lg",
+      "--nora-font-xl"
+    ],
+    "duration": [
+      "--nora-duration-fast",
+      "--nora-duration-base",
+      "--nora-duration-slow"
+    ]
+  },
+  "components": {
+    "badge": {
+      "description": "Étiquette courte de statut.",
+      "shape": "label",
+      "elements": [
+        "span"
+      ],
+      "attributes": {
+        "data-tone": [
+          "primary",
+          "neutral",
+          "danger",
+          "success",
+          "warning"
+        ],
+        "data-size": [
+          "sm",
+          "md"
+        ]
+      },
+      "defaults": {
+        "tone": "neutral",
+        "size": "sm"
+      },
+      "tokens": [
+        "--badge-bg",
+        "--badge-fg",
+        "--badge-radius",
+        "--badge-pad-y",
+        "--badge-pad-x",
+        "--badge-font"
+      ],
+      "a11y": {
+        "role": "status",
+        "minTarget": 0,
+        "requiresLabel": true,
+        "anchorRequiresHref": false
+      },
+      "example": "<span class=\"badge\" data-tone=\"success\">Payé</span>",
+      "flutter": "NoraBadge",
+      "reactNative": "NoraBadge"
+    },
+    "btn": {
+      "description": "Bouton d'action. Utiliser <button> pour une action, <a href> pour une navigation.",
+      "shape": "interactive",
+      "elements": [
+        "button",
+        "a"
+      ],
+      "attributes": {
+        "data-tone": [
+          "primary",
+          "neutral",
+          "danger",
+          "success",
+          "warning"
+        ],
+        "data-size": [
+          "sm",
+          "md",
+          "lg"
+        ]
+      },
+      "defaults": {
+        "tone": "primary",
+        "size": "md"
+      },
+      "tokens": [
+        "--btn-bg",
+        "--btn-fg",
+        "--btn-radius",
+        "--btn-pad-y",
+        "--btn-pad-x",
+        "--btn-font"
+      ],
+      "a11y": {
+        "role": "button",
+        "minTarget": 44,
+        "requiresLabel": true,
+        "anchorRequiresHref": true
+      },
+      "example": "<button class=\"btn\" data-tone=\"primary\" data-size=\"md\">Valider</button>",
+      "flutter": "NoraBtn",
+      "reactNative": "NoraBtn"
+    },
+    "card": {
+      "description": "Conteneur de contenu. Peut recevoir des effets (data-fx) et la surface fx-glass.",
+      "shape": "container",
+      "elements": [
+        "div",
+        "article",
+        "section",
+        "li"
+      ],
+      "attributes": {
+        "data-tone": [
+          "neutral"
+        ],
+        "data-size": [
+          "sm",
+          "md",
+          "lg"
+        ]
+      },
+      "defaults": {
+        "tone": "neutral",
+        "size": "md"
+      },
+      "tokens": [
+        "--card-bg",
+        "--card-fg",
+        "--card-radius",
+        "--card-border",
+        "--card-pad-y",
+        "--card-pad-x",
+        "--card-font"
+      ],
+      "a11y": {
+        "role": "none",
+        "minTarget": 0,
+        "requiresLabel": false,
+        "anchorRequiresHref": false
+      },
+      "example": "<article class=\"card\" data-size=\"md\">…</article>",
+      "flutter": "NoraCard",
+      "reactNative": "NoraCard"
+    }
+  },
+  "effects": {
+    "glass": {
+      "usage": "class=\"fx-glass\"",
+      "kind": "surface-glass",
+      "description": "Surface translucide floutée (glassmorphism).",
+      "options": {
+        "blur": {
+          "type": "number",
+          "default": 16,
+          "min": 0,
+          "max": 40
+        },
+        "opacity": {
+          "type": "number",
+          "default": 0.6,
+          "min": 0,
+          "max": 1
+        }
+      },
+      "platforms": {
+        "web": "backdrop-filter avec repli opaque via @supports",
+        "react-native": "fond semi-transparent (flou natif via adaptateur optionnel)",
+        "flutter": "BackdropFilter + ImageFilter.blur"
+      }
+    },
+    "reveal": {
+      "usage": "data-fx=\"reveal\" data-fx-reveal=\"clé:valeur;…\"",
+      "kind": "scroll-reveal",
+      "input": "visibility",
+      "description": "Fait apparaître l'élément (fondu + translation) quand il entre dans la zone visible.",
+      "options": {
+        "distance": {
+          "type": "number",
+          "default": 24,
+          "min": 0,
+          "max": 120
+        },
+        "duration": {
+          "type": "number",
+          "default": 400,
+          "min": 0,
+          "max": 2000
+        }
+      },
+      "reducedMotion": "disable",
+      "platforms": {
+        "web": "animation-timeline: view() avec repli IntersectionObserver",
+        "react-native": "onLayout + Animated",
+        "flutter": "AnimatedOpacity + AnimatedSlide"
+      },
+      "flutter": "NoraReveal",
+      "reactNative": "NoraReveal"
+    },
+    "tilt": {
+      "usage": "data-fx=\"tilt\" data-fx-tilt=\"clé:valeur;…\"",
+      "kind": "orientation-transform",
+      "input": "orientation",
+      "description": "Incline l'élément selon l'orientation de l'utilisateur : souris sur desktop, gyroscope sur mobile.",
+      "options": {
+        "max": {
+          "type": "number",
+          "default": 10,
+          "min": 0,
+          "max": 30
+        },
+        "glare": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "reducedMotion": "disable",
+      "platforms": {
+        "web": "pointer | deviceorientation",
+        "react-native": "touch (gyroscope via adaptateur optionnel)",
+        "flutter": "pointer (gyroscope via adaptateur optionnel)"
+      },
+      "flutter": "NoraTilt",
+      "reactNative": "NoraTilt"
+    }
+  },
+  "surfaces": [
+    "fx-glass"
+  ],
+  "layout": [
+    "container",
+    "stack",
+    "cluster",
+    "grid-auto",
+    "cq"
+  ],
+  "utilities": [
+    "p-0",
+    "px-0",
+    "py-0",
+    "m-0",
+    "mx-0",
+    "my-0",
+    "gap-0",
+    "p-1",
+    "px-1",
+    "py-1",
+    "m-1",
+    "mx-1",
+    "my-1",
+    "gap-1",
+    "p-2",
+    "px-2",
+    "py-2",
+    "m-2",
+    "mx-2",
+    "my-2",
+    "gap-2",
+    "p-3",
+    "px-3",
+    "py-3",
+    "m-3",
+    "mx-3",
+    "my-3",
+    "gap-3",
+    "p-4",
+    "px-4",
+    "py-4",
+    "m-4",
+    "mx-4",
+    "my-4",
+    "gap-4",
+    "p-6",
+    "px-6",
+    "py-6",
+    "m-6",
+    "mx-6",
+    "my-6",
+    "gap-6",
+    "p-8",
+    "px-8",
+    "py-8",
+    "m-8",
+    "mx-8",
+    "my-8",
+    "gap-8",
+    "p-12",
+    "px-12",
+    "py-12",
+    "m-12",
+    "mx-12",
+    "my-12",
+    "gap-12",
+    "mx-auto",
+    "rounded-none",
+    "rounded-sm",
+    "rounded-md",
+    "rounded-lg",
+    "rounded-full",
+    "text-sm",
+    "text-md",
+    "text-lg",
+    "text-xl",
+    "text-muted",
+    "text-center",
+    "font-bold",
+    "shadow-sm",
+    "shadow-lg",
+    "w-full",
+    "hidden",
+    "sr-only"
+  ],
+  "themes": {
+    "attribute": "data-theme",
+    "values": [
+      "light",
+      "dark"
+    ],
+    "default": "système"
+  }
+}

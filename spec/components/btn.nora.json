@@ -1,0 +1,30 @@
+{
+  "$nora": "component",
+  "$version": "1.0.0",
+  "component": "btn",
+  "description": "Bouton d'action. Utiliser <button> pour une action, <a href> pour une navigation.",
+  "elements": ["button", "a"],
+  "variants": {
+    "tone": ["primary", "neutral", "danger", "success", "warning"],
+    "size": ["sm", "md", "lg"]
+  },
+  "defaults": { "tone": "primary", "size": "md" },
+  "tokens": {
+    "bg": "{color.$tone}",
+    "fg": "{color.on-$tone}",
+    "radius": "{radius.md}"
+  },
+  "sizes": {
+    "sm": { "pad-y": 6,  "pad-x": 12, "font": "{font.sm}" },
+    "md": { "pad-y": 10, "pad-x": 20, "font": "{font.md}" },
+    "lg": { "pad-y": 14, "pad-x": 28, "font": "{font.lg}" }
+  },
+  "states": {
+    "pressed": { "scale": 0.97, "darken": 12 },
+    "disabled": { "opacity": 0.5 }
+  },
+  "motion": { "press": { "duration": "{duration.fast}" } },
+  "a11y": { "role": "button", "minTarget": 44, "requiresLabel": true, "anchorRequiresHref": true },
+  "feedback": { "haptic": "light" },
+  "example": "<button class=\"btn\" data-tone=\"primary\" data-size=\"md\">Valider</button>"
+}

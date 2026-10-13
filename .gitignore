@@ -1,0 +1,15 @@
+node_modules/
+.DS_Store
+*.log
+coverage/
+test-results/
+playwright-report/
+.dart_tool/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+vendor/
+.phpunit.cache/
+bench/results/
+.env
+.env.*

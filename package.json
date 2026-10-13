@@ -1,0 +1,26 @@
+{
+  "name": "@noraivoire/monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "description": "NoraIvoire — langage de design universel : une spec, des sorties CSS, Flutter et React Native. Propriétaire.",
+  "author": "Jonathan KABLAN",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "node packages/compiler/src/cli.js build --spec spec --out packages/core/dist",
+    "check": "node packages/cli/src/cli.js check templates --format=text",
+    "test": "node --test tests/unit/*.test.js",
+    "audit:deps": "npm audit --omit=dev --audit-level=moderate",
+    "audit:security": "node packages/cli/src/cli.js audit",
+    "verify": "npm run build && npm test && npm run check && npm run audit:security"
+  },
+  "devDependencies": {
+    "jsdom": "^26.1.0"
+  }
+}

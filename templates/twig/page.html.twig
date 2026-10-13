@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+{# Les valeurs de data-tone issues de variables doivent venir d'une liste blanche côté PHP (enum), jamais de l'utilisateur. #}
+
+{% block body %}
+  <section class="grid-auto">
+    {% for product in products %}
+      <article class="card fx-glass" data-fx="tilt reveal" data-fx-tilt="max:10">
+        <div class="stack">
+          <span class="badge" data-tone="{{ product.inStock ? 'success' : 'warning' }}">
+            {{ product.inStock ? 'En stock' : 'Sur commande' }}
+          </span>
+          <h2 class="text-lg font-bold">{{ product.name }}</h2>
+          <p class="text-muted">{{ product.description }}</p>
+          <twig:Nora:Btn tone="primary" href="{{ path('product_show', {id: product.id}) }}">Voir</twig:Nora:Btn>
+        </div>
+      </article>
+    {% else %}
+      <p class="text-muted">Aucun produit.</p>
+    {% endfor %}
+  </section>
+{% endblock %}

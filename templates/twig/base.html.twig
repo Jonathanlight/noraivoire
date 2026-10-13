@@ -1,0 +1,18 @@
+{# NoraIvoire — gabarit Twig / Symfony (AssetMapper, sans build). © 2026 Jonathan KABLAN — Propriétaire. #}
+{# Copier packages/core/dist/* dans assets/vendor/noraivoire/ puis le déclarer dans importmap.php :
+   'noraivoire/auto' => ['path' => './assets/vendor/noraivoire/noraivoire.auto.js'] #}
+<!doctype html>
+<html lang="{{ app.request.locale|default('fr') }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}NoraIvoire{% endblock %}</title>
+  <link rel="stylesheet" href="{{ asset('vendor/noraivoire/noraivoire.css') }}">
+  {{ importmap(['app', 'noraivoire/auto']) }}
+</head>
+<body>
+  <main class="container stack py-8">
+    {% block body %}{% endblock %}
+  </main>
+</body>
+</html>

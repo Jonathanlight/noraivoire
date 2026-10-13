@@ -1,0 +1,28 @@
+{
+  "$nora": "component",
+  "$version": "1.0.0",
+  "component": "card",
+  "description": "Conteneur de contenu. Peut recevoir des effets (data-fx) et la surface fx-glass.",
+  "elements": ["div", "article", "section", "li"],
+  "variants": {
+    "tone": ["neutral"],
+    "size": ["sm", "md", "lg"]
+  },
+  "defaults": { "tone": "neutral", "size": "md" },
+  "tokens": {
+    "bg": "{color.surface}",
+    "fg": "{color.text}",
+    "radius": "{radius.lg}",
+    "border": "{color.border}"
+  },
+  "sizes": {
+    "sm": { "pad-y": 12, "pad-x": 12, "font": "{font.sm}" },
+    "md": { "pad-y": 16, "pad-x": 16, "font": "{font.md}" },
+    "lg": { "pad-y": 24, "pad-x": 24, "font": "{font.md}" }
+  },
+  "states": {},
+  "motion": {},
+  "a11y": { "role": "none", "minTarget": 0, "requiresLabel": false, "anchorRequiresHref": false },
+  "feedback": {},
+  "example": "<article class=\"card\" data-size=\"md\">…</article>"
+}

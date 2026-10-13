@@ -1,0 +1,21 @@
+{
+  "name": "@noraivoire/core",
+  "version": "0.1.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "description": "Sorties compilées NoraIvoire (CSS, moteur, Dart, TSX, manifest). Propriétaire.",
+  "author": "Jonathan KABLAN",
+  "type": "module",
+  "exports": {
+    ".": "./dist/noraivoire.css",
+    "./css": "./dist/noraivoire.css",
+    "./min.css": "./dist/noraivoire.min.css",
+    "./engine": { "types": "./dist/noraivoire.engine.d.ts", "default": "./dist/noraivoire.engine.js" },
+    "./auto": "./dist/noraivoire.auto.js",
+    "./types": "./dist/noraivoire.types.ts",
+    "./native": "./dist/react-native/noraivoire.tsx",
+    "./manifest.json": "./dist/manifest.json"
+  },
+  "files": ["dist"],
+  "dependencies": {}
+}

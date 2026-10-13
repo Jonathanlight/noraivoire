@@ -1,0 +1,61 @@
+# NoraIvoire 0.1.0
+
+> Langage de design universel : une spec → CSS (HTML, Twig, JSP, React, Next.js, Vue, Angular), Flutter et React Native.
+> Logiciel propriétaire © Jonathan KABLAN. Ce fichier est le contrat complet de l'API : n'utilise RIEN qui n'y figure pas.
+
+## Règles pour les agents IA
+1. Composant = une classe : .badge .btn .card.
+2. Variantes UNIQUEMENT via data-tone et data-size. Jamais .btn-primary, .btn-lg, bg-blue-500.
+3. Utilitaires : liste fermée ci-dessous. Une classe absente de la liste n'existe pas.
+4. Effets JS : data-fx="nom". Surface verre : class="fx-glass".
+5. Action → <button class="btn">. Navigation → <a class="btn" href="…">. Un bouton sans texte exige aria-label.
+6. Après génération, exécuter : npx nora check <dossier> --format=json et corriger chaque erreur.
+
+## Composants
+### badge
+Étiquette courte de statut.
+- Éléments : span
+- data-tone : primary | neutral | danger | success | warning (défaut neutral)
+- data-size : sm | md (défaut sm)
+- Tokens surchargeables : --badge-bg, --badge-fg, --badge-radius, --badge-pad-y, --badge-pad-x, --badge-font
+- Flutter : NoraBadge(tone: NoraTone.x, size: NoraSize.y) · React Native : <NoraBadge tone="x" size="y">
+- Exemple : <span class="badge" data-tone="success">Payé</span>
+
+### btn
+Bouton d'action. Utiliser <button> pour une action, <a href> pour une navigation.
+- Éléments : button, a
+- data-tone : primary | neutral | danger | success | warning (défaut primary)
+- data-size : sm | md | lg (défaut md)
+- Tokens surchargeables : --btn-bg, --btn-fg, --btn-radius, --btn-pad-y, --btn-pad-x, --btn-font
+- Flutter : NoraBtn(tone: NoraTone.x, size: NoraSize.y) · React Native : <NoraBtn tone="x" size="y">
+- Exemple : <button class="btn" data-tone="primary" data-size="md">Valider</button>
+
+### card
+Conteneur de contenu. Peut recevoir des effets (data-fx) et la surface fx-glass.
+- Éléments : div, article, section, li
+- data-tone : neutral (défaut neutral)
+- data-size : sm | md | lg (défaut md)
+- Tokens surchargeables : --card-bg, --card-fg, --card-radius, --card-border, --card-pad-y, --card-pad-x, --card-font
+- Flutter : NoraCard(tone: NoraTone.x, size: NoraSize.y) · React Native : <NoraCard tone="x" size="y">
+- Exemple : <article class="card" data-size="md">…</article>
+
+## Effets
+- glass : Surface translucide floutée (glassmorphism). Usage : class="fx-glass". Options : blur (number, défaut 16, 0–40), opacity (number, défaut 0.6, 0–1).
+- reveal : Fait apparaître l'élément (fondu + translation) quand il entre dans la zone visible. Usage : data-fx="reveal" data-fx-reveal="clé:valeur;…". Options : distance (number, défaut 24, 0–120), duration (number, défaut 400, 0–2000).
+- tilt : Incline l'élément selon l'orientation de l'utilisateur : souris sur desktop, gyroscope sur mobile. Usage : data-fx="tilt" data-fx-tilt="clé:valeur;…". Options : max (number, défaut 10, 0–30), glare (boolean, défaut false).
+
+## Mise en page
+.container .stack .cluster .grid-auto .cq
+
+## Utilitaires
+p-0 px-0 py-0 m-0 mx-0 my-0 gap-0 p-1 px-1 py-1 m-1 mx-1 my-1 gap-1 p-2 px-2 py-2 m-2 mx-2 my-2 gap-2 p-3 px-3 py-3 m-3 mx-3 my-3 gap-3 p-4 px-4 py-4 m-4 mx-4 my-4 gap-4 p-6 px-6 py-6 m-6 mx-6 my-6 gap-6 p-8 px-8 py-8 m-8 mx-8 my-8 gap-8 p-12 px-12 py-12 m-12 mx-12 my-12 gap-12 mx-auto rounded-none rounded-sm rounded-md rounded-lg rounded-full text-sm text-md text-lg text-xl text-muted text-center font-bold shadow-sm shadow-lg w-full hidden sr-only
+
+## Thème
+<html data-theme="dark|light"> ; sans attribut : suit le système.
+
+## Tokens
+- color : --nora-color-primary --nora-color-on-primary --nora-color-neutral --nora-color-on-neutral --nora-color-danger --nora-color-on-danger --nora-color-success --nora-color-on-success --nora-color-warning --nora-color-on-warning --nora-color-surface --nora-color-surface-2 --nora-color-text --nora-color-text-muted --nora-color-border --nora-color-focus
+- space : --nora-space-0 --nora-space-1 --nora-space-2 --nora-space-3 --nora-space-4 --nora-space-6 --nora-space-8 --nora-space-12
+- radius : --nora-radius-none --nora-radius-sm --nora-radius-md --nora-radius-lg --nora-radius-full
+- font : --nora-font-sm --nora-font-md --nora-font-lg --nora-font-xl
+- duration : --nora-duration-fast --nora-duration-base --nora-duration-slow

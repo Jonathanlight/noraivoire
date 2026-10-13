@@ -1,0 +1,66 @@
+{
+  "name": "NoraIvoire",
+  "version": "0.1.0",
+  "files": {
+    "noraivoire.css": {
+      "sha256": "b85e2e33350596077ad535d9fd496ea1e25b57ee5c5ec38bf6d6548c747eb940",
+      "sri": "sha384-3A7DCmaawy2jqNdEsfMfsbY7n3AY3o78DF24+Ck+lCPeZRR7vj30j6/SpbTijCAL",
+      "bytes": 13718,
+      "gzip": 3495
+    },
+    "noraivoire.min.css": {
+      "sha256": "57e870015dcdf1deb10f6943a466d62ce14ab6e99837ebb0644599b5a41ede37",
+      "sri": "sha384-3/slKWZP9XKseIiK0MJHoYOAJvjX8Gcs3RWhOrup46Az8ol4+mxwfNzeZuDgnKYQ",
+      "bytes": 11783,
+      "gzip": 3233
+    },
+    "noraivoire.engine.js": {
+      "sha256": "2ef03d1d40ba63d7858ba21dbbaa4079035ee9717a6826cb2f706336cf1dcc95",
+      "sri": "sha384-KAn1qr5HWchvaBf+XCEtvzXIIUmN/v9pjVCDB8QPNEhgDghIrRF5QCBeOouDH1Ry",
+      "bytes": 8983,
+      "gzip": 3120
+    },
+    "noraivoire.auto.js": {
+      "sha256": "ada6db2f79c486107336e038e79ab87d5501e5ff86423c57aff9413d0bfe0565",
+      "sri": "sha384-PWJF9/+Bef7ONOHSOm05vsKOq8V9fzQqdVpUKOQedjdxMUrlxcPlQJu3lmfZfiYk",
+      "bytes": 489,
+      "gzip": 364
+    },
+    "noraivoire.engine.d.ts": {
+      "sha256": "3862d0dfcb086e6966dab26c30b67d3b44abe1ef49ad0e6e36c48525d1bdb389",
+      "sri": "sha384-NRdpjl6132s/+n47BrHrO1MMv83/enkWF83vHWJ29IBA52MFpspE2fwTuBf+V8fr",
+      "bytes": 1430,
+      "gzip": 658
+    },
+    "noraivoire.types.ts": {
+      "sha256": "d53650a41e877a6bb77f201e9cb94f0d6c54bf6318a173754900050176d8b4c4",
+      "sri": "sha384-kOw26tnILhzD1pZYYdP0c7ymVyDL+F/yNWllAE9GgSwZTV6eUMynvC16uQXnwunn",
+      "bytes": 1868,
+      "gzip": 870
+    },
+    "flutter/noraivoire.dart": {
+      "sha256": "197f5b388673f4e2ef5787f1c205b7ac8a32566b04371a1baed4efa121c10b4e",
+      "sri": "sha384-GRE3XeKU2mFJN1mVWDIu44o1hEQD1619e0UCFnob7LddX9GJcUXyLjMOIc9UMXZp",
+      "bytes": 15991,
+      "gzip": 4278
+    },
+    "react-native/noraivoire.tsx": {
+      "sha256": "9ad8810aae3806b6aa2232ca67953f14aa69dcf5c37d837a56c9dcb63e0ba6d1",
+      "sri": "sha384-eDDMvzGwH/0DFDpcN5cielizjnMxHTCSNSsaoMzvcK0ZI2bP5DF+4f/AvSQrArcT",
+      "bytes": 13250,
+      "gzip": 4006
+    },
+    "manifest.json": {
+      "sha256": "316ac0dc2e92d8cefa4ccbe02fac328b88e7cbb349ad914a44d5cf16c5255834",
+      "sri": "sha384-/ZKGnCNAJ6FCzqUrg3CnSAxVJSWhjGC5X2y/AZmD1oNfjRdl3IuQUYnw+R6I4evJ",
+      "bytes": 8149,
+      "gzip": 2151
+    },
+    "llms-full.txt": {
+      "sha256": "f1a4b2ee046032d52c19d1b4d712ffbb3ad3186cb30cbdffca0fb587584b3a2b",
+      "sri": "sha384-WishQudnfAXxa65zyDZfm7Z3J3yYe5+KC0q6Kl/QFpjpyRiIATjTl6JyTz6TS+0g",
+      "bytes": 4314,
+      "gzip": 1812
+    }
+  }
+}

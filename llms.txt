@@ -1,0 +1,9 @@
+# NoraIvoire
+
+> Langage de design universel propriétaire (© Jonathan KABLAN) : une spec JSON compilée vers CSS (HTML, Twig, JSP, React, Next.js, Vue, Angular), Flutter et React Native.
+
+- [Contrat complet de l'API pour agents IA](packages/core/dist/llms-full.txt)
+- [Manifest machine](packages/core/dist/manifest.json)
+- [Document technique](docs/TECHNICAL.md)
+- [Règles pour agents](AGENTS.md)
+- [Prompt maître](PROMPT.md)

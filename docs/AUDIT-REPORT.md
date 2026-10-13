@@ -1,0 +1,74 @@
+# NoraIvoire — Rapport d'audit
+
+**Version auditée :** 0.1.0 · **Date :** 14 octobre 2026 · **Périmètre :** dépôt complet
+**Méthode :** audit automatisé (`nora audit`, 50 contrôles), 44 tests, vérification TypeScript stricte, `npm audit`, revue manuelle du code.
+© Jonathan KABLAN — Document confidentiel
+
+## 1. Synthèse
+
+| Domaine | Résultat | Commentaire |
+|---|---|---|
+| Licence et confidentialité | ✅ Conforme | LICENSE propriétaire, 5 `package.json` privés `UNLICENSED`, en-tête sur les 8 fichiers générés |
+| Chaîne d'approvisionnement | ✅ Conforme | 0 dépendance runtime ; 1 dépendance de dev (jsdom, MIT) ; `npm audit` : 0 vulnérabilité |
+| Sécurité du compilateur | ✅ Conforme | Liste blanche stricte ; 7 tests d'attaque (injection, pollution de prototype, DoS, symlink) |
+| Sécurité du moteur web | ✅ Conforme | 11 motifs dangereux absents ; écriture limitée aux variables `--fx-*` |
+| Sécurité du CSS généré | ✅ Conforme | Aucun `@import`, `url()` externe, `javascript:`, `expression()`, `!important` |
+| Accessibilité | ✅ Conforme (base) | Mouvement réduit sur 4 cibles, focus visible, zone tactile 44 px sur 3 cibles |
+| Performance | ✅ Sous budget | CSS 3,2 Kio gzip (budget 15) ; moteur 3,0 Kio gzip (budget 4) |
+| Déterminisme | ✅ Conforme | Deux compilations : octets identiques |
+| Portabilité native | ⚠️ Partielle | TSX vérifié (TypeScript strict, RN 0.81) ; **Dart non compilé** dans l'environnement d'audit |
+
+**Verdict : apte pour un usage interne et une phase pilote.** Trois points doivent être levés avant toute licence commerciale (section 4).
+
+## 2. Résultats chiffrés
+
+| Indicateur | Valeur |
+|---|---|
+| Tests | 44 / 44 réussis |
+| Contrôles d'audit | 50 / 50 réussis |
+| Modèles validés par `nora check` | 13 fichiers, 0 erreur, 0 avertissement |
+| Erreurs TypeScript (strict) sur le TSX généré | 0 |
+| Vulnérabilités `npm audit` | 0 |
+
+| Fichier distribué | Taille | gzip |
+|---|---|---|
+| `noraivoire.css` | 13,4 Kio | 3,4 Kio |
+| `noraivoire.min.css` | 11,5 Kio | 3,2 Kio |
+| `noraivoire.engine.js` | 8,8 Kio | 3,0 Kio |
+| `noraivoire.auto.js` | 0,5 Kio | 0,4 Kio |
+| `flutter/noraivoire.dart` | 15,6 Kio | 4,2 Kio |
+| `react-native/noraivoire.tsx` | 12,9 Kio | 3,9 Kio |
+
+## 3. Constats
+
+| ID | Sévérité | Constat | Statut |
+|---|---|---|---|
+| A-01 | Moyenne | Le Dart généré n'a pas été compilé (SDK Flutter inaccessible dans l'environnement d'audit). Le code n'utilise que des API stables, mais aucune preuve d'exécution. | **Ouvert** — job CI `flutter` prêt, à exécuter |
+| A-02 | Moyenne | Les composants Twig et JSP acceptaient `href="javascript:…"` si l'URL venait de l'utilisateur. | **Corrigé** — liste blanche des schémas d'URL, `type` du bouton restreint |
+| A-03 | Faible | `nora check` repose sur des expressions régulières, pas sur un parseur complet : des cas exotiques (JSX très imbriqué, attributs multi-lignes complexes) peuvent échapper à l'analyse. | Ouvert — accepté pour 0.1, parseur prévu |
+| A-04 | Faible | Si un effet personnalisé lève une exception **après** avoir modifié l'élément, ces modifications ne sont pas annulées (l'erreur est isolée, les autres effets continuent). | Ouvert — documenté |
+| A-05 | Faible | `tilt` sur iOS ne peut pas utiliser le gyroscope sans demande de permission explicite : repli sur le toucher. | Accepté — limite de la plateforme |
+| A-06 | Faible | Pas de CSS de secours pour les navigateurs sans `@layer` (antérieurs à 2022). | Ouvert |
+| A-07 | Info | Un token de composant (`--btn-bg`) défini sur un parent n'est pas hérité. | Documenté (TECHNICAL §4.2) |
+| A-08 | Info | `reveal` sur Flutter et React Native se déclenche au montage, pas au scroll, faute de dépendance de visibilité. | Documenté ; paramètre `visible` fourni |
+| A-09 | Info | Le modèle HTML a été nettoyé de tout JS inline pour rester compatible avec une CSP stricte. | Corrigé |
+| A-10 | Info | Le moteur web pèse 3,0 Kio gzip, au-dessus de l'objectif initial de 2 Kio annoncé dans la vision. | Accepté — budget fixé à 4 Kio ; minification réelle possible plus tard |
+
+## 4. Conditions avant commercialisation
+
+1. Lever **A-01** : faire passer `flutter analyze` et des golden tests sur le dépôt privé.
+2. Ajouter la **régression visuelle** web (Playwright) et un test **axe-core** sur la page de démo.
+3. Faire relire **LICENSE** et rédiger le **contrat de licence** par un avocat ; déposer la marque.
+
+## 5. Reproduire l'audit
+
+```bash
+npm ci --ignore-scripts
+npm run verify
+npm audit --audit-level=moderate
+node packages/cli/src/cli.js audit --format=json > audit.json
+```
+
+## 6. Limites de cet audit
+
+Audit réalisé par analyse statique, tests automatisés et revue par l'auteur de l'outillage. Il ne remplace pas un test d'intrusion indépendant, ni des tests sur appareils réels, ni un audit d'accessibilité manuel (lecteurs d'écran).

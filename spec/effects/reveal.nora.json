@@ -1,0 +1,18 @@
+{
+  "$nora": "effect",
+  "$version": "1.0.0",
+  "effect": "reveal",
+  "kind": "scroll-reveal",
+  "description": "Fait apparaître l'élément (fondu + translation) quand il entre dans la zone visible.",
+  "input": "visibility",
+  "options": {
+    "distance": { "type": "number", "default": 24, "min": 0, "max": 120 },
+    "duration": { "type": "number", "default": 400, "min": 0, "max": 2000 }
+  },
+  "reducedMotion": "disable",
+  "platforms": {
+    "web": "animation-timeline: view() avec repli IntersectionObserver",
+    "react-native": "onLayout + Animated",
+    "flutter": "AnimatedOpacity + AnimatedSlide"
+  }
+}

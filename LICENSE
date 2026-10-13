@@ -1,0 +1,64 @@
+NORAIVOIRE — LICENCE PROPRIÉTAIRE
+Copyright (c) 2026 Jonathan KABLAN. Tous droits réservés.
+
+Le présent logiciel, incluant sans limitation son code source, ses spécifications
+(fichiers .nora.json), son compilateur, son moteur d'effets, ses adaptateurs, ses
+modèles (templates), sa documentation, ses jeux de tests et ses éléments graphiques
+(ci-après « le Logiciel »), est la propriété exclusive de Jonathan KABLAN
+(ci-après « le Titulaire »).
+
+1. ABSENCE DE LICENCE OPEN SOURCE
+   Le Logiciel n'est pas distribué sous une licence open source. Aucun droit
+   n'est concédé implicitement, par estoppel ou autrement. La simple mise à
+   disposition du Logiciel, y compris dans un dépôt privé ou un registre de
+   paquets privé, ne vaut pas concession de licence.
+
+2. USAGE AUTORISÉ
+   Tout usage du Logiciel est subordonné à un contrat de licence écrit et signé
+   par le Titulaire (ci-après « Contrat de Licence »). En l'absence d'un tel
+   contrat, seul le Titulaire est autorisé à utiliser le Logiciel.
+
+3. INTERDICTIONS
+   Sauf autorisation écrite et préalable du Titulaire, il est interdit de :
+   a) copier, reproduire, modifier, adapter, traduire ou créer des œuvres
+      dérivées du Logiciel, en tout ou partie ;
+   b) distribuer, publier, sous-licencier, louer, prêter, vendre ou mettre à
+      disposition le Logiciel à des tiers, y compris sous forme de service
+      (SaaS) ou intégré dans un autre produit distribué ;
+   c) décompiler, désassembler ou procéder à de l'ingénierie inverse du
+      Logiciel, sauf dans les limites strictement prévues par l'article
+      L.122-6-1 du Code de la propriété intellectuelle ;
+   d) supprimer ou altérer les mentions de propriété, de copyright ou la
+      présente licence ;
+   e) utiliser le Logiciel, ses spécifications ou sa documentation pour
+      entraîner, affiner ou évaluer un modèle d'intelligence artificielle
+      destiné à des tiers, ou pour concevoir un produit concurrent.
+
+4. PRODUITS GÉNÉRÉS
+   Les fichiers produits par le compilateur NoraIvoire pour le compte d'un
+   licencié (CSS, Dart, TypeScript générés) peuvent être intégrés dans les
+   applications de ce licencié dans les conditions fixées par son Contrat de
+   Licence. Ils ne peuvent pas être redistribués en tant que bibliothèque,
+   framework ou kit de design autonome.
+
+5. CONFIDENTIALITÉ
+   Le Logiciel contient des informations confidentielles et des secrets
+   d'affaires du Titulaire. Toute personne y ayant accès s'engage à en
+   préserver la confidentialité.
+
+6. ABSENCE DE GARANTIE
+   Sauf stipulation contraire du Contrat de Licence, le Logiciel est fourni
+   « EN L'ÉTAT », sans garantie d'aucune sorte, expresse ou implicite. Dans
+   les limites autorisées par la loi, le Titulaire ne saurait être tenu
+   responsable d'aucun dommage résultant de l'utilisation du Logiciel.
+
+7. COMPOSANTS TIERS
+   Le Logiciel peut référencer des composants tiers soumis à leurs propres
+   licences, listés dans THIRD_PARTY_NOTICES.md. La présente licence ne
+   modifie pas ces licences.
+
+8. DROIT APPLICABLE
+   La présente licence est régie par le droit français. Tout litige relève de
+   la compétence des tribunaux du ressort de la Cour d'appel de Paris.
+
+Contact licences : jonathan.kablan@gmail.com

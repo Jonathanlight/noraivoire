@@ -1,0 +1,56 @@
+<!doctype html>
+<!-- NoraIvoire — modèle HTML de référence. © 2026 Jonathan KABLAN — Propriétaire. -->
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NoraIvoire — Démo HTML</title>
+  <!-- En production : servir depuis votre propre domaine, avec l'attribut integrity (voir dist/integrity.json). -->
+  <link rel="stylesheet" href="../../packages/core/dist/noraivoire.css">
+  <script type="module" src="../../packages/core/dist/noraivoire.auto.js"></script>
+</head>
+<body>
+  <main class="container stack py-8">
+    <header class="cluster">
+      <h1 class="text-xl font-bold">NoraIvoire</h1>
+      <span class="badge" data-tone="success">v0.1</span>
+      <!-- Thème : <html data-theme="dark|light">. Pas de JS inline, pour rester compatible avec une CSP stricte. -->
+    </header>
+
+    <section class="grid-auto">
+      <article class="card fx-glass shadow-lg" data-fx="tilt reveal" data-fx-tilt="max:12;glare:true">
+        <div class="stack">
+          <span class="badge" data-tone="primary">Nouveau</span>
+          <h2 class="text-lg font-bold">Carte avec effets</h2>
+          <p class="text-muted">Inclinaison à la souris (gyroscope sur mobile), apparition au scroll, surface verre.</p>
+          <div class="cluster">
+            <button class="btn" type="button">Valider</button>
+            <a class="btn" data-tone="neutral" href="#details">Détails</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card" data-fx="reveal">
+        <form class="stack" action="#" method="post">
+          <h2 class="text-lg font-bold">Connexion</h2>
+          <label class="stack gap-1">E-mail <input type="email" name="email" autocomplete="email" required></label>
+          <label class="stack gap-1">Mot de passe <input type="password" name="password" autocomplete="current-password" required></label>
+          <button class="btn w-full" type="submit" data-size="lg">Se connecter</button>
+        </form>
+      </article>
+
+      <article class="card" data-size="lg" data-fx="reveal">
+        <h2 class="text-lg font-bold">Tous les tons</h2>
+        <div class="cluster py-4">
+          <button class="btn" data-tone="primary" type="button">Primary</button>
+          <button class="btn" data-tone="neutral" type="button">Neutral</button>
+          <button class="btn" data-tone="success" type="button">Success</button>
+          <button class="btn" data-tone="warning" type="button">Warning</button>
+          <button class="btn" data-tone="danger" type="button">Danger</button>
+          <button class="btn" type="button" disabled>Désactivé</button>
+        </div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

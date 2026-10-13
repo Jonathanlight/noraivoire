@@ -1,0 +1,26 @@
+{
+  "$nora": "component",
+  "$version": "1.0.0",
+  "component": "badge",
+  "description": "Étiquette courte de statut.",
+  "elements": ["span"],
+  "variants": {
+    "tone": ["primary", "neutral", "danger", "success", "warning"],
+    "size": ["sm", "md"]
+  },
+  "defaults": { "tone": "neutral", "size": "sm" },
+  "tokens": {
+    "bg": "{color.$tone}",
+    "fg": "{color.on-$tone}",
+    "radius": "{radius.full}"
+  },
+  "sizes": {
+    "sm": { "pad-y": 2, "pad-x": 8,  "font": "{font.sm}" },
+    "md": { "pad-y": 4, "pad-x": 12, "font": "{font.md}" }
+  },
+  "states": {},
+  "motion": {},
+  "a11y": { "role": "status", "minTarget": 0, "requiresLabel": true, "anchorRequiresHref": false },
+  "feedback": {},
+  "example": "<span class=\"badge\" data-tone=\"success\">Payé</span>"
+}

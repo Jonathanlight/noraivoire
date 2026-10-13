@@ -1,0 +1,15 @@
+<main class="container stack py-8">
+  <h1 class="text-xl font-bold">Tableau de bord</h1>
+  <section class="grid-auto">
+    @for (s of stats(); track s.label) {
+      <article class="card fx-glass" noraFx="tilt" [noraFxOptions]="{ max: 8 }" data-fx="reveal">
+        <div class="stack">
+          <span class="badge" [attr.data-tone]="toneOf(s.up)">{{ s.up ? 'Hausse' : 'Baisse' }}</span>
+          <p class="text-muted">{{ s.label }}</p>
+          <p class="text-xl font-bold">{{ s.value }}</p>
+          <button class="btn" data-tone="neutral" data-size="sm" type="button">Détails</button>
+        </div>
+      </article>
+    }
+  </section>
+</main>
