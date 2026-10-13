@@ -240,7 +240,7 @@ export function shapeFromRole(spec) {
   if (role === 'button') return 'interactive';
   if (role === 'status') return 'label';
   if (role === 'textbox' || role === 'combobox') return 'control';
-  if (role === 'checkbox' || role === 'switch') return 'toggle';
+  if (role === 'checkbox' || role === 'switch' || role === 'radio') return 'toggle';
   if (role === 'group') return 'group';
   return 'container';
 }

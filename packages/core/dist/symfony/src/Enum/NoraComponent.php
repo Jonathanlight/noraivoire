@@ -17,6 +17,7 @@ enum NoraComponent: string
     case Checkbox = 'checkbox';
     case Field = 'field';
     case Input = 'input';
+    case Radio = 'radio';
     case Select = 'select';
     case Switch = 'switch';
     case Textarea = 'textarea';

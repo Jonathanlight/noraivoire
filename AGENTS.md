@@ -9,7 +9,7 @@ npm ci --ignore-scripts
 npm run build            # spec/ → packages/core/dist/ (ne jamais éditer dist à la main)
 npm test                 # node:test
 npm run check            # nora check sur templates/ et recipes/
-npm run audit:security   # 85 contrôles
+npm run audit:security   # 86 contrôles
 npm run verify           # tout
 ```
 

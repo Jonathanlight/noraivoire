@@ -1,0 +1,12 @@
+{#
+ # NoraIvoire 0.1.0 — fichier GÉNÉRÉ (twig) depuis la spec. Ne pas modifier à la main.
+ # © 2026 Jonathan KABLAN — Logiciel propriétaire, tous droits réservés.
+ # Usage soumis au contrat de licence NoraIvoire. Redistribution interdite.
+ #}
+{# Twig Component anonyme : <twig:Nora:Radio tone="…" size="…">…</twig:Nora:Radio>
+   Valeurs hors liste blanche → valeur par défaut. data-tone, data-size ne peuvent pas être forcés par attribut. #}
+{% props tone = 'primary', size = 'md' %}
+{% set tone = tone in ['primary', 'neutral', 'danger', 'success', 'warning'] ? tone : 'primary' %}
+{% set size = size in ['sm', 'md', 'lg'] ? size : 'md' %}
+{% set attrs = attributes.without('data-tone', 'data-size') %}
+<label {{ attrs.defaults({class: 'radio', 'data-tone': tone, 'data-size': size}) }}>{% block content %}{% endblock %}</label>

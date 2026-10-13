@@ -196,3 +196,36 @@ test('flutter : mouvement réduit — toggles statiques et InkWell sans onde', (
   const btn = dart.slice(dart.indexOf('class NoraBtn '), dart.indexOf('class _NoraBtnState'));
   assert.ok(dart.includes('splashFactory: reduceMotion ? NoSplash.splashFactory : null'), btn.length > 0 ? 'NoraBtn' : 'absent');
 });
+
+test('nora check : boutons radio — input radio attendu, name obligatoire, libellé', () => {
+  assert.deepEqual(rules('<fieldset class="field"><legend class="field-label">Livraison</legend><label class="radio"><input type="radio" name="l" value="a"> A</label></fieldset>'), []);
+  assert.deepEqual(rules('<label class="radio"><input type="radio" name="l" aria-label="A"></label>'), []);
+  assert.deepEqual(rules('<label class="radio"><input type="radio" name="{{ nom }}"> A</label>'), [], 'name calculé accepté');
+  assert.deepEqual(rules('<label class="radio"><input type="radio"> A</label>'), ['a11y-radio-name']);
+  assert.deepEqual(rules('<label class="radio"><input type="checkbox" name="l"> A</label>'), ['a11y-toggle-input']);
+  assert.deepEqual(rules('<label class="radio">A</label>'), ['a11y-toggle-input']);
+  assert.deepEqual(rules('<label class="radio"><input type="radio" name="l"></label>'), ['a11y-form-label']);
+  assert.equal(checkSource('<label class="radio"><input type="radio"> A</label>', 'f', manifest)[0].level, 'warning');
+});
+
+test('radio : parité CSS, Flutter et React Native', () => {
+  const { files, manifest: m } = compile(SPEC);
+  const css = files['noraivoire.css'];
+  assert.match(css, /:where\(\.radio\) \{[^}]*min-block-size: 44px;/);
+  assert.match(css, /:where\(\.radio\) > :where\(input:checked\)::before \{ transform: scale\(1\); \}/);
+  assert.match(css, /:where\(\.radio\) > :where\(input:focus-visible\)/);
+  assert.match(css, /:where\(\.radio\) > :where\(input\[aria-invalid="true"\]\)/);
+  assert.match(css, /--radio-radius: var\(--nora-radius-full\)/);
+  const dart = files['flutter/noraivoire.dart'];
+  assert.match(dart, /class NoraRadio<T> extends StatelessWidget/);
+  assert.match(dart, /class NoraRadioGroup<T> extends StatelessWidget/);
+  assert.match(dart, /inMutuallyExclusiveGroup: true/);
+  assert.match(dart, /RadioGroup\.maybeOf<T>\(context\)/);
+  assert.doesNotMatch(dart, /groupValue: groupValue,\s+onChanged: enabled/, 'API Radio dépréciée (groupValue/onChanged) non utilisée');
+  const tsx = files['react-native/noraivoire.tsx'];
+  assert.match(tsx, /export function NoraRadioGroup<T extends NoraRadioValue>/);
+  assert.match(tsx, /accessibilityRole="radiogroup"/);
+  assert.match(tsx, /accessibilityRole="radio"/);
+  assert.equal(m.components.radio.flutter, 'NoraRadio');
+  assert.equal(m.components.radio.a11y.inputType, 'radio');
+});

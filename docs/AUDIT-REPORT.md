@@ -1,7 +1,7 @@
 # NoraIvoire — Rapport d'audit
 
 **Version auditée :** 0.1.0 · **Date :** 14 octobre 2026 · **Périmètre :** dépôt complet
-**Méthode :** audit automatisé (`nora audit`, 85 contrôles), 144 tests node, 22 tests Flutter et 51 tests PHPUnit, 20 tests Playwright (captures + axe-core), vérification TypeScript stricte, `npm audit`, revue manuelle du code.
+**Méthode :** audit automatisé (`nora audit`, 86 contrôles), 146 tests node, 27 tests Flutter et 52 tests PHPUnit, 20 tests Playwright (captures + axe-core), vérification TypeScript stricte, `npm audit`, revue manuelle du code.
 © Jonathan KABLAN — Document confidentiel
 
 ## 1. Synthèse
@@ -18,7 +18,7 @@
 | Accessibilité | ✅ Conforme (base) | Mouvement réduit sur 4 cibles, focus visible, zone tactile 44 px sur 3 cibles ; formulaires : label associé obligatoire (`nora check`), `aria-invalid` relié au message, sémantique Flutter / React Native vérifiée ; axe-core : 0 violation sérieuse ou critique (clair et sombre) ; contraste AA testé pour chaque ton |
 | Performance | ✅ Sous budget | CSS 4,7 Kio gzip (budget 15) ; moteur 3,3 Kio gzip (budget 4) |
 | Déterminisme | ✅ Conforme | Deux compilations : octets identiques |
-| Portabilité native | ✅ Conforme | TSX vérifié (TypeScript strict, RN 0.81) ; Dart analysé (`flutter analyze --fatal-infos`, 0 problème) et rendu par 22 tests de widgets dont 10 goldens (Flutter 3.47) ; Twig Components rendus par 51 tests PHPUnit (PHP 8.5, Symfony 8.1) |
+| Portabilité native | ✅ Conforme | TSX vérifié (TypeScript strict, RN 0.81) ; Dart analysé (`flutter analyze --fatal-infos`, 0 problème) et rendu par 27 tests de widgets dont 12 goldens (Flutter 3.47) ; Twig Components rendus par 52 tests PHPUnit (PHP 8.5, Symfony 8.1) |
 
 **Verdict : apte pour un usage interne et une phase pilote.** Trois points doivent être levés avant toute licence commerciale (section 4).
 
@@ -26,8 +26,8 @@
 
 | Indicateur | Valeur |
 |---|---|
-| Tests | 144 / 144 réussis (node) · 22 / 22 (Flutter, dont 10 goldens) · 51 / 51 (PHPUnit, bundle Symfony) · 20 / 20 (Playwright : 12 captures, 4 axe-core, 2 sans JS, 2 legacy) |
-| Contrôles d'audit | 85 / 85 réussis |
+| Tests | 146 / 146 réussis (node) · 27 / 27 (Flutter, dont 12 goldens) · 52 / 52 (PHPUnit, bundle Symfony) · 20 / 20 (Playwright : 12 captures, 4 axe-core, 2 sans JS, 2 legacy) |
+| Contrôles d'audit | 86 / 86 réussis |
 | Modèles validés par `nora check` | 13 fichiers + 20 recettes, 0 erreur, 0 avertissement |
 | Erreurs TypeScript (strict) sur le TSX généré | 0 |
 | Vulnérabilités `npm audit` | 0 |
@@ -36,7 +36,7 @@
 |---|---|---|
 | `noraivoire.css` | 26,0 Kio | 5,1 Kio |
 | `noraivoire.min.css` | 22,7 Kio | 4,7 Kio |
-| `noraivoire.legacy.min.css` | 22,5 Kio | 4,7 Kio |
+| `noraivoire.legacy.min.css` | 25,0 Kio | 4,9 Kio |
 | `noraivoire.engine.js` | 9,6 Kio | 3,3 Kio |
 | `noraivoire.auto.js` | 0,5 Kio | 0,4 Kio |
 | `flutter/noraivoire.dart` | 35,2 Kio | 6,8 Kio |

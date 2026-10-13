@@ -22,6 +22,7 @@
 - Sécurité : les gabarits de formulaire Flutter / React Native passent aussi par `docComment()` ; le test d'injection couvre désormais tous les composants et effets, et le retour chariot seul.
 - Moteur web (constat A-04 levé) : si le `mount()` d'un effet lève une exception, ses écritures (`--fx-*`, `data-fx-*`) sont annulées et l'état d'origine restauré ; moteur 3,3 Kio gzip. 1 test.
 - CSS (constat A-06 levé) : `noraivoire.legacy.min.css`, variante sans cascade layers pour les navigateurs antérieurs à 2022 ; rendu de la démo identique au pixel (Playwright, clair et sombre). 1 test node, 2 tests Playwright.
+- Composant `radio` : CSS (pastille, focus, invalide, désactivé, contraste forcé), Flutter `NoraRadio<T>` / `NoraRadioGroup<T>` (sur `RadioGroup`, rendu statique en mouvement réduit), React Native `NoraRadio` / `NoraRadioGroup` (`radiogroup` / `radio`), Twig `Nora:Radio` généré ; règle `nora check` `a11y-radio-name` (avertissement) ; recette `checkout.html` migrée ; groupe radio dans les modèles HTML, Flutter et React Native. Flutter 3.35+ requis (`RadioGroup`). 2 tests node, 5 tests Flutter.
 
 ## 0.1.0 — 14 octobre 2026
 

@@ -236,6 +236,9 @@ function checkFormComponent(comp, spec, el, text, tokens, elements, form, push) 
     if (isStatic(input.attrs.type) && input.attrs.type !== inputType) {
       push('error', 'a11y-toggle-input', `<input type="${input.attrs.type}"> dans .${comp} : type="${inputType}" attendu`, `type="${inputType}"`);
     }
+    if (inputType === 'radio' && (input.attrs.name === undefined || input.attrs.name === '')) {
+      push('warning', 'a11y-radio-name', `<input type="radio"> de .${comp} sans name`, 'ajouter name="…" commun aux options du groupe (sélection exclusive, flèches du clavier)');
+    }
     const role = spec.a11y?.role;
     if (role && role !== inputType && input.attrs.role !== DYNAMIC && input.attrs.role !== role) {
       push('error', 'a11y-switch-role', `<input> de .${comp} sans role="${role}"`, `ajouter role="${role}" sur l'input`);
