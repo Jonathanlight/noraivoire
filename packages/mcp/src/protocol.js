@@ -3,8 +3,17 @@
 
 import { ToolError } from './tools.js';
 
-/** Versions du protocole MCP prises en charge, la plus récente en premier. */
+/**
+ * Versions « modernes » (sans état : version et capacités dans le `_meta` de chaque requête,
+ * `server/discover` obligatoire). Voir https://modelcontextprotocol.io/specification/2026-07-28.
+ */
+export const MODERN_VERSIONS = Object.freeze(['2026-07-28']);
+/** Versions « historiques » à poignée de main `initialize`, la plus récente en premier. */
 export const PROTOCOL_VERSIONS = Object.freeze(['2025-11-25', '2025-06-18', '2025-03-26', '2024-11-05']);
+
+const META_VERSION = 'io.modelcontextprotocol/protocolVersion';
+const META_CAPS = 'io.modelcontextprotocol/clientCapabilities';
+const META_SERVER = 'io.modelcontextprotocol/serverInfo';
 
 export const ERRORS = Object.freeze({
   parse: -32700,
@@ -12,13 +21,14 @@ export const ERRORS = Object.freeze({
   methodNotFound: -32601,
   invalidParams: -32602,
   internal: -32603,
+  unsupportedVersion: -32022,
 });
 
 const SERVER_INFO = Object.freeze({ name: 'noraivoire', title: 'NoraIvoire', version: '0.1.0' });
 const INSTRUCTIONS = 'Serveur NoraIvoire en lecture seule. Avant de générer de l\'interface, consulter nora_get_component et nora_list_tokens ; '
   + 'partir d\'une recette (nora_recipe) quand l\'écran est courant ; valider chaque balisage produit avec nora_validate et corriger toutes les erreurs.';
 
-const error = (id, code, message) => ({ jsonrpc: '2.0', id, error: { code, message } });
+const error = (id, code, message, data) => ({ jsonrpc: '2.0', id, error: data === undefined ? { code, message } : { code, message, data } });
 const result = (id, value) => ({ jsonrpc: '2.0', id, result: value });
 const validId = (id) => typeof id === 'string' || (typeof id === 'number' && Number.isFinite(id));
 
@@ -60,6 +70,43 @@ export function createProtocol(tools, { log = () => {} } = {}) {
     },
   };
 
+  /** Méthodes servies aux requêtes modernes (le reste, dont `initialize`, est inconnu dans cette ère). */
+  const modern = {
+    'server/discover': () => ({
+      supportedVersions: [...MODERN_VERSIONS],
+      capabilities: { tools: { listChanged: false } },
+      instructions: INSTRUCTIONS,
+    }),
+    ping: methods.ping,
+    'tools/list': methods['tools/list'],
+    'tools/call': methods['tools/call'],
+  };
+
+  /** Requête moderne : version et capacités vérifiées à chaque appel, aucun état de connexion. */
+  function handleModern(msg) {
+    const meta = msg.params._meta;
+    const asked = meta[META_VERSION];
+    if (!MODERN_VERSIONS.includes(asked)) {
+      return error(msg.id, ERRORS.unsupportedVersion, 'Unsupported protocol version', {
+        supported: [...MODERN_VERSIONS, ...PROTOCOL_VERSIONS],
+        requested: typeof asked === 'string' ? asked.slice(0, 64) : asked ?? null,
+      });
+    }
+    const caps = meta[META_CAPS];
+    if (caps === null || typeof caps !== 'object' || Array.isArray(caps)) {
+      return error(msg.id, ERRORS.invalidParams, `_meta « ${META_CAPS} » obligatoire`);
+    }
+    if (!Object.hasOwn(modern, msg.method)) return error(msg.id, ERRORS.methodNotFound, `méthode inconnue : ${msg.method.slice(0, 64)}`);
+    try {
+      const value = modern[msg.method](msg.params);
+      return result(msg.id, { resultType: 'complete', ...value, _meta: { [META_SERVER]: SERVER_INFO } });
+    } catch (err) {
+      if (err?.code) return error(msg.id, err.code, err.message);
+      log(`${msg.method} : ${err?.stack ?? err}`);
+      return error(msg.id, ERRORS.internal, 'erreur interne');
+    }
+  }
+
   const notifications = {
     'notifications/initialized': () => { state.initialized = true; },
     'notifications/cancelled': () => {}, // les appels sont synchrones : rien à annuler
@@ -85,6 +132,12 @@ export function createProtocol(tools, { log = () => {} } = {}) {
     if (!validId(msg.id)) return error(null, ERRORS.invalidRequest, 'identifiant de requête invalide');
     if (msg.params !== undefined && (msg.params === null || typeof msg.params !== 'object' || Array.isArray(msg.params))) {
       return error(msg.id, ERRORS.invalidParams, '« params » doit être un objet');
+    }
+    const meta = msg.params?._meta;
+    if (meta !== null && typeof meta === 'object' && Object.hasOwn(meta, META_VERSION)) return handleModern(msg);
+    if (msg.method === 'server/discover') {
+      // Sonde d'un client dual-era sans _meta valide : requête moderne mal formée.
+      return error(msg.id, ERRORS.invalidParams, `_meta « ${META_VERSION} » obligatoire`);
     }
     if (!Object.hasOwn(methods, msg.method)) return error(msg.id, ERRORS.methodNotFound, `méthode inconnue : ${msg.method.slice(0, 64)}`);
     try {

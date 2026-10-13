@@ -4,7 +4,7 @@
 
 Serveur [Model Context Protocol](https://modelcontextprotocol.io) qui donne aux agents IA (Claude Code, Claude Desktop, Cursor, VS Code…) un accès **en lecture seule** au contrat NoraIvoire : composants, tokens, validation `nora check` et recettes d'écrans.
 
-- Transport **stdio**, un message JSON-RPC 2.0 par ligne. Versions du protocole : `2025-11-25`, `2025-06-18`, `2025-03-26`, `2024-11-05` (la version demandée par le client est retenue si elle est connue, sinon la plus récente).
+- Transport **stdio**, un message JSON-RPC 2.0 par ligne. Serveur *dual-era* : requêtes sans état de la spec `2026-07-28` (version et capacités dans le `_meta` de chaque requête, `server/discover`) et poignée de main `initialize` des versions `2025-11-25`, `2025-06-18`, `2025-03-26`, `2024-11-05` (la version demandée est retenue si elle est connue, sinon la plus récente).
 - **Zéro dépendance** : Node ≥ 20 suffit.
 - Aucune exécution de commande, aucun réseau, aucune écriture disque (contrôlé par `nora audit`, contrôle `mcp:read-only`).
 

@@ -197,3 +197,34 @@ test('mcp : code source sans exécution de commande, réseau ni écriture disque
     assert.doesNotMatch(src, /child_process|node:(net|http|https|dgram|tls)|\bfetch\(|writeFile|appendFile|createWriteStream|mkdir|unlink|rmSync|\beval\(/, f);
   }
 });
+
+test('mcp : requêtes modernes 2026-07-28 sans poignée de main (dual-era)', async () => {
+  const c = startServer();
+  const meta = (v = '2026-07-28') => ({ 'io.modelcontextprotocol/protocolVersion': v, 'io.modelcontextprotocol/clientCapabilities': {}, 'io.modelcontextprotocol/clientInfo': { name: 't', version: '1' } });
+  const d = await c.request('server/discover', { _meta: meta() });
+  assert.equal(d.result.resultType, 'complete');
+  assert.deepEqual(d.result.supportedVersions, ['2026-07-28']);
+  assert.ok(d.result.capabilities.tools);
+  assert.equal(d.result._meta['io.modelcontextprotocol/serverInfo'].name, 'noraivoire');
+  const l = await c.request('tools/list', { _meta: meta() });
+  assert.equal(l.result.resultType, 'complete');
+  assert.ok(l.result.tools.some((t) => t.name === 'nora_validate'));
+  const t = await c.request('tools/call', { name: 'nora_get_component', arguments: { name: 'btn' }, _meta: meta() });
+  assert.equal(t.result.resultType, 'complete');
+  assert.equal(t.result.isError, false);
+  // Version inconnue : UnsupportedProtocolVersionError (-32022) avec la liste prise en charge.
+  const bad = await c.request('tools/list', { _meta: meta('1900-01-01') });
+  assert.equal(bad.error.code, -32022);
+  assert.equal(bad.error.data.requested, '1900-01-01');
+  assert.ok(bad.error.data.supported.includes('2026-07-28') && bad.error.data.supported.includes('2025-11-25'));
+  // Capacités client absentes : -32602 ; discover sans _meta : -32602 ; initialize n'existe pas en moderne.
+  const noCaps = await c.request('tools/list', { _meta: { 'io.modelcontextprotocol/protocolVersion': '2026-07-28' } });
+  assert.equal(noCaps.error.code, -32602);
+  assert.equal((await c.request('server/discover')).error.code, -32602);
+  assert.equal((await c.request('initialize', { _meta: meta() })).error.code, -32601);
+  // Un client historique sur le même processus reste servi.
+  const legacy = await c.request('initialize', { protocolVersion: '2025-11-25', capabilities: {}, clientInfo: { name: 't', version: '1' } });
+  assert.equal(legacy.result.protocolVersion, '2025-11-25');
+  assert.equal(legacy.result.resultType, undefined);
+  await c.close();
+});

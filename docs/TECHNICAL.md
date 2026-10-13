@@ -234,7 +234,7 @@ Limites connues : une apostrophe dans du texte JSX placé **dans une valeur d'at
 Serveur [Model Context Protocol](https://modelcontextprotocol.io) en **lecture seule**, transport stdio (un message JSON-RPC 2.0 par ligne), écrit sans dépendance. Configuration des clients : [packages/mcp/README.md](../packages/mcp/README.md).
 
 ```
-stdin ──► server.js (découpage par ligne, 2 Mio max) ──► protocol.js (JSON-RPC, initialize, ping, tools/*)
+stdin ──► server.js (découpage par ligne, 2 Mio max) ──► protocol.js (JSON-RPC, server/discover, initialize, ping, tools/*)
                                                              │
                                                          tools.js ──► manifest.json (lu au démarrage)
                                                              │      ──► checkSource() de nora check
@@ -249,7 +249,7 @@ stdout ◄── une réponse JSON par ligne ◄──────────�
 | `nora_validate(markup, format)` | Règles de `nora check` sur un balisage (200 Kio max) |
 | `nora_recipe(intent)` | Écran de référence correspondant à une intention |
 
-Négociation : la version de protocole demandée par le client est retenue si elle figure dans `PROTOCOL_VERSIONS` (`2025-11-25`, `2025-06-18`, `2025-03-26`, `2024-11-05`), sinon le serveur répond avec la plus récente. Erreurs : `-32700` JSON invalide, `-32600` requête invalide, lot ou message trop volumineux, `-32601` méthode inconnue, `-32602` outil inconnu ou `params` non objet. Une erreur d'usage d'un outil est un résultat `isError: true`.
+Négociation (serveur *dual-era*, spec MCP `2026-07-28`) : une requête dont le `_meta` porte `io.modelcontextprotocol/protocolVersion` est servie **sans état** selon `MODERN_VERSIONS` (`2026-07-28`) — `server/discover` disponible, `resultType: "complete"` et `serverInfo` dans le `_meta` de chaque résultat, `-32022` (`UnsupportedProtocolVersion`, avec `data.supported`) pour une version inconnue, `-32602` si `clientCapabilities` manque. Sans ce `_meta`, la poignée de main historique `initialize` s'applique : la version demandée est retenue si elle figure dans `PROTOCOL_VERSIONS` (`2025-11-25`, `2025-06-18`, `2025-03-26`, `2024-11-05`), sinon la plus récente. Les deux ères peuvent coexister sur le même processus. Erreurs : `-32700` JSON invalide, `-32600` requête invalide, lot ou message trop volumineux, `-32601` méthode inconnue, `-32602` outil inconnu ou `params` non objet. Une erreur d'usage d'un outil est un résultat `isError: true`.
 
 #### Format de `recipes/index.json`
 
