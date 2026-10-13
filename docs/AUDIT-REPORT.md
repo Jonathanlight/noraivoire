@@ -8,15 +8,17 @@
 
 | Domaine | Résultat | Commentaire |
 |---|---|---|
-| Licence et confidentialité | ✅ Conforme | LICENSE propriétaire, 5 `package.json` privés `UNLICENSED`, en-tête sur les 8 fichiers générés |
-| Chaîne d'approvisionnement | ✅ Conforme | 0 dépendance runtime ; 1 dépendance de dev (jsdom, MIT) ; `npm audit` : 0 vulnérabilité |
-| Sécurité du compilateur | ✅ Conforme | Liste blanche stricte ; 7 tests d'attaque (injection, pollution de prototype, DoS, symlink) |
+| Licence et confidentialité | ✅ Conforme | LICENSE propriétaire, 8 `package.json` privés `UNLICENSED` (racine + 7 paquets), bundle Symfony `proprietary`, en-tête sur les 27 fichiers générés (CSS, JS, Dart, TSX, Twig, PHP) |
+| Chaîne d'approvisionnement | ✅ Conforme | 0 dépendance runtime ; 1 dépendance de dev npm (jsdom, MIT) ; `npm audit` : 0 vulnérabilité ; Composer : symfony/* et twig/* (MIT, BSD-3), contrôle des licences en CI |
+| Sécurité du compilateur | ✅ Conforme | Liste blanche stricte ; 8 tests d'attaque (injection, pollution de prototype, DoS, symlink, description multi-ligne dans les commentaires natifs) |
 | Sécurité du moteur web | ✅ Conforme | 11 motifs dangereux absents ; écriture limitée aux variables `--fx-*` |
+| Sécurité du serveur MCP | ✅ Conforme | Lecture seule (contrôle `mcp:read-only`) ; accès confiné au manifest et à `recipes/` ; tailles bornées ; spec MCP `2026-07-28` et versions à `initialize` |
+| Sécurité du bundle Symfony | ✅ Conforme | Twig Components générés : listes blanches (ton, taille, type, URL, `id`), attributs verrouillés, échappement ; `nora:check` sans shell (contrôle `symfony:twig-hardening`) |
 | Sécurité du CSS généré | ✅ Conforme | Aucun `@import`, `url()` externe, `javascript:`, `expression()`, `!important` |
 | Accessibilité | ✅ Conforme (base) | Mouvement réduit sur 4 cibles, focus visible, zone tactile 44 px sur 3 cibles ; formulaires : label associé obligatoire (`nora check`), `aria-invalid` relié au message, sémantique Flutter / React Native vérifiée |
 | Performance | ✅ Sous budget | CSS 4,7 Kio gzip (budget 15) ; moteur 3,0 Kio gzip (budget 4) |
 | Déterminisme | ✅ Conforme | Deux compilations : octets identiques |
-| Portabilité native | ✅ Conforme | TSX vérifié (TypeScript strict, RN 0.81) ; Dart analysé (`flutter analyze --fatal-infos`, 0 problème) et rendu par 15 tests de widgets dont 10 goldens (Flutter 3.47) |
+| Portabilité native | ✅ Conforme | TSX vérifié (TypeScript strict, RN 0.81) ; Dart analysé (`flutter analyze --fatal-infos`, 0 problème) et rendu par 18 tests de widgets dont 10 goldens (Flutter 3.47) ; Twig Components rendus par 51 tests PHPUnit (PHP 8.5, Symfony 8.1) |
 
 **Verdict : apte pour un usage interne et une phase pilote.** Trois points doivent être levés avant toute licence commerciale (section 4).
 
@@ -55,6 +57,8 @@
 | A-08 | Info | `reveal` sur Flutter et React Native se déclenche au montage, pas au scroll, faute de dépendance de visibilité. | Documenté ; paramètre `visible` fourni |
 | A-09 | Info | Le modèle HTML a été nettoyé de tout JS inline pour rester compatible avec une CSP stricte. | Corrigé |
 | A-10 | Info | Le moteur web pèse 3,0 Kio gzip, au-dessus de l'objectif initial de 2 Kio annoncé dans la vision. | Accepté — budget fixé à 4 Kio ; minification réelle possible plus tard |
+| A-11 | Moyenne | Une description de spec sur plusieurs lignes pouvait sortir d'un commentaire `///` et injecter du code Dart (et `*/` fermer un commentaire TSX). | **Corrigé** — `docComment()` partagé par toutes les cibles natives ; test d'injection |
+| A-12 | Faible | Twig Components des contrôles de formulaire génériques ; `Nora:Field` relie libellé, aide et erreur, mais `aria-describedby` / `aria-invalid` restent à poser sur le contrôle. | Ouvert — documenté (PORTABILITY, README du bundle) |
 
 ## 4. Conditions avant commercialisation
 
