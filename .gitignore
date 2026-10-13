@@ -13,3 +13,4 @@ vendor/
 bench/results/
 .env
 .env.*
+.claude/worktrees/
