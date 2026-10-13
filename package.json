@@ -18,7 +18,9 @@
     "test": "node --test tests/unit/*.test.js",
     "audit:deps": "npm audit --omit=dev --audit-level=moderate",
     "audit:security": "node packages/cli/src/cli.js audit",
-    "verify": "npm run build && npm test && npm run check && npm run audit:security"
+    "verify": "npm run build && npm test && npm run check && npm run audit:security",
+    "bench": "node bench/run.js",
+    "bench:dry": "node bench/run.js --dry-run"
   },
   "devDependencies": {
     "jsdom": "^26.1.0"

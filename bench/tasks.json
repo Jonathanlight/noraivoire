@@ -1,0 +1,306 @@
+{
+  "version": 1,
+  "langue": "fr",
+  "tasks": [
+    {
+      "id": "t01",
+      "categorie": "bouton",
+      "format": "html",
+      "consigne": "Un bouton principal « Enregistrer » pour soumettre un formulaire."
+    },
+    {
+      "id": "t02",
+      "categorie": "bouton",
+      "format": "html",
+      "consigne": "Un bouton de suppression destructif « Supprimer le projet », en grande taille."
+    },
+    {
+      "id": "t03",
+      "categorie": "bouton",
+      "format": "html",
+      "consigne": "Un lien stylé comme un bouton neutre qui mène à la page « /aide »."
+    },
+    {
+      "id": "t04",
+      "categorie": "bouton",
+      "format": "html",
+      "consigne": "Un bouton icône « fermer » (une croix ×) sans texte visible, accessible aux lecteurs d'écran."
+    },
+    {
+      "id": "t05",
+      "categorie": "bouton",
+      "format": "html",
+      "consigne": "Un groupe de trois boutons alignés : « Annuler » (neutre), « Brouillon » (neutre, petite taille), « Publier » (principal)."
+    },
+    {
+      "id": "t06",
+      "categorie": "bouton",
+      "format": "jsx",
+      "consigne": "Un composant React qui affiche un bouton de succès « Valider la commande » occupant toute la largeur."
+    },
+    {
+      "id": "t07",
+      "categorie": "bouton",
+      "format": "vue",
+      "consigne": "Un template Vue avec un bouton d'avertissement « Réessayer » en petite taille."
+    },
+    {
+      "id": "t08",
+      "categorie": "bouton",
+      "format": "twig",
+      "consigne": "Un template Twig avec un bouton principal « Se connecter » de type submit."
+    },
+    {
+      "id": "t09",
+      "categorie": "badge",
+      "format": "html",
+      "consigne": "Un badge de statut « Payé » en succès."
+    },
+    {
+      "id": "t10",
+      "categorie": "badge",
+      "format": "html",
+      "consigne": "Une liste de trois badges : « Brouillon » (neutre), « En revue » (avertissement), « Rejeté » (danger)."
+    },
+    {
+      "id": "t11",
+      "categorie": "badge",
+      "format": "html",
+      "consigne": "Un titre de section « Messages » suivi d'un badge principal affichant « 3 »."
+    },
+    {
+      "id": "t12",
+      "categorie": "badge",
+      "format": "jsx",
+      "consigne": "Un composant React affichant un badge « Nouveau » en taille moyenne à côté d'un titre."
+    },
+    {
+      "id": "t13",
+      "categorie": "badge",
+      "format": "vue",
+      "consigne": "Un template Vue qui affiche un badge « Hors ligne » en danger."
+    },
+    {
+      "id": "t14",
+      "categorie": "carte",
+      "format": "html",
+      "consigne": "Une carte simple avec un titre « Abonnement », un paragraphe descriptif et un bouton « Gérer »."
+    },
+    {
+      "id": "t15",
+      "categorie": "carte",
+      "format": "html",
+      "consigne": "Une carte en surface verre (glassmorphism) avec un titre et un texte atténué."
+    },
+    {
+      "id": "t16",
+      "categorie": "carte",
+      "format": "html",
+      "consigne": "Une carte de statistique : libellé « Ventes du mois », valeur « 12 480 € » en grand, badge succès « +8 % »."
+    },
+    {
+      "id": "t17",
+      "categorie": "carte",
+      "format": "html",
+      "consigne": "Une carte d'article de blog avec titre, date (texte atténué), extrait et lien « Lire la suite »."
+    },
+    {
+      "id": "t18",
+      "categorie": "carte",
+      "format": "html",
+      "consigne": "Une carte d'alerte de danger qui explique qu'un paiement a échoué, avec un bouton « Mettre à jour la carte »."
+    },
+    {
+      "id": "t19",
+      "categorie": "carte",
+      "format": "jsx",
+      "consigne": "Un composant React « CarteProduit » : nom, prix, badge « En stock » et bouton « Ajouter au panier »."
+    },
+    {
+      "id": "t20",
+      "categorie": "carte",
+      "format": "vue",
+      "consigne": "Un template Vue d'une carte de profil public avec un nom fictif, un rôle et deux boutons."
+    },
+    {
+      "id": "t21",
+      "categorie": "carte",
+      "format": "twig",
+      "consigne": "Un template Twig d'une carte affichant une notification avec un badge et un bouton « Marquer comme lu »."
+    },
+    {
+      "id": "t22",
+      "categorie": "effet",
+      "format": "html",
+      "consigne": "Une carte qui s'incline au survol de la souris, avec un reflet."
+    },
+    {
+      "id": "t23",
+      "categorie": "effet",
+      "format": "html",
+      "consigne": "Une carte qui apparaît au défilement avec une distance de 40."
+    },
+    {
+      "id": "t24",
+      "categorie": "effet",
+      "format": "html",
+      "consigne": "Une carte en verre, inclinable (inclinaison max 8) et qui apparaît au défilement."
+    },
+    {
+      "id": "t25",
+      "categorie": "effet",
+      "format": "html",
+      "consigne": "Trois cartes en grille qui apparaissent chacune au défilement."
+    },
+    {
+      "id": "t26",
+      "categorie": "effet",
+      "format": "jsx",
+      "consigne": "Un composant React d'une carte inclinable avec un titre et un bouton."
+    },
+    {
+      "id": "t27",
+      "categorie": "effet",
+      "format": "vue",
+      "consigne": "Un template Vue avec une section dont les cartes apparaissent au défilement."
+    },
+    {
+      "id": "t28",
+      "categorie": "effet",
+      "format": "html",
+      "consigne": "Une surface verre avec un flou plus léger servant de bandeau d'annonce, contenant un badge et un lien-bouton."
+    },
+    {
+      "id": "t29",
+      "categorie": "mise-en-page",
+      "format": "html",
+      "consigne": "Une page centrée avec un conteneur, un titre, un paragraphe et une rangée de deux boutons."
+    },
+    {
+      "id": "t30",
+      "categorie": "mise-en-page",
+      "format": "html",
+      "consigne": "Une grille automatique de six cartes de fonctionnalités avec un titre chacune."
+    },
+    {
+      "id": "t31",
+      "categorie": "mise-en-page",
+      "format": "html",
+      "consigne": "Un en-tête de page : titre à gauche, groupe de boutons à droite, sur une même ligne."
+    },
+    {
+      "id": "t32",
+      "categorie": "mise-en-page",
+      "format": "html",
+      "consigne": "Une colonne empilée de trois sections espacées, chacune dans une carte."
+    },
+    {
+      "id": "t33",
+      "categorie": "mise-en-page",
+      "format": "html",
+      "consigne": "Un pied de page avec un texte atténué centré et trois liens."
+    },
+    {
+      "id": "t34",
+      "categorie": "mise-en-page",
+      "format": "html",
+      "consigne": "Une barre d'outils avec un champ de recherche et un bouton « Filtrer » en petite taille."
+    },
+    {
+      "id": "t35",
+      "categorie": "mise-en-page",
+      "format": "jsx",
+      "consigne": "Un composant React de tableau de bord : titre, grille de quatre cartes de statistiques."
+    },
+    {
+      "id": "t36",
+      "categorie": "mise-en-page",
+      "format": "vue",
+      "consigne": "Un template Vue d'une page de paramètres en colonne avec trois cartes."
+    },
+    {
+      "id": "t37",
+      "categorie": "mise-en-page",
+      "format": "twig",
+      "consigne": "Un template Twig d'une page de liste avec un en-tête et une grille de cartes générée par une boucle."
+    },
+    {
+      "id": "t38",
+      "categorie": "écran",
+      "format": "html",
+      "consigne": "Un formulaire de connexion dans une carte : e-mail, mot de passe, bouton « Se connecter » pleine largeur et lien « Mot de passe oublié »."
+    },
+    {
+      "id": "t39",
+      "categorie": "écran",
+      "format": "html",
+      "consigne": "Un formulaire d'inscription : nom, e-mail, mot de passe, case d'acceptation des conditions, bouton principal."
+    },
+    {
+      "id": "t40",
+      "categorie": "écran",
+      "format": "html",
+      "consigne": "Une page de tarifs avec trois offres en cartes ; l'offre centrale porte un badge « Populaire »."
+    },
+    {
+      "id": "t41",
+      "categorie": "écran",
+      "format": "html",
+      "consigne": "Une page d'erreur 404 centrée avec un titre, une explication et un lien-bouton « Retour à l'accueil »."
+    },
+    {
+      "id": "t42",
+      "categorie": "écran",
+      "format": "html",
+      "consigne": "Un panier : deux lignes d'articles fictifs dans une carte, un total et un bouton « Payer » en succès."
+    },
+    {
+      "id": "t43",
+      "categorie": "écran",
+      "format": "html",
+      "consigne": "Une page vide (état vide) indiquant « Aucun projet » avec un bouton « Créer un projet »."
+    },
+    {
+      "id": "t44",
+      "categorie": "écran",
+      "format": "jsx",
+      "consigne": "Un composant React de page de confirmation de commande avec un badge succès et un récapitulatif."
+    },
+    {
+      "id": "t45",
+      "categorie": "écran",
+      "format": "vue",
+      "consigne": "Un template Vue d'une modale de confirmation de suppression avec deux boutons."
+    },
+    {
+      "id": "t46",
+      "categorie": "écran",
+      "format": "twig",
+      "consigne": "Un template Twig d'une page de profil avec un formulaire de modification et un bouton « Enregistrer »."
+    },
+    {
+      "id": "t47",
+      "categorie": "thème",
+      "format": "html",
+      "consigne": "Une page complète en thème sombre forcé avec une carte et un bouton."
+    },
+    {
+      "id": "t48",
+      "categorie": "accessibilité",
+      "format": "html",
+      "consigne": "Une rangée de trois boutons icônes (modifier, partager, supprimer) sans texte visible, tous accessibles."
+    },
+    {
+      "id": "t49",
+      "categorie": "accessibilité",
+      "format": "html",
+      "consigne": "Une carte avec un titre visuellement masqué pour les lecteurs d'écran et un bouton de fermeture."
+    },
+    {
+      "id": "t50",
+      "categorie": "accessibilité",
+      "format": "html",
+      "consigne": "Une navigation par onglets simple à base de liens-boutons, l'onglet actif en principal, les autres en neutre."
+    }
+  ]
+}
