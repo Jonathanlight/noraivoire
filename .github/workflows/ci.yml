@@ -33,14 +33,33 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
-      - name: analyse du Dart généré
+      - run: npm ci --ignore-scripts
+      - run: npm run build
+      - name: copie du Dart généré et du modèle dans l'exemple
+        run: npm run flutter:sync
+      - name: flutter analyze (aucun avertissement ni info toléré)
+        working-directory: examples/flutter_app
         run: |
-          flutter create --no-pub /tmp/nora_probe
-          cp packages/core/dist/flutter/noraivoire.dart /tmp/nora_probe/lib/
-          cd /tmp/nora_probe && flutter pub get && flutter analyze lib/noraivoire.dart
+          flutter pub get
+          flutter analyze --fatal-infos --fatal-warnings
+      - name: golden tests et tests de widgets
+        working-directory: examples/flutter_app
+        # Goldens générés sous macOS : tolérance élargie pour la rastérisation Linux.
+        env:
+          NORA_GOLDEN_TOLERANCE: '0.02'
+        run: flutter test
+      - name: diff des goldens en cas d'échec
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: flutter-golden-failures
+          path: examples/flutter_app/test/failures/
 
   react-native-types:
     runs-on: ubuntu-latest

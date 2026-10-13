@@ -1,0 +1,20 @@
+# NoraIvoire — projet Flutter d'exemple et de test (© Jonathan KABLAN, propriétaire).
+# Aucune dépendance hors SDK Flutter.
+name: nora_example
+description: "Exemple NoraIvoire : modèle Flutter et golden tests du Dart généré."
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.5.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true

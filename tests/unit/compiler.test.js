@@ -79,6 +79,16 @@ test('Flutter : pas de cas _ inutile quand le switch est exhaustif', () => {
   assert.ok(!bgSwitch.includes('_ =>'));
 });
 
+test('Flutter : bordure décidée à la compilation (pas de comparaison à null, constat A-01)', () => {
+  const dart = compile(SPEC).files['flutter/noraivoire.dart'];
+  assert.ok(!/borderColor\s*==\s*null/.test(dart), 'unnecessary_null_comparison signalé par flutter analyze');
+  assert.ok(!/Color\? borderColor = null/.test(dart));
+  const card = dart.slice(dart.indexOf('class NoraCard '));
+  assert.match(card, /border: Border\.all\(color: borderColor\)/, 'la carte garde sa bordure');
+  const badge = dart.slice(dart.indexOf('class NoraBadge '), dart.indexOf('class NoraBtn '));
+  assert.ok(!badge.includes('border:'), 'le badge sans token de bordure n\'émet pas de bordure');
+});
+
 test('React Native : composants, accessibilité et injection de capacités', () => {
   const tsx = compile(SPEC).files['react-native/noraivoire.tsx'];
   for (const c of ['NoraBtn', 'NoraCard', 'NoraBadge', 'NoraTilt', 'NoraReveal']) assert.match(tsx, new RegExp(`export function ${c}\\(`));

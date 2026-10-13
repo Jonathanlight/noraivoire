@@ -331,7 +331,6 @@ class NoraBadge extends StatelessWidget {
       NoraTone.success => colors.onSuccess,
       NoraTone.warning => colors.onWarning,
     };
-    const Color? borderColor = null;
     final (padY, padX, fontSize) = switch (size) {
       NoraSize.sm => (2.0, 8.0, 14.0),
       NoraSize.md => (4.0, 12.0, 16.0),
@@ -342,7 +341,6 @@ class NoraBadge extends StatelessWidget {
       decoration: BoxDecoration(
         color: bg,
         borderRadius: radius,
-        border: borderColor == null ? null : Border.all(color: borderColor),
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: padY, horizontal: padX),
@@ -492,7 +490,7 @@ class NoraCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: glass ? bg.withValues(alpha: NoraGlass.opacity) : bg,
         borderRadius: radius,
-        border: borderColor == null ? null : Border.all(color: borderColor),
+        border: Border.all(color: borderColor),
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: padY, horizontal: padX),

@@ -1,7 +1,7 @@
 # NoraIvoire — Rapport d'audit
 
 **Version auditée :** 0.1.0 · **Date :** 14 octobre 2026 · **Périmètre :** dépôt complet
-**Méthode :** audit automatisé (`nora audit`, 50 contrôles), 44 tests, vérification TypeScript stricte, `npm audit`, revue manuelle du code.
+**Méthode :** audit automatisé (`nora audit`, 50 contrôles), 45 tests node et 8 tests Flutter, vérification TypeScript stricte, `npm audit`, revue manuelle du code.
 © Jonathan KABLAN — Document confidentiel
 
 ## 1. Synthèse
@@ -16,7 +16,7 @@
 | Accessibilité | ✅ Conforme (base) | Mouvement réduit sur 4 cibles, focus visible, zone tactile 44 px sur 3 cibles |
 | Performance | ✅ Sous budget | CSS 3,2 Kio gzip (budget 15) ; moteur 3,0 Kio gzip (budget 4) |
 | Déterminisme | ✅ Conforme | Deux compilations : octets identiques |
-| Portabilité native | ⚠️ Partielle | TSX vérifié (TypeScript strict, RN 0.81) ; **Dart non compilé** dans l'environnement d'audit |
+| Portabilité native | ✅ Conforme | TSX vérifié (TypeScript strict, RN 0.81) ; Dart analysé (`flutter analyze --fatal-infos`, 0 problème) et rendu par 8 tests de widgets dont 6 goldens (Flutter 3.47) |
 
 **Verdict : apte pour un usage interne et une phase pilote.** Trois points doivent être levés avant toute licence commerciale (section 4).
 
@@ -24,7 +24,7 @@
 
 | Indicateur | Valeur |
 |---|---|
-| Tests | 44 / 44 réussis |
+| Tests | 45 / 45 réussis (node) · 8 / 8 (Flutter, dont 6 goldens) |
 | Contrôles d'audit | 50 / 50 réussis |
 | Modèles validés par `nora check` | 13 fichiers, 0 erreur, 0 avertissement |
 | Erreurs TypeScript (strict) sur le TSX généré | 0 |
@@ -43,7 +43,7 @@
 
 | ID | Sévérité | Constat | Statut |
 |---|---|---|---|
-| A-01 | Moyenne | Le Dart généré n'a pas été compilé (SDK Flutter inaccessible dans l'environnement d'audit). Le code n'utilise que des API stables, mais aucune preuve d'exécution. | **Ouvert** — job CI `flutter` prêt, à exécuter |
+| A-01 | Moyenne | Le Dart généré n'avait pas été compilé (SDK Flutter inaccessible dans l'environnement d'audit). | **Levé** — `examples/flutter_app/` : `flutter analyze --fatal-infos --fatal-warnings` sans aucun problème (Flutter 3.47.5) après correction du générateur (`unnecessary_null_comparison` sur la bordure de `NoraBadge`) ; 8 tests de widgets dont 6 goldens (`NoraBtn` 5 tons × 3 tailles, `NoraCard(glass: true)`, `NoraBadge`, clair et sombre), sémantique et zone tactile vérifiées ; job CI `flutter` |
 | A-02 | Moyenne | Les composants Twig et JSP acceptaient `href="javascript:…"` si l'URL venait de l'utilisateur. | **Corrigé** — liste blanche des schémas d'URL, `type` du bouton restreint |
 | A-03 | Faible | `nora check` repose sur des expressions régulières, pas sur un parseur complet : des cas exotiques (JSX très imbriqué, attributs multi-lignes complexes) peuvent échapper à l'analyse. | Ouvert — accepté pour 0.1, parseur prévu |
 | A-04 | Faible | Si un effet personnalisé lève une exception **après** avoir modifié l'élément, ces modifications ne sont pas annulées (l'erreur est isolée, les autres effets continuent). | Ouvert — documenté |
@@ -56,7 +56,7 @@
 
 ## 4. Conditions avant commercialisation
 
-1. Lever **A-01** : faire passer `flutter analyze` et des golden tests sur le dépôt privé.
+1. ~~Lever **A-01**~~ : fait (`examples/flutter_app/`, analyse et goldens). Reste à exécuter le job CI `flutter` sur Linux et à ajuster la tolérance si besoin.
 2. Ajouter la **régression visuelle** web (Playwright) et un test **axe-core** sur la page de démo.
 3. Faire relire **LICENSE** et rédiger le **contrat de licence** par un avocat ; déposer la marque.
 
