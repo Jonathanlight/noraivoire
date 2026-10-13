@@ -11,6 +11,7 @@
 - Flutter : tests de widgets `NoraScramble` et `NoraParallax` dans `examples/flutter_app/test/fx_test.dart` ; `flutter:sync` copie aussi `noraivoire_fx.dart`.
 - Serveur MCP `packages/mcp/` (`nora-mcp`) : stdio, JSON-RPC 2.0 écrit sans dépendance, 4 outils en lecture seule (`nora_get_component`, `nora_list_tokens`, `nora_validate`, `nora_recipe`), accès disque limité au manifest et à `recipes/` (liste blanche, sans lien symbolique), limites de taille ; contrôle d'audit `mcp:read-only` ; 11 tests ; configuration Claude Code, Claude Desktop, Cursor et VS Code dans `packages/mcp/README.md`.
 - Serveur MCP *dual-era* : requêtes sans état de la spec MCP `2026-07-28` (`server/discover`, `_meta` par requête, `resultType`, erreur `-32022`) en plus de la poignée de main `initialize` (`2025-11-25` et antérieures) ; 1 test.
+- Sécurité : les descriptions de la spec insérées dans les commentaires Dart/TSX du cœur passent par `docComment()` (une ligne, `*/` neutralisé) ; une description multi-ligne pouvait injecter du code Dart. 1 test.
 
 ## 0.1.0 — 14 octobre 2026
 

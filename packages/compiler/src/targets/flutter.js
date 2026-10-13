@@ -4,7 +4,7 @@
 // Le code généré n'utilise QUE le SDK Flutter (aucun package tiers) :
 // pas de dépendance transitive à auditer, pas de rupture si un package disparaît.
 
-import { resolveRef, camel, pascal, quote } from '../resolve.js';
+import { resolveRef, camel, pascal, quote, docComment } from '../resolve.js';
 import { shapeFromRole } from '../validate.js';
 import { header } from '../header.js';
 
@@ -107,7 +107,7 @@ function interactiveWidget(c, tokens) {
   const dur = c.motion?.press ? resolveRef(c.motion.press.duration, tokens, {}) : { value: 150 };
   const haptic = c.feedback?.haptic;
   const hapticCall = haptic ? `HapticFeedback.${haptic}Impact()` : 'null';
-  return `/// ${c.description.replace(/\n/g, ' ')}
+  return `/// ${docComment(c.description)}
 class ${cls} extends StatefulWidget {
   const ${cls}({
     super.key,
@@ -201,7 +201,7 @@ function staticWidget(c, tokens, shape) {
     : '';
   const borderProp = c.tokens.border ? '\n        border: Border.all(color: borderColor),' : '';
   const isLabel = shape === 'label';
-  return `/// ${c.description.replace(/\n/g, ' ')}
+  return `/// ${docComment(c.description)}
 class ${cls} extends StatelessWidget {
   const ${cls}({
     super.key,
@@ -263,7 +263,7 @@ function effectWidgets(effects) {
   const tilt = byKind['orientation-transform'];
   if (tilt) {
     const max = tilt.options.max?.default ?? 10;
-    out.push(`/// ${tilt.description}
+    out.push(`/// ${docComment(tilt.description)}
 /// Par défaut : pointeur / toucher. Pour le gyroscope, fournir [orientation]
 /// (ex. depuis sensors_plus) : un flux d'Offset normalisé dans [-1, 1].
 class NoraTilt extends StatefulWidget {
@@ -337,7 +337,7 @@ class _NoraTiltState extends State<NoraTilt> {
   }
   const reveal = byKind['scroll-reveal'];
   if (reveal) {
-    out.push(`/// ${reveal.description}
+    out.push(`/// ${docComment(reveal.description)}
 /// Version sans dépendance : l'apparition se déclenche au montage.
 /// Pour un déclenchement au scroll, piloter [visible] (ex. visibility_detector).
 class NoraReveal extends StatefulWidget {

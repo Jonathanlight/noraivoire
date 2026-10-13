@@ -11,6 +11,7 @@ import { fileURLToPath } from 'node:url';
 import { listSpecs } from './load.js';
 import { safeParse, validateEffect, FX_PACKAGE_KINDS, SpecError } from './validate.js';
 import { header } from './header.js';
+import { docComment as comment } from './resolve.js';
 import { stripJsComments } from './index.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -36,8 +37,6 @@ export function loadFx(specRoot, coreEffects = []) {
 }
 
 const num = (n) => String(Number(n));
-/** Texte libre de la spec dans un commentaire : une seule ligne, jamais de fin de bloc. */
-const comment = (t) => String(t).replace(/[\r\n\u2028\u2029]+/g, ' ').replace(/\*\//g, '* /');
 const byKind = (effects) => Object.fromEntries(effects.map((e) => [e.kind, e]));
 
 // ───────────────────────── CSS ─────────────────────────

@@ -19,7 +19,7 @@ NoraIvoire ne collecte, ne stocke et ne transmet **aucune donnée**. Aucune requ
 | # | Menace | Vecteur | Contrôle | Vérifié par |
 |---|---|---|---|---|
 | M1 | Injection CSS via la spec | Valeur `red;}body{display:none` dans un token | Liste blanche : couleurs hexadécimales, nombres bornés, noms `^[a-z][a-z0-9-]*$`, références `{…}` | Test « injection CSS dans une couleur refusée » |
-| M2 | Injection de code Dart/TS | Chaîne libre émise dans le code natif | Aucune chaîne libre n'est émise hors commentaires ; `quote()` échappe `' $ \ \n U+2028` | Test « chaînes échappées » |
+| M2 | Injection de code Dart/TS | Chaîne libre émise dans le code natif | Les chaînes libres ne sortent que dans des commentaires via `docComment()` (une ligne, `*/` neutralisé) ; `quote()` échappe `' $ \ \n U+2028` | Tests « chaînes échappées » et « description multi-ligne » |
 | M3 | Pollution de prototype | `__proto__`, `constructor`, `prototype` dans le JSON | `safeParse` rejette ces clés ; `parseOptions` utilise `Object.hasOwn` | 2 tests |
 | M4 | Déni de service du compilateur | Fichier géant, imbrication profonde | 256 Kio max, profondeur 8, 500 clés | Test dédié |
 | M5 | Lecture hors périmètre | Lien symbolique dans `spec/` | `lstat` + `realpath` dans la racine | Test « lien symbolique refusé » |
@@ -67,6 +67,6 @@ Projet privé. Écrire à jonathan.kablan@gmail.com avec l'objet « [NoraIvoire]
 ## 5. Points de vigilance pour la suite
 
 - Ajouter un effet WebGL impliquera du code de shader : l'isoler dans un paquet optionnel, avec sa propre revue (modèle : `fx-scroll`, `fx-text`).
-- Les descriptions de la spec sont du texte libre : dans les commentaires Dart/TSX générés par `fx.js`, elles sont ramenées à une ligne et `*/` est neutralisé. Les cibles du cœur (`flutter.js`) insèrent encore la description brute dans un commentaire `///` : à durcir de la même façon.
+- Les descriptions de la spec sont du texte libre : dans tous les commentaires Dart/TSX générés (cœur et `fx.js`), elles passent par `docComment()` (`resolve.js`), qui les ramène à une ligne (`\r`, `\n`, U+2028/2029) et neutralise `*/`. Test « une description multi-ligne ne peut pas injecter de code natif ».
 - Serveur MCP : en place, en lecture seule (voir M14 à M16). Toute future capacité d'écriture (génération de fichiers) devra passer par un outil distinct, désactivé par défaut, avec confirmation côté client.
 - Signer les releases (Sigstore ou GPG) quand un registre privé sera en place.

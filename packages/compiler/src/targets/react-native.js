@@ -5,7 +5,7 @@
 // sans Reanimated ni Expo obligatoires : moins de dépendances, moins de ruptures.
 // Haptique et gyroscope s'injectent via configureNora().
 
-import { resolveRef, camel, pascal, quote } from '../resolve.js';
+import { resolveRef, camel, pascal, quote, docComment } from '../resolve.js';
 import { shapeFromRole } from '../validate.js';
 import { header } from '../header.js';
 
@@ -69,7 +69,7 @@ function interactive(c) {
   style?: StyleProp<ViewStyle>;
 };
 
-/** ${c.description.replace(/\*\//g, '* /')} */
+/** ${docComment(c.description)} */
 export function ${P}({ children, tone, size, haptic = true, disabled, onPress, style, ...rest }: ${P}Props) {
   const colors = useNoraColors();
   const reduce = useReducedMotion();
@@ -131,7 +131,7 @@ function staticComp(c, shape) {
   size?: NoraSize;${isLabel ? '' : '\n  glass?: boolean;'}
 };
 
-/** ${c.description.replace(/\*\//g, '* /')} */
+/** ${docComment(c.description)} */
 export function ${P}({ children, tone, size, ${isLabel ? '' : 'glass = false, '}style, ...rest }: ${P}Props) {
   const colors = useNoraColors();
   const t = tone ?? ${n}Spec.defaults.tone;
@@ -172,7 +172,7 @@ function effects(model) {
   if (tilt) {
     out.push(`export type NoraTiltProps = ViewProps & { children: React.ReactNode; max?: number };
 
-/** ${tilt.description} Toucher par défaut ; gyroscope si configureNora({ orientation }) est fourni. */
+/** ${docComment(tilt.description)} Toucher par défaut ; gyroscope si configureNora({ orientation }) est fourni. */
 export function NoraTilt({ children, max = ${tilt.options.max?.default ?? 10}, style, ...rest }: NoraTiltProps) {
   const reduce = useReducedMotion();
   const rx = React.useRef(new Animated.Value(0)).current;
@@ -215,7 +215,7 @@ export function NoraTilt({ children, max = ${tilt.options.max?.default ?? 10}, s
   if (rev) {
     out.push(`export type NoraRevealProps = ViewProps & { children: React.ReactNode; visible?: boolean; distance?: number; duration?: number };
 
-/** ${rev.description} Au montage par défaut ; piloter \`visible\` pour un déclenchement au scroll. */
+/** ${docComment(rev.description)} Au montage par défaut ; piloter \`visible\` pour un déclenchement au scroll. */
 export function NoraReveal({ children, visible, distance = ${rev.options.distance?.default ?? 24}, duration = ${rev.options.duration?.default ?? 400}, style, ...rest }: NoraRevealProps) {
   const reduce = useReducedMotion();
   const p = React.useRef(new Animated.Value(reduce ? 1 : 0)).current;
