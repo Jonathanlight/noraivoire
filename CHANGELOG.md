@@ -1,5 +1,9 @@
 # Journal des modifications
 
+## Non publié
+
+- Dépôt : ajout de `.npmrc` (`ignore-scripts=true`), `.gitignore` et `.github/workflows/ci.yml` (jobs `verify`, `flutter`, `react-native-types`).
+
 ## 0.1.0 — 14 octobre 2026
 
 Première version (preuve de concept).
