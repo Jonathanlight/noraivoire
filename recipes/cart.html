@@ -1,0 +1,49 @@
+<!doctype html>
+<!-- NoraIvoire — recette « Panier ». © 2026 Jonathan KABLAN — Propriétaire. -->
+<!-- Récapitulatif des articles et total. Données fictives. Aucun JS inline (CSP stricte). -->
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Panier — NoraIvoire</title>
+  <link rel="stylesheet" href="../packages/core/dist/noraivoire.css">
+  <script type="module" src="../packages/core/dist/noraivoire.auto.js"></script>
+</head>
+<body>
+  <header class="container cluster py-4">
+    <a class="font-bold text-lg" href="home.html">Boutique Démo</a>
+    <nav class="cluster" aria-label="Navigation principale">
+      <a href="products.html">Produits</a>
+      <a href="pricing.html">Tarifs</a>
+      <a href="search.html">Recherche</a>
+      <a class="btn" data-tone="neutral" data-size="sm" href="cart.html">Panier <span class="badge" data-tone="primary">2</span></a>
+    </nav>
+  </header>
+  <main class="container stack py-8">
+    <h1 class="text-xl font-bold">Mon panier</h1>
+    <ul class="stack" aria-label="Articles">
+      <li class="card cluster">
+        <span class="font-bold">Lampe en rotin</span>
+        <span class="text-muted">1 × 45,00 €</span>
+        <button class="btn" data-tone="danger" data-size="sm" type="button" aria-label="Retirer la lampe en rotin">Retirer</button>
+      </li>
+      <li class="card cluster">
+        <span class="font-bold">Tasse en céramique</span>
+        <span class="text-muted">2 × 12,00 €</span>
+        <button class="btn" data-tone="danger" data-size="sm" type="button" aria-label="Retirer la tasse en céramique">Retirer</button>
+      </li>
+    </ul>
+    <section class="card stack" aria-labelledby="total">
+      <h2 id="total" class="text-lg font-bold">Total : 69,00 €</h2>
+      <p class="text-sm text-muted">Livraison calculée à l'étape suivante.</p>
+      <div class="cluster">
+        <a class="btn" href="checkout.html" data-size="lg">Passer commande</a>
+        <a class="btn" data-tone="neutral" href="products.html">Continuer mes achats</a>
+      </div>
+    </section>
+  </main>
+  <footer class="container py-8 text-sm text-muted">
+    <p>© 2026 Boutique Démo — données fictives. <a href="contact.html">Contact</a> · <a href="about.html">À propos</a></p>
+  </footer>
+</body>
+</html>

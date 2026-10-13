@@ -1,0 +1,84 @@
+<!doctype html>
+<!-- NoraIvoire — recette « Liste de produits ». © 2026 Jonathan KABLAN — Propriétaire. -->
+<!-- Catalogue en grille avec filtres et pagination. Données fictives. Aucun JS inline (CSP stricte). -->
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Liste de produits — NoraIvoire</title>
+  <link rel="stylesheet" href="../packages/core/dist/noraivoire.css">
+  <script type="module" src="../packages/core/dist/noraivoire.auto.js"></script>
+</head>
+<body>
+  <header class="container cluster py-4">
+    <a class="font-bold text-lg" href="home.html">Boutique Démo</a>
+    <nav class="cluster" aria-label="Navigation principale">
+      <a href="products.html">Produits</a>
+      <a href="pricing.html">Tarifs</a>
+      <a href="search.html">Recherche</a>
+      <a class="btn" data-tone="neutral" data-size="sm" href="cart.html">Panier <span class="badge" data-tone="primary">2</span></a>
+    </nav>
+  </header>
+  <main class="container stack py-8">
+    <h1 class="text-xl font-bold">Catalogue</h1>
+    <form class="cluster" action="#" method="get" aria-label="Filtrer le catalogue">
+      <div class="field" data-size="sm">
+        <label class="field-label" for="categorie">Catégorie</label>
+        <select class="select" id="categorie" name="categorie" data-size="sm">
+          <option>Toutes</option><option>Maison</option><option>Bureau</option>
+        </select>
+      </div>
+      <div class="field" data-size="sm">
+        <label class="field-label" for="tri">Trier par</label>
+        <select class="select" id="tri" name="tri" data-size="sm">
+          <option>Pertinence</option><option>Prix croissant</option><option>Prix décroissant</option>
+        </select>
+      </div>
+      <button class="btn" data-tone="neutral" type="submit">Filtrer</button>
+    </form>
+    <section class="grid-auto" aria-label="Produits">
+      <article class="card stack" data-fx="reveal">
+        <span class="badge" data-tone="primary">Nouveau</span>
+        <h2 class="text-lg font-bold"><a href="product.html">Lampe en rotin</a></h2>
+        <p class="text-muted">45,00 €</p>
+        <button class="btn" type="button">Ajouter au panier</button>
+      </article>
+      <article class="card stack" data-fx="reveal">
+        <h2 class="text-lg font-bold"><a href="product.html">Tasse en céramique</a></h2>
+        <p class="text-muted">12,00 €</p>
+        <button class="btn" type="button">Ajouter au panier</button>
+      </article>
+      <article class="card stack" data-fx="reveal">
+        <span class="badge" data-tone="success">Promo</span>
+        <h2 class="text-lg font-bold"><a href="product.html">Carnet en pagne</a></h2>
+        <p class="text-muted">9,50 €</p>
+        <button class="btn" type="button">Ajouter au panier</button>
+      </article>
+      <article class="card stack" data-fx="reveal">
+        <h2 class="text-lg font-bold"><a href="product.html">Panier tressé</a></h2>
+        <p class="text-muted">32,00 €</p>
+        <button class="btn" type="button">Ajouter au panier</button>
+      </article>
+      <article class="card stack" data-fx="reveal">
+        <h2 class="text-lg font-bold"><a href="product.html">Coussin wax</a></h2>
+        <p class="text-muted">28,00 €</p>
+        <button class="btn" type="button">Ajouter au panier</button>
+      </article>
+      <article class="card stack" data-fx="reveal">
+        <span class="badge" data-tone="warning">Rupture</span>
+        <h2 class="text-lg font-bold"><a href="product.html">Plateau en bois</a></h2>
+        <p class="text-muted">39,00 €</p>
+        <button class="btn" type="button">Ajouter au panier</button>
+      </article>
+    </section>
+    <nav class="cluster" aria-label="Pagination">
+      <a class="btn" data-tone="neutral" data-size="sm" href="#" aria-current="page">1</a>
+      <a class="btn" data-tone="neutral" data-size="sm" href="#">2</a>
+      <a class="btn" data-tone="neutral" data-size="sm" href="#">Suivant</a>
+    </nav>
+  </main>
+  <footer class="container py-8 text-sm text-muted">
+    <p>© 2026 Boutique Démo — données fictives. <a href="contact.html">Contact</a> · <a href="about.html">À propos</a></p>
+  </footer>
+</body>
+</html>

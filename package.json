@@ -14,7 +14,7 @@
   ],
   "scripts": {
     "build": "node packages/compiler/src/cli.js build --spec spec --out packages/core/dist",
-    "check": "node packages/cli/src/cli.js check templates --format=text",
+    "check": "node packages/cli/src/cli.js check templates recipes --format=text",
     "test": "node --test tests/unit/*.test.js",
     "audit:deps": "npm audit --omit=dev --audit-level=moderate",
     "audit:security": "node packages/cli/src/cli.js audit",

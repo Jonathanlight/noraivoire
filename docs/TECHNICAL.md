@@ -324,6 +324,32 @@ Négociation (serveur *dual-era*, spec MCP `2026-07-28`) : une requête dont le 
 
 Correspondance : l'intention et chaque formulation (`id`, `title`, `intents`) sont normalisées (minuscules, sans accents ni ponctuation). Égalité exacte (score 100) > formulation contenue dans la demande ou l'inverse (50) > mots communs de plus de 2 lettres (10 par mot). La meilleure recette l'emporte ; à score nul, l'outil liste les intentions disponibles. Si `recipes/index.json` est absent, l'outil renvoie une erreur explicite, sans arrêter le serveur. Le dossier peut être remplacé par la variable `NORA_MCP_RECIPES`.
 
+### 7.3 Bibliothèque de recettes (`recipes/`)
+
+20 écrans de référence en HTML NoraIvoire (connexion, inscription, mot de passe oublié, tarifs, tableau de bord, liste et fiche produit, panier, paiement, confirmation de commande, profil, paramètres, notifications, recherche, erreurs 404 et 500, maintenance, accueil marketing, à propos/équipe, contact). Chaque écran :
+
+- n'utilise que les classes, variantes et effets de `llms-full.txt` (aucune classe inventée) ;
+- est accessible : `lang`, un seul `h1`, landmarks (`header`, `nav` étiqueté, `main`), libellé associé à chaque champ (`<label for>` ↔ `id`) ;
+- ne contient ni JS inline, ni attribut `style`, ni ressource externe (CSP stricte) ;
+- n'utilise que des données fictives (`example.com`, « Utilisateur Démo ») ;
+- passe `nora check` sans erreur ni avertissement (`npm run check` couvre `templates/` et `recipes/`).
+
+Index `recipes/index.json`, lu par l'outil MCP `nora_recipe` :
+
+```json
+{ "version": 1, "recipes": [
+  { "id": "login", "title": "Connexion", "description": "…",
+    "intents": ["connexion", "se connecter", "login", "sign in"],
+    "file": "login.html", "components": ["btn", "card", "checkbox", "field", "input"] } ] }
+```
+
+- `id` : kebab-case, unique ; `file` vaut `<id>.html`, sans sous-dossier ;
+- `intents` : au moins 3, en français et en anglais ; une intention normalisée (minuscules, sans accents) n'appartient qu'à une seule recette ;
+- `components` : exactement les composants du manifest présents dans le markup (vérifié par `tests/unit/recipes.test.js`) ;
+- `description` : champ facultatif, ignoré par les consommateurs qui ne le connaissent pas.
+
+Les formulaires utilisent les composants `field` (avec `.field-label`, `.field-help`, `.field-error`), `input`, `select`, `textarea`, `checkbox` et `switch` ; `forgot-password.html` montre l'état invalide (`aria-invalid="true"` relié au message par `aria-describedby`). Les boutons radio restent natifs (aucun composant `radio` dans le manifest), groupés et étiquetés.
+
 ## 8. Ajouter un composant
 
 1. Créer `spec/components/<nom>.nora.json`.

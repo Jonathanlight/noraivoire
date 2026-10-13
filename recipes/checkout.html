@@ -1,0 +1,62 @@
+<!doctype html>
+<!-- NoraIvoire — recette « Paiement ». © 2026 Jonathan KABLAN — Propriétaire. -->
+<!-- Adresse de livraison, mode de paiement et total. Données fictives. Aucun JS inline (CSP stricte). -->
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Paiement — NoraIvoire</title>
+  <link rel="stylesheet" href="../packages/core/dist/noraivoire.css">
+  <script type="module" src="../packages/core/dist/noraivoire.auto.js"></script>
+</head>
+<body>
+  <header class="container cluster py-4">
+    <a class="font-bold text-lg" href="home.html">Boutique Démo</a>
+    <nav class="cluster" aria-label="Navigation principale">
+      <a href="products.html">Produits</a>
+      <a href="pricing.html">Tarifs</a>
+      <a href="search.html">Recherche</a>
+      <a class="btn" data-tone="neutral" data-size="sm" href="cart.html">Panier <span class="badge" data-tone="primary">2</span></a>
+    </nav>
+  </header>
+  <main class="container stack py-8">
+    <h1 class="text-xl font-bold">Paiement</h1>
+    <form class="grid-auto" action="#" method="post">
+      <section class="card">
+      <fieldset class="stack">
+        <legend class="text-lg font-bold">Livraison</legend>
+        <div class="field">
+          <label class="field-label" for="nom">Nom complet</label>
+          <input class="input" id="nom" name="nom" type="text" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label class="field-label" for="adresse">Adresse</label>
+          <input class="input" id="adresse" name="adresse" type="text" autocomplete="street-address" required>
+        </div>
+        <div class="field">
+          <label class="field-label" for="ville">Ville</label>
+          <input class="input" id="ville" name="ville" type="text" autocomplete="address-level2" required>
+        </div>
+      </fieldset>
+      </section>
+      <section class="card">
+      <fieldset class="stack">
+        <legend class="text-lg font-bold">Mode de paiement</legend>
+        <div class="cluster" role="radiogroup" aria-label="Moyen de paiement">
+          <input id="carte" name="mode" type="radio" value="carte" checked>
+          <label for="carte">Carte bancaire</label>
+          <input id="mobile" name="mode" type="radio" value="mobile">
+          <label for="mobile">Paiement mobile</label>
+        </div>
+        <p class="text-sm text-muted">Le paiement est confié à votre prestataire certifié : aucune donnée de carte ne transite par cette page.</p>
+        <p class="text-lg font-bold">Total : 69,00 €</p>
+        <button class="btn w-full" type="submit" data-size="lg">Payer 69,00 €</button>
+      </fieldset>
+      </section>
+    </form>
+  </main>
+  <footer class="container py-8 text-sm text-muted">
+    <p>© 2026 Boutique Démo — données fictives. <a href="contact.html">Contact</a> · <a href="about.html">À propos</a></p>
+  </footer>
+</body>
+</html>

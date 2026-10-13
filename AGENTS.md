@@ -8,7 +8,7 @@ Projet **propriétaire** (© Jonathan KABLAN). Ne jamais publier, copier hors du
 npm ci --ignore-scripts
 npm run build            # spec/ → packages/core/dist/ (ne jamais éditer dist à la main)
 npm test                 # node:test
-npm run check            # nora check sur templates/
+npm run check            # nora check sur templates/ et recipes/
 npm run audit:security   # 84 contrôles
 npm run verify           # tout
 ```

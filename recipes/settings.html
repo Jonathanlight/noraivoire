@@ -1,0 +1,53 @@
+<!doctype html>
+<!-- NoraIvoire — recette « Paramètres ». © 2026 Jonathan KABLAN — Propriétaire. -->
+<!-- Préférences, notifications et zone de danger. Données fictives. Aucun JS inline (CSP stricte). -->
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Paramètres — NoraIvoire</title>
+  <link rel="stylesheet" href="../packages/core/dist/noraivoire.css">
+  <script type="module" src="../packages/core/dist/noraivoire.auto.js"></script>
+</head>
+<body>
+  <header class="container cluster py-4">
+    <a class="font-bold text-lg" href="dashboard.html">Espace Démo</a>
+    <nav class="cluster" aria-label="Navigation de l'application">
+      <a href="dashboard.html">Tableau de bord</a>
+      <a href="notifications.html">Notifications <span class="badge" data-tone="danger">3</span></a>
+      <a href="profile.html">Profil</a>
+      <a href="settings.html">Paramètres</a>
+    </nav>
+  </header>
+  <main class="container stack py-8">
+    <h1 class="text-xl font-bold">Paramètres</h1>
+    <section class="card" aria-labelledby="pref">
+    <form class="stack" action="#" method="post">
+      <h2 id="pref" class="text-lg font-bold">Préférences</h2>
+      <div class="field">
+        <label class="field-label" for="langue">Langue</label>
+        <select class="select" id="langue" name="langue"><option>Français</option><option>English</option></select>
+      </div>
+      <div class="field">
+        <label class="field-label" for="theme">Thème</label>
+        <select class="select" id="theme" name="theme"><option>Système</option><option>Clair</option><option>Sombre</option></select>
+      </div>
+      <button class="btn" type="submit">Enregistrer</button>
+    </form>
+    </section>
+    <section class="card stack" aria-labelledby="notif">
+      <h2 id="notif" class="text-lg font-bold">Notifications et confort</h2>
+      <p class="text-sm text-muted">Ces réglages s'appliquent immédiatement.</p>
+      <label class="switch"><input type="checkbox" role="switch" name="notif-email" checked> Recevoir les notifications par e-mail</label>
+      <label class="switch"><input type="checkbox" role="switch" name="reduce"> Réduire les animations</label>
+    </section>
+    <section class="card stack" aria-labelledby="danger">
+      <h2 id="danger" class="text-lg font-bold">Zone de danger</h2>
+      <p class="text-muted">La suppression du compte est définitive.</p>
+      <div class="cluster">
+        <button class="btn" data-tone="danger" type="button">Supprimer mon compte</button>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!doctype html>
+<!-- NoraIvoire — recette « Contact ». © 2026 Jonathan KABLAN — Propriétaire. -->
+<!-- Formulaire de contact et coordonnées. Données fictives. Aucun JS inline (CSP stricte). -->
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact — NoraIvoire</title>
+  <link rel="stylesheet" href="../packages/core/dist/noraivoire.css">
+  <script type="module" src="../packages/core/dist/noraivoire.auto.js"></script>
+</head>
+<body>
+  <header class="container cluster py-4">
+    <a class="font-bold text-lg" href="home.html">Boutique Démo</a>
+    <nav class="cluster" aria-label="Navigation principale">
+      <a href="products.html">Produits</a>
+      <a href="pricing.html">Tarifs</a>
+      <a href="search.html">Recherche</a>
+      <a class="btn" data-tone="neutral" data-size="sm" href="cart.html">Panier <span class="badge" data-tone="primary">2</span></a>
+    </nav>
+  </header>
+  <main class="container grid-auto py-8">
+    <section class="card stack" aria-labelledby="titre">
+      <h1 id="titre" class="text-xl font-bold">Nous contacter</h1>
+      <form class="stack" action="#" method="post">
+        <div class="field">
+          <label class="field-label" for="nom">Nom</label>
+          <input class="input" id="nom" name="nom" type="text" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label class="field-label" for="email">Adresse e-mail</label>
+          <input class="input" id="email" name="email" type="email" autocomplete="email" required>
+        </div>
+        <div class="field">
+          <label class="field-label" for="sujet">Sujet</label>
+          <select class="select" id="sujet" name="sujet"><option>Commande</option><option>Partenariat</option><option>Autre</option></select>
+        </div>
+        <div class="field">
+          <label class="field-label" for="message">Message</label>
+          <textarea class="textarea" id="message" name="message" rows="6" required></textarea>
+        </div>
+        <button class="btn" type="submit">Envoyer</button>
+      </form>
+    </section>
+    <section class="card stack" aria-labelledby="coord">
+      <h2 id="coord" class="text-lg font-bold">Coordonnées</h2>
+      <p class="text-muted">contact@example.com</p>
+      <p class="text-muted">Réponse sous 2 jours ouvrés.</p>
+    </section>
+  </main>
+  <footer class="container py-8 text-sm text-muted">
+    <p>© 2026 Boutique Démo — données fictives. <a href="contact.html">Contact</a> · <a href="about.html">À propos</a></p>
+  </footer>
+</body>
+</html>
