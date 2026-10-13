@@ -229,3 +229,15 @@ test('radio : parité CSS, Flutter et React Native', () => {
   assert.equal(m.components.radio.flutter, 'NoraRadio');
   assert.equal(m.components.radio.a11y.inputType, 'radio');
 });
+
+test('flutter : rendu statique des indicateurs aux proportions de la spec (parité CSS / RN)', () => {
+  const dart = compile(SPEC).files['flutter/noraivoire.dart'];
+  const cls = (name) => dart.slice(dart.indexOf(`class ${name}`), dart.indexOf('\n}\n', dart.indexOf(`class ${name}`)));
+  assert.match(cls('NoraCheckbox '), /width: fontSize \* 1\.25,\s+height: fontSize \* 1\.25,/);
+  assert.match(cls('NoraCheckbox '), /Icon\(Icons\.check, size: fontSize \* 0\.7/);
+  assert.match(cls('NoraRadio<T> '), /width: fontSize \* 1\.25,\s+height: fontSize \* 1\.25,/);
+  assert.match(cls('NoraRadio<T> '), /width: fontSize \* 0\.5, height: fontSize \* 0\.5/);
+  assert.match(cls('NoraSwitch '), /width: fontSize \* 2\.25,\s+height: fontSize \* 1\.25,/);
+  assert.match(cls('NoraSwitch '), /width: fontSize \* 1\.25 - 8,/);
+  for (const n of ['NoraCheckbox ', 'NoraRadio<T> ', 'NoraSwitch ']) assert.doesNotMatch(cls(n), /width: (18|20|40|52),/, n);
+});

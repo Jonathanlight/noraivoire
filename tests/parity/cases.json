@@ -1,0 +1,269 @@
+{
+  "$comment": "NoraIvoire — cas de parité cross-cible (CSS, Flutter, React Native). © 2026 Jonathan KABLAN — Propriétaire.",
+  "themes": [
+    "light",
+    "dark"
+  ],
+  "cases": [
+    {
+      "component": "btn",
+      "tone": "primary",
+      "size": "sm"
+    },
+    {
+      "component": "btn",
+      "tone": "primary",
+      "size": "md"
+    },
+    {
+      "component": "btn",
+      "tone": "primary",
+      "size": "lg"
+    },
+    {
+      "component": "btn",
+      "tone": "neutral",
+      "size": "sm"
+    },
+    {
+      "component": "btn",
+      "tone": "neutral",
+      "size": "md"
+    },
+    {
+      "component": "btn",
+      "tone": "neutral",
+      "size": "lg"
+    },
+    {
+      "component": "btn",
+      "tone": "danger",
+      "size": "sm"
+    },
+    {
+      "component": "btn",
+      "tone": "danger",
+      "size": "md"
+    },
+    {
+      "component": "btn",
+      "tone": "danger",
+      "size": "lg"
+    },
+    {
+      "component": "btn",
+      "tone": "success",
+      "size": "sm"
+    },
+    {
+      "component": "btn",
+      "tone": "success",
+      "size": "md"
+    },
+    {
+      "component": "btn",
+      "tone": "success",
+      "size": "lg"
+    },
+    {
+      "component": "btn",
+      "tone": "warning",
+      "size": "sm"
+    },
+    {
+      "component": "btn",
+      "tone": "warning",
+      "size": "md"
+    },
+    {
+      "component": "btn",
+      "tone": "warning",
+      "size": "lg"
+    },
+    {
+      "component": "badge",
+      "tone": "primary",
+      "size": "sm"
+    },
+    {
+      "component": "badge",
+      "tone": "primary",
+      "size": "md"
+    },
+    {
+      "component": "badge",
+      "tone": "neutral",
+      "size": "sm"
+    },
+    {
+      "component": "badge",
+      "tone": "neutral",
+      "size": "md"
+    },
+    {
+      "component": "badge",
+      "tone": "danger",
+      "size": "sm"
+    },
+    {
+      "component": "badge",
+      "tone": "danger",
+      "size": "md"
+    },
+    {
+      "component": "badge",
+      "tone": "success",
+      "size": "sm"
+    },
+    {
+      "component": "badge",
+      "tone": "success",
+      "size": "md"
+    },
+    {
+      "component": "badge",
+      "tone": "warning",
+      "size": "sm"
+    },
+    {
+      "component": "badge",
+      "tone": "warning",
+      "size": "md"
+    },
+    {
+      "component": "card",
+      "tone": "neutral",
+      "size": "sm"
+    },
+    {
+      "component": "card",
+      "tone": "neutral",
+      "size": "md"
+    },
+    {
+      "component": "card",
+      "tone": "neutral",
+      "size": "lg"
+    },
+    {
+      "component": "input",
+      "tone": "neutral",
+      "size": "sm"
+    },
+    {
+      "component": "input",
+      "tone": "neutral",
+      "size": "md"
+    },
+    {
+      "component": "input",
+      "tone": "neutral",
+      "size": "lg"
+    },
+    {
+      "component": "checkbox",
+      "tone": "primary",
+      "size": "md"
+    },
+    {
+      "component": "checkbox",
+      "tone": "neutral",
+      "size": "md"
+    },
+    {
+      "component": "checkbox",
+      "tone": "danger",
+      "size": "md"
+    },
+    {
+      "component": "checkbox",
+      "tone": "success",
+      "size": "md"
+    },
+    {
+      "component": "checkbox",
+      "tone": "warning",
+      "size": "md"
+    },
+    {
+      "component": "checkbox",
+      "tone": "primary",
+      "size": "sm"
+    },
+    {
+      "component": "checkbox",
+      "tone": "primary",
+      "size": "lg"
+    },
+    {
+      "component": "switch",
+      "tone": "primary",
+      "size": "md"
+    },
+    {
+      "component": "switch",
+      "tone": "neutral",
+      "size": "md"
+    },
+    {
+      "component": "switch",
+      "tone": "danger",
+      "size": "md"
+    },
+    {
+      "component": "switch",
+      "tone": "success",
+      "size": "md"
+    },
+    {
+      "component": "switch",
+      "tone": "warning",
+      "size": "md"
+    },
+    {
+      "component": "switch",
+      "tone": "primary",
+      "size": "sm"
+    },
+    {
+      "component": "switch",
+      "tone": "primary",
+      "size": "lg"
+    },
+    {
+      "component": "radio",
+      "tone": "primary",
+      "size": "md"
+    },
+    {
+      "component": "radio",
+      "tone": "neutral",
+      "size": "md"
+    },
+    {
+      "component": "radio",
+      "tone": "danger",
+      "size": "md"
+    },
+    {
+      "component": "radio",
+      "tone": "success",
+      "size": "md"
+    },
+    {
+      "component": "radio",
+      "tone": "warning",
+      "size": "md"
+    },
+    {
+      "component": "radio",
+      "tone": "primary",
+      "size": "sm"
+    },
+    {
+      "component": "radio",
+      "tone": "primary",
+      "size": "lg"
+    }
+  ]
+}

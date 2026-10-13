@@ -497,37 +497,38 @@ function toggleWidget(c, tokens) {
     ? `Semantics(
                           toggled: value,
                           enabled: enabled,
+                          // Proportions de la spec (piste 2,25 em × 1,25 em, pouce 1,25 em − 8), comme CSS et React Native.
                           child: Container(
-                            width: 52,
-                            height: 32,
-                            padding: const EdgeInsets.all(4),
+                            width: fontSize * 2.25,
+                            height: fontSize * 1.25,
+                            padding: const EdgeInsets.all(2),
                             alignment: value ? AlignmentDirectional.centerEnd : AlignmentDirectional.centerStart,
                             decoration: BoxDecoration(
                               color: value ? accent : border,
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(NoraRadius.full),
                               border: Border.all(color: value ? accent : (isInvalid ? invalidColor : border), width: 2),
                             ),
-                            child: Container(width: 20, height: 20, decoration: BoxDecoration(shape: BoxShape.circle, color: value ? onAccent : bg)),
+                            child: Container(
+                              width: fontSize * 1.25 - 8,
+                              height: fontSize * 1.25 - 8,
+                              decoration: BoxDecoration(shape: BoxShape.circle, color: value ? onAccent : bg),
+                            ),
                           ),
                         )`
     : `Semantics(
                           checked: value,
                           enabled: enabled,
-                          child: SizedBox(
-                            width: 40,
-                            height: 40,
-                            child: Center(
-                              child: Container(
-                                width: 18,
-                                height: 18,
-                                decoration: BoxDecoration(
-                                  color: value ? accent : bg,
-                                  borderRadius: BorderRadius.circular(${radiusExpr(c, tokens)}),
-                                  border: Border.all(color: value ? accent : (isInvalid ? invalidColor : border), width: 2),
-                                ),
-                                child: value ? Icon(Icons.check, size: 14, color: onAccent) : null,
-                              ),
+                          // Proportions de la spec (case 1,25 em, coche 0,7 em), comme CSS et React Native.
+                          child: Container(
+                            width: fontSize * 1.25,
+                            height: fontSize * 1.25,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: value ? accent : bg,
+                              borderRadius: BorderRadius.circular(${radiusExpr(c, tokens)}),
+                              border: Border.all(color: value ? accent : (isInvalid ? invalidColor : border), width: 2),
                             ),
+                            child: value ? Icon(Icons.check, size: fontSize * 0.7, color: onAccent) : null,
                           ),
                         )`;
   return `/// ${docComment(c.description)}
@@ -708,24 +709,19 @@ ${sizeSwitch(c, tokens, c._sizes)}
             checked: selected,
             inMutuallyExclusiveGroup: true,
             enabled: isEnabled,
-            child: SizedBox(
-              width: 40,
-              height: 40,
-              child: Center(
-                child: Container(
-                  width: 20,
-                  height: 20,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: selected ? accent : bg,
-                    border: Border.all(color: selected ? accent : (isInvalid ? invalidColor : border), width: 2),
-                  ),
-                  child: selected
-                      ? Container(width: 8, height: 8, decoration: BoxDecoration(shape: BoxShape.circle, color: onAccent))
-                      : null,
-                ),
+            // Proportions de la spec (disque 1,25 em, pastille 0,5 em), comme CSS et React Native.
+            child: Container(
+              width: fontSize * 1.25,
+              height: fontSize * 1.25,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: selected ? accent : bg,
+                border: Border.all(color: selected ? accent : (isInvalid ? invalidColor : border), width: 2),
               ),
+              child: selected
+                  ? Container(width: fontSize * 0.5, height: fontSize * 0.5, decoration: BoxDecoration(shape: BoxShape.circle, color: onAccent))
+                  : null,
             ),
           )
         : Radio<T>(

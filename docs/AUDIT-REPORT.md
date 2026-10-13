@@ -1,7 +1,7 @@
 # NoraIvoire — Rapport d'audit
 
 **Version auditée :** 0.1.0 · **Date :** 14 octobre 2026 · **Périmètre :** dépôt complet
-**Méthode :** audit automatisé (`nora audit`, 86 contrôles), 150 tests node, 27 tests Flutter et 54 tests PHPUnit, 20 tests Playwright (captures + axe-core), vérification TypeScript stricte, `npm audit`, revue manuelle du code.
+**Méthode :** audit automatisé (`nora audit`, 86 contrôles), 157 tests node, 29 tests Flutter et 54 tests PHPUnit, 21 tests Playwright (captures + axe-core), vérification TypeScript stricte, `npm audit`, revue manuelle du code.
 © Jonathan KABLAN — Document confidentiel
 
 ## 1. Synthèse
@@ -18,7 +18,7 @@
 | Accessibilité | ✅ Conforme (base) | Mouvement réduit sur 4 cibles, focus visible, zone tactile 44 px sur 3 cibles ; formulaires : label associé obligatoire (`nora check`), `aria-invalid` relié au message, sémantique Flutter / React Native vérifiée ; axe-core : 0 violation sérieuse ou critique (clair et sombre) ; contraste AA testé pour chaque ton |
 | Performance | ✅ Sous budget | CSS 5,0 Kio gzip (budget 15) ; moteur 3,3 Kio gzip (budget 4) |
 | Déterminisme | ✅ Conforme | Deux compilations : octets identiques |
-| Portabilité native | ✅ Conforme | TSX vérifié (TypeScript strict, RN 0.81) ; Dart analysé (`flutter analyze --fatal-infos`, 0 problème) et rendu par 27 tests de widgets dont 12 goldens (Flutter 3.47) ; Twig Components rendus par 54 tests PHPUnit (PHP 8.5, Symfony 8.1) |
+| Portabilité native | ✅ Conforme | TSX vérifié (TypeScript strict, RN 0.81) ; Dart analysé (`flutter analyze --fatal-infos`, 0 problème) et rendu par 29 tests de widgets dont 12 goldens (Flutter 3.47) ; parité mesurée CSS / Flutter / React Native : 0 écart sur 52 cas × 2 thèmes ; Twig Components rendus par 54 tests PHPUnit (PHP 8.5, Symfony 8.1) |
 
 **Verdict : apte pour un usage interne et une phase pilote.** Trois points doivent être levés avant toute licence commerciale (section 4).
 
@@ -26,7 +26,7 @@
 
 | Indicateur | Valeur |
 |---|---|
-| Tests | 150 / 150 réussis (node) · 27 / 27 (Flutter, dont 12 goldens) · 54 / 54 (PHPUnit, bundle Symfony) · 20 / 20 (Playwright : 12 captures, 4 axe-core, 2 sans JS, 2 legacy) |
+| Tests | 157 / 157 réussis (node) · 29 / 29 (Flutter, dont 12 goldens) · 54 / 54 (PHPUnit, bundle Symfony) · 21 / 21 (Playwright : 12 captures, 4 axe-core, 2 sans JS, 2 legacy, 1 parité) |
 | Contrôles d'audit | 86 / 86 réussis |
 | Modèles validés par `nora check` | 13 fichiers + 20 recettes, 0 erreur, 0 avertissement |
 | Erreurs TypeScript (strict) sur le TSX généré | 0 |
@@ -60,6 +60,7 @@
 | A-10 | Info | Le moteur web pèse 3,0 Kio gzip, au-dessus de l'objectif initial de 2 Kio annoncé dans la vision. | Accepté — budget fixé à 4 Kio ; minification réelle possible plus tard |
 | A-11 | Moyenne | Une description de spec sur plusieurs lignes pouvait sortir d'un commentaire `///` et injecter du code Dart (et `*/` fermer un commentaire TSX). | **Corrigé** — `docComment()` partagé par toutes les cibles natives ; test d'injection |
 | A-12 | Faible | Twig Components des contrôles de formulaire génériques ; `Nora:Field` relie libellé, aide et erreur, mais `aria-describedby` / `aria-invalid` restent à poser sur le contrôle. | **Corrigé** — `Nora:Field` expose `control` (étalement `{{ ...control }}`) et `controlHtml` (input brut) : `id`, `aria-describedby`, `aria-invalid` transmis sans pose manuelle ; 2 tests PHPUnit |
+| A-13 | Faible | Rendu statique Flutter (mouvement réduit) des cases, radios et interrupteurs à tailles fixes (18, 20, 52 × 32 px), différentes des proportions de la spec rendues par CSS et React Native. | **Corrigé** — générateur aligné sur la spec (1,25 em ; 2,25 em × 1,25 em) ; détecté par la parité mesurée (`tests/unit/parity.test.js`) |
 
 ## 4. Conditions avant commercialisation
 

@@ -24,7 +24,8 @@
     "bench": "node bench/run.js",
     "bench:dry": "node bench/run.js --dry-run",
     "test:visual": "playwright test",
-    "test:visual:update": "node tests/visual/update.mjs"
+    "test:visual:update": "node tests/visual/update.mjs",
+    "parity:update": "node tests/parity/update.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.13.0",

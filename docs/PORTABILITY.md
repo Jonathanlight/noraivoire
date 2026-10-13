@@ -61,6 +61,16 @@ Le seul attribut posé sur `<html>` par le moteur est `data-nora-engine` (d'où 
 | Association libellé | `<label for>` / `aria-describedby` | `NoraFieldScope` (sémantique) | `NoraFieldContext` (`accessibilityLabel` / `Hint`) | Même contrat, mécanisme propre à chaque plateforme |
 | Mouvement réduit (formulaires) | Transitions coupées (`prefers-reduced-motion`) | Case et interrupteur rendus statiquement (mêmes couleurs, `Semantics` checked / toggled), `InkWell` sans onde ni fondu | Glissement du pouce coupé | Flutter : `Checkbox` / `Switch` Material n'exposent pas leur durée, d'où le rendu statique quand `MediaQuery.disableAnimations` est vrai |
 
+### 4.0 Parité mesurée
+
+Les valeurs de design rendues (couleurs, marges, rayons, zones tactiles, bordures, indicateurs des contrôles) sont **mesurées** sur les trois cibles et comparées par `tests/unit/parity.test.js` (voir TESTING.md) : 52 cas × 2 thèmes, **aucun écart** et aucune exception.
+
+| Hors mesure (volontaire) | Raison |
+|---|---|
+| Typographie (famille, crénage) | Police propre à chaque plateforme (ligne « Typographie » ci-dessus) ; seule la taille est comparée |
+| Géométrie des contrôles Material quand les animations sont actives (`Checkbox` 18 px, `Radio` 20 px, `Switch` 52 × 32 px) | Tailles fixées par Material, non paramétrables ; Flutter est mesuré dans son rendu statique (mouvement réduit), aux proportions de la spec, et un test vérifie que le rendu Material utilise les **mêmes couleurs** |
+| Assombrissement à la pression, ripple, flou `glass` | États transitoires ou adaptateurs (lignes ci-dessus) |
+
 ### 4.1 Effets optionnels (paquets `fx-scroll`, `fx-text`)
 
 | Effet | Web | Flutter | React Native | Justification |
@@ -86,6 +96,5 @@ Limites : `NoraParallax` (RN) doit être un enfant direct du contenu du `ScrollV
 ## 6. Limites de la version 0.1
 
 1. Le Dart généré est analysé et rendu en test (goldens Flutter, `examples/flutter_app/`) mais pas exécuté sur appareil réel.
-2. Pas de régression visuelle cross-cible (comparaison web / Flutter / RN, prévue, voir TESTING.md).
-3. Les modèles JSP, Vue et Angular sont validés syntaxiquement par `nora check`, pas exécutés dans leur framework. Les Twig Components, eux, sont rendus par Symfony dans les tests PHPUnit du bundle.
-4. Bundle Symfony : testé localement en PHP 8.5 / Symfony 8.1 ; PHP 8.4 est couvert par la matrice CI (non exécuté localement), Symfony 7.3 n'est couvert que par la contrainte Composer. Les contrôles (`input`, `select`, `textarea`, `checkbox`, `switch`) reçoivent un Twig Component générique (élément, ton, taille, attributs libres) ; `Nora:Field` est composé : `label`, `help` et `error` sont rendus et reliés au contrôle par `id` (`<label for>`, `<id>-aide`, `<id>-erreur`) ; son contenu reçoit `control` (à étaler : `{{ ...control }}`) et `controlHtml` (pour un `<input>` brut), qui portent `id`, `aria-describedby` et `aria-invalid`.
+2. Les modèles JSP, Vue et Angular sont validés syntaxiquement par `nora check`, pas exécutés dans leur framework. Les Twig Components, eux, sont rendus par Symfony dans les tests PHPUnit du bundle.
+3. Bundle Symfony : testé localement en PHP 8.5 / Symfony 8.1 ; PHP 8.4 est couvert par la matrice CI (non exécuté localement), Symfony 7.3 n'est couvert que par la contrainte Composer. Les contrôles (`input`, `select`, `textarea`, `checkbox`, `switch`) reçoivent un Twig Component générique (élément, ton, taille, attributs libres) ; `Nora:Field` est composé : `label`, `help` et `error` sont rendus et reliés au contrôle par `id` (`<label for>`, `<id>-aide`, `<id>-erreur`) ; son contenu reçoit `control` (à étaler : `{{ ...control }}`) et `controlHtml` (pour un `<input>` brut), qui portent `id`, `aria-describedby` et `aria-invalid`.

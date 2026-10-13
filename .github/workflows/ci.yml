@@ -48,7 +48,8 @@ jobs:
         run: |
           flutter pub get
           flutter analyze --fatal-infos --fatal-warnings
-      - name: golden tests et tests de widgets
+      # Inclut test/parity_test.dart : échoue si les mesures Flutter s'écartent de test/parity/flutter.json.
+      - name: golden tests, tests de widgets et mesures de parité
         working-directory: examples/flutter_app
         # Goldens générés sous macOS : tolérance élargie pour la rastérisation Linux.
         env:
@@ -85,6 +86,7 @@ jobs:
       - name: captures et axe-core
         # En cas d'échec après un changement volontaire : `npm run test:visual:update` (Docker requis)
         # puis versionner tests/visual/__screenshots__/linux/.
+        # Inclut tests/visual/parity.spec.mjs : échoue si les mesures CSS s'écartent de tests/parity/web.json.
         run: npm run test:visual
         env:
           HOME: /root

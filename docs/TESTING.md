@@ -5,8 +5,9 @@ Version 0.1.0 · 14 octobre 2026 · © Jonathan KABLAN — Propriétaire
 ## 1. Commandes
 
 ```bash
-npm test                    # 150 tests (node:test, aucun framework)
-npm run test:visual         # 20 tests Playwright : 12 captures + axe-core + rendu sans JS + variante legacy (navigateurs requis)
+npm test                    # 157 tests (node:test, aucun framework)
+npm run test:visual         # 21 tests Playwright : 12 captures + axe-core + rendu sans JS + variante legacy + mesures de parité (navigateurs requis)
+npm run parity:update       # régénère les mesures de parité CSS / Flutter / React Native (navigateurs et Flutter requis)
 npm run check               # valide les modèles et les recettes
 npm run audit:security      # 86 contrôles
 npm run verify              # tout, dans l'ordre
@@ -18,7 +19,7 @@ npm run verify              # tout, dans l'ordre
 |---|---|---|
 | `tests/unit/compiler.test.js` | 25 | Compilation des 4 cibles, déterminisme, layers, thème, mouvement réduit, Flutter, React Native, manifest, intégrité, **7 tests de sécurité** |
 | `tests/unit/check.test.js` | 8 | Modèles livrés sans erreur, 15 règles déclenchées sur la fixture, suggestions, valeurs dynamiques, JSX, numéros de ligne |
-| `tests/unit/forms.test.js` | 15 | Composants de formulaire : spec et manifest (ajouts seulement), liste blanche (états, parties, forme, `minTarget`, `inputType`), CSS (focus, invalide, désactivé, 44 px, `:where()`), Flutter (widgets, sémantique, `NoraFieldScope`), React Native (rôles, états, imports), règles `nora check` (label associé, case/interrupteur, `aria-invalid`, `.field`) |
+| `tests/unit/forms.test.js` | 16 | Composants de formulaire : spec et manifest (ajouts seulement), liste blanche (états, parties, forme, `minTarget`, `inputType`), CSS (focus, invalide, désactivé, 44 px, `:where()`), Flutter (widgets, sémantique, `NoraFieldScope`), React Native (rôles, états, imports), règles `nora check` (label associé, case/interrupteur, `aria-invalid`, `.field`) |
 | `tests/unit/tokenize.test.js` | 19 | Tokenizer de `nora check` : valeurs sans guillemets, attributs multi-lignes, JSX imbriqué (blocs, gabarits, balises en valeur d'attribut), commentaires HTML/Twig/JSP, Twig et EL dans les valeurs, `<script>`/`<style>` bruts, liaisons Vue/Angular, boutons auto-fermants, constructions non fermées, relations `label`/`id`/parent, **8 entrées pathologiques** (temps linéaire) |
 | `tests/unit/engine.test.js` | 8 | Analyse des options (bornes, types, pollution, troncature), liste d'effets, enregistrement, SSR |
 | `tests/unit/engine-dom.test.js` | 7 | Moteur dans un DOM (jsdom) : montage initial, montage SPA, tilt, démontage, changement d'attribut, isolation et annulation des erreurs |
@@ -31,9 +32,11 @@ npm run verify              # tout, dans l'ordre
 | `tests/unit/contrast.test.js` | 3 | Contraste WCAG AA (4,5:1) de chaque ton / `on-*` et du texte sur les surfaces, clair et sombre |
 | `tests/unit/visual-serve.test.js` | 3 | Serveur statique des tests visuels : confinement au dépôt (traversée, octet nul, `node_modules`, `.git`), 127.0.0.1, lecture seule |
 | `tests/unit/fuzz.test.js` | 4 | Fuzzing déterministe sans dépendance (xorshift, graine fixe) : `parseOptions` / `parseEffectList` bornés et typés, specs mutées → uniquement des `SpecError`, tokenizer + `nora check` sans exception ni ligne invalide sur du balisage aléatoire ; `NORA_FUZZ_RUNS=30000` pour une campagne longue |
+| `tests/unit/parity.test.js` | 6 | Parité cross-cible : couverture des cas et des champs, mêmes valeurs CSS / Flutter / React Native (couleurs exactes, dimensions ± 1 px), zone tactile ≥ 44 px partout, aucune exception morte, `rn.json` à jour par rapport au TSX, extraction RN (annotations retirées, liaison manquante détectée) |
 | `tests/unit/audit.test.js` | 1 | L'audit complet passe (86/86) |
 | `examples/flutter_app/test/fx_test.dart` (Flutter) | 3 | `NoraScramble` : texte final, label sémantique, mouvement réduit ; `NoraParallax` : décalage au défilement, aucun en mouvement réduit |
 | `adapters/symfony-bundle/tests/` (PHPUnit) | 54 | Code PHP généré (enums, `NoraManifest`, `safeHref`), rendu réel des Twig Components dans un noyau Symfony (listes blanches, URL dangereuses, attributs verrouillés, échappement), AssetMapper, commande `nora:check` (texte, JSON, chemins refusés) |
+| `examples/flutter_app/test/parity_test.dart` (Flutter) | 2 | Mesures de parité des widgets (clair et sombre) comparées à `test/parity/flutter.json` ; couleurs du rendu Material identiques à celles du rendu statique |
 | `examples/flutter_app/test/goldens_test.dart` (Flutter) | 8 | Goldens `NoraBtn` (5 tons × 3 tailles), `NoraCard(glass: true)`, `NoraBadge`, clair et sombre ; sémantique bouton et zone ≥ 44 ; montage du modèle `templates/flutter/main.dart` (formulaire compris) |
 | `examples/flutter_app/test/radio_test.dart` (Flutter) | 5 | Goldens `NoraRadio` (sélectionné, invalide, désactivé, ton), clair et sombre ; sémantique checked + groupe exclusif, sélection au toucher, zone ≥ 44, en mouvement normal et réduit (aucune animation) ; groupe désactivé |
 | `examples/flutter_app/test/reduced_motion_test.dart` (Flutter) | 4 | Mouvement réduit : `NoraCheckbox` / `NoraSwitch` statiques, aucune animation au changement, sémantique checked / toggled et libellé ; contrôle Material conservé sinon |
@@ -77,6 +80,22 @@ npm run test:visual:update -- --linux   # Linux seulement
 - **Après un changement volontaire** du CSS, de la spec ou de la page (ex. composants de formulaire) : `npm run test:visual:update`, vérifier les images, les versionner.
 - `npm run verify` n'exige pas de navigateur : les tests Playwright sont hors de `tests/unit/`.
 
+### Parité cross-cible mesurée (CSS, Flutter, React Native)
+
+Aucune comparaison de pixels (les polices diffèrent d'une plateforme à l'autre) : chaque cible produit les **valeurs de design rendues** pour les 52 cas de `tests/parity/cases.json` (`btn` 5 tons × 3 tailles, `badge`, `card`, `input`, `checkbox`, `switch`, `radio`), en clair et en sombre.
+
+| Cible | Producteur | Source des mesures | Référence versionnée |
+|---|---|---|---|
+| CSS | `tests/visual/parity.spec.mjs` (Playwright) | `getComputedStyle` / `getBoundingClientRect` sur `tests/visual/parity.html` | `tests/parity/web.json` |
+| Flutter | `examples/flutter_app/test/parity_test.dart` | Arbre de widgets rendu (`Material`, `DecoratedBox`, `Padding`, `InputDecoration`, `RichText`, tailles) ; cases, radios et interrupteurs en rendu statique | `examples/flutter_app/test/parity/flutter.json` |
+| React Native | `tests/parity/rn.mjs` (Node, sans dépendance) | Données littérales du TSX généré (`noraColors`, `*Spec`) + vérification des **liaisons** : chaque composant doit contenir les extraits de style qui consomment ces données | `tests/parity/rn.json` |
+
+Champs comparés (`tests/parity/model.mjs`) : couleurs de fond, de texte et de bordure (`#RRGGBB`, exactes), marges, rayon (« full » au-delà de la demi-dimension), zone tactile, taille de police, épaisseur de bordure ; pour les contrôles, l'espacement libellé/indicateur et l'indicateur lui-même (taille, rayon, couleurs coché / non coché, coche ou pouce). Tolérance : ± 1 px sur les dimensions. `tests/unit/parity.test.js` lit les trois JSON (ni navigateur ni Flutter requis) et liste les écarts ; la table `EXCEPTIONS` est vide.
+
+- Chaque producteur échoue si sa mesure s'écarte de son JSON : la CI (`flutter`, `visual`) détecte donc toute dérive ; `rn.json` est recalculé en mémoire par `npm test`.
+- Après un changement volontaire de la spec : `npm run parity:update`, puis vérifier le diff des trois JSON.
+- Écart trouvé et corrigé à la mise en place : rendu statique Flutter (mouvement réduit) des cases, radios et interrupteurs à tailles fixes (18, 20, 52 × 32 px) au lieu des proportions de la spec (1,25 em, 2,25 em × 1,25 em) ; le générateur suit désormais la spec.
+
 ## 3. Benchmark IA
 
 `npm run bench:dry` exécute tout le pipeline de `bench/` avec des réponses simulées (aucun réseau). Les appels réels exigent les clés en variables d'environnement et `--yes`. Voir `bench/README.md`.
@@ -97,7 +116,6 @@ npm run test:visual:update -- --linux   # Linux seulement
 | P1 | Exécution du job `flutter` sur le dépôt privé (Linux) | GitHub Actions |
 | P2 | Tests de rendu React Native | `@testing-library/react-native` |
 | P2 | Régression visuelle et axe-core des autres modèles (après les recettes) | Playwright |
-| P2 | Parité cross-cible : capture web, golden Flutter et capture RN de la même carte, comparées avec tolérance | Script maison |
 | P3 | Exécution réelle des modèles Twig (Symfony) et JSP (Tomcat) | Projets d'exemple en CI |
 | P3 | Benchmark « IA » : exécution réelle des 50 tâches de `bench/` (code livré, voir `bench/README.md`) | `npm run bench -- --yes` |
 
