@@ -1,0 +1,18 @@
+{
+  "$nora": "effect",
+  "$version": "1.0.0",
+  "effect": "scramble",
+  "kind": "text-scramble",
+  "package": "fx-text",
+  "description": "Révèle un texte court en faisant défiler des caractères aléatoires ; le texte réel est exposé aux lecteurs d'écran.",
+  "input": "visibility",
+  "options": {
+    "duration": { "type": "number", "default": 800, "min": 0, "max": 5000 }
+  },
+  "reducedMotion": "disable",
+  "platforms": {
+    "web": "requestAnimationFrame sur un nœud texte aria-hidden, DOM restauré à la fin",
+    "react-native": "NoraScramble : Text + accessibilityLabel",
+    "flutter": "NoraScramble : AnimationController + Semantics(label)"
+  }
+}

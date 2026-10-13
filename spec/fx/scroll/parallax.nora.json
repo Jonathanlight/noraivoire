@@ -1,0 +1,19 @@
+{
+  "$nora": "effect",
+  "$version": "1.0.0",
+  "effect": "parallax",
+  "kind": "scroll-parallax",
+  "package": "fx-scroll",
+  "description": "Décale verticalement l'élément selon sa position dans la fenêtre (effet de profondeur).",
+  "input": "scroll",
+  "options": {
+    "speed": { "type": "number", "default": 20, "min": 0, "max": 100 },
+    "reverse": { "type": "boolean", "default": false }
+  },
+  "reducedMotion": "disable",
+  "platforms": {
+    "web": "animation-timeline: view() avec repli JS (défilement passif + rAF)",
+    "react-native": "NoraParallax : Animated.Value du ScrollView + interpolate",
+    "flutter": "NoraParallax : écoute de la ScrollPosition + Transform.translate"
+  }
+}

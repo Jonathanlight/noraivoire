@@ -54,6 +54,18 @@ Le seul attribut posé sur `<html>` par le moteur est `data-nora-engine` (d'où 
 | Ripple | Non | Oui (InkWell) | Non | Convention Android de Material |
 | Flou `glass` | `backdrop-filter` | `BackdropFilter` | Alpha seul | Flou RN via adaptateur (expo-blur) |
 
+### 4.1 Effets optionnels (paquets `fx-scroll`, `fx-text`)
+
+| Effet | Web | Flutter | React Native | Justification |
+|---|---|---|---|---|
+| `parallax` | `animation-timeline: view()`, repli JS | `NoraParallax` (écoute de la `ScrollPosition`) | `NoraParallax` (`scrollY` + `interpolate`) | — |
+| `scramble` | rAF, DOM restauré | `NoraScramble` (`Semantics(label)`) | `NoraScramble` (`accessibilityLabel`) | — |
+| `pin` | `position: sticky` + JS | **Non généré** | **Non généré** | Équivalents natifs de la plateforme : `SliverPersistentHeader(pinned: true)` et `ScrollView stickyHeaderIndices`. Un widget NoraIvoire n'apporterait rien. |
+| `scrub` | `--fx-progress` | **Web uniquement** | **Web uniquement** | Le natif expose déjà la progression : `ScrollController` + `AnimatedBuilder` (Flutter), `Animated.Value` + `interpolate` (RN). L'effet web n'existe que parce que CSS n'a pas de variable de défilement universelle. |
+| `split` | `<span>` par lettre ou mot | **Web uniquement** | **Web uniquement** | Un widget ou un `Text` par caractère casse la césure, le crénage et la sémantique natives ; l'animation par lettre se fait au cas par cas (`TextSpan`, `Animated`). |
+
+Limites : `NoraParallax` (RN) doit être un enfant direct du contenu du `ScrollView` (position mesurée par `onLayout`) ; la version Flutter mesure sa position après chaque frame, avec un frame de décalage.
+
 ## 5. Dépendances et pérennité
 
 | Cible | Dépendances runtime | Risque de rupture |

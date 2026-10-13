@@ -24,6 +24,7 @@ NoraIvoire ne collecte, ne stocke et ne transmet **aucune donnée**. Aucune requ
 | M5 | Lecture hors périmètre | Lien symbolique dans `spec/` | `lstat` + `realpath` dans la racine | Test « lien symbolique refusé » |
 | M6 | Écriture hors périmètre | Nom de sortie forgé | Chemins de sortie contrôlés (`relative()` sans `..`) ; sortie ≠ dossier de specs | Revue de code |
 | M7 | XSS via le moteur | `data-fx-*` contrôlé par un attaquant | Le moteur n'utilise ni `innerHTML`, ni `eval`, ni `new Function` ; options typées et bornées ; noms d'effets en liste blanche ; seules les variables `--fx-*` sont écrites | Audit (11 motifs interdits) + tests |
+| M7 bis | XSS via les paquets d'effets | Texte découpé par `split` / `scramble` | Nœuds créés par `createElement('span')` + `textContent` uniquement ; attributs limités à `aria-hidden` et `data-fx-*` ; mêmes 11 motifs interdits que le moteur ; nœuds d'origine restaurés | Audit (`fx:forbidden`, `fx:dom-writes`) + tests jsdom |
 | M8 | Exfiltration / traçage | Code réseau dans le moteur | Interdits : `fetch`, XHR, WebSocket, `sendBeacon`, stockage, cookies | Audit |
 | M9 | Chargement externe via CSS | `@import`, `url(https://…)` | Interdits dans le CSS généré | Audit |
 | M10 | Chaîne d'approvisionnement | Paquet compromis | Zéro dépendance runtime ; `ignore-scripts=true` ; seule dépendance de dev : jsdom | Audit + `npm audit` |
@@ -61,6 +62,7 @@ Projet privé. Écrire à jonathan.kablan@gmail.com avec l'objet « [NoraIvoire]
 
 ## 5. Points de vigilance pour la suite
 
-- Ajouter un effet WebGL impliquera du code de shader : l'isoler dans un paquet optionnel, avec sa propre revue.
+- Ajouter un effet WebGL impliquera du code de shader : l'isoler dans un paquet optionnel, avec sa propre revue (modèle : `fx-scroll`, `fx-text`).
+- Les descriptions de la spec sont du texte libre : dans les commentaires Dart/TSX générés par `fx.js`, elles sont ramenées à une ligne et `*/` est neutralisé. Les cibles du cœur (`flutter.js`) insèrent encore la description brute dans un commentaire `///` : à durcir de la même façon.
 - Si un serveur MCP est ajouté, il devra être en lecture seule sur le manifest et ne jamais exécuter de commande arbitraire.
 - Signer les releases (Sigstore ou GPG) quand un registre privé sera en place.

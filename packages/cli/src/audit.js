@@ -8,7 +8,24 @@ import { compile } from '../../compiler/src/index.js';
 export const BUDGETS = Object.freeze({
   cssGzip: 15 * 1024,
   engineGzip: 4 * 1024,
+  fxGzip: 2 * 1024, // par paquet d'effets optionnel
 });
+
+/**
+ * Écritures DOM d'un paquet fx : styles limités à --fx-*, attributs limités à data-fx-* et
+ * aria-hidden, création limitée à <span>. Renvoie la liste des écarts.
+ */
+export function fxDomViolations(js) {
+  const bad = [];
+  for (const m of js.matchAll(/\.style\b(?!\.(?:setProperty|removeProperty)\(\s*'--fx-)[^;\n]{0,40}/g)) bad.push(m[0]);
+  for (const m of js.matchAll(/\.(?:setAttribute|toggleAttribute|removeAttribute)\(\s*([^,)]*)/g)) {
+    if (!/^(?:'data-fx-[a-z-]+'|'aria-hidden'|attr)$/.test(m[1].trim())) bad.push(m[0]);
+  }
+  for (const m of js.matchAll(/createElement(?:NS)?\(\s*([^)]*)\)/g)) if (m[1].trim() !== "'span'") bad.push(m[0]);
+  for (const m of js.matchAll(/\bspan\(\s*([^,)]*)/g)) if (!/^'data-fx-[a-z-]+'$/.test(m[1].trim()) && m[1].trim() !== 'attr') bad.push(m[0]);
+  if (/\.(?:className|classList|id)\s*=|\.classList\./.test(js)) bad.push('className/classList/id');
+  return bad;
+}
 
 const ENGINE_FORBIDDEN = [
   [/\beval\s*\(/, 'eval()'],
@@ -74,14 +91,24 @@ export function runAudit(root) {
   const engine = a.files['noraivoire.engine.js'] + a.files['noraivoire.auto.js'];
   for (const [re, label] of ENGINE_FORBIDDEN) add('sécurité', `engine:${label}`, !re.test(engine), `moteur : absence de ${label}`);
 
+  // 4 bis. Paquets d'effets optionnels : mêmes interdits que le moteur, écritures DOM bornées
+  const fxJs = Object.keys(a.files).filter((k) => /^fx\/fx-[a-z]+\.js$/.test(k)).sort();
+  for (const f of fxJs) {
+    const src = a.files[f];
+    const hits = ENGINE_FORBIDDEN.filter(([re]) => re.test(src)).map(([, label]) => label);
+    add('sécurité', `fx:forbidden:${f}`, hits.length === 0, hits.length ? `${f} : ${hits.join(', ')}` : `${f} : aucun des ${ENGINE_FORBIDDEN.length} motifs interdits du moteur`);
+    const dom = fxDomViolations(src);
+    add('sécurité', `fx:dom-writes:${f}`, dom.length === 0, dom.length ? `${f} : écritures hors contrat ${dom.join(' | ')}` : `${f} : écritures limitées à --fx-*, data-fx-*, aria-hidden et <span>`);
+  }
+
   // 5. Sécurité du CSS
   const css = a.files['noraivoire.css'];
   for (const [re, label] of CSS_FORBIDDEN) add('sécurité', `css:${label}`, !re.test(css), `CSS : absence de ${label}`);
   add('sécurité', 'css:no-important', !/!important/.test(css), 'CSS : aucun !important (surcharge par layers)');
 
   // 6. Code natif généré
-  const dart = a.files['flutter/noraivoire.dart'];
-  const tsx = a.files['react-native/noraivoire.tsx'];
+  const dart = a.files['flutter/noraivoire.dart'] + (a.files['flutter/noraivoire_fx.dart'] ?? '');
+  const tsx = a.files['react-native/noraivoire.tsx'] + (a.files['react-native/noraivoire-fx.tsx'] ?? '');
   add('supply-chain', 'dart:sdk-only', !/import 'package:(?!flutter\/)/.test(dart), 'Dart : imports limités au SDK Flutter');
   add('supply-chain', 'rn:core-only', [...tsx.matchAll(/from '([^']+)'/g)].every((m) => ['react', 'react-native'].includes(m[1])), 'TSX : imports limités à react et react-native');
   add('sécurité', 'native:no-dynamic-code', !/\beval\(|new Function|dart:mirrors/.test(dart + tsx), 'natif : pas de code dynamique');
@@ -89,6 +116,15 @@ export function runAudit(root) {
   // 7. Accessibilité
   add('accessibilité', 'reduced-motion', /prefers-reduced-motion: reduce/.test(css) && /reducedMotion/.test(engine) && /DisableAnimations/.test(dart) && /isReduceMotionEnabled/.test(tsx),
     'prefers-reduced-motion respecté sur web, moteur, Flutter et React Native');
+  if (fxJs.length) {
+    const fxCss = Object.keys(a.files).filter((k) => /^fx\/.+\.css$/.test(k)).map((k) => a.files[k]);
+    const fxDart = a.files['flutter/noraivoire_fx.dart'] ?? '';
+    const fxTsx = a.files['react-native/noraivoire-fx.tsx'] ?? '';
+    add('accessibilité', 'fx:reduced-motion',
+      fxCss.every((c) => /prefers-reduced-motion: reduce/.test(c)) && fxJs.every((f) => /reducedMotion/.test(a.files[f]))
+        && (!fxDart || /DisableAnimations/.test(fxDart)) && (!fxTsx || /isReduceMotionEnabled/.test(fxTsx)),
+      'paquets fx : mouvement réduit respecté (CSS, JS, Flutter, React Native)');
+  }
   add('accessibilité', 'focus-visible', /:focus-visible/.test(css), 'focus clavier visible');
   add('accessibilité', 'min-target', /min-block-size: 44px/.test(css) && /minHeight: 44/.test(dart) && /minTarget: 44/.test(tsx), 'zone tactile minimale 44 px sur les 3 cibles');
 
@@ -97,6 +133,10 @@ export function runAudit(root) {
   const engGzip = a.integrity['noraivoire.engine.js'].gzip;
   add('performance', 'css-budget', cssGzip <= BUDGETS.cssGzip, `CSS min+gzip ${cssGzip} o (budget ${BUDGETS.cssGzip})`);
   add('performance', 'engine-budget', engGzip <= BUDGETS.engineGzip, `moteur gzip ${engGzip} o (budget ${BUDGETS.engineGzip})`);
+  for (const f of fxJs) {
+    const gz = a.integrity[f].gzip;
+    add('performance', `fx-budget:${f}`, gz <= BUDGETS.fxGzip, `${f} gzip ${gz} o (budget ${BUDGETS.fxGzip})`);
+  }
   add('performance', 'engine-raf', /requestAnimationFrame/.test(engine) && /passive: true/.test(engine), 'moteur : rAF + écouteurs passifs');
 
   // 9. Dist versionné à jour

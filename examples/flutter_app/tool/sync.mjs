@@ -3,6 +3,7 @@
 //
 // Copie (et n'édite jamais) :
 //   packages/core/dist/flutter/noraivoire.dart → lib/noraivoire/noraivoire.dart
+//   packages/core/dist/flutter/noraivoire_fx.dart → lib/noraivoire/noraivoire_fx.dart
 //   templates/flutter/main.dart                → lib/main.dart
 // Les copies sont ignorées par git : la source de vérité reste spec/ et templates/.
 // Une copie plutôt qu'un import relatif hors du paquet : Dart n'autorise pas
@@ -17,6 +18,7 @@ const app = join(dirname(fileURLToPath(import.meta.url)), '..');
 const root = join(app, '..', '..');
 const pairs = [
   [join(root, 'packages/core/dist/flutter/noraivoire.dart'), join(app, 'lib/noraivoire/noraivoire.dart')],
+  [join(root, 'packages/core/dist/flutter/noraivoire_fx.dart'), join(app, 'lib/noraivoire/noraivoire_fx.dart')],
   [join(root, 'templates/flutter/main.dart'), join(app, 'lib/main.dart')],
 ];
 
