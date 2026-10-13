@@ -16,7 +16,7 @@
 | Sécurité du bundle Symfony | ✅ Conforme | Twig Components générés : listes blanches (ton, taille, type, URL, `id`), attributs verrouillés, échappement ; `nora:check` sans shell (contrôle `symfony:twig-hardening`) |
 | Sécurité du CSS généré | ✅ Conforme | Aucun `@import`, `url()` externe, `javascript:`, `expression()`, `!important` |
 | Accessibilité | ✅ Conforme (base) | Mouvement réduit sur 4 cibles, focus visible, zone tactile 44 px sur 3 cibles ; formulaires : label associé obligatoire (`nora check`), `aria-invalid` relié au message, sémantique Flutter / React Native vérifiée ; axe-core : 0 violation sérieuse ou critique (clair et sombre) ; contraste AA testé pour chaque ton |
-| Performance | ✅ Sous budget | CSS 4,7 Kio gzip (budget 15) ; moteur 3,3 Kio gzip (budget 4) |
+| Performance | ✅ Sous budget | CSS 5,0 Kio gzip (budget 15) ; moteur 3,3 Kio gzip (budget 4) |
 | Déterminisme | ✅ Conforme | Deux compilations : octets identiques |
 | Portabilité native | ✅ Conforme | TSX vérifié (TypeScript strict, RN 0.81) ; Dart analysé (`flutter analyze --fatal-infos`, 0 problème) et rendu par 27 tests de widgets dont 12 goldens (Flutter 3.47) ; Twig Components rendus par 52 tests PHPUnit (PHP 8.5, Symfony 8.1) |
 
@@ -34,13 +34,13 @@
 
 | Fichier distribué | Taille | gzip |
 |---|---|---|
-| `noraivoire.css` | 26,0 Kio | 5,1 Kio |
-| `noraivoire.min.css` | 22,7 Kio | 4,7 Kio |
+| `noraivoire.css` | 28,8 Kio | 5,3 Kio |
+| `noraivoire.min.css` | 25,3 Kio | 5,0 Kio |
 | `noraivoire.legacy.min.css` | 25,0 Kio | 4,9 Kio |
-| `noraivoire.engine.js` | 9,6 Kio | 3,3 Kio |
+| `noraivoire.engine.js` | 9,5 Kio | 3,3 Kio |
 | `noraivoire.auto.js` | 0,5 Kio | 0,4 Kio |
-| `flutter/noraivoire.dart` | 35,2 Kio | 6,8 Kio |
-| `react-native/noraivoire.tsx` | 32,6 Kio | 6,9 Kio |
+| `flutter/noraivoire.dart` | 43,9 Kio | 7,9 Kio |
+| `react-native/noraivoire.tsx` | 37,1 Kio | 7,5 Kio |
 | `fx/fx-scroll.js` (optionnel) | 3,6 Kio | 1,3 Kio (budget 2) |
 | `fx/fx-text.js` (optionnel) | 3,8 Kio | 1,6 Kio (budget 2) |
 
