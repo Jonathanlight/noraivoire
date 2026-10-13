@@ -68,7 +68,7 @@ test('Flutter : enums, thème, widgets et accessibilité générés', () => {
   for (const w of ['NoraBtn', 'NoraCard', 'NoraBadge', 'NoraTilt', 'NoraReveal']) assert.match(dart, new RegExp(`class ${w} `));
   assert.match(dart, /Semantics\(\s*button: true/);
   assert.match(dart, /HapticFeedback\.lightImpact\(\)/);
-  assert.match(dart, /Color\(0xFFE8590C\)/);
+  assert.match(dart, /Color\(0xFFC94A0B\)/);
   assert.ok(!/import 'package:(?!flutter\/)/.test(dart), 'aucun package tiers');
 });
 
@@ -196,4 +196,12 @@ test('sécurité : une description multi-ligne ne peut pas injecter de code nati
   assert.ok(!/^void pirate/m.test(dart), 'code Dart injecté hors commentaire');
   assert.ok(!/^\s*\*\/ export const pirate/m.test(tsx) && !tsx.includes('*/ export const pirate'), 'fin de bloc TSX non neutralisée');
   for (const line of dart.split(/\r?\n/)) if (line.includes('pirate')) assert.match(line, /^\s*\/\/\//);
+});
+
+test('css : une étiquette (badge) ne s\'étire pas dans une pile flex (parité RN alignSelf)', () => {
+  const { files } = compile(SPEC);
+  const badge = files['noraivoire.css'].match(/:where\(\.badge\) \{[^}]*\}/)[0];
+  assert.match(badge, /align-self: flex-start;/);
+  assert.match(badge, /justify-self: start;/);
+  assert.match(files['react-native/noraivoire.tsx'], /alignSelf: 'flex-start'/);
 });

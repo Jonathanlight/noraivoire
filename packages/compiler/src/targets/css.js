@@ -267,7 +267,8 @@ function componentRules(c, tokens) {
       `transition: background-color ${dur} ease, transform ${dur} ease;`,
     );
   } else if (shape === 'label') {
-    decl.push('display: inline-flex;', 'align-items: center;', 'font-weight: 600;', 'line-height: 1;', 'white-space: nowrap;');
+    // align-self / justify-self : pas d'étirement dans une pile flex ou une grille (parité avec alignSelf RN).
+    decl.push('display: inline-flex;', 'align-items: center;', 'align-self: flex-start;', 'justify-self: start;', 'font-weight: 600;', 'line-height: 1;', 'white-space: nowrap;');
   } else {
     decl.push('display: block;');
     if (c.tokens.border) decl.push(`border: 1px solid var(--${n}-border);`);

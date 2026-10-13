@@ -17,7 +17,7 @@
 @layer nora.tokens {
   :root {
     color-scheme: light dark;
-    --nora-color-primary: #E8590C;
+    --nora-color-primary: #C94A0B;
     --nora-color-on-primary: #FFFFFF;
     --nora-color-neutral: #3B3F46;
     --nora-color-on-neutral: #FFFFFF;
@@ -142,6 +142,8 @@
     border-radius: var(--badge-radius);
     display: inline-flex;
     align-items: center;
+    align-self: flex-start;
+    justify-self: start;
     font-weight: 600;
     line-height: 1;
     white-space: nowrap;

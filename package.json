@@ -22,9 +22,13 @@
     "symfony:sync": "node adapters/symfony-bundle/tool/sync.mjs",
     "verify": "npm run build && npm test && npm run check && npm run audit:security",
     "bench": "node bench/run.js",
-    "bench:dry": "node bench/run.js --dry-run"
+    "bench:dry": "node bench/run.js --dry-run",
+    "test:visual": "playwright test",
+    "test:visual:update": "node tests/visual/update.mjs"
   },
   "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
+    "@playwright/test": "1.63.0",
     "jsdom": "^26.1.0"
   }
 }

@@ -3,16 +3,16 @@
   "version": "0.1.0",
   "files": {
     "noraivoire.css": {
-      "sha256": "3852707ddfc76779b24d45ce4d1e99043e1f16b2dc8e8aa6eddbb83a5ec5dbba",
-      "sri": "sha384-YKO+GhDA4YsOAPWDSTf2+Byto2dMqXGWvOGUZ056MjvhpDIcz5vWB2H74/e4FnCc",
-      "bytes": 26605,
-      "gzip": 5175
+      "sha256": "f13b96a288def830919627573326fe43bbdab4b41cd3ff43a0aaadc3b8ae6492",
+      "sri": "sha384-Qmy7K2Q/ufgWsg9pVTuLnmfrJbljPAdmXaGoO1A2tZzWLWw3E10k5hjXhS8LEalH",
+      "bytes": 26658,
+      "gzip": 5186
     },
     "noraivoire.min.css": {
-      "sha256": "98090e8c4df1677ee3b7eaf55387b5a665ae5325952347fa3dfcd9e424ac869d",
-      "sri": "sha384-bU1+SM2GNnFhKmbYSi97H2oKzy3Efy3oBJbQcHLFxnz3wjB3CO4md2UQqrLOHl2y",
-      "bytes": 23277,
-      "gzip": 4851
+      "sha256": "a32f7f8f7887aa3d34a61cbf8a40306ae0f761fb363e3ccfe6717a6f46475f78",
+      "sri": "sha384-1jxGJifKquMTSLU0t28pC49pwgRdTrLAfxLHkvJx3BM8DCYmHZNbPj0yrkKdLnZn",
+      "bytes": 23320,
+      "gzip": 4864
     },
     "noraivoire.engine.js": {
       "sha256": "2ef03d1d40ba63d7858ba21dbbaa4079035ee9717a6826cb2f706336cf1dcc95",
@@ -39,16 +39,16 @@
       "gzip": 924
     },
     "flutter/noraivoire.dart": {
-      "sha256": "1142eecedc038995d2f947b77314a762f62a09c3c0625fa882f26fb15a861abe",
-      "sri": "sha384-Dc7qfOKp+uCNJYh0dezuZqrYK0Qd7++R9SqZSjywnPi9Kefuk1W/KszJGY6Yzgr5",
+      "sha256": "930a26f4be374b320fce0428c9cb66b8d9f7658fb9b6335b6fb9f2e0e5211375",
+      "sri": "sha384-IayQI+2ShVrUPIzZ8kELAiTk8LAN39as2JU0gYv659t30wcQOhAbHJYthr4N4PIV",
       "bytes": 35997,
-      "gzip": 6949
+      "gzip": 6947
     },
     "react-native/noraivoire.tsx": {
-      "sha256": "2b833078c544adc3f4294b5c840722762e10c656daf046cda09a49dcfeda95e9",
-      "sri": "sha384-GbTxWYI7d1hJuXx4YHeaif0YdPsQUP8+/3rq4Hn7o7h77oRm0rWnZSzR0ABja2N/",
+      "sha256": "0f1e45705d3ecb7ddf8e0579197ede4915377cd015e0bcdf9e46cf1e42770fd1",
+      "sri": "sha384-KWbEwm3ENUH/Twy3KHJ7JeRTVA2iCTMIyguyi+yqXOIY4rF3UxpQOBFPF2/AWWWD",
       "bytes": 33385,
-      "gzip": 7106
+      "gzip": 7103
     },
     "symfony/src/NoraManifest.php": {
       "sha256": "ca0a00fa348167dda26da19f5fba4b4ef9a166fbcd3c597b2e23828eb18dd2ab",

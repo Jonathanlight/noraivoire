@@ -1,0 +1,7 @@
+/* NoraIvoire — feuille injectée uniquement pendant les captures Playwright (jamais distribuée).
+   Fige ce qui dépend du défilement ou du pointeur : l'apparition `reveal` pilotée par
+   animation-timeline et l'inclinaison `tilt`, pour comparer la mise en page au repos.
+   © 2026 Jonathan KABLAN — Propriétaire. */
+[data-fx~="reveal"] { animation: none; opacity: 1; transform: none; }
+[data-fx~="tilt"] { transform: none; transition: none; }
+*, *::before, *::after { caret-color: transparent; }

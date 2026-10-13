@@ -1,7 +1,7 @@
 # NoraIvoire — Rapport d'audit
 
 **Version auditée :** 0.1.0 · **Date :** 14 octobre 2026 · **Périmètre :** dépôt complet
-**Méthode :** audit automatisé (`nora audit`, 84 contrôles), 134 tests node, 18 tests Flutter et 51 tests PHPUnit, vérification TypeScript stricte, `npm audit`, revue manuelle du code.
+**Méthode :** audit automatisé (`nora audit`, 84 contrôles), 141 tests node, 18 tests Flutter et 51 tests PHPUnit, 18 tests Playwright (captures + axe-core), vérification TypeScript stricte, `npm audit`, revue manuelle du code.
 © Jonathan KABLAN — Document confidentiel
 
 ## 1. Synthèse
@@ -15,7 +15,7 @@
 | Sécurité du serveur MCP | ✅ Conforme | Lecture seule (contrôle `mcp:read-only`) ; accès confiné au manifest et à `recipes/` ; tailles bornées ; spec MCP `2026-07-28` et versions à `initialize` |
 | Sécurité du bundle Symfony | ✅ Conforme | Twig Components générés : listes blanches (ton, taille, type, URL, `id`), attributs verrouillés, échappement ; `nora:check` sans shell (contrôle `symfony:twig-hardening`) |
 | Sécurité du CSS généré | ✅ Conforme | Aucun `@import`, `url()` externe, `javascript:`, `expression()`, `!important` |
-| Accessibilité | ✅ Conforme (base) | Mouvement réduit sur 4 cibles, focus visible, zone tactile 44 px sur 3 cibles ; formulaires : label associé obligatoire (`nora check`), `aria-invalid` relié au message, sémantique Flutter / React Native vérifiée |
+| Accessibilité | ✅ Conforme (base) | Mouvement réduit sur 4 cibles, focus visible, zone tactile 44 px sur 3 cibles ; formulaires : label associé obligatoire (`nora check`), `aria-invalid` relié au message, sémantique Flutter / React Native vérifiée ; axe-core : 0 violation sérieuse ou critique (clair et sombre) ; contraste AA testé pour chaque ton |
 | Performance | ✅ Sous budget | CSS 4,7 Kio gzip (budget 15) ; moteur 3,0 Kio gzip (budget 4) |
 | Déterminisme | ✅ Conforme | Deux compilations : octets identiques |
 | Portabilité native | ✅ Conforme | TSX vérifié (TypeScript strict, RN 0.81) ; Dart analysé (`flutter analyze --fatal-infos`, 0 problème) et rendu par 18 tests de widgets dont 10 goldens (Flutter 3.47) ; Twig Components rendus par 51 tests PHPUnit (PHP 8.5, Symfony 8.1) |
@@ -26,7 +26,7 @@
 
 | Indicateur | Valeur |
 |---|---|
-| Tests | 134 / 134 réussis (node) · 18 / 18 (Flutter, dont 10 goldens) · 51 / 51 (PHPUnit, bundle Symfony) |
+| Tests | 141 / 141 réussis (node) · 18 / 18 (Flutter, dont 10 goldens) · 51 / 51 (PHPUnit, bundle Symfony) · 18 / 18 (Playwright : 12 captures, 4 axe-core, 2 sans JS) |
 | Contrôles d'audit | 84 / 84 réussis |
 | Modèles validés par `nora check` | 13 fichiers + 20 recettes, 0 erreur, 0 avertissement |
 | Erreurs TypeScript (strict) sur le TSX généré | 0 |
@@ -63,7 +63,7 @@
 ## 4. Conditions avant commercialisation
 
 1. ~~Lever **A-01**~~ : fait (`examples/flutter_app/`, analyse et goldens). Reste à exécuter le job CI `flutter` sur Linux et à ajuster la tolérance si besoin.
-2. Ajouter la **régression visuelle** web (Playwright) et un test **axe-core** sur la page de démo.
+2. ~~Ajouter la **régression visuelle** web et un test **axe-core**~~ : fait (`tests/visual/`, 12 captures, axe-core sans violation sérieuse ni critique, rendu sans JS vérifié). axe a révélé un contraste insuffisant du ton `primary` en clair (`#E8590C` sur blanc : 3,58:1) : corrigé dans la spec (`#C94A0B`, 4,70:1) et verrouillé par `tests/unit/contrast.test.js`.
 3. Faire relire **LICENSE** et rédiger le **contrat de licence** par un avocat ; déposer la marque.
 
 ## 5. Reproduire l'audit

@@ -28,7 +28,7 @@ export type NoraSize = 'sm' | 'md' | 'lg';
 
 export const noraColors = {
   light: {
-    primary: '#E8590C',
+    primary: '#C94A0B',
     onPrimary: '#FFFFFF',
     neutral: '#3B3F46',
     onNeutral: '#FFFFFF',

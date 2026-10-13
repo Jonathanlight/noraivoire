@@ -53,7 +53,7 @@ Format inspiré du W3C Design Tokens (`$type`, `$value`) avec une extension `$da
 
 ```json
 { "$nora": "tokens", "$version": "1.0.0",
-  "color": { "primary": { "$type": "color", "$value": "#E8590C", "$dark": "#FF8A3D" } },
+  "color": { "primary": { "$type": "color", "$value": "#C94A0B", "$dark": "#FF8A3D" } },
   "space": { "4": { "$type": "dimension", "$value": 16 } } }
 ```
 
