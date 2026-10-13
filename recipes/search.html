@@ -1,0 +1,45 @@
+<!doctype html>
+<!-- NoraIvoire — recette « Recherche ». © 2026 Jonathan KABLAN — Propriétaire. -->
+<!-- Champ de recherche et liste de résultats. Données fictives. Aucun JS inline (CSP stricte). -->
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Recherche — NoraIvoire</title>
+  <link rel="stylesheet" href="../packages/core/dist/noraivoire.css">
+  <script type="module" src="../packages/core/dist/noraivoire.auto.js"></script>
+</head>
+<body>
+  <header class="container cluster py-4">
+    <a class="font-bold text-lg" href="home.html">Boutique Démo</a>
+    <nav class="cluster" aria-label="Navigation principale">
+      <a href="products.html">Produits</a>
+      <a href="pricing.html">Tarifs</a>
+      <a href="search.html">Recherche</a>
+      <a class="btn" data-tone="neutral" data-size="sm" href="cart.html">Panier <span class="badge" data-tone="primary">2</span></a>
+    </nav>
+  </header>
+  <main class="container stack py-8">
+    <h1 class="text-xl font-bold">Recherche</h1>
+    <form class="cluster" action="#" method="get" role="search">
+      <label class="sr-only" for="q">Rechercher un produit</label>
+      <input id="q" name="q" type="search" value="lampe">
+      <button class="btn" type="submit">Rechercher</button>
+    </form>
+    <p class="text-muted" role="status">2 résultats pour « lampe »</p>
+    <ul class="stack" aria-label="Résultats">
+      <li class="card stack gap-1">
+        <h2 class="font-bold"><a href="product.html">Lampe en rotin</a></h2>
+        <p class="text-sm text-muted">Maison · 45,00 €</p>
+      </li>
+      <li class="card stack gap-1">
+        <h2 class="font-bold"><a href="product.html">Lampe de bureau</a> <span class="badge" data-tone="warning">Rupture</span></h2>
+        <p class="text-sm text-muted">Bureau · 59,00 €</p>
+      </li>
+    </ul>
+  </main>
+  <footer class="container py-8 text-sm text-muted">
+    <p>© 2026 Boutique Démo — données fictives. <a href="contact.html">Contact</a> · <a href="about.html">À propos</a></p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!doctype html>
+<!-- NoraIvoire — recette « Accueil marketing ». © 2026 Jonathan KABLAN — Propriétaire. -->
+<!-- Héros, arguments et appel à l'action. Données fictives. Aucun JS inline (CSP stricte). -->
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Accueil marketing — NoraIvoire</title>
+  <link rel="stylesheet" href="../packages/core/dist/noraivoire.css">
+  <script type="module" src="../packages/core/dist/noraivoire.auto.js"></script>
+</head>
+<body>
+  <header class="container cluster py-4">
+    <a class="font-bold text-lg" href="home.html">Boutique Démo</a>
+    <nav class="cluster" aria-label="Navigation principale">
+      <a href="products.html">Produits</a>
+      <a href="pricing.html">Tarifs</a>
+      <a href="search.html">Recherche</a>
+      <a class="btn" data-tone="neutral" data-size="sm" href="cart.html">Panier <span class="badge" data-tone="primary">2</span></a>
+    </nav>
+  </header>
+  <main class="stack">
+    <section class="container stack text-center py-12" aria-labelledby="titre">
+      <span class="badge mx-auto" data-tone="primary">Nouveau</span>
+      <h1 id="titre" class="text-xl font-bold">L'artisanat d'ici, livré chez vous</h1>
+      <p class="text-lg text-muted">Des objets faits main, choisis avec soin.</p>
+      <div class="cluster mx-auto">
+        <a class="btn" href="products.html" data-size="lg">Découvrir le catalogue</a>
+        <a class="btn" data-tone="neutral" href="about.html" data-size="lg">Notre histoire</a>
+      </div>
+    </section>
+    <section class="container grid-auto py-8" aria-label="Arguments">
+      <article class="card fx-glass stack" data-fx="tilt reveal" data-fx-tilt="max:10;glare:true">
+        <h2 class="text-lg font-bold">Fait main</h2>
+        <p class="text-muted">Chaque pièce est unique.</p>
+      </article>
+      <article class="card stack" data-fx="reveal">
+        <h2 class="text-lg font-bold">Livraison rapide</h2>
+        <p class="text-muted">Expédition sous 48 h.</p>
+      </article>
+      <article class="card stack" data-fx="reveal">
+        <h2 class="text-lg font-bold">Paiement sécurisé</h2>
+        <p class="text-muted">Carte ou paiement mobile.</p>
+      </article>
+    </section>
+  </main>
+  <footer class="container py-8 text-sm text-muted">
+    <p>© 2026 Boutique Démo — données fictives. <a href="contact.html">Contact</a> · <a href="about.html">À propos</a></p>
+  </footer>
+</body>
+</html>

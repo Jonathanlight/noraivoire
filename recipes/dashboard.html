@@ -1,0 +1,64 @@
+<!doctype html>
+<!-- NoraIvoire — recette « Tableau de bord ». © 2026 Jonathan KABLAN — Propriétaire. -->
+<!-- Indicateurs clés et dernières commandes. Données fictives. Aucun JS inline (CSP stricte). -->
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tableau de bord — NoraIvoire</title>
+  <link rel="stylesheet" href="../packages/core/dist/noraivoire.css">
+  <script type="module" src="../packages/core/dist/noraivoire.auto.js"></script>
+</head>
+<body>
+  <header class="container cluster py-4">
+    <a class="font-bold text-lg" href="dashboard.html">Espace Démo</a>
+    <nav class="cluster" aria-label="Navigation de l'application">
+      <a href="dashboard.html">Tableau de bord</a>
+      <a href="notifications.html">Notifications <span class="badge" data-tone="danger">3</span></a>
+      <a href="profile.html">Profil</a>
+      <a href="settings.html">Paramètres</a>
+    </nav>
+  </header>
+  <main class="container stack py-8">
+    <div class="cluster">
+      <h1 class="text-xl font-bold">Tableau de bord</h1>
+      <a class="btn" data-size="sm" href="products.html">Nouveau produit</a>
+    </div>
+    <section class="grid-auto" aria-label="Indicateurs">
+      <article class="card stack gap-2">
+        <h2 class="text-sm text-muted">Chiffre d'affaires</h2>
+        <p class="text-xl font-bold">12 480 €</p>
+        <span class="badge" data-tone="success">+8 %</span>
+      </article>
+      <article class="card stack gap-2">
+        <h2 class="text-sm text-muted">Commandes</h2>
+        <p class="text-xl font-bold">342</p>
+        <span class="badge" data-tone="success">+3 %</span>
+      </article>
+      <article class="card stack gap-2">
+        <h2 class="text-sm text-muted">Paniers abandonnés</h2>
+        <p class="text-xl font-bold">27</p>
+        <span class="badge" data-tone="warning">+5 %</span>
+      </article>
+      <article class="card stack gap-2">
+        <h2 class="text-sm text-muted">Remboursements</h2>
+        <p class="text-xl font-bold">4</p>
+        <span class="badge" data-tone="danger">+1</span>
+      </article>
+    </section>
+    <section class="card stack" aria-labelledby="dernieres">
+      <h2 id="dernieres" class="text-lg font-bold">Dernières commandes</h2>
+      <table class="w-full">
+        <caption class="sr-only">Quatre dernières commandes</caption>
+        <thead><tr><th scope="col">N°</th><th scope="col">Date</th><th scope="col">Montant</th><th scope="col">Statut</th></tr></thead>
+        <tbody>
+          <tr><td>1042</td><td>14/10/2026</td><td>89,00 €</td><td><span class="badge" data-tone="success">Payée</span></td></tr>
+          <tr><td>1041</td><td>14/10/2026</td><td>24,50 €</td><td><span class="badge" data-tone="warning">En attente</span></td></tr>
+          <tr><td>1040</td><td>13/10/2026</td><td>156,00 €</td><td><span class="badge" data-tone="success">Payée</span></td></tr>
+          <tr><td>1039</td><td>13/10/2026</td><td>12,00 €</td><td><span class="badge" data-tone="danger">Annulée</span></td></tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>

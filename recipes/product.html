@@ -1,0 +1,47 @@
+<!doctype html>
+<!-- NoraIvoire — recette « Fiche produit ». © 2026 Jonathan KABLAN — Propriétaire. -->
+<!-- Détail d'un produit avec quantité et ajout au panier. Données fictives. Aucun JS inline (CSP stricte). -->
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fiche produit — NoraIvoire</title>
+  <link rel="stylesheet" href="../packages/core/dist/noraivoire.css">
+  <script type="module" src="../packages/core/dist/noraivoire.auto.js"></script>
+</head>
+<body>
+  <header class="container cluster py-4">
+    <a class="font-bold text-lg" href="home.html">Boutique Démo</a>
+    <nav class="cluster" aria-label="Navigation principale">
+      <a href="products.html">Produits</a>
+      <a href="pricing.html">Tarifs</a>
+      <a href="search.html">Recherche</a>
+      <a class="btn" data-tone="neutral" data-size="sm" href="cart.html">Panier <span class="badge" data-tone="primary">2</span></a>
+    </nav>
+  </header>
+  <main class="container stack py-8">
+    <nav aria-label="Fil d'Ariane" class="text-sm"><a href="products.html">Catalogue</a> › Lampe en rotin</nav>
+    <article class="grid-auto">
+      <div class="card fx-glass" data-fx="tilt" data-fx-tilt="max:8">
+        <p class="text-center text-muted py-12" role="img" aria-label="Photo de la lampe en rotin">Visuel produit</p>
+      </div>
+      <section class="stack" aria-labelledby="titre">
+        <span class="badge" data-tone="primary">Nouveau</span>
+        <h1 id="titre" class="text-xl font-bold">Lampe en rotin</h1>
+        <p class="text-lg font-bold">45,00 €</p>
+        <p class="text-muted">Lampe à poser tressée à la main. Ampoule non fournie.</p>
+        <form class="stack" action="#" method="post">
+        <div class="stack gap-1">
+          <label for="quantite">Quantité</label>
+          <input id="quantite" name="quantite" type="number" min="1" max="10" value="1">
+        </div>
+          <button class="btn" type="submit" data-size="lg">Ajouter au panier</button>
+        </form>
+      </section>
+    </article>
+  </main>
+  <footer class="container py-8 text-sm text-muted">
+    <p>© 2026 Boutique Démo — données fictives. <a href="contact.html">Contact</a> · <a href="about.html">À propos</a></p>
+  </footer>
+</body>
+</html>

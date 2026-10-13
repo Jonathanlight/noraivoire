@@ -1,0 +1,385 @@
+{
+  "version": 1,
+  "recipes": [
+    {
+      "id": "login",
+      "title": "Connexion",
+      "description": "Formulaire de connexion par e-mail et mot de passe.",
+      "intents": [
+        "connexion",
+        "se connecter",
+        "login",
+        "sign in",
+        "authentification"
+      ],
+      "file": "login.html",
+      "components": [
+        "btn",
+        "card"
+      ]
+    },
+    {
+      "id": "signup",
+      "title": "Inscription",
+      "description": "Création de compte avec acceptation des conditions.",
+      "intents": [
+        "inscription",
+        "créer un compte",
+        "s'inscrire",
+        "signup",
+        "sign up",
+        "register",
+        "registration"
+      ],
+      "file": "signup.html",
+      "components": [
+        "btn",
+        "card"
+      ]
+    },
+    {
+      "id": "forgot-password",
+      "title": "Mot de passe oublié",
+      "description": "Demande de lien de réinitialisation.",
+      "intents": [
+        "mot de passe oublié",
+        "réinitialiser le mot de passe",
+        "forgot password",
+        "reset password",
+        "password reset"
+      ],
+      "file": "forgot-password.html",
+      "components": [
+        "btn",
+        "card"
+      ]
+    },
+    {
+      "id": "pricing",
+      "title": "Tarifs",
+      "description": "Grille de trois offres avec offre mise en avant.",
+      "intents": [
+        "tarifs",
+        "prix",
+        "abonnement",
+        "offres",
+        "pricing",
+        "plans",
+        "pricing table"
+      ],
+      "file": "pricing.html",
+      "components": [
+        "badge",
+        "btn",
+        "card"
+      ]
+    },
+    {
+      "id": "dashboard",
+      "title": "Tableau de bord",
+      "description": "Indicateurs clés et dernières commandes.",
+      "intents": [
+        "tableau de bord",
+        "dashboard",
+        "statistiques",
+        "vue d'ensemble",
+        "admin",
+        "overview",
+        "analytics"
+      ],
+      "file": "dashboard.html",
+      "components": [
+        "badge",
+        "btn",
+        "card"
+      ]
+    },
+    {
+      "id": "products",
+      "title": "Liste de produits",
+      "description": "Catalogue en grille avec filtres et pagination.",
+      "intents": [
+        "liste produits",
+        "catalogue",
+        "boutique",
+        "produits",
+        "product list",
+        "catalog",
+        "shop",
+        "e-commerce"
+      ],
+      "file": "products.html",
+      "components": [
+        "badge",
+        "btn",
+        "card"
+      ]
+    },
+    {
+      "id": "product",
+      "title": "Fiche produit",
+      "description": "Détail d'un produit avec quantité et ajout au panier.",
+      "intents": [
+        "fiche produit",
+        "détail produit",
+        "page produit",
+        "product detail",
+        "product page",
+        "pdp"
+      ],
+      "file": "product.html",
+      "components": [
+        "badge",
+        "btn",
+        "card"
+      ]
+    },
+    {
+      "id": "cart",
+      "title": "Panier",
+      "description": "Récapitulatif des articles et total.",
+      "intents": [
+        "panier",
+        "mon panier",
+        "cart",
+        "basket",
+        "shopping cart"
+      ],
+      "file": "cart.html",
+      "components": [
+        "badge",
+        "btn",
+        "card"
+      ]
+    },
+    {
+      "id": "checkout",
+      "title": "Paiement",
+      "description": "Adresse de livraison, mode de paiement et total.",
+      "intents": [
+        "paiement",
+        "commander",
+        "checkout",
+        "payment",
+        "passer commande",
+        "caisse"
+      ],
+      "file": "checkout.html",
+      "components": [
+        "badge",
+        "btn",
+        "card"
+      ]
+    },
+    {
+      "id": "order-confirmation",
+      "title": "Confirmation de commande",
+      "description": "Remerciement après paiement et suite du parcours.",
+      "intents": [
+        "confirmation de commande",
+        "commande confirmée",
+        "merci",
+        "order confirmation",
+        "thank you",
+        "receipt"
+      ],
+      "file": "order-confirmation.html",
+      "components": [
+        "badge",
+        "btn",
+        "card"
+      ]
+    },
+    {
+      "id": "profile",
+      "title": "Profil",
+      "description": "Consultation et édition du profil.",
+      "intents": [
+        "profil",
+        "mon compte",
+        "informations personnelles",
+        "profile",
+        "account",
+        "my account"
+      ],
+      "file": "profile.html",
+      "components": [
+        "badge",
+        "btn",
+        "card"
+      ]
+    },
+    {
+      "id": "settings",
+      "title": "Paramètres",
+      "description": "Préférences, notifications et zone de danger.",
+      "intents": [
+        "paramètres",
+        "réglages",
+        "préférences",
+        "settings",
+        "preferences",
+        "configuration"
+      ],
+      "file": "settings.html",
+      "components": [
+        "badge",
+        "btn",
+        "card"
+      ]
+    },
+    {
+      "id": "notifications",
+      "title": "Notifications",
+      "description": "Liste de notifications avec statuts.",
+      "intents": [
+        "notifications",
+        "alertes",
+        "messages",
+        "centre de notifications",
+        "notification center",
+        "inbox",
+        "alerts"
+      ],
+      "file": "notifications.html",
+      "components": [
+        "badge",
+        "btn",
+        "card"
+      ]
+    },
+    {
+      "id": "search",
+      "title": "Recherche",
+      "description": "Champ de recherche et liste de résultats.",
+      "intents": [
+        "recherche",
+        "rechercher",
+        "résultats de recherche",
+        "search",
+        "search results",
+        "find"
+      ],
+      "file": "search.html",
+      "components": [
+        "badge",
+        "btn",
+        "card"
+      ]
+    },
+    {
+      "id": "error-404",
+      "title": "Erreur 404",
+      "description": "Page introuvable avec retours utiles.",
+      "intents": [
+        "erreur 404",
+        "page introuvable",
+        "404",
+        "not found",
+        "page not found"
+      ],
+      "file": "error-404.html",
+      "components": [
+        "badge",
+        "btn",
+        "card"
+      ]
+    },
+    {
+      "id": "error-500",
+      "title": "Erreur 500",
+      "description": "Erreur serveur avec nouvelle tentative.",
+      "intents": [
+        "erreur 500",
+        "erreur serveur",
+        "500",
+        "server error",
+        "internal error",
+        "something went wrong"
+      ],
+      "file": "error-500.html",
+      "components": [
+        "badge",
+        "btn",
+        "card"
+      ]
+    },
+    {
+      "id": "maintenance",
+      "title": "Maintenance",
+      "description": "Indisponibilité planifiée.",
+      "intents": [
+        "maintenance",
+        "site en maintenance",
+        "indisponible",
+        "maintenance mode",
+        "downtime",
+        "coming back soon"
+      ],
+      "file": "maintenance.html",
+      "components": [
+        "badge",
+        "card"
+      ]
+    },
+    {
+      "id": "home",
+      "title": "Accueil marketing",
+      "description": "Héros, arguments et appel à l'action.",
+      "intents": [
+        "accueil",
+        "page d'accueil",
+        "landing",
+        "landing page",
+        "home",
+        "homepage",
+        "marketing"
+      ],
+      "file": "home.html",
+      "components": [
+        "badge",
+        "btn",
+        "card"
+      ]
+    },
+    {
+      "id": "about",
+      "title": "À propos et équipe",
+      "description": "Présentation de l'entreprise et de l'équipe.",
+      "intents": [
+        "à propos",
+        "équipe",
+        "qui sommes-nous",
+        "notre histoire",
+        "about",
+        "about us",
+        "team"
+      ],
+      "file": "about.html",
+      "components": [
+        "badge",
+        "btn",
+        "card"
+      ]
+    },
+    {
+      "id": "contact",
+      "title": "Contact",
+      "description": "Formulaire de contact et coordonnées.",
+      "intents": [
+        "contact",
+        "nous contacter",
+        "formulaire de contact",
+        "contact us",
+        "contact form",
+        "support"
+      ],
+      "file": "contact.html",
+      "components": [
+        "badge",
+        "btn",
+        "card"
+      ]
+    }
+  ]
+}

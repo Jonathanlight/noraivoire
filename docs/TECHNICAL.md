@@ -193,6 +193,32 @@ Limites connues : une apostrophe dans du texte JSX placé **dans une valeur d'at
 
 50 contrôles automatisés : licence, chaîne d'approvisionnement, validité de la spec, déterminisme, en-têtes de propriété, motifs dangereux (moteur et CSS), imports natifs, accessibilité, budgets de poids, fraîcheur de `dist`. Voir [AUDIT-REPORT.md](AUDIT-REPORT.md).
 
+### 7.3 Bibliothèque de recettes (`recipes/`)
+
+20 écrans de référence en HTML NoraIvoire (connexion, inscription, mot de passe oublié, tarifs, tableau de bord, liste et fiche produit, panier, paiement, confirmation de commande, profil, paramètres, notifications, recherche, erreurs 404 et 500, maintenance, accueil marketing, à propos/équipe, contact). Chaque écran :
+
+- n'utilise que les classes, variantes et effets de `llms-full.txt` (aucune classe inventée) ;
+- est accessible : `lang`, un seul `h1`, landmarks (`header`, `nav` étiqueté, `main`), libellé associé à chaque champ (`<label for>` ↔ `id`) ;
+- ne contient ni JS inline, ni attribut `style`, ni ressource externe (CSP stricte) ;
+- n'utilise que des données fictives (`example.com`, « Utilisateur Démo ») ;
+- passe `nora check` sans erreur ni avertissement (`npm run check` couvre `templates/` et `recipes/`).
+
+Index `recipes/index.json`, lu par l'outil MCP `nora_recipe` :
+
+```json
+{ "version": 1, "recipes": [
+  { "id": "login", "title": "Connexion", "description": "…",
+    "intents": ["connexion", "se connecter", "login", "sign in"],
+    "file": "login.html", "components": ["badge", "btn", "card"] } ] }
+```
+
+- `id` : kebab-case, unique ; `file` vaut `<id>.html`, sans sous-dossier ;
+- `intents` : au moins 3, en français et en anglais ; une intention normalisée (minuscules, sans accents) n'appartient qu'à une seule recette ;
+- `components` : exactement les composants du manifest présents dans le markup (vérifié par `tests/unit/recipes.test.js`) ;
+- `description` : champ facultatif, ignoré par les consommateurs qui ne le connaissent pas.
+
+Les champs de formulaire utilisent pour l'instant les éléments HTML natifs ; ils migreront vers les composants `field`, `input`, `select`, `textarea`, `checkbox` et `switch` dès qu'ils figureront dans le manifest.
+
 ## 8. Ajouter un composant
 
 1. Créer `spec/components/<nom>.nora.json`.

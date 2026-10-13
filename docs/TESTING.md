@@ -5,8 +5,8 @@ Version 0.1.0 · 14 octobre 2026 · © Jonathan KABLAN — Propriétaire
 ## 1. Commandes
 
 ```bash
-npm test                    # 77 tests (node:test, aucun framework)
-npm run check               # valide tous les modèles
+npm test                    # 84 tests (node:test, aucun framework)
+npm run check               # valide les modèles et les recettes
 npm run audit:security      # 50 contrôles
 npm run verify              # tout, dans l'ordre
 ```
@@ -21,6 +21,7 @@ npm run verify              # tout, dans l'ordre
 | `tests/unit/engine.test.js` | 8 | Analyse des options (bornes, types, pollution, troncature), liste d'effets, enregistrement, SSR |
 | `tests/unit/engine-dom.test.js` | 6 | Moteur dans un DOM (jsdom) : montage initial, montage SPA, tilt, démontage, changement d'attribut, isolation des erreurs |
 | `tests/unit/bench.test.js` | 13 | Benchmark IA : tâches, requêtes, extraction, score, agrégation, retry, concurrence, masquage des clés, pipeline simulé |
+| `tests/unit/recipes.test.js` | 7 | Recettes : format de l'index, 20 écrans, unicité des ids et des intentions, fichiers confinés, `components` cohérents avec le markup et le manifest, `nora check` sans avertissement, accessibilité (h1, labels), aucun JS inline ni ressource externe |
 | `tests/unit/audit.test.js` | 1 | L'audit complet passe (50/50) |
 | `examples/flutter_app/test/goldens_test.dart` (Flutter) | 8 | Goldens `NoraBtn` (5 tons × 3 tailles), `NoraCard(glass: true)`, `NoraBadge`, clair et sombre ; sémantique bouton et zone ≥ 44 ; montage du modèle `templates/flutter/main.dart` |
 

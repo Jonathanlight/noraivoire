@@ -1,0 +1,37 @@
+<!doctype html>
+<!-- NoraIvoire — recette « Confirmation de commande ». © 2026 Jonathan KABLAN — Propriétaire. -->
+<!-- Remerciement après paiement et suite du parcours. Données fictives. Aucun JS inline (CSP stricte). -->
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Confirmation de commande — NoraIvoire</title>
+  <link rel="stylesheet" href="../packages/core/dist/noraivoire.css">
+  <script type="module" src="../packages/core/dist/noraivoire.auto.js"></script>
+</head>
+<body>
+  <header class="container cluster py-4">
+    <a class="font-bold text-lg" href="home.html">Boutique Démo</a>
+    <nav class="cluster" aria-label="Navigation principale">
+      <a href="products.html">Produits</a>
+      <a href="pricing.html">Tarifs</a>
+      <a href="search.html">Recherche</a>
+      <a class="btn" data-tone="neutral" data-size="sm" href="cart.html">Panier <span class="badge" data-tone="primary">2</span></a>
+    </nav>
+  </header>
+  <main class="container py-12">
+    <section class="card mx-auto stack text-center" data-size="lg" aria-labelledby="titre">
+      <span class="badge" data-tone="success">Paiement accepté</span>
+      <h1 id="titre" class="text-xl font-bold">Merci pour votre commande</h1>
+      <p class="text-muted">Commande n° 1043. Un e-mail de confirmation vous a été envoyé.</p>
+      <div class="cluster">
+        <a class="btn" href="products.html">Continuer mes achats</a>
+        <a class="btn" data-tone="neutral" href="dashboard.html">Suivre ma commande</a>
+      </div>
+    </section>
+  </main>
+  <footer class="container py-8 text-sm text-muted">
+    <p>© 2026 Boutique Démo — données fictives. <a href="contact.html">Contact</a> · <a href="about.html">À propos</a></p>
+  </footer>
+</body>
+</html>
