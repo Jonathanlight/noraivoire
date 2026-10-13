@@ -61,6 +61,43 @@ jobs:
           name: flutter-golden-failures
           path: examples/flutter_app/test/failures/
 
+  visual:
+    # Régression visuelle (12 captures) et accessibilité axe-core de la page de démo.
+    # Conteneur Playwright officiel, même version que @playwright/test : Chromium et polices
+    # identiques à ceux de `npm run test:visual:update` (captures de tests/visual/__screenshots__/linux/).
+    # Les navigateurs sont déjà dans l'image : aucun téléchargement ni cache à gérer.
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.63.0-noble
+      options: --ipc=host --init
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run build
+      - name: dist identique à la spec
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git diff --exit-code packages/core/dist
+      - name: captures et axe-core
+        # En cas d'échec après un changement volontaire : `npm run test:visual:update` (Docker requis)
+        # puis versionner tests/visual/__screenshots__/linux/.
+        run: npm run test:visual
+        env:
+          HOME: /root
+      - name: rapport Playwright en cas d'échec
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 14
+
   react-native-types:
     runs-on: ubuntu-latest
     steps:

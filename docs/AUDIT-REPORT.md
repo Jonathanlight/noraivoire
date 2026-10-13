@@ -1,7 +1,7 @@
 # NoraIvoire — Rapport d'audit
 
 **Version auditée :** 0.1.0 · **Date :** 14 octobre 2026 · **Périmètre :** dépôt complet
-**Méthode :** audit automatisé (`nora audit`, 50 contrôles), 77 tests node et 8 tests Flutter, vérification TypeScript stricte, `npm audit`, revue manuelle du code.
+**Méthode :** audit automatisé (`nora audit`, 50 contrôles), 83 tests node et 8 tests Flutter, vérification TypeScript stricte, `npm audit`, revue manuelle du code.
 © Jonathan KABLAN — Document confidentiel
 
 ## 1. Synthèse
@@ -24,7 +24,7 @@
 
 | Indicateur | Valeur |
 |---|---|
-| Tests | 77 / 77 réussis (node) · 8 / 8 (Flutter, dont 6 goldens) |
+| Tests | 83 / 83 réussis (node) · 8 / 8 (Flutter, dont 6 goldens) |
 | Contrôles d'audit | 50 / 50 réussis |
 | Modèles validés par `nora check` | 13 fichiers, 0 erreur, 0 avertissement |
 | Erreurs TypeScript (strict) sur le TSX généré | 0 |
@@ -57,7 +57,7 @@
 ## 4. Conditions avant commercialisation
 
 1. ~~Lever **A-01**~~ : fait (`examples/flutter_app/`, analyse et goldens). Reste à exécuter le job CI `flutter` sur Linux et à ajuster la tolérance si besoin.
-2. Ajouter la **régression visuelle** web (Playwright) et un test **axe-core** sur la page de démo.
+2. ~~Ajouter la **régression visuelle** web et un test **axe-core**~~ : fait (`tests/visual/`, 12 captures, axe-core sans violation sérieuse ni critique, rendu sans JS vérifié). axe a révélé un contraste insuffisant du ton `primary` en clair (`#E8590C` sur blanc : 3,58:1) : corrigé dans la spec (`#C94A0B`, 4,70:1) et verrouillé par `tests/unit/contrast.test.js`.
 3. Faire relire **LICENSE** et rédiger le **contrat de licence** par un avocat ; déposer la marque.
 
 ## 5. Reproduire l'audit
