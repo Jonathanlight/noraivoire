@@ -1,11 +1,13 @@
 {# Composant Twig anonyme (symfony/ux-twig-component) : <twig:Nora:Btn tone="danger" size="lg">…</twig:Nora:Btn>
-   Les valeurs hors liste blanche retombent sur la valeur par défaut : aucune injection possible dans l'attribut. #}
+   Les valeurs hors liste blanche retombent sur la valeur par défaut : aucune injection possible dans l'attribut.
+   Copie manuelle pour un projet sans bundle : avec adapters/symfony-bundle, tous les composants Nora:* sont générés depuis le manifest. #}
 {% props tone = 'primary', size = 'md', href = null, type = 'button' %}
 {% set tone = tone in ['primary', 'neutral', 'danger', 'success', 'warning'] ? tone : 'primary' %}
 {% set size = size in ['sm', 'md', 'lg'] ? size : 'md' %}
 {# Schémas d'URL autorisés : chemins relatifs, ancres, http(s), mailto, tel. Bloque javascript:, data:… #}
 {% set type = type in ['button', 'submit', 'reset'] ? type : 'button' %}
-{% set href = href and (href starts with '/' or href starts with '#' or href starts with 'https://' or href starts with 'http://' or href starts with 'mailto:' or href starts with 'tel:') and not (href starts with '//') ? href : null %}
+{% set href = href and (href starts with '/' or href starts with '#' or href starts with 'https://' or href starts with 'http://' or href starts with 'mailto:' or href starts with 'tel:') and not (href starts with '//' or href starts with '/\\') ? href : null %}
+{% set attributes = attributes.without('data-tone', 'data-size', 'href', 'type') %}
 {% if href %}
   <a {{ attributes.defaults({class: 'btn', 'data-tone': tone, 'data-size': size, href: href}) }}>{% block content %}{% endblock %}</a>
 {% else %}

@@ -36,6 +36,11 @@ Principes non négociables :
  noraivoire.css  noraivoire.dart     noraivoire.tsx       manifest.json      noraivoire.engine.js
  noraivoire.min.css                                       llms-full.txt      noraivoire.auto.js
                                                           noraivoire.types.ts
+                                                                │
+                                                     targets/symfony.js (depuis le manifest)
+                                                                │
+                                            symfony/templates/components/Nora/*.html.twig
+                                            symfony/src/NoraManifest.php, Enum/Nora{Tone,Size,Component}.php
                                          │
                                   integrity.json (sha256 + SRI sha384 + tailles gzip)
 ```
@@ -155,6 +160,15 @@ Garanties SSR : aucun effet de bord à l'import ; `start()` et `attach()` sont d
 - `configureNora({ haptic, orientation })` injecte expo-haptics / expo-sensors sans en dépendre.
 - `useNativeDriver` activé hors web.
 
+### 6.3 Symfony (`adapters/symfony-bundle/`)
+
+La cible `targets/symfony.js` lit le **manifest** (pas la spec brute) : chaque composant du contrat devient automatiquement un Twig Component anonyme `<twig:Nora:Xxx>`, sans liste codée en dur.
+
+- **Twig Components** (`symfony/templates/components/Nora/*.html.twig`) : `tone` et `size` en liste blanche avec repli sur la valeur par défaut ; `href` filtré par la liste blanche de schémas (`/`, `#`, `https://`, `http://`, `mailto:`, `tel:` ; refus de `//` et `/\`) avec repli sur `<button>` ; `type` limité à `button | submit | reset` ; `as` limité aux `elements` du manifest ; `attributes.without('data-tone', 'data-size', 'href', 'type')` empêche de forcer ces attributs ; éléments vides (`input`, `img`…) émis sans contenu.
+- **PHP** (`symfony/src/`) : enums `NoraTone`, `NoraSize`, `NoraComponent` (`values()`, `isAllowedFor($composant)`) et classe `NoraManifest` (constantes du contrat, `safeHref()`).
+- **Bundle** : `NoraIvoireBundle` (clé de configuration `noraivoire:`) ajoute `generated/templates` aux chemins Twig, `generated/assets` à AssetMapper sous le préfixe `noraivoire/`, et la commande `bin/console nora:check`. `npm run symfony:sync` copie la sortie compilée dans `adapters/symfony-bundle/generated/` (non versionné, comme `examples/flutter_app/lib/`).
+- **`nora:check`** délègue au CLI Node (`nora check --format=json`) : une seule implémentation des règles (tokenizer, règles futures) plutôt qu'une réimplémentation PHP qui divergerait. Appel par `Process` avec un tableau d'arguments (aucun shell), chemins résolus par `realpath` et confinés au projet, transmis en absolu (jamais lus comme options), `NODE_OPTIONS` retiré, durée bornée. Node n'est requis qu'en développement et en CI.
+
 ## 7. Outillage
 
 ### 7.1 `nora check`
@@ -191,13 +205,13 @@ Limites connues : une apostrophe dans du texte JSX placé **dans une valeur d'at
 
 ### 7.2 `nora audit`
 
-50 contrôles automatisés : licence, chaîne d'approvisionnement, validité de la spec, déterminisme, en-têtes de propriété, motifs dangereux (moteur et CSS), imports natifs, accessibilité, budgets de poids, fraîcheur de `dist`. Voir [AUDIT-REPORT.md](AUDIT-REPORT.md).
+58 contrôles automatisés : licence, chaîne d'approvisionnement, validité de la spec, déterminisme, en-têtes de propriété (y compris Twig et PHP générés), motifs dangereux (moteur et CSS), imports natifs, durcissement des Twig Components Symfony, accessibilité, budgets de poids, fraîcheur de `dist`. Le total croît avec la spec : un contrôle d'en-tête par fichier généré. Voir [AUDIT-REPORT.md](AUDIT-REPORT.md).
 
 ## 8. Ajouter un composant
 
 1. Créer `spec/components/<nom>.nora.json`.
 2. `npm run build`.
-3. Ajouter un exemple dans `templates/html/index.html` et les tests dans `tests/unit/compiler.test.js`.
+3. Ajouter un exemple dans `templates/html/index.html` et les tests dans `tests/unit/compiler.test.js`. Le Twig Component `Nora:<Nom>` et les cas d'enum PHP sont générés automatiquement ; `npm run symfony:sync` puis PHPUnit dans `adapters/symfony-bundle/` les vérifient.
 4. `npm run verify`.
 
 Si le composant exige une forme nouvelle (ni interactive, ni label, ni container), étendre `shapeFromRole` puis les trois cibles **dans le même commit**, avec un test par cible.

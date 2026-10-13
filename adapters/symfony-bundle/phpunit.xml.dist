@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- NoraIvoire — tests du bundle Symfony. © 2026 Jonathan KABLAN — Propriétaire. -->
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+         cacheDirectory=".phpunit.cache"
+         failOnWarning="true"
+         failOnNotice="true"
+         displayDetailsOnTestsThatTriggerDeprecations="true">
+    <php>
+        <env name="KERNEL_CLASS" value="NoraIvoire\SymfonyBundle\Tests\App\TestKernel"/>
+        <env name="APP_ENV" value="test"/>
+    </php>
+    <testsuites>
+        <testsuite name="noraivoire">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+    <source>
+        <include>
+            <directory>src</directory>
+        </include>
+    </source>
+</phpunit>

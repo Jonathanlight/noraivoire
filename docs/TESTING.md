@@ -5,9 +5,9 @@ Version 0.1.0 · 14 octobre 2026 · © Jonathan KABLAN — Propriétaire
 ## 1. Commandes
 
 ```bash
-npm test                    # 77 tests (node:test, aucun framework)
+npm test                    # 86 tests (node:test, aucun framework)
 npm run check               # valide tous les modèles
-npm run audit:security      # 50 contrôles
+npm run audit:security      # 58 contrôles
 npm run verify              # tout, dans l'ordre
 ```
 
@@ -21,7 +21,9 @@ npm run verify              # tout, dans l'ordre
 | `tests/unit/engine.test.js` | 8 | Analyse des options (bornes, types, pollution, troncature), liste d'effets, enregistrement, SSR |
 | `tests/unit/engine-dom.test.js` | 6 | Moteur dans un DOM (jsdom) : montage initial, montage SPA, tilt, démontage, changement d'attribut, isolation des erreurs |
 | `tests/unit/bench.test.js` | 13 | Benchmark IA : tâches, requêtes, extraction, score, agrégation, retry, concurrence, masquage des clés, pipeline simulé |
-| `tests/unit/audit.test.js` | 1 | L'audit complet passe (50/50) |
+| `tests/unit/symfony.test.js` | 9 | Cible Symfony : un Twig Component par composant du manifest, ajout automatique d'un composant, déterminisme, en-têtes, listes blanches, `nora check` sur les Twig générés, littéraux PHP sûrs, manifest forgé refusé, éléments vides |
+| `tests/unit/audit.test.js` | 1 | L'audit complet passe (58/58) |
+| `adapters/symfony-bundle/tests/` (PHPUnit) | 42 | Code PHP généré (enums, `NoraManifest`, `safeHref`), rendu réel des Twig Components dans un noyau Symfony (listes blanches, URL dangereuses, attributs verrouillés, échappement), AssetMapper, commande `nora:check` (texte, JSON, chemins refusés) |
 | `examples/flutter_app/test/goldens_test.dart` (Flutter) | 8 | Goldens `NoraBtn` (5 tons × 3 tailles), `NoraCard(glass: true)`, `NoraBadge`, clair et sombre ; sémantique bouton et zone ≥ 44 ; montage du modèle `templates/flutter/main.dart` |
 
 Vérifications complémentaires effectuées lors de la création :

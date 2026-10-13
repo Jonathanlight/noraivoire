@@ -7,7 +7,7 @@ Version 0.1.0 · 14 octobre 2026 · © Jonathan KABLAN — Propriétaire
 | Environnement | Mode d'intégration | Build requis | Adaptateur | État 0.1 |
 |---|---|---|---|---|
 | HTML statique | `<link>` + `<script type="module">` | Non | Aucun | Modèle fourni, validé par `nora check` |
-| Twig / Symfony | AssetMapper + importmap ; composant anonyme `<twig:Nora:Btn>` | Non | `templates/twig/components/Nora/Btn.html.twig` | Modèle fourni, non exécuté dans Symfony |
+| Twig / Symfony 7.3+ (PHP 8.4+) | Bundle : Twig Components `<twig:Nora:*>` générés, enums `NoraTone` / `NoraSize`, AssetMapper (`noraivoire/…`), `bin/console nora:check` | Non | `adapters/symfony-bundle/` (sans bundle : `templates/twig/components/Nora/Btn.html.twig`) | Généré depuis le manifest ; **42 tests PHPUnit exécutés** (PHP 8.5, Symfony 8.1, UX TwigComponent 2.36) ; CI PHP 8.4 et 8.5 |
 | JSP / Jakarta EE / Spring | Fichiers statiques + tag file `<nora:btn>` | Non | `templates/jsp/WEB-INF/tags/nora/btn.tag` | Modèle fourni, non exécuté dans un conteneur |
 | React (Vite) | Import CSS + `start()` ; hook `useFx` | Oui (projet) | `templates/react/useFx.ts` | Modèle fourni |
 | Next.js App Router | CSS dans `layout.tsx` ; `<NoraEngine/>` client | Oui (projet) | `templates/nextjs/components/NoraEngine.tsx` | Modèle fourni |
@@ -62,6 +62,7 @@ Le seul attribut posé sur `<html>` par le moteur est `data-nora-engine` (d'où 
 | Moteur web | Aucune | Très faible |
 | Flutter | SDK Flutter | API utilisées stables ; `Color.withValues` impose Flutter 3.27+ |
 | React Native | `react`, `react-native` | `Animated` et `Pressable` sont des API publiques stables |
+| Symfony | `symfony/*` (framework, twig, console, process, asset-mapper), `symfony/ux-twig-component`, `twig/twig` — MIT / BSD-3 | Syntaxe `<twig:…>` et `attributes.without()` d'UX TwigComponent 2.x ; `nora:check` exige Node.js (développement et CI seulement) |
 
 ## 6. Limites de la version 0.1
 
@@ -69,4 +70,5 @@ Le seul attribut posé sur `<html>` par le moteur est `data-nora-engine` (d'où 
 2. Pas de régression visuelle cross-cible (comparaison web / Flutter / RN, prévue, voir TESTING.md).
 3. Pas de composant de formulaire (input, select) : les champs utilisent les styles du navigateur.
 4. Pas de CSS de secours pour les navigateurs sans `@layer`.
-5. Les modèles Twig, JSP, Vue et Angular sont validés syntaxiquement par `nora check`, pas exécutés dans leur framework.
+5. Les modèles JSP, Vue et Angular sont validés syntaxiquement par `nora check`, pas exécutés dans leur framework. Les Twig Components, eux, sont rendus par Symfony dans les tests PHPUnit du bundle.
+6. Bundle Symfony : testé localement en PHP 8.5 / Symfony 8.1 ; PHP 8.4 est couvert par la matrice CI (non exécuté localement), Symfony 7.3 n'est couvert que par la contrainte Composer. Un composant de formulaire reçoit un Twig Component générique (élément, ton, taille) ; un rendu composé (label + aide + erreur pour `field`) demandera d'étendre `targets/symfony.js`.

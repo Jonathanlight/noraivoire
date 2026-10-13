@@ -17,7 +17,7 @@ const positional = args.slice(1).filter((a) => !a.startsWith('--'));
 
 function loadManifest() {
   const flag = args.find((a) => a.startsWith('--manifest='));
-  const path = flag ? flag.split('=')[1] : join(repoRoot, 'packages', 'core', 'dist', 'manifest.json');
+  const path = flag ? flag.slice('--manifest='.length) : join(repoRoot, 'packages', 'core', 'dist', 'manifest.json');
   if (!existsSync(path)) {
     console.error('✖ manifest.json introuvable : lancer « npm run build » ou passer --manifest=<chemin>');
     process.exit(2);

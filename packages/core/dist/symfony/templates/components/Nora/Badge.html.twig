@@ -1,0 +1,12 @@
+{#
+ # NoraIvoire 0.1.0 — fichier GÉNÉRÉ (twig) depuis la spec. Ne pas modifier à la main.
+ # © 2026 Jonathan KABLAN — Logiciel propriétaire, tous droits réservés.
+ # Usage soumis au contrat de licence NoraIvoire. Redistribution interdite.
+ #}
+{# Twig Component anonyme : <twig:Nora:Badge tone="…" size="…">…</twig:Nora:Badge>
+   Valeurs hors liste blanche → valeur par défaut. data-tone, data-size ne peuvent pas être forcés par attribut. #}
+{% props tone = 'neutral', size = 'sm' %}
+{% set tone = tone in ['primary', 'neutral', 'danger', 'success', 'warning'] ? tone : 'neutral' %}
+{% set size = size in ['sm', 'md'] ? size : 'sm' %}
+{% set attrs = attributes.without('data-tone', 'data-size') %}
+<span {{ attrs.defaults({class: 'badge', 'data-tone': tone, 'data-size': size}) }}>{% block content %}{% endblock %}</span>

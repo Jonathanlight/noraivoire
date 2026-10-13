@@ -8,5 +8,6 @@ export function header(kind, meta) {
     'Usage soumis au contrat de licence NoraIvoire. Redistribution interdite.',
   ];
   if (kind === 'css') return `/*!\n * ${lines.join('\n * ')}\n */`;
+  if (kind === 'twig') return `{#\n # ${lines.join('\n # ')}\n #}`;
   return lines.map((l) => `// ${l}`).join('\n');
 }
