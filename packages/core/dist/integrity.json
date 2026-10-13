@@ -39,10 +39,10 @@
       "gzip": 924
     },
     "flutter/noraivoire.dart": {
-      "sha256": "930a26f4be374b320fce0428c9cb66b8d9f7658fb9b6335b6fb9f2e0e5211375",
-      "sri": "sha384-IayQI+2ShVrUPIzZ8kELAiTk8LAN39as2JU0gYv659t30wcQOhAbHJYthr4N4PIV",
-      "bytes": 35997,
-      "gzip": 6947
+      "sha256": "712ccce690f154c045280a75db21ae170df825c5f1b7b569a42c10f0686f0d0f",
+      "sri": "sha384-4/MdXYeUbDpFaV6gHoLug/otZDj9LPRyGL/KXRfaVbEHnmWBdrBXDYMZqO1LkD/+",
+      "bytes": 38802,
+      "gzip": 7327
     },
     "react-native/noraivoire.tsx": {
       "sha256": "0f1e45705d3ecb7ddf8e0579197ede4915377cd015e0bcdf9e46cf1e42770fd1",

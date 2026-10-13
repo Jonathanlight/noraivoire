@@ -58,7 +58,7 @@ Le seul attribut posé sur `<html>` par le moteur est `data-nora-engine` (d'où 
 | Case à cocher | `<input type="checkbox">` dessiné en CSS | `Checkbox` Material | Vue dessinée + `✓` | Coche : tracé CSS / icône Material / glyphe texte |
 | Interrupteur | `<input role="switch">` dessiné en CSS | `Switch` Material 3 | Piste + pouce animés | Proportions du `Switch` Material 3 différentes (pouce agrandi quand actif) |
 | Association libellé | `<label for>` / `aria-describedby` | `NoraFieldScope` (sémantique) | `NoraFieldContext` (`accessibilityLabel` / `Hint`) | Même contrat, mécanisme propre à chaque plateforme |
-| Mouvement réduit (formulaires) | Transitions coupées (`prefers-reduced-motion`) | Animations internes de `Checkbox` / `Switch` Material | Glissement du pouce coupé | Flutter : animations Material non pilotées par NoraIvoire (150–200 ms) |
+| Mouvement réduit (formulaires) | Transitions coupées (`prefers-reduced-motion`) | Case et interrupteur rendus statiquement (mêmes couleurs, `Semantics` checked / toggled), `InkWell` sans onde ni fondu | Glissement du pouce coupé | Flutter : `Checkbox` / `Switch` Material n'exposent pas leur durée, d'où le rendu statique quand `MediaQuery.disableAnimations` est vrai |
 
 ### 4.1 Effets optionnels (paquets `fx-scroll`, `fx-text`)
 

@@ -184,3 +184,15 @@ test('nora check : les parties .field-* sont connues (pas de faute de frappe sig
   assert.deepEqual(rules('<p class="field-help">x</p><p class="field-error">y</p>'), []);
   assert.deepEqual(rules('<p class="field-hepl">x</p>'), ['possible-typo']);
 });
+
+test('flutter : mouvement réduit — toggles statiques et InkWell sans onde', () => {
+  const dart = compile(SPEC).files['flutter/noraivoire.dart'];
+  for (const cls of ['NoraCheckbox', 'NoraSwitch']) {
+    const body = dart.slice(dart.indexOf(`class ${cls} `), dart.indexOf('\n}\n', dart.indexOf(`class ${cls} `)));
+    assert.match(body, /maybeDisableAnimationsOf\(context\)/, cls);
+    assert.match(body, /if \(reduceMotion\)\s+Semantics\(\s+(checked|toggled): value/, cls);
+    assert.match(body, /splashFactory: reduceMotion \? NoSplash\.splashFactory : null/, cls);
+  }
+  const btn = dart.slice(dart.indexOf('class NoraBtn '), dart.indexOf('class _NoraBtnState'));
+  assert.ok(dart.includes('splashFactory: reduceMotion ? NoSplash.splashFactory : null'), btn.length > 0 ? 'NoraBtn' : 'absent');
+});

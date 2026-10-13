@@ -167,6 +167,9 @@ ${sizeSwitch(c, tokens, c._sizes)}
             borderRadius: radius,
             child: InkWell(
               borderRadius: radius,
+              // Mouvement réduit : ni onde ni fondu de surbrillance (l'enfoncement reste signalé par la couleur).
+              splashFactory: reduceMotion ? NoSplash.splashFactory : null,
+              highlightColor: reduceMotion ? const Color(0x00000000) : null,
               onTap: enabled
                   ? () {
                       if (widget.haptic) ${hapticCall};
@@ -338,7 +341,7 @@ ${sizeSwitch(c, tokens, c._sizes)}
   final bool enabled;`;
 
   if (el === 'select') {
-    return `/// ${c.description.replace(/\n/g, ' ')}
+    return `/// ${docComment(c.description)}
 class ${cls}<T> extends StatefulWidget {
   const ${cls}({
     super.key,
@@ -405,7 +408,7 @@ ${colorsBlock}
 }`;
   }
   const multi = el === 'textarea';
-  return `/// ${c.description.replace(/\n/g, ' ')}
+  return `/// ${docComment(c.description)}
 class ${cls} extends StatelessWidget {
   const ${cls}({
     super.key,
@@ -488,7 +491,46 @@ function toggleWidget(c, tokens) {
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(${radiusExpr(c, tokens)})),
                     focusColor: focus.withValues(alpha: 0.24),
                   )`;
-  return `/// ${c.description.replace(/\n/g, ' ')}
+  // Mouvement réduit : Checkbox / Switch Material n'exposent pas leur durée d'animation ;
+  // on rend un équivalent statique (mêmes couleurs, même sémantique), sans aucune transition.
+  const still = isSwitch
+    ? `Semantics(
+                          toggled: value,
+                          enabled: enabled,
+                          child: Container(
+                            width: 52,
+                            height: 32,
+                            padding: const EdgeInsets.all(4),
+                            alignment: value ? AlignmentDirectional.centerEnd : AlignmentDirectional.centerStart,
+                            decoration: BoxDecoration(
+                              color: value ? accent : border,
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(color: value ? accent : (isInvalid ? invalidColor : border), width: 2),
+                            ),
+                            child: Container(width: 20, height: 20, decoration: BoxDecoration(shape: BoxShape.circle, color: value ? onAccent : bg)),
+                          ),
+                        )`
+    : `Semantics(
+                          checked: value,
+                          enabled: enabled,
+                          child: SizedBox(
+                            width: 40,
+                            height: 40,
+                            child: Center(
+                              child: Container(
+                                width: 18,
+                                height: 18,
+                                decoration: BoxDecoration(
+                                  color: value ? accent : bg,
+                                  borderRadius: BorderRadius.circular(${radiusExpr(c, tokens)}),
+                                  border: Border.all(color: value ? accent : (isInvalid ? invalidColor : border), width: 2),
+                                ),
+                                child: value ? Icon(Icons.check, size: 14, color: onAccent) : null,
+                              ),
+                            ),
+                          ),
+                        )`;
+  return `/// ${docComment(c.description)}
 class ${cls} extends StatelessWidget {
   const ${cls}({
     super.key,
@@ -532,11 +574,15 @@ ${sizeSwitch(c, tokens, c._sizes)}
       ${haptic ? `if (haptic) HapticFeedback.${haptic}Impact();\n      ` : ''}onChanged!(!value);
     }
 
+    final reduceMotion = MediaQuery.maybeDisableAnimationsOf(context) ?? false;
+
     return MergeSemantics(
       child: Opacity(
         opacity: enabled ? 1.0 : ${s.disabled},
         child: InkWell(
           onTap: enabled ? toggle : null,
+          splashFactory: reduceMotion ? NoSplash.splashFactory : null,
+          highlightColor: reduceMotion ? const Color(0x00000000) : null,
           borderRadius: BorderRadius.circular(NoraRadius.sm),
           child: ConstrainedBox(
             constraints: const BoxConstraints(minHeight: ${Number(c.a11y.minTarget).toFixed(1)}),
@@ -545,7 +591,10 @@ ${sizeSwitch(c, tokens, c._sizes)}
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  ${control},
+                  if (reduceMotion)
+                    ${still}
+                  else
+                    ${control},
                   SizedBox(width: padX),
                   Flexible(
                     child: DefaultTextStyle.merge(
@@ -568,7 +617,7 @@ ${sizeSwitch(c, tokens, c._sizes)}
 function fieldWidget(c, tokens) {
   const cls = `Nora${pascal(c.component)}`;
   const s = stateValues(c);
-  return `/// ${c.description.replace(/\n/g, ' ')}
+  return `/// ${docComment(c.description)}
 class ${cls} extends StatelessWidget {
   const ${cls}({
     super.key,

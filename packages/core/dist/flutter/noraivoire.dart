@@ -423,6 +423,9 @@ class _NoraBtnState extends State<NoraBtn> {
             borderRadius: radius,
             child: InkWell(
               borderRadius: radius,
+              // Mouvement réduit : ni onde ni fondu de surbrillance (l'enfoncement reste signalé par la couleur).
+              splashFactory: reduceMotion ? NoSplash.splashFactory : null,
+              highlightColor: reduceMotion ? const Color(0x00000000) : null,
               onTap: enabled
                   ? () {
                       if (widget.haptic) HapticFeedback.lightImpact();
@@ -574,11 +577,15 @@ class NoraCheckbox extends StatelessWidget {
       onChanged!(!value);
     }
 
+    final reduceMotion = MediaQuery.maybeDisableAnimationsOf(context) ?? false;
+
     return MergeSemantics(
       child: Opacity(
         opacity: enabled ? 1.0 : 0.5,
         child: InkWell(
           onTap: enabled ? toggle : null,
+          splashFactory: reduceMotion ? NoSplash.splashFactory : null,
+          highlightColor: reduceMotion ? const Color(0x00000000) : null,
           borderRadius: BorderRadius.circular(NoraRadius.sm),
           child: ConstrainedBox(
             constraints: const BoxConstraints(minHeight: 44.0),
@@ -587,7 +594,29 @@ class NoraCheckbox extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Checkbox(
+                  if (reduceMotion)
+                    Semantics(
+                          checked: value,
+                          enabled: enabled,
+                          child: SizedBox(
+                            width: 40,
+                            height: 40,
+                            child: Center(
+                              child: Container(
+                                width: 18,
+                                height: 18,
+                                decoration: BoxDecoration(
+                                  color: value ? accent : bg,
+                                  borderRadius: BorderRadius.circular(NoraRadius.sm),
+                                  border: Border.all(color: value ? accent : (isInvalid ? invalidColor : border), width: 2),
+                                ),
+                                child: value ? Icon(Icons.check, size: 14, color: onAccent) : null,
+                              ),
+                            ),
+                          ),
+                        )
+                  else
+                    Checkbox(
                     value: value,
                     onChanged: enabled ? (_) => toggle() : null,
                     isError: isInvalid,
@@ -945,11 +974,15 @@ class NoraSwitch extends StatelessWidget {
       onChanged!(!value);
     }
 
+    final reduceMotion = MediaQuery.maybeDisableAnimationsOf(context) ?? false;
+
     return MergeSemantics(
       child: Opacity(
         opacity: enabled ? 1.0 : 0.5,
         child: InkWell(
           onTap: enabled ? toggle : null,
+          splashFactory: reduceMotion ? NoSplash.splashFactory : null,
+          highlightColor: reduceMotion ? const Color(0x00000000) : null,
           borderRadius: BorderRadius.circular(NoraRadius.sm),
           child: ConstrainedBox(
             constraints: const BoxConstraints(minHeight: 44.0),
@@ -958,7 +991,25 @@ class NoraSwitch extends StatelessWidget {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Switch(
+                  if (reduceMotion)
+                    Semantics(
+                          toggled: value,
+                          enabled: enabled,
+                          child: Container(
+                            width: 52,
+                            height: 32,
+                            padding: const EdgeInsets.all(4),
+                            alignment: value ? AlignmentDirectional.centerEnd : AlignmentDirectional.centerStart,
+                            decoration: BoxDecoration(
+                              color: value ? accent : border,
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(color: value ? accent : (isInvalid ? invalidColor : border), width: 2),
+                            ),
+                            child: Container(width: 20, height: 20, decoration: BoxDecoration(shape: BoxShape.circle, color: value ? onAccent : bg)),
+                          ),
+                        )
+                  else
+                    Switch(
                     value: value,
                     onChanged: enabled ? (_) => toggle() : null,
                     materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,

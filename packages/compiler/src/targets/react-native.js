@@ -157,7 +157,7 @@ ${common}
   style?: StyleProp<ViewStyle>;
 };
 
-/** ${c.description.replace(/\*\//g, '* /')} Liste native de React Native absente du cœur : sélection dans une fenêtre modale. */
+/** ${docComment(c.description)} Liste native de React Native absente du cœur : sélection dans une fenêtre modale. */
 export function ${P}({ options, value, onChange, placeholder, size, invalid, disabled, label, style }: ${P}Props) {
 ${state}
   const reduce = useReducedMotion();
@@ -227,7 +227,7 @@ ${common}
   style?: StyleProp<TextStyle>;
 };
 
-/** ${c.description.replace(/\*\//g, '* /')} */
+/** ${docComment(c.description)} */
 export function ${P}({ size, invalid, disabled, label, style, onFocus, onBlur, ...rest }: ${P}Props) {
 ${state}
   return (
@@ -320,7 +320,7 @@ function toggleComp(c) {
   style?: StyleProp<ViewStyle>;
 };
 
-/** ${c.description.replace(/\*\//g, '* /')} */
+/** ${docComment(c.description)} */
 export function ${P}({ checked, onChange, children, tone, size, invalid, haptic = true, disabled, style, ...rest }: ${P}Props) {
   const colors = useNoraColors();
   const field = useNoraField();
@@ -373,7 +373,7 @@ function fieldComp(c) {
   children: React.ReactNode;
 };
 
-/** ${c.description.replace(/\*\//g, '* /')} */
+/** ${docComment(c.description)} */
 export function ${P}({ label, help, error, disabled, size, children, style, ...rest }: ${P}Props) {
   const colors = useNoraColors();
   ${sizeLine(n)}

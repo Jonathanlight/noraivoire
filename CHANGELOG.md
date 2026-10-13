@@ -18,6 +18,8 @@
 - Recettes (`recipes/`) : 20 écrans de référence en HTML NoraIvoire (connexion, inscription, tarifs, tableau de bord, catalogue, panier, paiement, profil, paramètres, erreurs 404/500…), indexés par intention (FR + EN) dans `recipes/index.json`, formulaires construits avec `field`, `input`, `select`, `textarea`, `checkbox` et `switch`, validés par `nora check` (ajouté au script `check`) ; 8 tests.
 - Régression visuelle et accessibilité web : Playwright 1.63.0 et `@axe-core/playwright` 4.13.0 (dev) ; 12 captures de `templates/html/index.html` (clair/sombre × 375/768/1280 px × mouvement normal/réduit), axe-core sans violation sérieuse ni critique, rendu sans JavaScript ; serveur statique maison `tests/visual/serve.mjs` ; `npm run test:visual` et `npm run test:visual:update` (darwin + Linux via Docker en une commande) ; job CI `visual` dans le conteneur Playwright officiel. **Couleur** : `color.primary` (clair) passe de `#E8590C` à `#C94A0B` (contraste 3,58:1 → 4,70:1 avec le texte blanc, WCAG AA) ; goldens Flutter régénérés ; 6 tests node (contraste, serveur).
 - CSS : un badge (forme `label`) ne s'étire plus dans une pile flex ou une grille (`align-self: flex-start`, parité avec React Native) ; captures web et goldens Flutter clairs régénérés après le changement de `color.primary`. 1 test.
+- Flutter (règle 8, mouvement réduit) : `NoraCheckbox` / `NoraSwitch` rendus statiquement quand les animations sont désactivées, `InkWell` des boutons et toggles sans onde ni fondu ; 4 tests Flutter, 1 test node.
+- Sécurité : les gabarits de formulaire Flutter / React Native passent aussi par `docComment()` ; le test d'injection couvre désormais tous les composants et effets, et le retour chariot seul.
 
 ## 0.1.0 — 14 octobre 2026
 

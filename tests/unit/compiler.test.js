@@ -1,7 +1,7 @@
 // NoraIvoire — tests du compilateur. © 2026 Jonathan KABLAN — Propriétaire.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtempSync, readFileSync, writeFileSync, cpSync, symlinkSync } from 'node:fs';
+import { mkdtempSync, readFileSync, writeFileSync, cpSync, symlinkSync, readdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -183,7 +183,10 @@ test('resolve : substitution $tone et identifiants sûrs', () => {
 test('sécurité : une description multi-ligne ne peut pas injecter de code natif', () => {
   const payload = 'Bouton.\r\nvoid pirate() {}\n*/ export const pirate = 1; /* x';
   const dir = tempSpec((s) => {
-    for (const f of ['components/btn.nora.json', 'effects/tilt.nora.json', 'effects/reveal.nora.json']) {
+    // Tous les composants et effets du cœur : un nouveau gabarit ne peut pas oublier docComment().
+    const all = ['components', 'effects'].flatMap((d) => readdirSync(join(s, d)).filter((f) => f.endsWith('.nora.json')).map((f) => `${d}/${f}`));
+    assert.ok(all.length >= 9);
+    for (const f of all) {
       const p = join(s, f);
       const spec = JSON.parse(readFileSync(p, 'utf8'));
       spec.description = payload;
@@ -193,9 +196,11 @@ test('sécurité : une description multi-ligne ne peut pas injecter de code nati
   const { files } = compile(dir);
   const dart = files['flutter/noraivoire.dart'];
   const tsx = files['react-native/noraivoire.tsx'];
-  assert.ok(!/^void pirate/m.test(dart), 'code Dart injecté hors commentaire');
+  
   assert.ok(!/^\s*\*\/ export const pirate/m.test(tsx) && !tsx.includes('*/ export const pirate'), 'fin de bloc TSX non neutralisée');
-  for (const line of dart.split(/\r?\n/)) if (line.includes('pirate')) assert.match(line, /^\s*\/\/\//);
+  // Dart termine un commentaire sur \n comme sur \r seul : découper sur les deux.
+  for (const line of dart.split(/\r\n|\r|\n/)) if (line.includes('pirate')) assert.match(line, /^\s*\/\/\//);
+  assert.ok(!/[\r\u2028\u2029]/.test(dart + tsx), 'fin de ligne inattendue dans le code généré');
 });
 
 test('css : une étiquette (badge) ne s\'étire pas dans une pile flex (parité RN alignSelf)', () => {
