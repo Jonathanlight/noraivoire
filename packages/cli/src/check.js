@@ -6,6 +6,7 @@
 
 import { readdirSync, readFileSync, lstatSync } from 'node:fs';
 import { join, extname, relative } from 'node:path';
+import { tokenize, attributeMap, parseDocument, DYNAMIC } from './tokenize.js';
 
 const EXTENSIONS = new Set(['.html', '.htm', '.twig', '.jsp', '.jspx', '.tag', '.jsx', '.tsx', '.vue', '.svelte', '.astro']);
 const IGNORED_DIRS = new Set(['node_modules', '.git', 'dist', 'build', '.next', 'vendor', 'var', '.dart_tool']);
@@ -52,32 +53,25 @@ function nearest(word, list) {
   return score <= 3 ? best : null;
 }
 
-function lineOf(text, index) {
-  let line = 1;
-  for (let i = 0; i < index; i++) if (text.charCodeAt(i) === 10) line++;
-  return line;
+/** Extrait les attributs d'une balise ouvrante (chaîne d'attributs seule). Les liaisons valent DYNAMIC. */
+export function parseAttributes(src) {
+  const [tag] = tokenize(`<x ${src}>`);
+  return { ...attributeMap(tag.attributes) };
 }
 
-/** Extrait les attributs statiques d'une balise ouvrante. Les valeurs dynamiques sont ignorées. */
-export function parseAttributes(src) {
-  const attrs = {};
-  const re = /([:@\[\]\w.-]+)\s*=\s*(?:"([^"]*)"|'([^']*)'|\{\s*["'`]([^"'`]*)["'`]\s*\})/g;
-  let m;
-  while ((m = re.exec(src))) {
-    const name = m[1];
-    if (name.startsWith(':') || name.startsWith('[') || name.startsWith('v-bind') || name.startsWith('@')) continue;
-    const value = m[2] ?? m[3] ?? m[4] ?? '';
-    attrs[name === 'className' ? 'class' : name] = value;
+/** Un contenu de bouton fourni par le framework (slot, doBody, block, {children}…) compte comme un texte. */
+const SLOT_TAGS = new Set(['slot', 'ng-content', 'jsp:dobody', 'jsp:body']);
+
+function hasAccessibleContent(text, tokens, el) {
+  if (el.selfClosing) return false;
+  if (el.closeTokenIndex === null) return true; // fermeture introuvable : on ne conclut pas
+  for (let t = el.tokenIndex + 1; t < el.closeTokenIndex; t++) {
+    const tok = tokens[t];
+    if (tok.type === 'template' || tok.type === 'expr') return true;
+    if (tok.type === 'tag' && SLOT_TAGS.has(tok.name)) return true;
+    if (tok.type === 'text' && text.slice(tok.start, tok.end).trim() !== '') return true;
   }
-  // attributs booléens (href sans valeur, etc.)
-  for (const b of src.matchAll(/(?:^|\s)(href|aria-label|aria-labelledby|disabled)(?=\s|$|\/)/g)) {
-    if (!(b[1] in attrs)) attrs[b[1]] = '';
-  }
-  // attributs dynamiques : on retient leur présence (href={url}, :href="x", [href]="x", th:href…)
-  for (const d of src.matchAll(/(?:^|\s)(?::|\[|v-bind:)?(href|aria-label|data-tone|data-size|data-fx)\]?\s*=\s*[{"']/g)) {
-    if (!(d[1] in attrs)) attrs[d[1]] = '__dynamic__';
-  }
-  return attrs;
+  return false;
 }
 
 /** Valide un contenu de template. */
@@ -87,80 +81,74 @@ export function checkSource(text, file, manifest) {
   const utilities = new Set([...manifest.utilities, ...manifest.layout, ...manifest.surfaces]);
   const effects = new Set(Object.entries(manifest.effects).filter(([, e]) => e.kind !== 'surface-glass').map(([n]) => n));
   const allKnown = [...Object.keys(components), ...utilities];
-  const push = (index, level, rule, message, fix) => issues.push({ file, line: lineOf(text, index), level, rule, message, ...(fix ? { fix } : {}) });
+  const { tokens, elements } = parseDocument(text);
 
-  const tagRe = /<([a-zA-Z][\w:.-]*)\b((?:[^>"'{]|"[^"]*"|'[^']*'|\{[^}]*\})*)>/g;
-  let m;
-  while ((m = tagRe.exec(text))) {
-    const tag = m[1].toLowerCase();
-    const attrs = parseAttributes(m[2]);
-    const classAttr = attrs.class;
+  for (const el of elements) {
+    const push = (level, rule, message, fix) => issues.push({ file, line: el.line, level, rule, message, ...(fix ? { fix } : {}) });
+    const tag = el.name;
+    const attrs = el.attrs;
+    const classAttr = attrs.class === DYNAMIC ? undefined : attrs.class;
     const classes = classAttr && !TEMPLATE_EXPR.test(classAttr) ? classAttr.split(/\s+/).filter(Boolean)
-      : (classAttr ? classAttr.split(/\s+/).filter((c) => !/[{}%$<>]/.test(c)) : []);
+      : (classAttr ? classAttr.split(/\s+/).filter((c) => c && !/[{}%$<>]/.test(c)) : []);
 
     const comps = classes.filter((c) => Object.hasOwn(components, c));
 
     for (const c of classes) {
       const foreign = FOREIGN.find((f) => f.re.test(c));
       if (foreign) {
-        push(m.index, 'error', 'foreign-class', `« ${c} » : ${foreign.msg}, inexistant dans NoraIvoire`, foreign.fix(c.match(foreign.re)));
+        push('error', 'foreign-class', `« ${c} » : ${foreign.msg}, inexistant dans NoraIvoire`, foreign.fix(c.match(foreign.re)));
         continue;
       }
       if (c.startsWith('fx-') && !utilities.has(c)) {
-        push(m.index, 'error', 'unknown-surface', `surface « ${c} » inconnue`, nearest(c, manifest.surfaces) ? `class="${nearest(c, manifest.surfaces)}"` : `surfaces disponibles : ${manifest.surfaces.join(', ')}`);
+        push('error', 'unknown-surface', `surface « ${c} » inconnue`, nearest(c, manifest.surfaces) ? `class="${nearest(c, manifest.surfaces)}"` : `surfaces disponibles : ${manifest.surfaces.join(', ')}`);
       } else if (UTILITY_PREFIX.test(c) && !utilities.has(c)) {
         const n = nearest(c, allKnown);
-        push(m.index, 'error', 'unknown-utility', `utilitaire « ${c} » inexistant`, n ? `remplacer par « ${n} »` : 'voir llms-full.txt › Utilitaires');
+        push('error', 'unknown-utility', `utilitaire « ${c} » inexistant`, n ? `remplacer par « ${n} »` : 'voir llms-full.txt › Utilitaires');
       } else if (!utilities.has(c) && !Object.hasOwn(components, c) && c.length > 3) {
         // Classe propre au projet ou faute de frappe ? Avertissement seulement si très proche d'une classe NoraIvoire.
         const n = nearest(c, allKnown);
-        if (n && levenshtein(c, n) <= 2) push(m.index, 'warning', 'possible-typo', `« ${c} » ressemble à « ${n} »`, `remplacer par « ${n} » si c'était l'intention`);
+        if (n && levenshtein(c, n) <= 2) push('warning', 'possible-typo', `« ${c} » ressemble à « ${n} »`, `remplacer par « ${n} » si c'était l'intention`);
       }
     }
 
     for (const axis of ['tone', 'size']) {
       const key = `data-${axis}`;
       const v = attrs[key];
-      if (v === undefined || v === '__dynamic__' || TEMPLATE_EXPR.test(v)) continue;
+      if (v === undefined || v === DYNAMIC || TEMPLATE_EXPR.test(v)) continue;
       if (comps.length === 0) {
-        push(m.index, 'warning', 'orphan-variant', `${key}="${v}" sans composant NoraIvoire sur l'élément`);
+        push('warning', 'orphan-variant', `${key}="${v}" sans composant NoraIvoire sur l'élément`);
         continue;
       }
       for (const comp of comps) {
         const allowed = components[comp].attributes[key];
         if (!allowed.includes(v)) {
           const n = nearest(v, allowed);
-          push(m.index, 'error', 'invalid-variant', `${key}="${v}" invalide pour .${comp} (valeurs : ${allowed.join(', ')})`, n ? `${key}="${n}"` : undefined);
+          push('error', 'invalid-variant', `${key}="${v}" invalide pour .${comp} (valeurs : ${allowed.join(', ')})`, n ? `${key}="${n}"` : undefined);
         }
       }
     }
 
-    if (attrs['data-fx'] !== undefined && attrs['data-fx'] !== '__dynamic__' && !TEMPLATE_EXPR.test(attrs['data-fx'])) {
-      for (const fx of attrs['data-fx'].split(/\s+/).filter(Boolean)) {
+    const fxAttr = attrs['data-fx'];
+    if (fxAttr !== undefined && fxAttr !== DYNAMIC && !TEMPLATE_EXPR.test(fxAttr)) {
+      for (const fx of fxAttr.split(/\s+/).filter(Boolean)) {
         if (!effects.has(fx)) {
           const n = nearest(fx, [...effects]);
-          push(m.index, 'error', 'unknown-effect', `effet « ${fx} » inconnu`, n ? `data-fx="${n}"` : `effets : ${[...effects].join(', ')}`);
+          push('error', 'unknown-effect', `effet « ${fx} » inconnu`, n ? `data-fx="${n}"` : `effets : ${[...effects].join(', ')}`);
         }
       }
     }
 
     for (const comp of comps) {
       const spec = components[comp];
-      if (!spec.elements.includes(tag) && !/^[a-z]+[-:.][a-z]/i.test(m[1]) && !/^[A-Z]/.test(m[1])) {
-        push(m.index, 'warning', 'unexpected-element', `.${comp} sur <${tag}> (éléments prévus : ${spec.elements.join(', ')})`);
+      if (!spec.elements.includes(tag) && !/^[a-z]+[-:.][a-z]/i.test(el.rawName) && !/^[A-Z]/.test(el.rawName)) {
+        push('warning', 'unexpected-element', `.${comp} sur <${tag}> (éléments prévus : ${spec.elements.join(', ')})`);
       }
       if (spec.a11y?.anchorRequiresHref && tag === 'a' && attrs.href === undefined) {
-        push(m.index, 'error', 'a11y-anchor-href', `<a class="${comp}"> sans href : ce n'est pas un lien`, 'ajouter href="…" ou utiliser <button type="button">');
+        push('error', 'a11y-anchor-href', `<a class="${comp}"> sans href : ce n'est pas un lien`, 'ajouter href="…" ou utiliser <button type="button">');
       }
-      if (spec.a11y?.requiresLabel && tag === 'button' && attrs['aria-label'] === undefined && attrs['aria-labelledby'] === undefined) {
-        const close = text.indexOf('</button>', tagRe.lastIndex);
-        if (close > -1) {
-          const raw = text.slice(tagRe.lastIndex, close);
-          // contenu injecté par le framework (slot, doBody, block, {children}…) : considéré comme un texte
-          const dynamic = /<(slot|ng-content|jsp:doBody|jsp:body)\b|\{\{|\{%|\$\{|\{[^}]*\}/.test(raw);
-          const inner = raw.replace(/<[^>]*>/g, '').trim();
-          if (!dynamic && inner === '') push(m.index, 'error', 'a11y-label', `<button class="${comp}"> sans texte ni aria-label`, 'ajouter un texte ou aria-label="…"');
-        }
+      if (spec.a11y?.requiresLabel && tag === 'button' && attrs['aria-label'] === undefined && attrs['aria-labelledby'] === undefined
+        && !hasAccessibleContent(text, tokens, el)) {
+        push('error', 'a11y-label', `<button class="${comp}"> sans texte ni aria-label`, 'ajouter un texte ou aria-label="…"');
       }
     }
   }

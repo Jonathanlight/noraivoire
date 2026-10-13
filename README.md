@@ -17,7 +17,7 @@ NoraIvoire est un langage de design universel. Une **spec** (tokens, composants,
 
 ```bash
 npm ci --ignore-scripts
-npm run verify        # build + 44 tests + validation des modèles + audit (50 contrôles)
+npm run verify        # build + 63 tests + validation des modèles + audit (50 contrôles)
 ```
 
 Commandes unitaires :
@@ -58,7 +58,7 @@ packages/engine/      Moteur d'effets web (defineEffect, data-fx), zéro dépend
 packages/cli/         nora check (validateur de templates) · nora audit
 packages/core/dist/   Sorties compilées, versionnées (usage sans build)
 templates/            Modèles : html, twig, jsp, react, nextjs, vue, angular, flutter, react-native
-tests/                44 tests (compilateur, sécurité, validateur, moteur, DOM, audit)
+tests/                63 tests (compilateur, sécurité, validateur, moteur, DOM, audit)
 docs/                 Documentation technique, portabilité, sécurité, audit, tests, licence
 PROMPT.md             Prompt complet pour poursuivre le projet avec un agent IA
 ```
