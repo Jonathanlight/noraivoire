@@ -64,6 +64,18 @@ $tone = NoraTone::tryFrom($request->query->getString('tone')) ?? NoraTone::Prima
 $tone->isAllowedFor('btn'); // true
 ```
 
+### Groupe de champ
+
+`Nora:Field` rend le libellé, l'aide et l'erreur, et les relie au contrôle par son `id` :
+
+```twig
+<twig:Nora:Field id="email" label="E-mail" help="Professionnel de préférence." error="{{ erreur }}">
+  <twig:Nora:Input id="email" type="email" aria-describedby="email-aide email-erreur" aria-invalid="{{ erreur ? 'true' : 'false' }}" />
+</twig:Nora:Field>
+```
+
+Aide : `id="<id>-aide"` ; erreur : `id="<id>-erreur"` et `role="alert"`. Un `id` hors du motif `^[A-Za-z][A-Za-z0-9_-]{0,63}$` est ignoré (libellé et messages non reliés). `as="fieldset"` remplace le `<label>` par une `<legend>` (groupe de cases ou d'interrupteurs).
+
 ### Garanties de sécurité
 
 | Entrée | Traitement |

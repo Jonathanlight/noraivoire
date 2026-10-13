@@ -116,3 +116,14 @@ test('symfony : un élément vide (input) est émis sans contenu ni balise ferma
   assert.match(twig, /<input \{\{ attrs\.defaults\(\{class: 'field'/);
   assert.doesNotMatch(twig, /<\/input>|block content/);
 });
+
+test('symfony : le groupe de champ relie libellé, aide et erreur au contrôle', () => {
+  const { files } = compile(SPEC);
+  const field = twigOf(files, 'Field');
+  assert.match(field, /\{% props [^%]*id = null, label = null, help = null, error = null %\}/);
+  assert.match(field, /<label class="field-label"\{% if id %\} for="\{\{ id \}\}"/);
+  assert.match(field, /id="\{\{ helpId \}\}"/);
+  assert.match(field, /role="alert"/);
+  assert.match(field, /id matches '\/\^\[A-Za-z\]/);
+  assert.equal((field.match(/\{% block content %\}/g) ?? []).length, 1);
+});

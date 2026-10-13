@@ -39,8 +39,62 @@ function hrefExpression() {
 {% set href = href and (${allowed}) and not (${denied}) ? href : null %}`;
 }
 
+/** Identifiant de contrôle accepté par un groupe de champ (relie label, aide et erreur). */
+export const FIELD_ID = '/^[A-Za-z][A-Za-z0-9_-]{0,63}$/';
+
+/**
+ * Groupe de champ (forme `group` avec parties label/help/error) : le libellé, l'aide et
+ * l'erreur sont rendus par le composant et reliés au contrôle par `id` (<label for>,
+ * `<id>-aide`, `<id>-erreur`). Le contrôle, placé dans le contenu, porte cet `id` et
+ * `aria-describedby` ; la variable `describedby` du composant donne la valeur exacte.
+ */
+function buildGroup(name, c, meta) {
+  const tones = c.attributes['data-tone'];
+  const sizes = c.attributes['data-size'];
+  const tone = safe(c.defaults.tone, `${name}.defaults.tone`);
+  const size = safe(c.defaults.size, `${name}.defaults.size`);
+  const elements = c.elements.map((e) => safe(e, `${name}.elements`));
+  const fallback = elements[0];
+  const part = (p) => safe(`${name}-${p}`, `${name}.parts`);
+  const has = (p) => c.parts.includes(`${name}-${p}`);
+  const tag = `Nora:${pascal(name)}`;
+  const props = [`tone = ${phpQuote(tone)}`, `size = ${phpQuote(size)}`, `as = ${phpQuote(fallback)}`, 'id = null'];
+  for (const p of ['label', 'help', 'error']) if (has(p)) props.push(`${p} = null`);
+  const L = [
+    header('twig', meta),
+    `{# Twig Component anonyme : <twig:${tag} id="email" label="…" help="…" error="…">contrôle</twig:${tag}>`,
+    '   Le contrôle porte id="<id>" et aria-describedby="{{ describedby }}" (aide et erreur), aria-invalid="true" si erreur.',
+    '   Textes échappés par Twig ; id hors motif → libellé et messages non reliés (jamais d\'attribut forgé). #}',
+    `{% props ${props.join(', ')} %}`,
+    `{% set tone = tone in ${list(tones, `${name}.tone`)} ? tone : ${phpQuote(tone)} %}`,
+    `{% set size = size in ${list(sizes, `${name}.size`)} ? size : ${phpQuote(size)} %}`,
+    `{% set as = as in ${list(elements, `${name}.elements`)} ? as : ${phpQuote(fallback)} %}`,
+    "{% set id = id is iterable or id is null ? null : id ~ '' %}",
+    `{% set id = id matches ${phpQuote(FIELD_ID)} ? id : null %}`,
+  ];
+  for (const p of ['label', 'help', 'error']) if (has(p)) L.push(`{% set ${p} = ${p} is iterable or ${p} is null ? null : ${p} ~ '' %}`);
+  L.push(`{% set helpId = id and help|default ? id ~ '-aide' : null %}`);
+  L.push(`{% set errorId = id and error|default ? id ~ '-erreur' : null %}`);
+  L.push("{% set describedby = [helpId, errorId]|filter(v => v)|join(' ') %}");
+  L.push("{% set attrs = attributes.without('data-tone', 'data-size') %}");
+  const defaults = `{class: ${phpQuote(name)}, 'data-tone': tone, 'data-size': size}`;
+  const open = elements.map((el, i) => `${i === 0 ? `{% if as == ${phpQuote(el)} %}` : i === elements.length - 1 ? '{% else %}' : `{% elseif as == ${phpQuote(el)} %}`}<${el} {{ attrs.defaults(${defaults}) }}>`);
+  L.push(elements.length > 1 ? `${open.join('')}{% endif %}` : `<${fallback} {{ attrs.defaults(${defaults}) }}>`);
+  if (has('label')) {
+    const legend = elements.includes('fieldset') ? `{% if as == 'fieldset' %}<legend class="${part('label')}">{{ label }}</legend>{% else %}` : '';
+    L.push(`{% if label %}${legend}<label class="${part('label')}"{% if id %} for="{{ id }}"{% endif %}>{{ label }}</label>${legend ? '{% endif %}' : ''}{% endif %}`);
+  }
+  L.push('{% block content %}{% endblock %}');
+  if (has('help')) L.push(`{% if help %}<p class="${part('help')}"{% if helpId %} id="{{ helpId }}"{% endif %}>{{ help }}</p>{% endif %}`);
+  if (has('error')) L.push(`{% if error %}<p class="${part('error')}"{% if errorId %} id="{{ errorId }}"{% endif %} role="alert">{{ error }}</p>{% endif %}`);
+  const close = elements.map((el, i) => `${i === 0 ? `{% if as == ${phpQuote(el)} %}` : i === elements.length - 1 ? '{% else %}' : `{% elseif as == ${phpQuote(el)} %}`}</${el}>`);
+  L.push(elements.length > 1 ? `${close.join('')}{% endif %}` : `</${fallback}>`);
+  return L.join('\n') + '\n';
+}
+
 function buildComponent(name, c, meta) {
   safe(name, 'composant');
+  if (c.shape === 'group' && ['label', 'help', 'error'].some((p) => c.parts?.includes(`${name}-${p}`))) return buildGroup(name, c, meta);
   const tones = c.attributes['data-tone'];
   const sizes = c.attributes['data-size'];
   const tone = safe(c.defaults.tone, `${name}.defaults.tone`);

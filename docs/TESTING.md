@@ -5,7 +5,7 @@ Version 0.1.0 · 14 octobre 2026 · © Jonathan KABLAN — Propriétaire
 ## 1. Commandes
 
 ```bash
-npm test                    # 125 tests (node:test, aucun framework)
+npm test                    # 126 tests (node:test, aucun framework)
 npm run check               # valide tous les modèles
 npm run audit:security      # 84 contrôles
 npm run verify              # tout, dans l'ordre
@@ -25,10 +25,10 @@ npm run verify              # tout, dans l'ordre
 | `tests/unit/fx.test.js` | 13 | Paquets `fx-scroll` / `fx-text` : fonctions pures, compilation séparée, parité options JS ↔ spec, validation, neutralisation des commentaires, règle d'audit des écritures DOM, montage/démontage jsdom de chaque effet, mouvement réduit, restauration du DOM |
 | `tests/unit/fx-ssr.test.js` | 1 | Import sans DOM et `install()` idempotent |
 | `tests/unit/mcp.test.js` | 12 | Serveur MCP en sous-processus : poignée de main et négociation de version, `tools/list`, les 4 outils, erreurs JSON-RPC (`-32700`, `-32600`, `-32601`, `-32602`), traversée de chemin, lien symbolique, index absent, entrées trop grandes, code source sans commande/réseau/écriture |
-| `tests/unit/symfony.test.js` | 9 | Cible Symfony : un Twig Component par composant du manifest, ajout automatique d'un composant, déterminisme, en-têtes, listes blanches, `nora check` sur les Twig générés, littéraux PHP sûrs, manifest forgé refusé, éléments vides |
+| `tests/unit/symfony.test.js` | 10 | Cible Symfony : un Twig Component par composant du manifest, ajout automatique d'un composant, déterminisme, en-têtes, listes blanches, `nora check` sur les Twig générés, littéraux PHP sûrs, manifest forgé refusé, éléments vides |
 | `tests/unit/audit.test.js` | 1 | L'audit complet passe (84/84) |
 | `examples/flutter_app/test/fx_test.dart` (Flutter) | 3 | `NoraScramble` : texte final, label sémantique, mouvement réduit ; `NoraParallax` : décalage au défilement, aucun en mouvement réduit |
-| `adapters/symfony-bundle/tests/` (PHPUnit) | 48 | Code PHP généré (enums, `NoraManifest`, `safeHref`), rendu réel des Twig Components dans un noyau Symfony (listes blanches, URL dangereuses, attributs verrouillés, échappement), AssetMapper, commande `nora:check` (texte, JSON, chemins refusés) |
+| `adapters/symfony-bundle/tests/` (PHPUnit) | 51 | Code PHP généré (enums, `NoraManifest`, `safeHref`), rendu réel des Twig Components dans un noyau Symfony (listes blanches, URL dangereuses, attributs verrouillés, échappement), AssetMapper, commande `nora:check` (texte, JSON, chemins refusés) |
 | `examples/flutter_app/test/goldens_test.dart` (Flutter) | 8 | Goldens `NoraBtn` (5 tons × 3 tailles), `NoraCard(glass: true)`, `NoraBadge`, clair et sombre ; sémantique bouton et zone ≥ 44 ; montage du modèle `templates/flutter/main.dart` (formulaire compris) |
 | `examples/flutter_app/test/forms_test.dart` (Flutter) | 7 | Goldens `NoraField` + `NoraInput` / `NoraSelect` / `NoraTextarea` (aide, erreur, désactivé) et `NoraCheckbox` / `NoraSwitch` (tons, invalide, désactivé), clair et sombre ; sémantique : libellé et erreur du champ portés par le `TextField`, case cochée/libellé fusionné/bascule au toucher, interrupteur désactivé ; zones ≥ 44 |
 

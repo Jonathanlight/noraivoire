@@ -1,7 +1,7 @@
 # NoraIvoire — Rapport d'audit
 
 **Version auditée :** 0.1.0 · **Date :** 14 octobre 2026 · **Périmètre :** dépôt complet
-**Méthode :** audit automatisé (`nora audit`, 84 contrôles), 125 tests node, 18 tests Flutter et 48 tests PHPUnit, vérification TypeScript stricte, `npm audit`, revue manuelle du code.
+**Méthode :** audit automatisé (`nora audit`, 84 contrôles), 126 tests node, 18 tests Flutter et 51 tests PHPUnit, vérification TypeScript stricte, `npm audit`, revue manuelle du code.
 © Jonathan KABLAN — Document confidentiel
 
 ## 1. Synthèse
@@ -24,7 +24,7 @@
 
 | Indicateur | Valeur |
 |---|---|
-| Tests | 125 / 125 réussis (node) · 18 / 18 (Flutter, dont 10 goldens) · 48 / 48 (PHPUnit, bundle Symfony) |
+| Tests | 126 / 126 réussis (node) · 18 / 18 (Flutter, dont 10 goldens) · 51 / 51 (PHPUnit, bundle Symfony) |
 | Contrôles d'audit | 84 / 84 réussis |
 | Modèles validés par `nora check` | 13 fichiers, 0 erreur, 0 avertissement |
 | Erreurs TypeScript (strict) sur le TSX généré | 0 |

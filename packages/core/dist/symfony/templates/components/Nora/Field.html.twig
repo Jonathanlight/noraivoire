@@ -3,15 +3,25 @@
  # © 2026 Jonathan KABLAN — Logiciel propriétaire, tous droits réservés.
  # Usage soumis au contrat de licence NoraIvoire. Redistribution interdite.
  #}
-{# Twig Component anonyme : <twig:Nora:Field tone="…" size="…">…</twig:Nora:Field>
-   Valeurs hors liste blanche → valeur par défaut. data-tone, data-size ne peuvent pas être forcés par attribut. #}
-{% props tone = 'neutral', size = 'md', as = 'div' %}
+{# Twig Component anonyme : <twig:Nora:Field id="email" label="…" help="…" error="…">contrôle</twig:Nora:Field>
+   Le contrôle porte id="<id>" et aria-describedby="{{ describedby }}" (aide et erreur), aria-invalid="true" si erreur.
+   Textes échappés par Twig ; id hors motif → libellé et messages non reliés (jamais d'attribut forgé). #}
+{% props tone = 'neutral', size = 'md', as = 'div', id = null, label = null, help = null, error = null %}
 {% set tone = tone in ['neutral'] ? tone : 'neutral' %}
 {% set size = size in ['sm', 'md', 'lg'] ? size : 'md' %}
 {% set as = as in ['div', 'fieldset'] ? as : 'div' %}
+{% set id = id is iterable or id is null ? null : id ~ '' %}
+{% set id = id matches '/^[A-Za-z][A-Za-z0-9_-]{0,63}$/' ? id : null %}
+{% set label = label is iterable or label is null ? null : label ~ '' %}
+{% set help = help is iterable or help is null ? null : help ~ '' %}
+{% set error = error is iterable or error is null ? null : error ~ '' %}
+{% set helpId = id and help|default ? id ~ '-aide' : null %}
+{% set errorId = id and error|default ? id ~ '-erreur' : null %}
+{% set describedby = [helpId, errorId]|filter(v => v)|join(' ') %}
 {% set attrs = attributes.without('data-tone', 'data-size') %}
-{% if as == 'div' %}
-  <div {{ attrs.defaults({class: 'field', 'data-tone': tone, 'data-size': size}) }}>{% block content %}{% endblock %}</div>
-{% else %}
-  <fieldset {{ attrs.defaults({class: 'field', 'data-tone': tone, 'data-size': size}) }}>{{ block('content') }}</fieldset>
-{% endif %}
+{% if as == 'div' %}<div {{ attrs.defaults({class: 'field', 'data-tone': tone, 'data-size': size}) }}>{% else %}<fieldset {{ attrs.defaults({class: 'field', 'data-tone': tone, 'data-size': size}) }}>{% endif %}
+{% if label %}{% if as == 'fieldset' %}<legend class="field-label">{{ label }}</legend>{% else %}<label class="field-label"{% if id %} for="{{ id }}"{% endif %}>{{ label }}</label>{% endif %}{% endif %}
+{% block content %}{% endblock %}
+{% if help %}<p class="field-help"{% if helpId %} id="{{ helpId }}"{% endif %}>{{ help }}</p>{% endif %}
+{% if error %}<p class="field-error"{% if errorId %} id="{{ errorId }}"{% endif %} role="alert">{{ error }}</p>{% endif %}
+{% if as == 'div' %}</div>{% else %}</fieldset>{% endif %}

@@ -126,4 +126,36 @@ final class TwigComponentsTest extends KernelTestCase
         $imports = $mapper->getAsset('noraivoire/noraivoire.auto.js')?->getJavaScriptImports() ?? [];
         self::assertContains('noraivoire/noraivoire.engine.js', array_map(static fn ($i): string => $i->assetLogicalPath, $imports));
     }
+
+    public function testChampRelieLibelleAideEtErreurAuControle(): void
+    {
+        $html = $this->render(
+            '<twig:Nora:Field id="email" label="E-mail" help="Professionnel." error="Adresse invalide.">'
+            .'<twig:Nora:Input id="email" type="email" aria-invalid="true" aria-describedby="email-aide email-erreur" />'
+            .'</twig:Nora:Field>'
+        );
+        self::assertStringContainsString('<label class="field-label" for="email">E-mail</label>', $html);
+        self::assertStringContainsString('<p class="field-help" id="email-aide">Professionnel.</p>', $html);
+        self::assertStringContainsString('<p class="field-error" id="email-erreur" role="alert">Adresse invalide.</p>', $html);
+        self::assertMatchesRegularExpression('/<input [^>]*id="email"/', $html);
+        self::assertStringStartsWith('<div class="field" data-tone="neutral" data-size="md">', $html);
+    }
+
+    public function testChampEchappeLesTextesEtRefuseUnIdForge(): void
+    {
+        $html = $this->render('<twig:Nora:Field id="x&quot; onfocus=&quot;y" label="<b>L</b>" error="<script>z</script>">c</twig:Nora:Field>');
+        self::assertStringNotContainsString('onfocus', $html);
+        self::assertStringNotContainsString('<script>', $html);
+        self::assertStringNotContainsString(' for=', $html);
+        self::assertStringContainsString('&lt;b&gt;L&lt;/b&gt;', $html);
+        self::assertStringContainsString('<p class="field-error" role="alert">', $html);
+    }
+
+    public function testChampEnFieldsetUtiliseLegend(): void
+    {
+        $html = $this->render('<twig:Nora:Field as="fieldset" label="Préférences">c</twig:Nora:Field>');
+        self::assertStringStartsWith('<fieldset class="field"', $html);
+        self::assertStringContainsString('<legend class="field-label">Préférences</legend>', $html);
+        self::assertStringEndsWith('</fieldset>', $html);
+    }
 }
