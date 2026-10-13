@@ -5,7 +5,7 @@ Version 0.1.0 · 14 octobre 2026 · © Jonathan KABLAN — Propriétaire
 ## 1. Commandes
 
 ```bash
-npm test                    # 142 tests (node:test, aucun framework)
+npm test                    # 143 tests (node:test, aucun framework)
 npm run test:visual         # 18 tests Playwright : 12 captures + axe-core + rendu sans JS (navigateurs requis)
 npm run check               # valide les modèles et les recettes
 npm run audit:security      # 84 contrôles
@@ -21,7 +21,7 @@ npm run verify              # tout, dans l'ordre
 | `tests/unit/forms.test.js` | 13 | Composants de formulaire : spec et manifest (ajouts seulement), liste blanche (états, parties, forme, `minTarget`, `inputType`), CSS (focus, invalide, désactivé, 44 px, `:where()`), Flutter (widgets, sémantique, `NoraFieldScope`), React Native (rôles, états, imports), règles `nora check` (label associé, case/interrupteur, `aria-invalid`, `.field`) |
 | `tests/unit/tokenize.test.js` | 19 | Tokenizer de `nora check` : valeurs sans guillemets, attributs multi-lignes, JSX imbriqué (blocs, gabarits, balises en valeur d'attribut), commentaires HTML/Twig/JSP, Twig et EL dans les valeurs, `<script>`/`<style>` bruts, liaisons Vue/Angular, boutons auto-fermants, constructions non fermées, relations `label`/`id`/parent, **8 entrées pathologiques** (temps linéaire) |
 | `tests/unit/engine.test.js` | 8 | Analyse des options (bornes, types, pollution, troncature), liste d'effets, enregistrement, SSR |
-| `tests/unit/engine-dom.test.js` | 6 | Moteur dans un DOM (jsdom) : montage initial, montage SPA, tilt, démontage, changement d'attribut, isolation des erreurs |
+| `tests/unit/engine-dom.test.js` | 7 | Moteur dans un DOM (jsdom) : montage initial, montage SPA, tilt, démontage, changement d'attribut, isolation et annulation des erreurs |
 | `tests/unit/bench.test.js` | 13 | Benchmark IA : tâches, requêtes, extraction, score, agrégation, retry, concurrence, masquage des clés, pipeline simulé |
 | `tests/unit/fx.test.js` | 13 | Paquets `fx-scroll` / `fx-text` : fonctions pures, compilation séparée, parité options JS ↔ spec, validation, neutralisation des commentaires, règle d'audit des écritures DOM, montage/démontage jsdom de chaque effet, mouvement réduit, restauration du DOM |
 | `tests/unit/fx-ssr.test.js` | 1 | Import sans DOM et `install()` idempotent |

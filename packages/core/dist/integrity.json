@@ -15,10 +15,10 @@
       "gzip": 4864
     },
     "noraivoire.engine.js": {
-      "sha256": "2ef03d1d40ba63d7858ba21dbbaa4079035ee9717a6826cb2f706336cf1dcc95",
-      "sri": "sha384-KAn1qr5HWchvaBf+XCEtvzXIIUmN/v9pjVCDB8QPNEhgDghIrRF5QCBeOouDH1Ry",
-      "bytes": 8983,
-      "gzip": 3120
+      "sha256": "0e3b958be6b32ef2669c64399689bbcf9e06ec64b793f2668a1c0e518eae3645",
+      "sri": "sha384-6ehvPfJcr/G0h+otDZYlDsMxEztndp4zL141UAMhJBBSuJx1RWa0Bz/2Sy+ElVr7",
+      "bytes": 9774,
+      "gzip": 3385
     },
     "noraivoire.auto.js": {
       "sha256": "ada6db2f79c486107336e038e79ab87d5501e5ff86423c57aff9413d0bfe0565",

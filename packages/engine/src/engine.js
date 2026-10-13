@@ -138,17 +138,40 @@ function mountElement(el) {
     if (!def || map?.has(n)) continue;
     const opts = parseOptions(el.getAttribute(`data-fx-${n}`) ?? '', def.options);
     const ctx = makeContext(el);
+    const before = snapshot(el);
     let userCleanup;
     try {
       userCleanup = def.mount(el, opts, ctx);
     } catch (err) {
       ctx._abort();
+      safe(() => restore(el, before));
       console.error(`NoraIvoire : échec de l'effet « ${n} »`, err);
       continue;
     }
     if (!map) { map = new Map(); mounted.set(el, map); }
     map.set(n, () => { ctx._abort(); if (typeof userCleanup === 'function') userCleanup(); });
   }
+}
+
+/**
+ * Relevé de ce qu'un effet a le droit d'écrire (variables --fx-*, attributs data-fx-*),
+ * pour annuler les écritures d'un effet dont le montage échoue (constat A-04).
+ */
+const fxVars = (el) => Array.from({ length: el.style.length }, (_, i) => el.style[i]).filter((p) => p.startsWith('--fx-'));
+const fxAttrs = (el) => Array.from(el.attributes, (a) => a.name).filter((n) => n.startsWith('data-fx-'));
+
+function snapshot(el) {
+  return {
+    vars: new Map(fxVars(el).map((p) => [p, el.style.getPropertyValue(p)])),
+    attrs: new Map(fxAttrs(el).map((n) => [n, el.getAttribute(n)])),
+  };
+}
+
+function restore(el, { vars, attrs }) {
+  for (const p of fxVars(el)) if (!vars.has(p)) el.style.removeProperty(p);
+  for (const [p, v] of vars) el.style.setProperty(p, v);
+  for (const n of fxAttrs(el)) if (!attrs.has(n)) el.removeAttribute(n);
+  for (const [n, v] of attrs) el.setAttribute(n, v);
 }
 
 function unmountElement(el) {

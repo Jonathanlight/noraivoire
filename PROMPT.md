@@ -12,7 +12,7 @@ Tu travailles sur **NoraIvoire**, un logiciel **propriétaire** (© Jonathan KAB
 ### Avant d'écrire du code
 
 1. Lis `AGENTS.md`, `docs/TECHNICAL.md`, `docs/SECURITY.md` et `docs/AUDIT-REPORT.md`.
-2. Lance `npm ci --ignore-scripts && npm run verify` et confirme que tout passe (142 tests, 84 contrôles d'audit). Si ce n'est pas le cas, arrête-toi et signale-le.
+2. Lance `npm ci --ignore-scripts && npm run verify` et confirme que tout passe (143 tests, 84 contrôles d'audit). Si ce n'est pas le cas, arrête-toi et signale-le.
 3. Énonce en 3 à 5 lignes ce que tu vas modifier et quels tests prouveront que c'est correct.
 
 ### Architecture à respecter

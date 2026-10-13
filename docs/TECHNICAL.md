@@ -162,7 +162,7 @@ defineEffect('magnet', {
 | `ctx.onVisible(cb)` | IntersectionObserver partagé |
 | `ctx.lazy(() => import('…'))` | Chargement différé d'une librairie lourde |
 
-Fonctionnement : un **seul** `MutationObserver` surveille `childList` et l'attribut `data-fx`. Un élément ajouté (navigation SPA, `v-if`, `@if`, Turbo) est monté ; retiré, il est démonté. Un effet qui lève une exception est isolé (journalisé, les autres continuent).
+Fonctionnement : un **seul** `MutationObserver` surveille `childList` et l'attribut `data-fx`. Un élément ajouté (navigation SPA, `v-if`, `@if`, Turbo) est monté ; retiré, il est démonté. Un effet qui lève une exception est isolé (journalisé, les autres continuent) et ses écritures sont annulées : les variables `--fx-*` et attributs `data-fx-*` relevés avant `mount()` sont restaurés.
 
 Garanties SSR : aucun effet de bord à l'import ; `start()` et `attach()` sont des no-op hors navigateur ; les effets intégrés n'ajoutent aucun nœud DOM.
 

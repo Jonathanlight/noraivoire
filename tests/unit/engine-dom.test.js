@@ -93,6 +93,34 @@ test('un effet personnalisé qui plante n\'arrête pas les autres', async () => 
   assert.ok(el.hasAttribute('data-fx-visible'));
 });
 
+test('un effet qui plante après avoir écrit voit ses écritures annulées (A-04)', async () => {
+  const orig = console.error;
+  console.error = () => {};
+  engine.defineEffect('half', {
+    mount(el, _o, ctx) {
+      ctx.set('--fx-half', '1');
+      ctx.set('--fx-keep', 'modifié');
+      el.setAttribute('data-fx-half-on', '');
+      el.setAttribute('data-fx-mode', 'cassé');
+      throw new Error('après écriture');
+    },
+  });
+  const el = document.createElement('div');
+  el.style.setProperty('--fx-keep', 'auteur');
+  el.style.setProperty('color', 'red');
+  el.setAttribute('data-fx-mode', 'auteur');
+  el.setAttribute('data-fx', 'half');
+  document.body.appendChild(el);
+  await tick();
+  console.error = orig;
+  assert.equal(el.style.getPropertyValue('--fx-half'), '');
+  assert.equal(el.style.getPropertyValue('--fx-keep'), 'auteur');
+  assert.equal(el.style.getPropertyValue('color'), 'red');
+  assert.ok(!el.hasAttribute('data-fx-half-on'));
+  assert.equal(el.getAttribute('data-fx-mode'), 'auteur');
+  assert.equal(el.getAttribute('data-fx'), 'half');
+});
+
 test('stop() démonte tout et retire le marqueur', async () => {
   engine.stop();
   assert.ok(!document.documentElement.hasAttribute('data-nora-engine'));

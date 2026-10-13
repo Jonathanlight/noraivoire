@@ -1,7 +1,7 @@
 # NoraIvoire — Rapport d'audit
 
 **Version auditée :** 0.1.0 · **Date :** 14 octobre 2026 · **Périmètre :** dépôt complet
-**Méthode :** audit automatisé (`nora audit`, 84 contrôles), 142 tests node, 22 tests Flutter et 51 tests PHPUnit, 18 tests Playwright (captures + axe-core), vérification TypeScript stricte, `npm audit`, revue manuelle du code.
+**Méthode :** audit automatisé (`nora audit`, 84 contrôles), 143 tests node, 22 tests Flutter et 51 tests PHPUnit, 18 tests Playwright (captures + axe-core), vérification TypeScript stricte, `npm audit`, revue manuelle du code.
 © Jonathan KABLAN — Document confidentiel
 
 ## 1. Synthèse
@@ -16,7 +16,7 @@
 | Sécurité du bundle Symfony | ✅ Conforme | Twig Components générés : listes blanches (ton, taille, type, URL, `id`), attributs verrouillés, échappement ; `nora:check` sans shell (contrôle `symfony:twig-hardening`) |
 | Sécurité du CSS généré | ✅ Conforme | Aucun `@import`, `url()` externe, `javascript:`, `expression()`, `!important` |
 | Accessibilité | ✅ Conforme (base) | Mouvement réduit sur 4 cibles, focus visible, zone tactile 44 px sur 3 cibles ; formulaires : label associé obligatoire (`nora check`), `aria-invalid` relié au message, sémantique Flutter / React Native vérifiée ; axe-core : 0 violation sérieuse ou critique (clair et sombre) ; contraste AA testé pour chaque ton |
-| Performance | ✅ Sous budget | CSS 4,7 Kio gzip (budget 15) ; moteur 3,0 Kio gzip (budget 4) |
+| Performance | ✅ Sous budget | CSS 4,7 Kio gzip (budget 15) ; moteur 3,3 Kio gzip (budget 4) |
 | Déterminisme | ✅ Conforme | Deux compilations : octets identiques |
 | Portabilité native | ✅ Conforme | TSX vérifié (TypeScript strict, RN 0.81) ; Dart analysé (`flutter analyze --fatal-infos`, 0 problème) et rendu par 22 tests de widgets dont 10 goldens (Flutter 3.47) ; Twig Components rendus par 51 tests PHPUnit (PHP 8.5, Symfony 8.1) |
 
@@ -26,7 +26,7 @@
 
 | Indicateur | Valeur |
 |---|---|
-| Tests | 142 / 142 réussis (node) · 22 / 22 (Flutter, dont 10 goldens) · 51 / 51 (PHPUnit, bundle Symfony) · 18 / 18 (Playwright : 12 captures, 4 axe-core, 2 sans JS) |
+| Tests | 143 / 143 réussis (node) · 22 / 22 (Flutter, dont 10 goldens) · 51 / 51 (PHPUnit, bundle Symfony) · 18 / 18 (Playwright : 12 captures, 4 axe-core, 2 sans JS) |
 | Contrôles d'audit | 84 / 84 réussis |
 | Modèles validés par `nora check` | 13 fichiers + 20 recettes, 0 erreur, 0 avertissement |
 | Erreurs TypeScript (strict) sur le TSX généré | 0 |
@@ -36,7 +36,7 @@
 |---|---|---|
 | `noraivoire.css` | 26,0 Kio | 5,1 Kio |
 | `noraivoire.min.css` | 22,7 Kio | 4,7 Kio |
-| `noraivoire.engine.js` | 8,8 Kio | 3,0 Kio |
+| `noraivoire.engine.js` | 9,6 Kio | 3,3 Kio |
 | `noraivoire.auto.js` | 0,5 Kio | 0,4 Kio |
 | `flutter/noraivoire.dart` | 35,2 Kio | 6,8 Kio |
 | `react-native/noraivoire.tsx` | 32,6 Kio | 6,9 Kio |
@@ -50,7 +50,7 @@
 | A-01 | Moyenne | Le Dart généré n'avait pas été compilé (SDK Flutter inaccessible dans l'environnement d'audit). | **Levé** — `examples/flutter_app/` : `flutter analyze --fatal-infos --fatal-warnings` sans aucun problème (Flutter 3.47.5) après correction du générateur (`unnecessary_null_comparison` sur la bordure de `NoraBadge`) ; 8 tests de widgets dont 6 goldens (`NoraBtn` 5 tons × 3 tailles, `NoraCard(glass: true)`, `NoraBadge`, clair et sombre), sémantique et zone tactile vérifiées ; job CI `flutter` |
 | A-02 | Moyenne | Les composants Twig et JSP acceptaient `href="javascript:…"` si l'URL venait de l'utilisateur. | **Corrigé** — liste blanche des schémas d'URL, `type` du bouton restreint |
 | A-03 | Faible | `nora check` reposait sur des expressions régulières, pas sur un parseur complet : des cas exotiques (JSX très imbriqué, attributs multi-lignes complexes) pouvaient échapper à l'analyse. | **Corrigé** — tokenizer tolérant écrit à la main (`tokenize.js`), temps linéaire, 19 tests de cas limites dont des entrées pathologiques |
-| A-04 | Faible | Si un effet personnalisé lève une exception **après** avoir modifié l'élément, ces modifications ne sont pas annulées (l'erreur est isolée, les autres effets continuent). | Ouvert — documenté |
+| A-04 | Faible | Si un effet personnalisé lève une exception **après** avoir modifié l'élément, ces modifications n'étaient pas annulées (l'erreur est isolée, les autres effets continuent). | **Corrigé** — relevé des variables `--fx-*` et attributs `data-fx-*` avant le montage, restauration si `mount()` lève ; test jsdom |
 | A-05 | Faible | `tilt` sur iOS ne peut pas utiliser le gyroscope sans demande de permission explicite : repli sur le toucher. | Accepté — limite de la plateforme |
 | A-06 | Faible | Pas de CSS de secours pour les navigateurs sans `@layer` (antérieurs à 2022). | Ouvert |
 | A-07 | Info | Un token de composant (`--btn-bg`) défini sur un parent n'est pas hérité. | Documenté (TECHNICAL §4.2) |
