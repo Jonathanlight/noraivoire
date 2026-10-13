@@ -5,7 +5,7 @@ Version 0.1.0 · 14 octobre 2026 · © Jonathan KABLAN — Propriétaire
 ## 1. Commandes
 
 ```bash
-npm test                    # 58 tests (node:test, aucun framework)
+npm test                    # 77 tests (node:test, aucun framework)
 npm run check               # valide tous les modèles
 npm run audit:security      # 50 contrôles
 npm run verify              # tout, dans l'ordre
@@ -17,6 +17,7 @@ npm run verify              # tout, dans l'ordre
 |---|---|---|
 | `tests/unit/compiler.test.js` | 22 | Compilation des 4 cibles, déterminisme, layers, thème, mouvement réduit, Flutter, React Native, manifest, intégrité, **7 tests de sécurité** |
 | `tests/unit/check.test.js` | 8 | Modèles livrés sans erreur, 9 règles déclenchées sur la fixture, suggestions, valeurs dynamiques, JSX, numéros de ligne |
+| `tests/unit/tokenize.test.js` | 19 | Tokenizer de `nora check` : valeurs sans guillemets, attributs multi-lignes, JSX imbriqué (blocs, gabarits, balises en valeur d'attribut), commentaires HTML/Twig/JSP, Twig et EL dans les valeurs, `<script>`/`<style>` bruts, liaisons Vue/Angular, boutons auto-fermants, constructions non fermées, relations `label`/`id`/parent, **8 entrées pathologiques** (temps linéaire) |
 | `tests/unit/engine.test.js` | 8 | Analyse des options (bornes, types, pollution, troncature), liste d'effets, enregistrement, SSR |
 | `tests/unit/engine-dom.test.js` | 6 | Moteur dans un DOM (jsdom) : montage initial, montage SPA, tilt, démontage, changement d'attribut, isolation des erreurs |
 | `tests/unit/bench.test.js` | 13 | Benchmark IA : tâches, requêtes, extraction, score, agrégation, retry, concurrence, masquage des clés, pipeline simulé |

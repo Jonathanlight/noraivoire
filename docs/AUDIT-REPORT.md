@@ -1,7 +1,7 @@
 # NoraIvoire — Rapport d'audit
 
 **Version auditée :** 0.1.0 · **Date :** 14 octobre 2026 · **Périmètre :** dépôt complet
-**Méthode :** audit automatisé (`nora audit`, 50 contrôles), 45 tests node et 8 tests Flutter, vérification TypeScript stricte, `npm audit`, revue manuelle du code.
+**Méthode :** audit automatisé (`nora audit`, 50 contrôles), 77 tests node et 8 tests Flutter, vérification TypeScript stricte, `npm audit`, revue manuelle du code.
 © Jonathan KABLAN — Document confidentiel
 
 ## 1. Synthèse
@@ -24,7 +24,7 @@
 
 | Indicateur | Valeur |
 |---|---|
-| Tests | 45 / 45 réussis (node) · 8 / 8 (Flutter, dont 6 goldens) |
+| Tests | 77 / 77 réussis (node) · 8 / 8 (Flutter, dont 6 goldens) |
 | Contrôles d'audit | 50 / 50 réussis |
 | Modèles validés par `nora check` | 13 fichiers, 0 erreur, 0 avertissement |
 | Erreurs TypeScript (strict) sur le TSX généré | 0 |
@@ -45,7 +45,7 @@
 |---|---|---|---|
 | A-01 | Moyenne | Le Dart généré n'avait pas été compilé (SDK Flutter inaccessible dans l'environnement d'audit). | **Levé** — `examples/flutter_app/` : `flutter analyze --fatal-infos --fatal-warnings` sans aucun problème (Flutter 3.47.5) après correction du générateur (`unnecessary_null_comparison` sur la bordure de `NoraBadge`) ; 8 tests de widgets dont 6 goldens (`NoraBtn` 5 tons × 3 tailles, `NoraCard(glass: true)`, `NoraBadge`, clair et sombre), sémantique et zone tactile vérifiées ; job CI `flutter` |
 | A-02 | Moyenne | Les composants Twig et JSP acceptaient `href="javascript:…"` si l'URL venait de l'utilisateur. | **Corrigé** — liste blanche des schémas d'URL, `type` du bouton restreint |
-| A-03 | Faible | `nora check` repose sur des expressions régulières, pas sur un parseur complet : des cas exotiques (JSX très imbriqué, attributs multi-lignes complexes) peuvent échapper à l'analyse. | Ouvert — accepté pour 0.1, parseur prévu |
+| A-03 | Faible | `nora check` reposait sur des expressions régulières, pas sur un parseur complet : des cas exotiques (JSX très imbriqué, attributs multi-lignes complexes) pouvaient échapper à l'analyse. | **Corrigé** — tokenizer tolérant écrit à la main (`tokenize.js`), temps linéaire, 19 tests de cas limites dont des entrées pathologiques |
 | A-04 | Faible | Si un effet personnalisé lève une exception **après** avoir modifié l'élément, ces modifications ne sont pas annulées (l'erreur est isolée, les autres effets continuent). | Ouvert — documenté |
 | A-05 | Faible | `tilt` sur iOS ne peut pas utiliser le gyroscope sans demande de permission explicite : repli sur le toucher. | Accepté — limite de la plateforme |
 | A-06 | Faible | Pas de CSS de secours pour les navigateurs sans `@layer` (antérieurs à 2022). | Ouvert |
