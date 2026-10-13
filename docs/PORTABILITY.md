@@ -13,7 +13,7 @@ Version 0.1.0 · 14 octobre 2026 · © Jonathan KABLAN — Propriétaire
 | Next.js App Router | CSS dans `layout.tsx` ; `<NoraEngine/>` client | Oui (projet) | `templates/nextjs/components/NoraEngine.tsx` | Modèle fourni |
 | Vue 3 / Nuxt | Import CSS ; directive `v-fx` | Oui (projet) | `templates/vue/vFx.ts` | Modèle fourni |
 | Angular 17+ | `angular.json › styles` ; directive `[noraFx]` | Oui (projet) | `templates/angular/nora-fx.directive.ts` | Modèle fourni |
-| Flutter 3.27+ | Copie de `noraivoire.dart` | Non | — | Généré ; analyse `flutter analyze` en CI (non exécutée ici) |
+| Flutter 3.27+ | Copie de `noraivoire.dart` | Non | — | Généré ; `flutter analyze` sans problème et goldens (`examples/flutter_app/`) |
 | React Native 0.76+ / Expo | Copie de `noraivoire.tsx` | Non | `configureNora()` | Généré ; **TypeScript strict vérifié** (RN 0.81, React 19) |
 
 ## 2. Politique de support navigateurs
@@ -65,8 +65,8 @@ Le seul attribut posé sur `<html>` par le moteur est `data-nora-engine` (d'où 
 
 ## 6. Limites de la version 0.1
 
-1. Le Dart généré n'a pas pu être compilé dans l'environnement de création (SDK Flutter inaccessible) : la CI contient un job `flutter analyze` à faire tourner sur le dépôt privé.
-2. Aucun test de rendu sur appareil réel ni de régression visuelle cross-cible (prévu, voir TESTING.md).
+1. Le Dart généré est analysé et rendu en test (goldens Flutter, `examples/flutter_app/`) mais pas exécuté sur appareil réel.
+2. Pas de régression visuelle cross-cible (comparaison web / Flutter / RN, prévue, voir TESTING.md).
 3. Pas de composant de formulaire (input, select) : les champs utilisent les styles du navigateur.
 4. Pas de CSS de secours pour les navigateurs sans `@layer`.
 5. Les modèles Twig, JSP, Vue et Angular sont validés syntaxiquement par `nora check`, pas exécutés dans leur framework.

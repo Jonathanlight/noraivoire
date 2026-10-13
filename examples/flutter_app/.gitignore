@@ -1,0 +1,16 @@
+# NoraIvoire — exemple Flutter (© Jonathan KABLAN, propriétaire).
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+/build/
+/coverage/
+*.iml
+.idea/
+.DS_Store
+# Copies générées par `npm run flutter:sync` (source de vérité : spec/ et templates/flutter/).
+/lib/main.dart
+/lib/noraivoire/
+# Échecs de golden tests.
+failures/

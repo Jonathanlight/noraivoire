@@ -194,9 +194,12 @@ function staticWidget(c, tokens, shape) {
   const cls = `Nora${pascal(c.component)}`;
   const bgLine = toneSwitch(c, tokens, 'bg', c._tones) ?? '    final bg = colors.surface;';
   const fgLine = toneSwitch(c, tokens, 'fg', c._tones) ?? '    final fg = colors.text;';
+  // Bordure décidée à la compilation : aucune comparaison à null dans le Dart émis
+  // (sinon `unnecessary_null_comparison` à l'analyse quand la couleur est non nullable).
   const borderLine = c.tokens.border
-    ? `    final borderColor = colors.${camel(resolveRef(c.tokens.border, tokens, { tone: c.defaults.tone, size: c.defaults.size }).key)};`
-    : '    const Color? borderColor = null;';
+    ? `\n    final borderColor = colors.${camel(resolveRef(c.tokens.border, tokens, { tone: c.defaults.tone, size: c.defaults.size }).key)};`
+    : '';
+  const borderProp = c.tokens.border ? '\n        border: Border.all(color: borderColor),' : '';
   const isLabel = shape === 'label';
   return `/// ${c.description.replace(/\n/g, ' ')}
 class ${cls} extends StatelessWidget {
@@ -215,15 +218,13 @@ class ${cls} extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = NoraTheme.of(context).colors;
 ${bgLine}
-${fgLine}
-${borderLine}
+${fgLine}${borderLine}
 ${sizeSwitch(c, tokens, c._sizes)}
     final radius = BorderRadius.circular(${radiusExpr(c, tokens)});
     Widget box = DecoratedBox(
       decoration: BoxDecoration(
         color: ${isLabel ? 'bg' : 'glass ? bg.withValues(alpha: NoraGlass.opacity) : bg'},
-        borderRadius: radius,
-        border: borderColor == null ? null : Border.all(color: borderColor),
+        borderRadius: radius,${borderProp}
       ),
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: padY, horizontal: padX),
