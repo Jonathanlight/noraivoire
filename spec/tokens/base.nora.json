@@ -2,7 +2,7 @@
   "$nora": "tokens",
   "$version": "1.0.0",
   "color": {
-    "primary":    { "$type": "color", "$value": "#E8590C", "$dark": "#FF8A3D" },
+    "primary":    { "$type": "color", "$value": "#C94A0B", "$dark": "#FF8A3D" },
     "on-primary": { "$type": "color", "$value": "#FFFFFF", "$dark": "#1A0F08" },
     "neutral":    { "$type": "color", "$value": "#3B3F46", "$dark": "#D5D8DD" },
     "on-neutral": { "$type": "color", "$value": "#FFFFFF", "$dark": "#14161A" },

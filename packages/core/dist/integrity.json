@@ -3,16 +3,16 @@
   "version": "0.1.0",
   "files": {
     "noraivoire.css": {
-      "sha256": "b85e2e33350596077ad535d9fd496ea1e25b57ee5c5ec38bf6d6548c747eb940",
-      "sri": "sha384-3A7DCmaawy2jqNdEsfMfsbY7n3AY3o78DF24+Ck+lCPeZRR7vj30j6/SpbTijCAL",
+      "sha256": "b82bcdd72c90bcec9032f92bf57115187505a024bc25ea313ba3c38c76fa4dcf",
+      "sri": "sha384-QHq/rfM5srrgj+Sr6aVAua4XInAdp5cgru8QMdoVGDUVzT9P0x4ToCnPO9XVLTSJ",
       "bytes": 13718,
-      "gzip": 3495
+      "gzip": 3491
     },
     "noraivoire.min.css": {
-      "sha256": "57e870015dcdf1deb10f6943a466d62ce14ab6e99837ebb0644599b5a41ede37",
-      "sri": "sha384-3/slKWZP9XKseIiK0MJHoYOAJvjX8Gcs3RWhOrup46Az8ol4+mxwfNzeZuDgnKYQ",
+      "sha256": "07d3ca3ec023ccc9c86cc09c57f05d4570b1a7d47f4f10aaeef875de1d4bf120",
+      "sri": "sha384-GZucpEvIvdO9VV8eB/UAvWyCdub74ZqUkmWga42W9MjDZw6hMCwJH4W7Np1/WPgg",
       "bytes": 11783,
-      "gzip": 3233
+      "gzip": 3230
     },
     "noraivoire.engine.js": {
       "sha256": "2ef03d1d40ba63d7858ba21dbbaa4079035ee9717a6826cb2f706336cf1dcc95",
@@ -39,16 +39,16 @@
       "gzip": 870
     },
     "flutter/noraivoire.dart": {
-      "sha256": "66c457707c365b02955dbefee8167d8ab932bd67f91bb8e3d5fe949ecec0115e",
-      "sri": "sha384-AsuIXwkQsED9MnTuv78TPWGUnZsm+JKPoAaV4rsN3XzZ66CHRso1BMplMJlK0qRN",
+      "sha256": "02e369db69be6d73805b1e4be692f7878ecad278630219b03b759e5b033624d1",
+      "sri": "sha384-d1QQPZr16Hw/BH4g860x3yz3hUgcVXEVtpSswQYz9FxRM25WuuR1f14sDGCtRSSv",
       "bytes": 15848,
-      "gzip": 4260
+      "gzip": 4257
     },
     "react-native/noraivoire.tsx": {
-      "sha256": "9ad8810aae3806b6aa2232ca67953f14aa69dcf5c37d837a56c9dcb63e0ba6d1",
-      "sri": "sha384-eDDMvzGwH/0DFDpcN5cielizjnMxHTCSNSsaoMzvcK0ZI2bP5DF+4f/AvSQrArcT",
+      "sha256": "67721ab0a6e708b6086d906fee5a6f7f0db71ad11c335e5f9e21e393ca645042",
+      "sri": "sha384-XiXf0RmTxApTb2JRZQwxWWLdKmev+ekTGFtUPY1wGBQkGYMLyU3uhPBDjJTRLs1E",
       "bytes": 13250,
-      "gzip": 4006
+      "gzip": 4003
     },
     "manifest.json": {
       "sha256": "316ac0dc2e92d8cefa4ccbe02fac328b88e7cbb349ad914a44d5cf16c5255834",

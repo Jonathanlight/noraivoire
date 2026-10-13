@@ -17,7 +17,7 @@
 @layer nora.tokens {
   :root {
     color-scheme: light dark;
-    --nora-color-primary: #E8590C;
+    --nora-color-primary: #C94A0B;
     --nora-color-on-primary: #FFFFFF;
     --nora-color-neutral: #3B3F46;
     --nora-color-on-neutral: #FFFFFF;

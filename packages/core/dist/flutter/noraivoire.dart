@@ -58,7 +58,7 @@ class NoraColors {
   });
 
   static const light = NoraColors(
-    primary: Color(0xFFE8590C),
+    primary: Color(0xFFC94A0B),
     onPrimary: Color(0xFFFFFFFF),
     neutral: Color(0xFF3B3F46),
     onNeutral: Color(0xFFFFFFFF),

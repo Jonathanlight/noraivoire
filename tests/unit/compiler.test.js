@@ -68,7 +68,7 @@ test('Flutter : enums, thème, widgets et accessibilité générés', () => {
   for (const w of ['NoraBtn', 'NoraCard', 'NoraBadge', 'NoraTilt', 'NoraReveal']) assert.match(dart, new RegExp(`class ${w} `));
   assert.match(dart, /Semantics\(\s*button: true/);
   assert.match(dart, /HapticFeedback\.lightImpact\(\)/);
-  assert.match(dart, /Color\(0xFFE8590C\)/);
+  assert.match(dart, /Color\(0xFFC94A0B\)/);
   assert.ok(!/import 'package:(?!flutter\/)/.test(dart), 'aucun package tiers');
 });
 
