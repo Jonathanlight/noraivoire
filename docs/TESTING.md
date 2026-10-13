@@ -5,7 +5,7 @@ Version 0.1.0 · 14 octobre 2026 · © Jonathan KABLAN — Propriétaire
 ## 1. Commandes
 
 ```bash
-npm test                    # 146 tests (node:test, aucun framework)
+npm test                    # 150 tests (node:test, aucun framework)
 npm run test:visual         # 20 tests Playwright : 12 captures + axe-core + rendu sans JS + variante legacy (navigateurs requis)
 npm run check               # valide les modèles et les recettes
 npm run audit:security      # 86 contrôles
@@ -30,6 +30,7 @@ npm run verify              # tout, dans l'ordre
 | `tests/unit/recipes.test.js` | 8 | Recettes : format de l'index, 20 écrans, unicité des ids et des intentions, fichiers confinés, `components` cohérents avec le markup et le manifest, `nora check` sans avertissement, accessibilité (h1, labels), aucun JS inline ni ressource externe, champs portés par les composants de formulaire |
 | `tests/unit/contrast.test.js` | 3 | Contraste WCAG AA (4,5:1) de chaque ton / `on-*` et du texte sur les surfaces, clair et sombre |
 | `tests/unit/visual-serve.test.js` | 3 | Serveur statique des tests visuels : confinement au dépôt (traversée, octet nul, `node_modules`, `.git`), 127.0.0.1, lecture seule |
+| `tests/unit/fuzz.test.js` | 4 | Fuzzing déterministe sans dépendance (xorshift, graine fixe) : `parseOptions` / `parseEffectList` bornés et typés, specs mutées → uniquement des `SpecError`, tokenizer + `nora check` sans exception ni ligne invalide sur du balisage aléatoire ; `NORA_FUZZ_RUNS=30000` pour une campagne longue |
 | `tests/unit/audit.test.js` | 1 | L'audit complet passe (86/86) |
 | `examples/flutter_app/test/fx_test.dart` (Flutter) | 3 | `NoraScramble` : texte final, label sémantique, mouvement réduit ; `NoraParallax` : décalage au défilement, aucun en mouvement réduit |
 | `adapters/symfony-bundle/tests/` (PHPUnit) | 54 | Code PHP généré (enums, `NoraManifest`, `safeHref`), rendu réel des Twig Components dans un noyau Symfony (listes blanches, URL dangereuses, attributs verrouillés, échappement), AssetMapper, commande `nora:check` (texte, JSON, chemins refusés) |
@@ -98,7 +99,6 @@ npm run test:visual:update -- --linux   # Linux seulement
 | P2 | Régression visuelle et axe-core des autres modèles (après les recettes) | Playwright |
 | P2 | Parité cross-cible : capture web, golden Flutter et capture RN de la même carte, comparées avec tolérance | Script maison |
 | P3 | Exécution réelle des modèles Twig (Symfony) et JSP (Tomcat) | Projets d'exemple en CI |
-| P3 | Fuzzing du parseur de spec et de `parseOptions` | `fast-check` |
 | P3 | Benchmark « IA » : exécution réelle des 50 tâches de `bench/` (code livré, voir `bench/README.md`) | `npm run bench -- --yes` |
 
 ## 6. Règle de contribution

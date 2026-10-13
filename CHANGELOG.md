@@ -24,6 +24,7 @@
 - CSS (constat A-06 levé) : `noraivoire.legacy.min.css`, variante sans cascade layers pour les navigateurs antérieurs à 2022 ; rendu de la démo identique au pixel (Playwright, clair et sombre). 1 test node, 2 tests Playwright.
 - Composant `radio` : CSS (pastille, focus, invalide, désactivé, contraste forcé), Flutter `NoraRadio<T>` / `NoraRadioGroup<T>` (sur `RadioGroup`, rendu statique en mouvement réduit), React Native `NoraRadio` / `NoraRadioGroup` (`radiogroup` / `radio`), Twig `Nora:Radio` généré ; règle `nora check` `a11y-radio-name` (avertissement) ; recette `checkout.html` migrée ; groupe radio dans les modèles HTML, Flutter et React Native. Flutter 3.35+ requis (`RadioGroup`). 2 tests node, 5 tests Flutter.
 - Symfony (constat A-12 levé) : `Nora:Field` expose `control` et `controlHtml` à son contenu ; `id`, `aria-describedby` et `aria-invalid` arrivent sur le contrôle sans pose manuelle (`{{ ...control }}`). 2 tests PHPUnit.
+- Tests : fuzzing déterministe sans dépendance (`tests/unit/fuzz.test.js`) de `parseOptions`, `parseEffectList`, `safeParse` / validation des specs et du tokenizer de `nora check` ; 1 500 tours par défaut, 30 000 vérifiés localement. 4 tests.
 
 ## 0.1.0 — 14 octobre 2026
 
