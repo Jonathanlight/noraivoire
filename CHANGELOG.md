@@ -8,6 +8,8 @@
 - `nora check` : l'extraction par expressions régulières est remplacée par un tokenizer HTML tolérant écrit à la main (`packages/cli/src/tokenize.js`, temps linéaire) — attributs multi-lignes et sans guillemets, JSX imbriqué, Twig, JSP, commentaires, `<script>`/`<style>` bruts, liaisons Vue/Angular. API `parseDocument()` (éléments, attributs, parent, fermeture). 19 tests de cas limites. Constat A-03 levé.
 - Effets optionnels : paquets `@noraivoire/fx-scroll` (`pin`, `scrub`, `parallax`) et `@noraivoire/fx-text` (`split`, `scramble`), spec dans `spec/fx/`, chargés à la demande via `install(moteur)` ; `NoraParallax` et `NoraScramble` en Flutter et React Native, `pin`/`scrub`/`split` documentés web uniquement ; audit porté à 67 contrôles (motifs interdits, écritures DOM bornées, budget 2 Kio gzip par paquet, mouvement réduit) ; 14 tests.
 
+- Flutter : tests de widgets `NoraScramble` et `NoraParallax` dans `examples/flutter_app/test/fx_test.dart` ; `flutter:sync` copie aussi `noraivoire_fx.dart`.
+
 ## 0.1.0 — 14 octobre 2026
 
 Première version (preuve de concept).

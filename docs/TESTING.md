@@ -24,6 +24,7 @@ npm run verify              # tout, dans l'ordre
 | `tests/unit/fx.test.js` | 13 | Paquets `fx-scroll` / `fx-text` : fonctions pures, compilation séparée, parité options JS ↔ spec, validation, neutralisation des commentaires, règle d'audit des écritures DOM, montage/démontage jsdom de chaque effet, mouvement réduit, restauration du DOM |
 | `tests/unit/fx-ssr.test.js` | 1 | Import sans DOM et `install()` idempotent |
 | `tests/unit/audit.test.js` | 1 | L'audit complet passe (67/67) |
+| `examples/flutter_app/test/fx_test.dart` (Flutter) | 3 | `NoraScramble` : texte final, label sémantique, mouvement réduit ; `NoraParallax` : décalage au défilement, aucun en mouvement réduit |
 | `examples/flutter_app/test/goldens_test.dart` (Flutter) | 8 | Goldens `NoraBtn` (5 tons × 3 tailles), `NoraCard(glass: true)`, `NoraBadge`, clair et sombre ; sémantique bouton et zone ≥ 44 ; montage du modèle `templates/flutter/main.dart` |
 
 Vérifications complémentaires effectuées lors de la création :
@@ -54,7 +55,7 @@ Les goldens sont générés sous macOS. Le rendu Linux diffère de quelques pixe
 2. `flutter` : `npm run flutter:sync`, puis dans `examples/flutter_app/` `flutter analyze --fatal-infos --fatal-warnings` et `flutter test` (goldens, `NORA_GOLDEN_TOLERANCE=0.02`).
 3. `react-native-types` : TypeScript strict du TSX généré (dont `noraivoire-fx.tsx`).
 
-`noraivoire_fx.dart` est copié par `flutter:sync` et donc analysé par le job `flutter`. `noraivoire_fx.dart` et `noraivoire-fx.tsx` ont été vérifiés localement : `flutter analyze` sans remarque, 3 tests de widgets dans un projet jetable (`NoraScramble` : texte final et sémantique, mouvement réduit ; `NoraParallax` au défilement), `tsc --strict` sans erreur (React 19, RN 0.81). Ces 3 tests de widgets restent à intégrer à `examples/flutter_app/test/`.
+`noraivoire_fx.dart` est copié par `flutter:sync` et donc analysé par le job `flutter`. `noraivoire_fx.dart` et `noraivoire-fx.tsx` ont été vérifiés localement : `flutter analyze` sans remarque, 3 tests de widgets dans un projet jetable (`NoraScramble` : texte final et sémantique, mouvement réduit ; `NoraParallax` au défilement), `tsc --strict` sans erreur (React 19, RN 0.81). Ces 3 tests de widgets sont dans `examples/flutter_app/test/fx_test.dart`.
 
 ## 5. Prochaines étapes (par priorité)
 
