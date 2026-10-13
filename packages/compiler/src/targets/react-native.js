@@ -55,6 +55,357 @@ ${[toneMap('bg'), toneMap('fg')].filter(Boolean).join('\n')}
 } as const;`;
 }
 
+// ───────────── Formulaires ─────────────
+
+const FORM_SHAPES = new Set(['control', 'toggle', 'group']);
+
+/** Clés de couleur indépendantes du ton, avec repli quand la spec ne les définit pas. */
+const FORM_COLORS = {
+  control: { bg: 'surface', fg: 'text', border: 'border', muted: 'text-muted', focus: 'focus', invalid: 'danger' },
+  toggle: { bg: 'surface', fg: 'text', border: 'text-muted', focus: 'focus', invalid: 'danger' },
+  group: { fg: 'text', muted: 'text-muted', invalid: 'danger' },
+};
+
+function formMaps(c, tokens, shape) {
+  const n = camel(c.component);
+  const where = `component:${c.component}`;
+  const v = { tone: c.defaults.tone, size: c.defaults.size };
+  const st = c.states ?? {};
+  const keyOf = (prop, fallback) => {
+    const ref = c.tokens[prop];
+    return camel(ref ? resolveRef(ref, tokens, v, where).key : fallback);
+  };
+  const colors = Object.entries(FORM_COLORS[shape]).map(([prop, fb]) => {
+    // focus / invalid : la spec désigne la clé de token via states.{focus,invalid}.token
+    const src = prop === 'focus' ? st.focus?.token ?? prop : prop === 'invalid' ? st.invalid?.token ?? prop : prop;
+    return `${prop}: ${lit(keyOf(src, fb))}`;
+  });
+  const toneMaps = shape === 'toggle'
+    ? ['accent', 'on-accent'].map((prop) => {
+      const ref = c.tokens[prop] ?? (prop === 'accent' ? '{color.$tone}' : '{color.on-$tone}');
+      const entries = c.variants.tone.map((tone) => `${camel(tone)}: ${lit(camel(resolveRef(ref, tokens, { tone, size: c.defaults.size }, where).key))}`);
+      return `  ${camel(prop)}: { ${entries.join(', ')} } as Partial<Record<NoraTone, ColorKey>>,`;
+    })
+    : [];
+  const sizes = c.variants.size.map((s) => {
+    const sz = c.sizes[s];
+    const g = (x) => resolveRef(x, tokens, { tone: c.defaults.tone, size: s }).value;
+    return `${camel(s)}: { padY: ${g(sz['pad-y'])}, padX: ${g(sz['pad-x'])}, font: ${g(sz.font)} }`;
+  });
+  const radius = c.tokens.radius ? resolveRef(c.tokens.radius, tokens, {}).value : 0;
+  return `const ${n}Spec = {
+  colors: { ${colors.join(', ')} } as const,
+${toneMaps.join('\n')}${toneMaps.length ? '\n' : ''}  sizes: { ${sizes.join(', ')} } as Partial<Record<NoraSize, { padY: number; padX: number; font: number }>>,
+  radius: ${radius},
+  ring: ${st.focus?.ring ?? 2},
+  disabledOpacity: ${st.disabled?.opacity ?? 0.5},
+  defaults: { tone: ${lit(camel(c.defaults.tone))} as NoraTone, size: ${lit(camel(c.defaults.size))} as NoraSize },
+  minTarget: ${c.a11y.minTarget},
+} as const;`;
+}
+
+const FIELD_CONTEXT = `export type NoraFieldContextValue = { label: string; help?: string; error?: string; disabled?: boolean };
+
+/** Contexte d'un NoraField : équivalent de <label for> et aria-describedby pour les contrôles descendants. */
+export const NoraFieldContext = React.createContext<NoraFieldContextValue | null>(null);
+
+export function useNoraField() {
+  return React.useContext(NoraFieldContext);
+}`;
+
+function sizeLine(n) {
+  return `const s = ${n}Spec.sizes[size ?? ${n}Spec.defaults.size] ?? ${n}Spec.sizes[${n}Spec.defaults.size]!;`;
+}
+
+function controlComp(c) {
+  const n = camel(c.component);
+  const P = `Nora${pascal(c.component)}`;
+  const el = c.elements[0];
+  const common = `  size?: NoraSize;
+  /** Invalide ; par défaut : le NoraField parent affiche une erreur. */
+  invalid?: boolean;
+  disabled?: boolean;
+  /** Libellé lu par les lecteurs d'écran ; par défaut celui du NoraField parent. */
+  label?: string;`;
+  const state = `  const colors = useNoraColors();
+  const field = useNoraField();
+  const [focused, setFocused] = React.useState(false);
+  ${sizeLine(n)}
+  const isInvalid = invalid ?? !!field?.error;
+  const isDisabled = disabled ?? field?.disabled ?? false;
+  const ring = focused ? ${n}Spec.ring : 1;
+  const borderColor = colors[isInvalid ? ${n}Spec.colors.invalid : focused ? ${n}Spec.colors.focus : ${n}Spec.colors.border];
+  const box = {
+    minHeight: ${n}Spec.minTarget,
+    paddingVertical: Math.max(0, s.padY - (ring - 1)),
+    paddingHorizontal: Math.max(0, s.padX - (ring - 1)),
+    borderWidth: ring,
+    borderColor,
+    borderRadius: ${n}Spec.radius,
+    backgroundColor: colors[${n}Spec.colors.bg],
+    opacity: isDisabled ? ${n}Spec.disabledOpacity : 1,
+  };`;
+  if (el === 'select') {
+    return `export type NoraSelectOption = { label: string; value: string };
+
+export type ${P}Props = {
+  options: NoraSelectOption[];
+  value?: string | null;
+  onChange?: (value: string) => void;
+  placeholder?: string;
+${common}
+  style?: StyleProp<ViewStyle>;
+};
+
+/** ${c.description.replace(/\*\//g, '* /')} Liste native de React Native absente du cœur : sélection dans une fenêtre modale. */
+export function ${P}({ options, value, onChange, placeholder, size, invalid, disabled, label, style }: ${P}Props) {
+${state}
+  const reduce = useReducedMotion();
+  const [open, setOpen] = React.useState(false);
+  const selected = options.find((o) => o.value === value);
+  const close = () => {
+    setOpen(false);
+    setFocused(false);
+  };
+  return (
+    <>
+      <Pressable
+        accessibilityRole="combobox"
+        accessibilityLabel={label ?? field?.label}
+        accessibilityHint={field?.error ?? field?.help}
+        accessibilityValue={{ text: selected?.label ?? placeholder ?? '' }}
+        accessibilityState={{ disabled: isDisabled, expanded: open }}
+        disabled={isDisabled}
+        onPress={() => {
+          setFocused(true);
+          setOpen(true);
+        }}
+        style={[box, { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }, style]}
+      >
+        <Text style={{ color: colors[selected ? ${n}Spec.colors.fg : ${n}Spec.colors.muted], fontSize: s.font, flexShrink: 1 }} numberOfLines={1}>
+          {selected?.label ?? placeholder ?? ''}
+        </Text>
+        <Text importantForAccessibility="no" accessibilityElementsHidden style={{ color: colors[${n}Spec.colors.fg], fontSize: s.font, marginLeft: s.padX }}>
+          ▾
+        </Text>
+      </Pressable>
+      <Modal visible={open} transparent animationType={reduce ? 'none' : 'fade'} onRequestClose={close}>
+        <Pressable accessibilityRole="button" accessibilityLabel="Fermer" onPress={close} style={{ flex: 1, justifyContent: 'center', padding: 24, backgroundColor: 'rgba(0, 0, 0, 0.4)' }}>
+          <View accessibilityRole="list" style={{ backgroundColor: colors[${n}Spec.colors.bg], borderRadius: ${n}Spec.radius, paddingVertical: 4 }}>
+            {options.map((o) => {
+              const checked = o.value === value;
+              return (
+                <Pressable
+                  key={o.value}
+                  accessibilityRole="radio"
+                  accessibilityState={{ checked }}
+                  onPress={() => {
+                    onChange?.(o.value);
+                    close();
+                  }}
+                  style={({ pressed }) => ({
+                    minHeight: ${n}Spec.minTarget,
+                    justifyContent: 'center',
+                    paddingHorizontal: s.padX,
+                    backgroundColor: pressed ? withAlpha(colors[${n}Spec.colors.focus], 0.12) : 'transparent',
+                  })}
+                >
+                  <Text style={{ color: colors[${n}Spec.colors.fg], fontSize: s.font, fontWeight: checked ? '700' : '400' }}>{o.label}</Text>
+                </Pressable>
+              );
+            })}
+          </View>
+        </Pressable>
+      </Modal>
+    </>
+  );
+}`;
+  }
+  const multi = el === 'textarea';
+  return `export type ${P}Props = Omit<TextInputProps, 'style' | 'editable'${multi ? " | 'multiline'" : ''}> & {
+${common}
+  style?: StyleProp<TextStyle>;
+};
+
+/** ${c.description.replace(/\*\//g, '* /')} */
+export function ${P}({ size, invalid, disabled, label, style, onFocus, onBlur, ...rest }: ${P}Props) {
+${state}
+  return (
+    <TextInput
+      accessibilityLabel={label ?? field?.label}
+      accessibilityHint={field?.error ?? field?.help}
+      accessibilityState={{ disabled: isDisabled }}
+      editable={!isDisabled}${multi ? '\n      multiline\n      textAlignVertical="top"' : ''}
+      placeholderTextColor={colors[${n}Spec.colors.muted]}
+      selectionColor={colors[${n}Spec.colors.focus]}
+      onFocus={(e) => {
+        setFocused(true);
+        onFocus?.(e);
+      }}
+      onBlur={(e) => {
+        setFocused(false);
+        onBlur?.(e);
+      }}
+      style={[box, { color: colors[${n}Spec.colors.fg], fontSize: s.font${multi ? ', minHeight: Math.max(96, ' + n + 'Spec.minTarget)' : ''} }, style]}
+      {...rest}
+    />
+  );
+}`;
+}
+
+function toggleComp(c) {
+  const n = camel(c.component);
+  const P = `Nora${pascal(c.component)}`;
+  const isSwitch = c.a11y.role === 'switch';
+  const haptic = c.feedback?.haptic ? lit(c.feedback.haptic) : null;
+  const indicator = isSwitch
+    ? `      <View
+        style={{
+          width: s.font * 2.25,
+          height: s.font * 1.25,
+          borderRadius: ${n}Spec.radius,
+          borderWidth: 2,
+          borderColor: checked ? accent : isInvalid ? colors[${n}Spec.colors.invalid] : colors[${n}Spec.colors.border],
+          backgroundColor: checked ? accent : colors[${n}Spec.colors.border],
+          justifyContent: 'center',
+        }}
+      >
+        <Animated.View
+          style={{
+            width: s.font * 1.25 - 8,
+            height: s.font * 1.25 - 8,
+            marginLeft: 2,
+            borderRadius: ${n}Spec.radius,
+            backgroundColor: checked ? onAccent : colors[${n}Spec.colors.bg],
+            transform: [{ translateX: x.interpolate({ inputRange: [0, 1], outputRange: [0, s.font] }) }],
+          }}
+        />
+      </View>`
+    : `      <View
+        style={{
+          width: s.font * 1.25,
+          height: s.font * 1.25,
+          borderRadius: ${n}Spec.radius,
+          borderWidth: 2,
+          borderColor: checked ? accent : isInvalid ? colors[${n}Spec.colors.invalid] : colors[${n}Spec.colors.border],
+          backgroundColor: checked ? accent : colors[${n}Spec.colors.bg],
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        {checked ? <Text style={{ color: onAccent, fontSize: s.font * 0.85, fontWeight: '700', lineHeight: s.font }}>✓</Text> : null}
+      </View>`;
+  const anim = isSwitch
+    ? `  const reduce = useReducedMotion();
+  const x = React.useRef(new Animated.Value(checked ? 1 : 0)).current;
+  React.useEffect(() => {
+    if (reduce) {
+      x.setValue(checked ? 1 : 0);
+      return;
+    }
+    Animated.timing(x, { toValue: checked ? 1 : 0, duration: 150, useNativeDriver: Platform.OS !== 'web' }).start();
+  }, [checked, reduce]);
+`
+    : '';
+  return `export type ${P}Props = Omit<PressableProps, 'children' | 'style' | 'onPress'> & {
+  checked: boolean;
+  /** Absent : lecture seule. */
+  onChange?: (checked: boolean) => void;
+  /** Libellé visible (lu avec le contrôle). */
+  children: React.ReactNode;
+  tone?: NoraTone;
+  size?: NoraSize;
+  invalid?: boolean;
+  haptic?: boolean;
+  style?: StyleProp<ViewStyle>;
+};
+
+/** ${c.description.replace(/\*\//g, '* /')} */
+export function ${P}({ checked, onChange, children, tone, size, invalid, haptic = true, disabled, style, ...rest }: ${P}Props) {
+  const colors = useNoraColors();
+  const field = useNoraField();
+  ${sizeLine(n)}
+  const t = tone ?? ${n}Spec.defaults.tone;
+  const accent = colors[${n}Spec.accent[t] ?? ${n}Spec.accent[${n}Spec.defaults.tone]!];
+  const onAccent = colors[${n}Spec.onAccent[t] ?? ${n}Spec.onAccent[${n}Spec.defaults.tone]!];
+  const isInvalid = invalid ?? !!field?.error;
+  const isDisabled = !!disabled || !!field?.disabled || !onChange;
+${anim}
+  return (
+    <Pressable
+      accessibilityRole="${isSwitch ? 'switch' : 'checkbox'}"
+      accessibilityState={{ checked, disabled: isDisabled }}
+      accessibilityHint={field?.error ?? field?.help}
+      disabled={isDisabled}
+      hitSlop={4}
+      onPress={() => {
+${haptic ? `        if (haptic) noraConfig.haptic?.(${haptic});\n` : ''}        onChange?.(!checked);
+      }}
+      style={[
+        {
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: s.padX,
+          minHeight: ${n}Spec.minTarget,
+          paddingVertical: s.padY,
+          opacity: isDisabled ? ${n}Spec.disabledOpacity : 1,
+        },
+        style,
+      ]}
+      {...rest}
+    >
+${indicator}
+      {typeof children === 'string' ? <Text style={{ color: colors[${n}Spec.colors.fg], fontSize: s.font, flexShrink: 1 }}>{children}</Text> : children}
+    </Pressable>
+  );
+}`;
+}
+
+function fieldComp(c) {
+  const n = camel(c.component);
+  const P = `Nora${pascal(c.component)}`;
+  return `export type ${P}Props = ViewProps & {
+  label: string;
+  help?: string;
+  error?: string;
+  disabled?: boolean;
+  size?: NoraSize;
+  children: React.ReactNode;
+};
+
+/** ${c.description.replace(/\*\//g, '* /')} */
+export function ${P}({ label, help, error, disabled, size, children, style, ...rest }: ${P}Props) {
+  const colors = useNoraColors();
+  ${sizeLine(n)}
+  const value = React.useMemo(() => ({ label, help, error, disabled }), [label, help, error, disabled]);
+  return (
+    <NoraFieldContext.Provider value={value}>
+      <View style={[{ gap: s.padY }, style]} {...rest}>
+        {/* Le libellé et l'aide sont portés par le contrôle (contexte) : pas de double lecture. */}
+        <Text
+          importantForAccessibility="no"
+          accessibilityElementsHidden
+          style={{ color: colors[${n}Spec.colors.fg], fontSize: s.font, fontWeight: '600', opacity: disabled ? ${n}Spec.disabledOpacity : 1 }}
+        >
+          {label}
+        </Text>
+        {children}
+        {help ? (
+          <Text importantForAccessibility="no" accessibilityElementsHidden style={{ color: colors[${n}Spec.colors.muted], fontSize: s.font * 0.875 }}>
+            {help}
+          </Text>
+        ) : null}
+        {error ? (
+          <Text accessibilityLiveRegion="polite" style={{ color: colors[${n}Spec.colors.invalid], fontSize: s.font * 0.875, fontWeight: '600' }}>
+            {error}
+          </Text>
+        ) : null}
+      </View>
+    </NoraFieldContext.Provider>
+  );
+}`;
+}
+
 function interactive(c) {
   const n = camel(c.component);
   const P = `Nora${pascal(c.component)}`;
@@ -241,7 +592,16 @@ export function buildReactNative(model, meta) {
   const sizes = union(model.components, 'size');
   const comps = model.components.map((c) => {
     const shape = shapeFromRole(c);
-    return shape === 'interactive' ? interactive(c) : staticComp(c, shape);
+    if (shape === 'interactive') return interactive(c);
+    if (shape === 'control') return controlComp(c);
+    if (shape === 'toggle') return toggleComp(c);
+    if (shape === 'group') return fieldComp(c);
+    return staticComp(c, shape);
+  });
+  const hasForms = model.components.some((c) => FORM_SHAPES.has(shapeFromRole(c)));
+  const maps = model.components.map((c) => {
+    const shape = shapeFromRole(c);
+    return FORM_SHAPES.has(shape) ? formMaps(c, model.tokens, shape) : componentMaps(c, model.tokens);
   });
 
   return `${header('tsx', meta)}
@@ -249,14 +609,14 @@ export function buildReactNative(model, meta) {
 import * as React from 'react';
 import {
   AccessibilityInfo,
-  Animated,
+  Animated,${hasForms ? '\n  Modal,' : ''}
   Platform,
   Pressable,
-  Text,
+  Text,${hasForms ? '\n  TextInput,' : ''}
   View,
   useColorScheme,
   type PressableProps,
-  type StyleProp,
+  type StyleProp,${hasForms ? '\n  type TextInputProps,\n  type TextStyle,' : ''}
   type ViewProps,
   type ViewStyle,
 } from 'react-native';
@@ -343,8 +703,8 @@ export function withAlpha(hex: string, alpha: number) {
   return \`rgba(\${r}, \${g}, \${b}, \${alpha})\`;
 }
 
-${model.components.map((c) => componentMaps(c, model.tokens)).join('\n\n')}
-
+${maps.join('\n\n')}
+${hasForms ? `\n${FIELD_CONTEXT}\n` : ''}
 ${effects(model)}
 
 ${comps.join('\n\n')}

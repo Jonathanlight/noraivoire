@@ -53,6 +53,12 @@ Le seul attribut posé sur `<html>` par le moteur est `data-nora-engine` (d'où 
 | Typographie | Pile système | Police du thème | Police système | Volontaire (respect de la plateforme) |
 | Ripple | Non | Oui (InkWell) | Non | Convention Android de Material |
 | Flou `glass` | `backdrop-filter` | `BackdropFilter` | Alpha seul | Flou RN via adaptateur (expo-blur) |
+| Champ texte | `<input>` natif stylé | `TextField` | `TextInput` | Focus : contour 2 px (web, Flutter) ; bordure 2 px (RN) |
+| Liste de choix | `<select>` natif (`appearance: none`) | `DropdownButton` (menu Material) | `Modal` + options | RN : pas de liste déroulante dans le cœur ; adaptateur natif possible hors cœur |
+| Case à cocher | `<input type="checkbox">` dessiné en CSS | `Checkbox` Material | Vue dessinée + `✓` | Coche : tracé CSS / icône Material / glyphe texte |
+| Interrupteur | `<input role="switch">` dessiné en CSS | `Switch` Material 3 | Piste + pouce animés | Proportions du `Switch` Material 3 différentes (pouce agrandi quand actif) |
+| Association libellé | `<label for>` / `aria-describedby` | `NoraFieldScope` (sémantique) | `NoraFieldContext` (`accessibilityLabel` / `Hint`) | Même contrat, mécanisme propre à chaque plateforme |
+| Mouvement réduit (formulaires) | Transitions coupées (`prefers-reduced-motion`) | Animations internes de `Checkbox` / `Switch` Material | Glissement du pouce coupé | Flutter : animations Material non pilotées par NoraIvoire (150–200 ms) |
 
 ## 5. Dépendances et pérennité
 
@@ -67,6 +73,5 @@ Le seul attribut posé sur `<html>` par le moteur est `data-nora-engine` (d'où 
 
 1. Le Dart généré est analysé et rendu en test (goldens Flutter, `examples/flutter_app/`) mais pas exécuté sur appareil réel.
 2. Pas de régression visuelle cross-cible (comparaison web / Flutter / RN, prévue, voir TESTING.md).
-3. Pas de composant de formulaire (input, select) : les champs utilisent les styles du navigateur.
-4. Pas de CSS de secours pour les navigateurs sans `@layer`.
-5. Les modèles Twig, JSP, Vue et Angular sont validés syntaxiquement par `nora check`, pas exécutés dans leur framework.
+3. Pas de CSS de secours pour les navigateurs sans `@layer`.
+4. Les modèles Twig, JSP, Vue et Angular sont validés syntaxiquement par `nora check`, pas exécutés dans leur framework.

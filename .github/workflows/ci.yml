@@ -68,9 +68,10 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: TypeScript strict du TSX généré
+      - name: TypeScript strict du TSX généré et du modèle React Native
         run: |
-          mkdir -p /tmp/rn && cp packages/core/dist/react-native/noraivoire.tsx /tmp/rn/
+          mkdir -p /tmp/rn/src && cp packages/core/dist/react-native/noraivoire.tsx /tmp/rn/src/
+          cp templates/react-native/App.tsx /tmp/rn/
           cd /tmp/rn && npm init -y >/dev/null
           npm i --ignore-scripts --no-save typescript@5 react@19 @types/react@19 react-native@0.81
-          npx tsc --strict --noEmit --jsx react-jsx --skipLibCheck --moduleResolution bundler --module esnext --target es2022 noraivoire.tsx
+          npx tsc --strict --noEmit --jsx react-jsx --skipLibCheck --moduleResolution bundler --module esnext --target es2022 App.tsx src/noraivoire.tsx

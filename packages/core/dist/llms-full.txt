@@ -4,12 +4,13 @@
 > Logiciel propriétaire © Jonathan KABLAN. Ce fichier est le contrat complet de l'API : n'utilise RIEN qui n'y figure pas.
 
 ## Règles pour les agents IA
-1. Composant = une classe : .badge .btn .card.
+1. Composant = une classe : .badge .btn .card .checkbox .field .input .select .switch .textarea.
 2. Variantes UNIQUEMENT via data-tone et data-size. Jamais .btn-primary, .btn-lg, bg-blue-500.
 3. Utilitaires : liste fermée ci-dessous. Une classe absente de la liste n'existe pas.
 4. Effets JS : data-fx="nom". Surface verre : class="fx-glass".
 5. Action → <button class="btn">. Navigation → <a class="btn" href="…">. Un bouton sans texte exige aria-label.
-6. Après génération, exécuter : npx nora check <dossier> --format=json et corriger chaque erreur.
+6. Formulaire : chaque .input, .select, .textarea a un <label for="id"> relié à son id (ou aria-label). Case à cocher et interrupteur : <label class="checkbox|switch"><input type="checkbox"> Texte</label> (role="switch" pour l'interrupteur). Invalide : aria-invalid="true" + aria-describedby vers le .field-error. Regrouper libellé, contrôle, aide et erreur dans .field.
+7. Après génération, exécuter : npx nora check <dossier> --format=json et corriger chaque erreur.
 
 ## Composants
 ### badge
@@ -27,6 +28,7 @@ Bouton d'action. Utiliser <button> pour une action, <a href> pour une navigation
 - data-tone : primary | neutral | danger | success | warning (défaut primary)
 - data-size : sm | md | lg (défaut md)
 - Tokens surchargeables : --btn-bg, --btn-fg, --btn-radius, --btn-pad-y, --btn-pad-x, --btn-font
+- États : pressed, disabled
 - Flutter : NoraBtn(tone: NoraTone.x, size: NoraSize.y) · React Native : <NoraBtn tone="x" size="y">
 - Exemple : <button class="btn" data-tone="primary" data-size="md">Valider</button>
 
@@ -38,6 +40,67 @@ Conteneur de contenu. Peut recevoir des effets (data-fx) et la surface fx-glass.
 - Tokens surchargeables : --card-bg, --card-fg, --card-radius, --card-border, --card-pad-y, --card-pad-x, --card-font
 - Flutter : NoraCard(tone: NoraTone.x, size: NoraSize.y) · React Native : <NoraCard tone="x" size="y">
 - Exemple : <article class="card" data-size="md">…</article>
+
+### checkbox
+Case à cocher : un <label class="checkbox"> contenant <input type="checkbox"> et son texte (zone cliquable ≥ 44 px).
+- Éléments : label
+- data-tone : primary | neutral | danger | success | warning (défaut primary)
+- data-size : sm | md | lg (défaut md)
+- Tokens surchargeables : --checkbox-bg, --checkbox-fg, --checkbox-radius, --checkbox-border, --checkbox-accent, --checkbox-on-accent, --checkbox-focus, --checkbox-invalid, --checkbox-pad-y, --checkbox-pad-x, --checkbox-font
+- États : focus, invalid, disabled
+- Flutter : NoraCheckbox(tone: NoraTone.x, size: NoraSize.y) · React Native : <NoraCheckbox tone="x" size="y">
+- Exemple : <label class="checkbox"><input type="checkbox" name="cgu" required> J'accepte les conditions</label>
+
+### field
+Groupe de champ : libellé (.field-label), contrôle, aide (.field-help) et erreur (.field-error). Relier aide et erreur au contrôle par aria-describedby.
+- Éléments : div, fieldset
+- data-tone : neutral (défaut neutral)
+- data-size : sm | md | lg (défaut md)
+- Tokens surchargeables : --field-fg, --field-muted, --field-invalid, --field-pad-y, --field-pad-x, --field-font
+- Parties : .field-label, .field-help, .field-error
+- États : invalid, disabled
+- Flutter : NoraField(tone: NoraTone.x, size: NoraSize.y) · React Native : <NoraField tone="x" size="y">
+- Exemple : <div class="field"><label class="field-label" for="email">E-mail</label><input class="input" id="email" type="email" aria-describedby="email-aide"><p class="field-help" id="email-aide">Professionnel de préférence.</p></div>
+
+### input
+Champ de saisie sur une ligne. Toujours associé à un <label for> (ou placé dans un .field). Invalide : aria-invalid="true" + aria-describedby vers le message.
+- Éléments : input
+- data-tone : neutral (défaut neutral)
+- data-size : sm | md | lg (défaut md)
+- Tokens surchargeables : --input-bg, --input-fg, --input-radius, --input-border, --input-muted, --input-focus, --input-invalid, --input-pad-y, --input-pad-x, --input-font
+- États : focus, invalid, disabled
+- Flutter : NoraInput(tone: NoraTone.x, size: NoraSize.y) · React Native : <NoraInput tone="x" size="y">
+- Exemple : <label class="field-label" for="email">E-mail</label> <input class="input" id="email" type="email" name="email" autocomplete="email">
+
+### select
+Liste de choix native. Toujours associée à un <label for>.
+- Éléments : select
+- data-tone : neutral (défaut neutral)
+- data-size : sm | md | lg (défaut md)
+- Tokens surchargeables : --select-bg, --select-fg, --select-radius, --select-border, --select-muted, --select-focus, --select-invalid, --select-pad-y, --select-pad-x, --select-font
+- États : focus, invalid, disabled
+- Flutter : NoraSelect(tone: NoraTone.x, size: NoraSize.y) · React Native : <NoraSelect tone="x" size="y">
+- Exemple : <label class="field-label" for="pays">Pays</label> <select class="select" id="pays" name="pays"><option>Côte d'Ivoire</option></select>
+
+### switch
+Interrupteur marche/arrêt : un <label class="switch"> contenant <input type="checkbox" role="switch"> et son texte. Effet immédiat, sans bouton Valider.
+- Éléments : label
+- data-tone : primary | neutral | danger | success | warning (défaut primary)
+- data-size : sm | md | lg (défaut md)
+- Tokens surchargeables : --switch-bg, --switch-fg, --switch-radius, --switch-border, --switch-accent, --switch-on-accent, --switch-focus, --switch-invalid, --switch-pad-y, --switch-pad-x, --switch-font
+- États : focus, invalid, disabled
+- Flutter : NoraSwitch(tone: NoraTone.x, size: NoraSize.y) · React Native : <NoraSwitch tone="x" size="y">
+- Exemple : <label class="switch"><input type="checkbox" role="switch" name="notif"> Notifications</label>
+
+### textarea
+Zone de texte sur plusieurs lignes, redimensionnable verticalement. Toujours associée à un <label for>.
+- Éléments : textarea
+- data-tone : neutral (défaut neutral)
+- data-size : sm | md | lg (défaut md)
+- Tokens surchargeables : --textarea-bg, --textarea-fg, --textarea-radius, --textarea-border, --textarea-muted, --textarea-focus, --textarea-invalid, --textarea-pad-y, --textarea-pad-x, --textarea-font
+- États : focus, invalid, disabled
+- Flutter : NoraTextarea(tone: NoraTone.x, size: NoraSize.y) · React Native : <NoraTextarea tone="x" size="y">
+- Exemple : <label class="field-label" for="msg">Message</label> <textarea class="textarea" id="msg" name="msg" rows="4"></textarea>
 
 ## Effets
 - glass : Surface translucide floutée (glassmorphism). Usage : class="fx-glass". Options : blur (number, défaut 16, 0–40), opacity (number, défaut 0.6, 0–1).

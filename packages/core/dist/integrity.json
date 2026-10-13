@@ -3,16 +3,16 @@
   "version": "0.1.0",
   "files": {
     "noraivoire.css": {
-      "sha256": "b85e2e33350596077ad535d9fd496ea1e25b57ee5c5ec38bf6d6548c747eb940",
-      "sri": "sha384-3A7DCmaawy2jqNdEsfMfsbY7n3AY3o78DF24+Ck+lCPeZRR7vj30j6/SpbTijCAL",
-      "bytes": 13718,
-      "gzip": 3495
+      "sha256": "3852707ddfc76779b24d45ce4d1e99043e1f16b2dc8e8aa6eddbb83a5ec5dbba",
+      "sri": "sha384-YKO+GhDA4YsOAPWDSTf2+Byto2dMqXGWvOGUZ056MjvhpDIcz5vWB2H74/e4FnCc",
+      "bytes": 26605,
+      "gzip": 5175
     },
     "noraivoire.min.css": {
-      "sha256": "57e870015dcdf1deb10f6943a466d62ce14ab6e99837ebb0644599b5a41ede37",
-      "sri": "sha384-3/slKWZP9XKseIiK0MJHoYOAJvjX8Gcs3RWhOrup46Az8ol4+mxwfNzeZuDgnKYQ",
-      "bytes": 11783,
-      "gzip": 3233
+      "sha256": "98090e8c4df1677ee3b7eaf55387b5a665ae5325952347fa3dfcd9e424ac869d",
+      "sri": "sha384-bU1+SM2GNnFhKmbYSi97H2oKzy3Efy3oBJbQcHLFxnz3wjB3CO4md2UQqrLOHl2y",
+      "bytes": 23277,
+      "gzip": 4851
     },
     "noraivoire.engine.js": {
       "sha256": "2ef03d1d40ba63d7858ba21dbbaa4079035ee9717a6826cb2f706336cf1dcc95",
@@ -33,34 +33,34 @@
       "gzip": 658
     },
     "noraivoire.types.ts": {
-      "sha256": "d53650a41e877a6bb77f201e9cb94f0d6c54bf6318a173754900050176d8b4c4",
-      "sri": "sha384-kOw26tnILhzD1pZYYdP0c7ymVyDL+F/yNWllAE9GgSwZTV6eUMynvC16uQXnwunn",
-      "bytes": 1868,
-      "gzip": 870
+      "sha256": "ef56269cfa47af0a7b79a1b9ffd6cd0cb6508aa40f21b290a9fb63ad33065e04",
+      "sri": "sha384-hOCoBgMo0fbkpE9B+y/AzA1FcB4iUGTzePClz+rw+dyOwXQoph2k92wVTFUZJsXn",
+      "bytes": 1936,
+      "gzip": 902
     },
     "flutter/noraivoire.dart": {
-      "sha256": "66c457707c365b02955dbefee8167d8ab932bd67f91bb8e3d5fe949ecec0115e",
-      "sri": "sha384-AsuIXwkQsED9MnTuv78TPWGUnZsm+JKPoAaV4rsN3XzZ66CHRso1BMplMJlK0qRN",
-      "bytes": 15848,
-      "gzip": 4260
+      "sha256": "1142eecedc038995d2f947b77314a762f62a09c3c0625fa882f26fb15a861abe",
+      "sri": "sha384-Dc7qfOKp+uCNJYh0dezuZqrYK0Qd7++R9SqZSjywnPi9Kefuk1W/KszJGY6Yzgr5",
+      "bytes": 35997,
+      "gzip": 6949
     },
     "react-native/noraivoire.tsx": {
-      "sha256": "9ad8810aae3806b6aa2232ca67953f14aa69dcf5c37d837a56c9dcb63e0ba6d1",
-      "sri": "sha384-eDDMvzGwH/0DFDpcN5cielizjnMxHTCSNSsaoMzvcK0ZI2bP5DF+4f/AvSQrArcT",
-      "bytes": 13250,
-      "gzip": 4006
+      "sha256": "2b833078c544adc3f4294b5c840722762e10c656daf046cda09a49dcfeda95e9",
+      "sri": "sha384-GbTxWYI7d1hJuXx4YHeaif0YdPsQUP8+/3rq4Hn7o7h77oRm0rWnZSzR0ABja2N/",
+      "bytes": 33385,
+      "gzip": 7106
     },
     "manifest.json": {
-      "sha256": "316ac0dc2e92d8cefa4ccbe02fac328b88e7cbb349ad914a44d5cf16c5255834",
-      "sri": "sha384-/ZKGnCNAJ6FCzqUrg3CnSAxVJSWhjGC5X2y/AZmD1oNfjRdl3IuQUYnw+R6I4evJ",
-      "bytes": 8149,
-      "gzip": 2151
+      "sha256": "04b606883f05ec549e8fd785e4c0218a93fc55325d6b197f91e66c3f16343cba",
+      "sri": "sha384-HwPo1mWvUrgFlwFVPh+m18uNrwwtg+r/KJtfISqYUTtVos2zGkisf4NNGppUct7f",
+      "bytes": 16099,
+      "gzip": 3297
     },
     "llms-full.txt": {
-      "sha256": "f1a4b2ee046032d52c19d1b4d712ffbb3ad3186cb30cbdffca0fb587584b3a2b",
-      "sri": "sha384-WishQudnfAXxa65zyDZfm7Z3J3yYe5+KC0q6Kl/QFpjpyRiIATjTl6JyTz6TS+0g",
-      "bytes": 4314,
-      "gzip": 1812
+      "sha256": "e965a339f3b9d572d8ef243b362bd0aab07963b2dd4685355c157d869f2b3cbf",
+      "sri": "sha384-GxxGVr9DGBSRhAdPKKV2WTRWGg5VHtg4c3Gr/oJ0iG3KxxTEhUb3SiE95+rIqNGI",
+      "bytes": 9195,
+      "gzip": 2943
     }
   }
 }
