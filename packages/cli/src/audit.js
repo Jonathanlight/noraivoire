@@ -127,6 +127,13 @@ export function runAudit(root) {
   add('supply-chain', 'dart:sdk-only', !/import 'package:(?!flutter\/)/.test(dart), 'Dart : imports limités au SDK Flutter');
   add('supply-chain', 'rn:core-only', [...tsx.matchAll(/from '([^']+)'/g)].every((m) => ['react', 'react-native'].includes(m[1])), 'TSX : imports limités à react et react-native');
   add('sécurité', 'native:no-dynamic-code', !/\beval\(|new Function|dart:mirrors/.test(dart + tsx), 'natif : pas de code dynamique');
+  const twigs = Object.entries(a.files).filter(([k]) => k.startsWith('symfony/templates/'));
+  const twigWeak = twigs.filter(([, t]) => !/attributes\.without\('data-tone', 'data-size'/.test(t)
+    || !/\{% set tone = tone in \[/.test(t)
+    || (/href = null/.test(t) && !/not \(href starts with '\/\/'/.test(t))
+    || /\|raw\b|autoescape false/.test(t)).map(([k]) => k);
+  add('sécurité', 'symfony:twig-hardening', twigs.length > 0 && twigWeak.length === 0,
+    twigWeak.length ? `Twig Components non durcis : ${twigWeak.join(', ')}` : `Symfony : ${twigs.length} Twig Components durcis (listes blanches, attributs verrouillés, schémas d'URL, pas de |raw)`);
 
   // 7. Accessibilité
   add('accessibilité', 'reduced-motion', /prefers-reduced-motion: reduce/.test(css) && /reducedMotion/.test(engine) && /DisableAnimations/.test(dart) && /isReduceMotionEnabled/.test(tsx),

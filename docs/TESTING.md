@@ -5,9 +5,9 @@ Version 0.1.0 · 14 octobre 2026 · © Jonathan KABLAN — Propriétaire
 ## 1. Commandes
 
 ```bash
-npm test                    # 104 tests (node:test, aucun framework)
+npm test                    # 113 tests (node:test, aucun framework)
 npm run check               # valide tous les modèles
-npm run audit:security      # 70 contrôles
+npm run audit:security      # 78 contrôles
 npm run verify              # tout, dans l'ordre
 ```
 
@@ -24,8 +24,10 @@ npm run verify              # tout, dans l'ordre
 | `tests/unit/fx.test.js` | 13 | Paquets `fx-scroll` / `fx-text` : fonctions pures, compilation séparée, parité options JS ↔ spec, validation, neutralisation des commentaires, règle d'audit des écritures DOM, montage/démontage jsdom de chaque effet, mouvement réduit, restauration du DOM |
 | `tests/unit/fx-ssr.test.js` | 1 | Import sans DOM et `install()` idempotent |
 | `tests/unit/mcp.test.js` | 12 | Serveur MCP en sous-processus : poignée de main et négociation de version, `tools/list`, les 4 outils, erreurs JSON-RPC (`-32700`, `-32600`, `-32601`, `-32602`), traversée de chemin, lien symbolique, index absent, entrées trop grandes, code source sans commande/réseau/écriture |
-| `tests/unit/audit.test.js` | 1 | L'audit complet passe (70/70) |
+| `tests/unit/symfony.test.js` | 9 | Cible Symfony : un Twig Component par composant du manifest, ajout automatique d'un composant, déterminisme, en-têtes, listes blanches, `nora check` sur les Twig générés, littéraux PHP sûrs, manifest forgé refusé, éléments vides |
+| `tests/unit/audit.test.js` | 1 | L'audit complet passe (78/78) |
 | `examples/flutter_app/test/fx_test.dart` (Flutter) | 3 | `NoraScramble` : texte final, label sémantique, mouvement réduit ; `NoraParallax` : décalage au défilement, aucun en mouvement réduit |
+| `adapters/symfony-bundle/tests/` (PHPUnit) | 42 | Code PHP généré (enums, `NoraManifest`, `safeHref`), rendu réel des Twig Components dans un noyau Symfony (listes blanches, URL dangereuses, attributs verrouillés, échappement), AssetMapper, commande `nora:check` (texte, JSON, chemins refusés) |
 | `examples/flutter_app/test/goldens_test.dart` (Flutter) | 8 | Goldens `NoraBtn` (5 tons × 3 tailles), `NoraCard(glass: true)`, `NoraBadge`, clair et sombre ; sémantique bouton et zone ≥ 44 ; montage du modèle `templates/flutter/main.dart` |
 
 Vérifications complémentaires effectuées lors de la création :

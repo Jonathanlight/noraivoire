@@ -16,7 +16,7 @@ if (cmd === 'build') {
     const integrity = build(arg('spec', 'spec'), arg('out', 'packages/core/dist'));
     console.log(`NoraIvoire ${VERSION} — compilation réussie\n`);
     for (const [f, i] of Object.entries(integrity)) {
-      console.log(`  ${f.padEnd(30)} ${String(i.bytes).padStart(7)} o   gzip ${String(i.gzip).padStart(6)} o`);
+      console.log(`  ${f.padEnd(50)} ${String(i.bytes).padStart(7)} o   gzip ${String(i.gzip).padStart(6)} o`);
     }
   } catch (err) {
     console.error(`✖ ${err.message}`);

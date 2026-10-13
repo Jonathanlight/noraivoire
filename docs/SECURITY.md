@@ -30,11 +30,15 @@ NoraIvoire ne collecte, ne stocke et ne transmet **aucune donnée**. Aucune requ
 | M9 | Chargement externe via CSS | `@import`, `url(https://…)` | Interdits dans le CSS généré | Audit |
 | M10 | Chaîne d'approvisionnement | Paquet compromis | Zéro dépendance runtime ; `ignore-scripts=true` ; seule dépendance de dev : jsdom | Audit + `npm audit` |
 | M11 | Altération des fichiers servis | CDN ou proxy compromis | `integrity.json` : sha256 + SRI sha384 par fichier | Test |
-| M12 | Injection d'attribut côté serveur | `data-tone` alimenté par l'utilisateur | Composants Twig et JSP : liste blanche avant rendu ; recommandation d'utiliser des enums | Modèles |
+| M12 | Injection d'attribut côté serveur | `data-tone` alimenté par l'utilisateur | Composants Twig et JSP : liste blanche avant rendu ; enums PHP `NoraTone` / `NoraSize` générées ; Twig Components générés : `data-tone`, `data-size`, `href`, `type` non forçables par attribut (`attributes.without`) | Tests PHPUnit du bundle + audit `symfony:twig-hardening` |
+| M13 | Fuite du code propriétaire | Publication accidentelle sur npm | `private: true`, `license: UNLICENSED`, registre scopé privé ; bundle : `"license": "proprietary"`, jamais déclaré sur Packagist | Audit |
 | M14 | Agent IA détourné via le serveur MCP | Prompt injection qui pousse l'agent à lire ou modifier des fichiers via MCP | 4 outils en lecture seule (`readOnlyHint`) ; aucune commande, aucun réseau, aucune écriture ; seuls `manifest.json` et `recipes/` sont lus | Audit (`mcp:read-only`) + test du code source |
 | M15 | Traversée de chemin via `recipes/index.json` | `"file": "../../.env"` ou lien symbolique | Nom de fichier en liste blanche `[a-z0-9-].html`, `lstat` (lien refusé) + `realpath` confiné au dossier | Tests « traversée » et « lien symbolique » |
 | M16 | Déni de service du serveur MCP | Message géant, JSON invalide, lot JSON-RPC | Message ≤ 2 Mio (rejet sans décodage), `markup` ≤ 200 Kio, arguments ≤ 256 caractères, lots refusés, aucune exception non rattrapée | Tests « entrées trop grandes » et « erreurs JSON-RPC » |
-| M13 | Fuite du code propriétaire | Publication accidentelle sur npm | `private: true`, `license: UNLICENSED`, registre scopé privé | Audit |
+| M17 | URL dangereuse (`javascript:`, `data:`, `//hôte`, `/\hôte`) | `href` alimenté par l'utilisateur | Liste blanche de schémas dans les Twig Components générés et `NoraManifest::safeHref()` ; repli sur `<button>` | Tests PHPUnit |
+| M18 | Injection de code PHP/Twig à la génération | Valeur forgée dans le manifest | `targets/symfony.js` n'émet que des valeurs `^[a-z0-9][a-z0-9-]*$` entre apostrophes échappées (`phpQuote`), sinon la compilation échoue | Tests node « valeur non sûre », « littéraux PHP » |
+| M19 | Injection de commande via `nora:check` | Chemin forgé (`--manifest=…`, `../`, octet nul) | `Process` avec tableau d'arguments (pas de shell) ; chemins `realpath` confinés au projet, transmis en absolu ; `NODE_OPTIONS` retiré ; sortie console échappée | Tests PHPUnit |
+| M20 | Dépendance copyleft côté PHP | Paquet Composer GPL | Dépendances limitées à `symfony/*`, `twig/*` (MIT, BSD-3), PHPUnit en dev (BSD-3) ; `tool/check-licenses.php` en CI | Job CI `symfony` |
 
 ## 3. Recommandations de déploiement
 
@@ -58,7 +62,7 @@ Les empreintes sont dans `packages/core/dist/integrity.json`, régénérées à 
 
 ### Données dynamiques
 
-Ne jamais injecter une entrée utilisateur brute dans `data-tone`, `data-size` ou `data-fx`. Côté PHP, utiliser un `enum NoraTone: string`. Côté Java, une `enum`. Le moteur ignore les valeurs invalides, mais le CSS ne s'appliquera pas.
+Ne jamais injecter une entrée utilisateur brute dans `data-tone`, `data-size` ou `data-fx`. Côté PHP, utiliser l'enum générée `NoraIvoire\SymfonyBundle\Generated\Enum\NoraTone` (`NoraTone::tryFrom()`), et `<twig:Nora:Btn>` qui applique les listes blanches. Côté Java, une `enum`. Le moteur ignore les valeurs invalides, mais le CSS ne s'appliquera pas.
 
 ## 4. Signalement d'une vulnérabilité
 

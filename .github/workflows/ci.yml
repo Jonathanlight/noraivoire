@@ -74,3 +74,31 @@ jobs:
           cd /tmp/rn && npm init -y >/dev/null
           npm i --ignore-scripts --no-save typescript@5 react@19 @types/react@19 react-native@0.81
           npx tsc --strict --noEmit --jsx react-jsx --skipLibCheck --moduleResolution bundler --module esnext --target es2022 noraivoire.tsx noraivoire-fx.tsx
+
+  symfony:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: ['8.4', '8.5']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: composer:v2
+          coverage: none
+      - run: npm ci --ignore-scripts
+      - run: npm run build
+      - run: npm run symfony:sync
+      - name: dépendances Composer (aucun script ni plugin tiers)
+        working-directory: adapters/symfony-bundle
+        run: composer install --no-interaction --no-progress --no-scripts --no-plugins
+      - name: aucune licence copyleft dans l'arbre Composer
+        working-directory: adapters/symfony-bundle
+        run: composer licenses --format=json | php tool/check-licenses.php
+      - name: PHPUnit
+        working-directory: adapters/symfony-bundle
+        run: vendor/bin/phpunit

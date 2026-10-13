@@ -50,6 +50,48 @@
       "bytes": 13250,
       "gzip": 4006
     },
+    "symfony/src/NoraManifest.php": {
+      "sha256": "2b895e7e9de5f64ea1f0e721da948babcdef577e0e99ad8ec01b42d9ea43a2be",
+      "sri": "sha384-j6Sf+v3mE2RvuAGW8CcIpvqhRiOzt3bdG7ZKuWoEkCguif+PR51O1AJYuSXmlaFu",
+      "bytes": 2561,
+      "gzip": 960
+    },
+    "symfony/src/Enum/NoraTone.php": {
+      "sha256": "34df4a2e3369ce410e10e0db1c67d97f806509cafc4e0676a796f663cf7c8219",
+      "sri": "sha384-fBAZ9Mmzp8ie8Pyst0DSIgsUJc9BH6NM1p6X8Do+kc8pim2kwaJHNJaJg/gFExgd",
+      "bytes": 1052,
+      "gzip": 616
+    },
+    "symfony/src/Enum/NoraSize.php": {
+      "sha256": "11e6734dd4a5e6ce2bb28c9b2ea73bb30d814282f1ce45c5c8d0135756548746",
+      "sri": "sha384-Brzd7k8+P7ryubawb0wb9KfmJhBywAIAY9e8Oxkv2NmysYNf8qGj7ZnHv+mG2l6U",
+      "bytes": 967,
+      "gzip": 590
+    },
+    "symfony/src/Enum/NoraComponent.php": {
+      "sha256": "dcee3abcfc47a526c067d3571869781d1bac04e19bacf814d35c5d62e19cfdd1",
+      "sri": "sha384-P7l06m6DwD2rtrAlCkpdaYdKymHIjVV+k0CzbAFo6YN/7naNor4YZw4lzhc0/leV",
+      "bytes": 643,
+      "gzip": 435
+    },
+    "symfony/templates/components/Nora/Badge.html.twig": {
+      "sha256": "f7b8d9fa1d9ed77b2b38c18e7d158327bd8f208e31db4ae4e4795ec15ce98848",
+      "sri": "sha384-0XYNNw2AcCdYsUivMCOpo9BaEjMKwrT2y/EMDW/N7SaMW89XSwj0wvqbyWiYAUqI",
+      "bytes": 845,
+      "gzip": 531
+    },
+    "symfony/templates/components/Nora/Btn.html.twig": {
+      "sha256": "b733b47fc4577bbd7f42441661666bb2906d5bdc12aa1cb5bd5f571a1a16f8af",
+      "sri": "sha384-ob2uEEMoYz6RZb5GeOaZVVnmTKoxbYuDdWtM9BweThiU9epCrzF6IdmrXr5Qvnv+",
+      "bytes": 1482,
+      "gzip": 724
+    },
+    "symfony/templates/components/Nora/Card.html.twig": {
+      "sha256": "139d0e51be41420a7119391f54ed15f73b4abc61f4c5f0544b10ff24d87bc30f",
+      "sri": "sha384-897w1Kumpbho1FfhFmXevckKl5Z26fr2D+5pAbDiKx9C4nLts7DfQ/tLA6gI22sE",
+      "bytes": 1339,
+      "gzip": 607
+    },
     "manifest.json": {
       "sha256": "ae2ea0f3b807ee0ac2dfd2fede5fbae9b8bb1a722d3464c9486cf9909fdafabd",
       "sri": "sha384-QQh8biR04H7rVT5f4jGK6m7Aok4YVq/YZ/k9sGWnZuVWbZRAARpoMN89jd7jtLNE",

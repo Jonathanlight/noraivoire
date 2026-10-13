@@ -12,6 +12,7 @@
 - Serveur MCP `packages/mcp/` (`nora-mcp`) : stdio, JSON-RPC 2.0 écrit sans dépendance, 4 outils en lecture seule (`nora_get_component`, `nora_list_tokens`, `nora_validate`, `nora_recipe`), accès disque limité au manifest et à `recipes/` (liste blanche, sans lien symbolique), limites de taille ; contrôle d'audit `mcp:read-only` ; 11 tests ; configuration Claude Code, Claude Desktop, Cursor et VS Code dans `packages/mcp/README.md`.
 - Serveur MCP *dual-era* : requêtes sans état de la spec MCP `2026-07-28` (`server/discover`, `_meta` par requête, `resultType`, erreur `-32022`) en plus de la poignée de main `initialize` (`2025-11-25` et antérieures) ; 1 test.
 - Sécurité : les descriptions de la spec insérées dans les commentaires Dart/TSX du cœur passent par `docComment()` (une ligne, `*/` neutralisé) ; une description multi-ligne pouvait injecter du code Dart. 1 test.
+- Bundle Symfony (`adapters/symfony-bundle/`, PHP 8.4+, Symfony 7.3+) : cible `targets/symfony.js` qui génère depuis le manifest les Twig Components `Nora:*` (listes blanches, attributs verrouillés, schémas d'URL dont `/\` refusé) et les enums `NoraTone`, `NoraSize`, `NoraComponent` avec `NoraManifest` ; intégration AssetMapper ; commande `bin/console nora:check` (CLI Node via `Process`, chemins confinés au projet) ; `npm run symfony:sync` ; 42 tests PHPUnit, 9 tests node, contrôle d'audit `symfony:twig-hardening`, job CI `symfony` (PHP 8.4 et 8.5, contrôle des licences). `nora check` accepte un chemin `--manifest=` contenant « = ».
 
 ## 0.1.0 — 14 octobre 2026
 

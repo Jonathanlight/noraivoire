@@ -11,6 +11,7 @@ import { buildCss } from './targets/css.js';
 import { buildFlutter } from './targets/flutter.js';
 import { buildReactNative } from './targets/react-native.js';
 import { buildManifest, buildLlms, buildWebTypes } from './targets/manifest.js';
+import { buildSymfony } from './targets/symfony.js';
 import { header } from './header.js';
 import { loadFx, buildFx } from './fx.js';
 
@@ -66,6 +67,7 @@ export function compile(specDir, { version = VERSION } = {}) {
     'noraivoire.types.ts': buildWebTypes(manifest, meta),
     'flutter/noraivoire.dart': buildFlutter(model, meta),
     'react-native/noraivoire.tsx': buildReactNative(model, meta),
+    ...buildSymfony(manifest, meta),
     'manifest.json': JSON.stringify(manifest, null, 2) + '\n',
     'llms-full.txt': buildLlms(manifest),
     ...fx.files,
