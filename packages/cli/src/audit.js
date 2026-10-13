@@ -41,6 +41,13 @@ const ENGINE_FORBIDDEN = [
   [/import\s*\(\s*['"`]https?:/, 'import distant'],
 ];
 
+const MCP_FORBIDDEN = [
+  [/child_process|\bexecSync\b|\bspawn\(/, 'exécution de commande'],
+  [/node:(net|http|https|http2|dgram|tls|dns)\b|\bfetch\s*\(|WebSocket/, 'accès réseau'],
+  [/writeFile|appendFile|createWriteStream|\bmkdir|\bunlink|\brmSync\b|\brm\(|\brename/, 'écriture disque'],
+  [/\beval\s*\(|new\s+Function\s*\(|node:vm\b/, 'code dynamique'],
+];
+
 const CSS_FORBIDDEN = [
   [/@import/i, '@import (chargement externe)'],
   [/url\(\s*['"]?https?:/i, 'url() externe'],
@@ -99,6 +106,14 @@ export function runAudit(root) {
     add('sécurité', `fx:forbidden:${f}`, hits.length === 0, hits.length ? `${f} : ${hits.join(', ')}` : `${f} : aucun des ${ENGINE_FORBIDDEN.length} motifs interdits du moteur`);
     const dom = fxDomViolations(src);
     add('sécurité', `fx:dom-writes:${f}`, dom.length === 0, dom.length ? `${f} : écritures hors contrat ${dom.join(' | ')}` : `${f} : écritures limitées à --fx-*, data-fx-*, aria-hidden et <span>`);
+  }
+
+  // 4 ter. Serveur MCP : lecture seule
+  const mcpDir = join(root, 'packages', 'mcp', 'src');
+  if (existsSync(mcpDir)) {
+    const mcp = readdirSync(mcpDir).filter((f) => f.endsWith('.js')).map((f) => readFileSync(join(mcpDir, f), 'utf8')).join('\n');
+    const hits = MCP_FORBIDDEN.filter(([re]) => re.test(mcp)).map(([, label]) => label);
+    add('sécurité', 'mcp:read-only', hits.length === 0, hits.length ? `MCP : interdit ${hits.join(', ')}` : 'MCP : aucune commande, réseau, écriture disque ni code dynamique');
   }
 
   // 5. Sécurité du CSS

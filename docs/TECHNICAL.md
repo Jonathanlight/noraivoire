@@ -227,7 +227,57 @@ Limites connues : une apostrophe dans du texte JSX placé **dans une valeur d'at
 
 ### 7.2 `nora audit`
 
-67 contrôles automatisés : licence, chaîne d'approvisionnement, validité de la spec, déterminisme, en-têtes de propriété, motifs dangereux (moteur, paquets d'effets et CSS), écritures DOM des paquets d'effets, imports natifs, accessibilité, budgets de poids (dont 2 Kio par paquet d'effets), fraîcheur de `dist`. Voir [AUDIT-REPORT.md](AUDIT-REPORT.md).
+70 contrôles automatisés : licence, chaîne d'approvisionnement, validité de la spec, déterminisme, en-têtes de propriété, motifs dangereux (moteur, paquets d'effets et CSS), écritures DOM des paquets d'effets, imports natifs, accessibilité, budgets de poids (dont 2 Kio par paquet d'effets), fraîcheur de `dist`. Voir [AUDIT-REPORT.md](AUDIT-REPORT.md).
+
+### 7.3 Serveur MCP (`packages/mcp`)
+
+Serveur [Model Context Protocol](https://modelcontextprotocol.io) en **lecture seule**, transport stdio (un message JSON-RPC 2.0 par ligne), écrit sans dépendance. Configuration des clients : [packages/mcp/README.md](../packages/mcp/README.md).
+
+```
+stdin ──► server.js (découpage par ligne, 2 Mio max) ──► protocol.js (JSON-RPC, initialize, ping, tools/*)
+                                                             │
+                                                         tools.js ──► manifest.json (lu au démarrage)
+                                                             │      ──► checkSource() de nora check
+                                                             │      ──► recipes/index.json + recettes
+stdout ◄── une réponse JSON par ligne ◄──────────────────────┘          (journaux sur stderr)
+```
+
+| Outil | Rôle |
+|---|---|
+| `nora_get_component(name)` | Définition d'un composant ou d'un effet du manifest (champ `category`) |
+| `nora_list_tokens(group)` | Groupes de tokens, ou variables CSS d'un groupe |
+| `nora_validate(markup, format)` | Règles de `nora check` sur un balisage (200 Kio max) |
+| `nora_recipe(intent)` | Écran de référence correspondant à une intention |
+
+Négociation : la version de protocole demandée par le client est retenue si elle figure dans `PROTOCOL_VERSIONS` (`2025-11-25`, `2025-06-18`, `2025-03-26`, `2024-11-05`), sinon le serveur répond avec la plus récente. Erreurs : `-32700` JSON invalide, `-32600` requête invalide, lot ou message trop volumineux, `-32601` méthode inconnue, `-32602` outil inconnu ou `params` non objet. Une erreur d'usage d'un outil est un résultat `isError: true`.
+
+#### Format de `recipes/index.json`
+
+```json
+{
+  "version": 1,
+  "recipes": [
+    {
+      "id": "login",
+      "title": "Connexion",
+      "intents": ["connexion", "login", "se connecter"],
+      "file": "login.html",
+      "components": ["btn", "field", "input"]
+    }
+  ]
+}
+```
+
+| Champ | Contrainte |
+|---|---|
+| `version` | `1` |
+| `id` | `^[a-z0-9][a-z0-9-]{0,63}$`, unique |
+| `title` | Libellé court en français |
+| `intents` | Formulations en français et en anglais ; la première sert d'exemple dans les messages |
+| `file` | `^[a-z0-9][a-z0-9-]{0,63}\.html$`, fichier ordinaire directement dans `recipes/` (ni sous-dossier, ni lien symbolique) |
+| `components` | Composants NoraIvoire utilisés |
+
+Correspondance : l'intention et chaque formulation (`id`, `title`, `intents`) sont normalisées (minuscules, sans accents ni ponctuation). Égalité exacte (score 100) > formulation contenue dans la demande ou l'inverse (50) > mots communs de plus de 2 lettres (10 par mot). La meilleure recette l'emporte ; à score nul, l'outil liste les intentions disponibles. Si `recipes/index.json` est absent, l'outil renvoie une erreur explicite, sans arrêter le serveur. Le dossier peut être remplacé par la variable `NORA_MCP_RECIPES`.
 
 ## 8. Ajouter un composant
 

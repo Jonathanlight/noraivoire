@@ -9,6 +9,7 @@
 - Effets optionnels : paquets `@noraivoire/fx-scroll` (`pin`, `scrub`, `parallax`) et `@noraivoire/fx-text` (`split`, `scramble`), spec dans `spec/fx/`, chargés à la demande via `install(moteur)` ; `NoraParallax` et `NoraScramble` en Flutter et React Native, `pin`/`scrub`/`split` documentés web uniquement ; audit porté à 67 contrôles (motifs interdits, écritures DOM bornées, budget 2 Kio gzip par paquet, mouvement réduit) ; 14 tests.
 
 - Flutter : tests de widgets `NoraScramble` et `NoraParallax` dans `examples/flutter_app/test/fx_test.dart` ; `flutter:sync` copie aussi `noraivoire_fx.dart`.
+- Serveur MCP `packages/mcp/` (`nora-mcp`) : stdio, JSON-RPC 2.0 écrit sans dépendance, 4 outils en lecture seule (`nora_get_component`, `nora_list_tokens`, `nora_validate`, `nora_recipe`), accès disque limité au manifest et à `recipes/` (liste blanche, sans lien symbolique), limites de taille ; contrôle d'audit `mcp:read-only` ; 11 tests ; configuration Claude Code, Claude Desktop, Cursor et VS Code dans `packages/mcp/README.md`.
 
 ## 0.1.0 — 14 octobre 2026
 
