@@ -8,6 +8,7 @@ Version 0.1.0 · 14 octobre 2026 · © Jonathan KABLAN — Propriétaire
 |---|---|---|
 | Compilateur `noractl` | Poste développeur, CI | Fichiers de spec (non fiables) |
 | `nora check` / `nora audit` | Poste développeur, CI, agent IA | Templates du projet |
+| Serveur MCP `nora-mcp` | Poste développeur, lancé par le client IA (stdio) | Messages JSON-RPC de l'agent (non fiables), manifest, recettes |
 | CSS et moteur d'effets | Navigateur des utilisateurs finaux | Attributs `data-fx*` du DOM |
 | Dart / TSX générés | Applications mobiles | Props des composants |
 
@@ -29,6 +30,9 @@ NoraIvoire ne collecte, ne stocke et ne transmet **aucune donnée**. Aucune requ
 | M10 | Chaîne d'approvisionnement | Paquet compromis | Zéro dépendance runtime ; `ignore-scripts=true` ; seule dépendance de dev : jsdom | Audit + `npm audit` |
 | M11 | Altération des fichiers servis | CDN ou proxy compromis | `integrity.json` : sha256 + SRI sha384 par fichier | Test |
 | M12 | Injection d'attribut côté serveur | `data-tone` alimenté par l'utilisateur | Composants Twig et JSP : liste blanche avant rendu ; recommandation d'utiliser des enums | Modèles |
+| M14 | Agent IA détourné via le serveur MCP | Prompt injection qui pousse l'agent à lire ou modifier des fichiers via MCP | 4 outils en lecture seule (`readOnlyHint`) ; aucune commande, aucun réseau, aucune écriture ; seuls `manifest.json` et `recipes/` sont lus | Audit (`mcp:read-only`) + test du code source |
+| M15 | Traversée de chemin via `recipes/index.json` | `"file": "../../.env"` ou lien symbolique | Nom de fichier en liste blanche `[a-z0-9-].html`, `lstat` (lien refusé) + `realpath` confiné au dossier | Tests « traversée » et « lien symbolique » |
+| M16 | Déni de service du serveur MCP | Message géant, JSON invalide, lot JSON-RPC | Message ≤ 2 Mio (rejet sans décodage), `markup` ≤ 200 Kio, arguments ≤ 256 caractères, lots refusés, aucune exception non rattrapée | Tests « entrées trop grandes » et « erreurs JSON-RPC » |
 | M13 | Fuite du code propriétaire | Publication accidentelle sur npm | `private: true`, `license: UNLICENSED`, registre scopé privé | Audit |
 
 ## 3. Recommandations de déploiement
@@ -62,5 +66,5 @@ Projet privé. Écrire à jonathan.kablan@gmail.com avec l'objet « [NoraIvoire]
 ## 5. Points de vigilance pour la suite
 
 - Ajouter un effet WebGL impliquera du code de shader : l'isoler dans un paquet optionnel, avec sa propre revue.
-- Si un serveur MCP est ajouté, il devra être en lecture seule sur le manifest et ne jamais exécuter de commande arbitraire.
+- Serveur MCP : en place, en lecture seule (voir M14 à M16). Toute future capacité d'écriture (génération de fichiers) devra passer par un outil distinct, désactivé par défaut, avec confirmation côté client.
 - Signer les releases (Sigstore ou GPG) quand un registre privé sera en place.

@@ -24,6 +24,13 @@ const ENGINE_FORBIDDEN = [
   [/import\s*\(\s*['"`]https?:/, 'import distant'],
 ];
 
+const MCP_FORBIDDEN = [
+  [/child_process|\bexecSync\b|\bspawn\(/, 'exécution de commande'],
+  [/node:(net|http|https|http2|dgram|tls|dns)\b|\bfetch\s*\(|WebSocket/, 'accès réseau'],
+  [/writeFile|appendFile|createWriteStream|\bmkdir|\bunlink|\brmSync\b|\brm\(|\brename/, 'écriture disque'],
+  [/\beval\s*\(|new\s+Function\s*\(|node:vm\b/, 'code dynamique'],
+];
+
 const CSS_FORBIDDEN = [
   [/@import/i, '@import (chargement externe)'],
   [/url\(\s*['"]?https?:/i, 'url() externe'],
@@ -73,6 +80,14 @@ export function runAudit(root) {
   // 4. Sécurité du moteur JS
   const engine = a.files['noraivoire.engine.js'] + a.files['noraivoire.auto.js'];
   for (const [re, label] of ENGINE_FORBIDDEN) add('sécurité', `engine:${label}`, !re.test(engine), `moteur : absence de ${label}`);
+
+  // 4 bis. Serveur MCP : lecture seule
+  const mcpDir = join(root, 'packages', 'mcp', 'src');
+  if (existsSync(mcpDir)) {
+    const mcp = readdirSync(mcpDir).filter((f) => f.endsWith('.js')).map((f) => readFileSync(join(mcpDir, f), 'utf8')).join('\n');
+    const hits = MCP_FORBIDDEN.filter(([re]) => re.test(mcp)).map(([, label]) => label);
+    add('sécurité', 'mcp:read-only', hits.length === 0, hits.length ? `MCP : interdit ${hits.join(', ')}` : 'MCP : aucune commande, réseau, écriture disque ni code dynamique');
+  }
 
   // 5. Sécurité du CSS
   const css = a.files['noraivoire.css'];

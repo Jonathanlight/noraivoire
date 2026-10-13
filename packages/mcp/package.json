@@ -1,0 +1,12 @@
+{
+  "name": "@noraivoire/mcp",
+  "version": "0.1.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "description": "Serveur MCP NoraIvoire (stdio, lecture seule) : composants, tokens, validation et recettes pour les agents IA. Propriétaire.",
+  "author": "Jonathan KABLAN",
+  "type": "module",
+  "bin": { "nora-mcp": "src/server.js" },
+  "engines": { "node": ">=20" },
+  "dependencies": {}
+}

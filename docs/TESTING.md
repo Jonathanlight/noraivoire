@@ -5,9 +5,9 @@ Version 0.1.0 · 14 octobre 2026 · © Jonathan KABLAN — Propriétaire
 ## 1. Commandes
 
 ```bash
-npm test                    # 77 tests (node:test, aucun framework)
+npm test                    # 88 tests (node:test, aucun framework)
 npm run check               # valide tous les modèles
-npm run audit:security      # 50 contrôles
+npm run audit:security      # 53 contrôles
 npm run verify              # tout, dans l'ordre
 ```
 
@@ -21,7 +21,8 @@ npm run verify              # tout, dans l'ordre
 | `tests/unit/engine.test.js` | 8 | Analyse des options (bornes, types, pollution, troncature), liste d'effets, enregistrement, SSR |
 | `tests/unit/engine-dom.test.js` | 6 | Moteur dans un DOM (jsdom) : montage initial, montage SPA, tilt, démontage, changement d'attribut, isolation des erreurs |
 | `tests/unit/bench.test.js` | 13 | Benchmark IA : tâches, requêtes, extraction, score, agrégation, retry, concurrence, masquage des clés, pipeline simulé |
-| `tests/unit/audit.test.js` | 1 | L'audit complet passe (50/50) |
+| `tests/unit/mcp.test.js` | 11 | Serveur MCP en sous-processus : poignée de main et négociation de version, `tools/list`, les 4 outils, erreurs JSON-RPC (`-32700`, `-32600`, `-32601`, `-32602`), traversée de chemin, lien symbolique, index absent, entrées trop grandes, code source sans commande/réseau/écriture |
+| `tests/unit/audit.test.js` | 1 | L'audit complet passe (53/53) |
 | `examples/flutter_app/test/goldens_test.dart` (Flutter) | 8 | Goldens `NoraBtn` (5 tons × 3 tailles), `NoraCard(glass: true)`, `NoraBadge`, clair et sombre ; sémantique bouton et zone ≥ 44 ; montage du modèle `templates/flutter/main.dart` |
 
 Vérifications complémentaires effectuées lors de la création :

@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "recipes": [
+    {
+      "id": "login",
+      "title": "Connexion",
+      "intents": ["connexion", "login", "se connecter", "écran de connexion"],
+      "file": "login.html",
+      "components": ["btn", "card"]
+    },
+    {
+      "id": "pricing",
+      "title": "Tarifs",
+      "intents": ["tarifs", "pricing", "grille tarifaire"],
+      "file": "../../../package.json",
+      "components": ["card", "badge"]
+    },
+    {
+      "id": "missing",
+      "title": "Introuvable",
+      "intents": ["fichier absent"],
+      "file": "absent.html",
+      "components": []
+    }
+  ]
+}
