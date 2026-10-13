@@ -1,0 +1,19 @@
+/*!
+ * NoraIvoire 0.1.0 — fichier GÉNÉRÉ (css) depuis la spec. Ne pas modifier à la main.
+ * © 2026 Jonathan KABLAN — Logiciel propriétaire, tous droits réservés.
+ * Usage soumis au contrat de licence NoraIvoire. Redistribution interdite.
+ */
+@layer nora.effects {
+  /* pin : fonctionne sans JS (sticky) ; le JS ajoute data-fx-pinned et --fx-pin-progress. */
+  [data-fx~="pin"] { position: sticky; inset-block-start: var(--fx-pin-top, 0px); z-index: 1; }
+  /* scrub : sans JS, --fx-progress vaut 1 (état final, rien n'est masqué). */
+  [data-fx~="scrub"] { --fx-progress: 1; }
+  @keyframes nora-parallax { from { translate: 0 calc(var(--fx-speed, 20) * 2px); } to { translate: 0 calc(var(--fx-speed, 20) * -2px); } }
+  [data-fx~="parallax"] { translate: 0 var(--fx-parallax, 0px); }
+  @supports (animation-timeline: view()) {
+    [data-fx~="parallax"] { animation: nora-parallax linear both; animation-timeline: view(); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-fx~="parallax"] { translate: none; animation: none; opacity: 1; }
+  }
+}

@@ -1,0 +1,19 @@
+/*!
+ * NoraIvoire 0.1.0 — fichier GÉNÉRÉ (css) depuis la spec. Ne pas modifier à la main.
+ * © 2026 Jonathan KABLAN — Logiciel propriétaire, tous droits réservés.
+ * Usage soumis au contrat de licence NoraIvoire. Redistribution interdite.
+ */
+@layer nora.effects {
+  /* Copie lue par les lecteurs d'écran ; la version animée est aria-hidden. */
+  :where([data-fx~="scramble"] > [data-fx-sr], [data-fx~="split"] > [data-fx-sr]) { position: absolute; inline-size: 1px; block-size: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+  @keyframes nora-split { from { opacity: 0; translate: 0 0.4em; } to { opacity: 1; translate: none; } }
+  [data-fx~="split"] [data-fx-piece] { display: inline-block; }
+  [data-fx~="split"]:not([data-fx-visible]) [data-fx-piece] { opacity: 0; }
+  [data-fx~="split"][data-fx-visible] [data-fx-piece] {
+    animation: nora-split 500ms ease both;
+    animation-delay: calc(var(--fx-i, 0) * var(--fx-stagger, 30ms));
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-fx~="split"] [data-fx-piece] { translate: none; animation: none; opacity: 1; }
+  }
+}

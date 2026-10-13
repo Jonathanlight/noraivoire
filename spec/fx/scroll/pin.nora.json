@@ -1,0 +1,18 @@
+{
+  "$nora": "effect",
+  "$version": "1.0.0",
+  "effect": "pin",
+  "kind": "scroll-pin",
+  "package": "fx-scroll",
+  "description": "Épingle l'élément (position: sticky) pendant le défilement de son parent et expose la progression dans --fx-pin-progress.",
+  "input": "scroll",
+  "options": {
+    "top": { "type": "number", "default": 0, "min": 0, "max": 400 }
+  },
+  "reducedMotion": "keep",
+  "platforms": {
+    "web": "position: sticky (sans JS) + data-fx-pinned et --fx-pin-progress (JS)",
+    "react-native": "non généré : ScrollView stickyHeaderIndices est l'équivalent natif",
+    "flutter": "non généré : SliverPersistentHeader(pinned: true) est l'équivalent natif"
+  }
+}

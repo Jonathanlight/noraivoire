@@ -39,8 +39,8 @@ jobs:
       - name: analyse du Dart généré
         run: |
           flutter create --no-pub /tmp/nora_probe
-          cp packages/core/dist/flutter/noraivoire.dart /tmp/nora_probe/lib/
-          cd /tmp/nora_probe && flutter pub get && flutter analyze lib/noraivoire.dart
+          cp packages/core/dist/flutter/*.dart /tmp/nora_probe/lib/
+          cd /tmp/nora_probe && flutter pub get && flutter analyze lib/noraivoire.dart lib/noraivoire_fx.dart
 
   react-native-types:
     runs-on: ubuntu-latest
@@ -51,7 +51,7 @@ jobs:
           node-version: 22
       - name: TypeScript strict du TSX généré
         run: |
-          mkdir -p /tmp/rn && cp packages/core/dist/react-native/noraivoire.tsx /tmp/rn/
+          mkdir -p /tmp/rn && cp packages/core/dist/react-native/*.tsx /tmp/rn/
           cd /tmp/rn && npm init -y >/dev/null
           npm i --ignore-scripts --no-save typescript@5 react@19 @types/react@19 react-native@0.81
-          npx tsc --strict --noEmit --jsx react-jsx --skipLibCheck --moduleResolution bundler --module esnext --target es2022 noraivoire.tsx
+          npx tsc --strict --noEmit --jsx react-jsx --skipLibCheck --moduleResolution bundler --module esnext --target es2022 noraivoire.tsx noraivoire-fx.tsx

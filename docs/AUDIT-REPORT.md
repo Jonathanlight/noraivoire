@@ -1,7 +1,7 @@
 # NoraIvoire — Rapport d'audit
 
 **Version auditée :** 0.1.0 · **Date :** 14 octobre 2026 · **Périmètre :** dépôt complet
-**Méthode :** audit automatisé (`nora audit`, 50 contrôles), 44 tests, vérification TypeScript stricte, `npm audit`, revue manuelle du code.
+**Méthode :** audit automatisé (`nora audit`, 67 contrôles), 58 tests, vérification TypeScript stricte, `npm audit`, revue manuelle du code.
 © Jonathan KABLAN — Document confidentiel
 
 ## 1. Synthèse
@@ -24,8 +24,8 @@
 
 | Indicateur | Valeur |
 |---|---|
-| Tests | 44 / 44 réussis |
-| Contrôles d'audit | 50 / 50 réussis |
+| Tests | 58 / 58 réussis |
+| Contrôles d'audit | 67 / 67 réussis |
 | Modèles validés par `nora check` | 13 fichiers, 0 erreur, 0 avertissement |
 | Erreurs TypeScript (strict) sur le TSX généré | 0 |
 | Vulnérabilités `npm audit` | 0 |
@@ -38,6 +38,8 @@
 | `noraivoire.auto.js` | 0,5 Kio | 0,4 Kio |
 | `flutter/noraivoire.dart` | 15,6 Kio | 4,2 Kio |
 | `react-native/noraivoire.tsx` | 12,9 Kio | 3,9 Kio |
+| `fx/fx-scroll.js` (optionnel) | 3,6 Kio | 1,3 Kio (budget 2) |
+| `fx/fx-text.js` (optionnel) | 3,8 Kio | 1,6 Kio (budget 2) |
 
 ## 3. Constats
 

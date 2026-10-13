@@ -33,10 +33,10 @@
       "gzip": 658
     },
     "noraivoire.types.ts": {
-      "sha256": "d53650a41e877a6bb77f201e9cb94f0d6c54bf6318a173754900050176d8b4c4",
-      "sri": "sha384-kOw26tnILhzD1pZYYdP0c7ymVyDL+F/yNWllAE9GgSwZTV6eUMynvC16uQXnwunn",
-      "bytes": 1868,
-      "gzip": 870
+      "sha256": "386aa4d0c8336c1e7218641b0ff68e74440c7e2567fcd8a75314828b365fd084",
+      "sri": "sha384-78qZcAT7P3BHXcfL4Yn7klF2k8SIRovQPnGwO6z/C1+XHd3D+XXRuEAnBcoNXHgc",
+      "bytes": 1922,
+      "gzip": 892
     },
     "flutter/noraivoire.dart": {
       "sha256": "197f5b388673f4e2ef5787f1c205b7ac8a32566b04371a1baed4efa121c10b4e",
@@ -51,16 +51,52 @@
       "gzip": 4006
     },
     "manifest.json": {
-      "sha256": "316ac0dc2e92d8cefa4ccbe02fac328b88e7cbb349ad914a44d5cf16c5255834",
-      "sri": "sha384-/ZKGnCNAJ6FCzqUrg3CnSAxVJSWhjGC5X2y/AZmD1oNfjRdl3IuQUYnw+R6I4evJ",
-      "bytes": 8149,
-      "gzip": 2151
+      "sha256": "ae2ea0f3b807ee0ac2dfd2fede5fbae9b8bb1a722d3464c9486cf9909fdafabd",
+      "sri": "sha384-QQh8biR04H7rVT5f4jGK6m7Aok4YVq/YZ/k9sGWnZuVWbZRAARpoMN89jd7jtLNE",
+      "bytes": 13529,
+      "gzip": 3216
     },
     "llms-full.txt": {
-      "sha256": "f1a4b2ee046032d52c19d1b4d712ffbb3ad3186cb30cbdffca0fb587584b3a2b",
-      "sri": "sha384-WishQudnfAXxa65zyDZfm7Z3J3yYe5+KC0q6Kl/QFpjpyRiIATjTl6JyTz6TS+0g",
-      "bytes": 4314,
-      "gzip": 1812
+      "sha256": "d11842ec9d27b1639863acc17aa52936f0b700882f12098b2df97a51944ff330",
+      "sri": "sha384-doFJiHuJRCLQkC7VawnoXkJGMhhJSZJiglPUuBxGElP65eXrA3gy8Wi1RI2BsXyU",
+      "bytes": 6207,
+      "gzip": 2321
+    },
+    "fx/fx-scroll.js": {
+      "sha256": "acdab3b1772d615e0f07cc893408a6ba776b482239cb4a3aa3a2b25f5ee0de6c",
+      "sri": "sha384-VQbKp+gINmJJiVLobMq17yiuxlvlp8CSEBtte+WLihyNfXT5bJQsu0YayvARv+hI",
+      "bytes": 3705,
+      "gzip": 1373
+    },
+    "fx/fx-scroll.css": {
+      "sha256": "ff3878573d76ec34d6aded8a76aa1cfbd1bb498ec833bcfc2cc43b8dc60a69bd",
+      "sri": "sha384-htBawyvgJuvYwg81MnCJ+Lqcs/hkhGHlVi//Q1dUN3x5nrMSGYnQtg0OrOnCm/eJ",
+      "bytes": 1066,
+      "gzip": 574
+    },
+    "fx/fx-text.js": {
+      "sha256": "0de0d5ee7c8809f132beb03a670332286f1511d316ecfad8515c117db9c1f979",
+      "sri": "sha384-021vDaGtTuQA3cFJ5FC16rRPXQnNLs6o3wf/tRi0Uh38Q85cpT41Zy1TxMCKUyCc",
+      "bytes": 3872,
+      "gzip": 1598
+    },
+    "fx/fx-text.css": {
+      "sha256": "c84b17857e57b48389cff7384b27a68b228c269c07742a21d8865e2dcfa4cc24",
+      "sri": "sha384-cohlnluVNDvbuEEuLQYq9GwddhteaMyqw5UR9DegCB0+EQQU2psfhuyq40TkR6hg",
+      "bytes": 1155,
+      "gzip": 631
+    },
+    "flutter/noraivoire_fx.dart": {
+      "sha256": "f86670c340a51eca03d82c4adc93680342b3d2f7a46b1021fc025fe74b122ac8",
+      "sri": "sha384-gWpnWbiX4f76jFqMEYU1gN67gYb53rEdc/q4Qg+Tj+5ay2SbcIqXKVAw6+PD2hUP",
+      "bytes": 4204,
+      "gzip": 1807
+    },
+    "react-native/noraivoire-fx.tsx": {
+      "sha256": "ad041ee609ba1a33445bc2563d293b69c277e5b2bc68622c3d2bace8f8de41bb",
+      "sri": "sha384-DQTu7f8U/2jMKVScZGxRblc1c0wLPpSVJbWU6ygQFLIgfgeLSDEB02why+6aQIlW",
+      "bytes": 3464,
+      "gzip": 1641
     }
   }
 }

@@ -1,0 +1,19 @@
+{
+  "$nora": "effect",
+  "$version": "1.0.0",
+  "effect": "split",
+  "kind": "text-split",
+  "package": "fx-text",
+  "description": "Découpe un texte en lettres ou en mots animés en cascade à l'apparition ; le texte complet reste lu une seule fois par les lecteurs d'écran.",
+  "input": "visibility",
+  "options": {
+    "words": { "type": "boolean", "default": false },
+    "stagger": { "type": "number", "default": 30, "min": 0, "max": 200 }
+  },
+  "reducedMotion": "disable",
+  "platforms": {
+    "web": "éléments span créés par createElement/textContent, DOM restauré au démontage",
+    "react-native": "web uniquement : un Text par caractère casse la césure et l'accessibilité natives",
+    "flutter": "web uniquement : un widget par caractère casse la césure et la sémantique natives"
+  }
+}

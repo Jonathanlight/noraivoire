@@ -3,6 +3,7 @@
 ## Non publié
 
 - Dépôt : ajout de `.npmrc` (`ignore-scripts=true`), `.gitignore` et `.github/workflows/ci.yml` (jobs `verify`, `flutter`, `react-native-types`).
+- Effets optionnels : paquets `@noraivoire/fx-scroll` (`pin`, `scrub`, `parallax`) et `@noraivoire/fx-text` (`split`, `scramble`), spec dans `spec/fx/`, chargés à la demande via `install(moteur)` ; `NoraParallax` et `NoraScramble` en Flutter et React Native, `pin`/`scrub`/`split` documentés web uniquement ; audit porté à 67 contrôles (motifs interdits, écritures DOM bornées, budget 2 Kio gzip par paquet, mouvement réduit) ; 14 tests.
 
 ## 0.1.0 — 14 octobre 2026
 

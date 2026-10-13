@@ -137,7 +137,43 @@ defineEffect('magnet', {
 
 Fonctionnement : un **seul** `MutationObserver` surveille `childList` et l'attribut `data-fx`. Un élément ajouté (navigation SPA, `v-if`, `@if`, Turbo) est monté ; retiré, il est démonté. Un effet qui lève une exception est isolé (journalisé, les autres continuent).
 
-Garanties SSR : aucun effet de bord à l'import ; `start()` et `attach()` sont des no-op hors navigateur ; les effets n'ajoutent aucun nœud DOM.
+Garanties SSR : aucun effet de bord à l'import ; `start()` et `attach()` sont des no-op hors navigateur ; les effets intégrés n'ajoutent aucun nœud DOM.
+
+### 5.1 Paquets d'effets optionnels (`fx-scroll`, `fx-text`)
+
+Les effets avancés ne sont **pas** dans le cœur : chacun vit dans un paquet chargé à la demande, avec son budget propre (≤ 2 Kio gzip, contrôlé par `nora audit`).
+
+| Paquet | Effets | Spec | Sorties (`packages/core/dist/`) |
+|---|---|---|---|
+| `@noraivoire/fx-scroll` | `pin`, `scrub`, `parallax` | `spec/fx/scroll/*.nora.json` | `fx/fx-scroll.js`, `fx/fx-scroll.css`, `NoraParallax` (Flutter, RN) |
+| `@noraivoire/fx-text` | `split`, `scramble` | `spec/fx/text/*.nora.json` | `fx/fx-text.js`, `fx/fx-text.css`, `NoraScramble` (Flutter, RN) |
+
+Le compilateur (`packages/compiler/src/fx.js`) lit `spec/fx/<paquet>/`, valide chaque effet (`package` obligatoire, types d'effet propres au paquet, nom unique y compris face au cœur), puis produit le JS (copie de `packages/fx-*/src/index.js` avec en-tête), le CSS (`@layer nora.effects`), `flutter/noraivoire_fx.dart` et `react-native/noraivoire-fx.tsx`. Les effets sont ajoutés à `manifest.effects` avec un champ `package` : `nora check` les reconnaît et `llms-full.txt` indique comment les charger.
+
+```html
+<link rel="stylesheet" href="/noraivoire/fx/fx-scroll.css">
+<script type="module">
+  import * as nora from '/noraivoire/noraivoire.engine.js';
+  const fx = await import('/noraivoire/fx/fx-scroll.js'); // chargé seulement si la page en a besoin
+  fx.install(nora); // enregistre pin, scrub, parallax (idempotent)
+  nora.start();
+</script>
+<section><h2 data-fx="pin" data-fx-pin="top:64">Épinglé</h2>…</section>
+<img data-fx="parallax" data-fx-parallax="speed:30" alt="…" src="…">
+<h1 data-fx="split" data-fx-split="words:true;stagger:60">Bonjour Abidjan</h1>
+```
+
+| Effet | Écrit | Sans JS | Mouvement réduit |
+|---|---|---|---|
+| `pin` | `--fx-pin-top`, `--fx-pin-progress`, `data-fx-pinned` | `position: sticky` fonctionne | Conservé (pas d'animation) |
+| `scrub` | `--fx-progress` (0 → 1) | `--fx-progress: 1` (état final) | `--fx-progress: 1` |
+| `parallax` | `--fx-parallax` (repli) ou `--fx-speed` (CSS `animation-timeline: view()`) | Aucun décalage | Désactivé |
+| `split` | pièces `<span data-fx-piece>` (`--fx-i`), `--fx-stagger`, `data-fx-visible` | Texte intact | Pas de découpe |
+| `scramble` | nœud texte animé puis DOM d'origine restauré | Texte intact | Désactivé |
+
+`install(moteur)` reçoit le module du moteur au lieu de l'importer : le paquet fonctionne avec la copie du moteur servie par la page (statique, AssetMapper, bundler) sans risque de double registre.
+
+**Exception contrôlée au contrat du moteur (`fx-text` uniquement).** Découper ou brouiller un texte impose de créer des nœuds. `split` et `scramble` peuvent donc, et seulement eux : créer des `<span>` (`createElement` + `textContent`, jamais de HTML), poser `aria-hidden` et des attributs `data-fx-*`, écrire `--fx-i` sur leurs propres `<span>`. Ils n'agissent que sur un élément qui ne contient **que du texte** (≤ 500 caractères) ; les nœuds d'origine sont conservés et remis en place au démontage (mêmes objets). L'audit vérifie ces bornes (`fxDomViolations`). Pour l'accessibilité, le texte complet est placé dans une copie visuellement masquée (`data-fx-sr`) et la version animée est `aria-hidden` : un `aria-label` sur le parent aurait été ignoré sur les éléments génériques (`p`, `span`, `div`), où ARIA 1.2 l'interdit. À n'utiliser que sur du texte statique : un framework qui re-rend ce texte pendant l'effet modifierait des nœuds détachés.
 
 ## 6. Cibles natives
 
@@ -178,7 +214,7 @@ Les valeurs dynamiques (`{{ }}`, `${ }`, `{expr}`, `:attr`, `[attr.x]`) ne sont 
 
 ### 7.2 `nora audit`
 
-50 contrôles automatisés : licence, chaîne d'approvisionnement, validité de la spec, déterminisme, en-têtes de propriété, motifs dangereux (moteur et CSS), imports natifs, accessibilité, budgets de poids, fraîcheur de `dist`. Voir [AUDIT-REPORT.md](AUDIT-REPORT.md).
+67 contrôles automatisés : licence, chaîne d'approvisionnement, validité de la spec, déterminisme, en-têtes de propriété, motifs dangereux (moteur, paquets d'effets et CSS), écritures DOM des paquets d'effets, imports natifs, accessibilité, budgets de poids (dont 2 Kio par paquet d'effets), fraîcheur de `dist`. Voir [AUDIT-REPORT.md](AUDIT-REPORT.md).
 
 ## 8. Ajouter un composant
 

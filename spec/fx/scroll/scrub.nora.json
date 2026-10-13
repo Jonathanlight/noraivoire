@@ -1,0 +1,19 @@
+{
+  "$nora": "effect",
+  "$version": "1.0.0",
+  "effect": "scrub",
+  "kind": "scroll-scrub",
+  "package": "fx-scroll",
+  "description": "Expose la progression de l'élément dans la fenêtre (0 → 1) dans --fx-progress, pour piloter une animation CSS au défilement.",
+  "input": "scroll",
+  "options": {
+    "start": { "type": "number", "default": 0, "min": 0, "max": 100 },
+    "end": { "type": "number", "default": 100, "min": 0, "max": 100 }
+  },
+  "reducedMotion": "disable",
+  "platforms": {
+    "web": "défilement passif + requestAnimationFrame ; mouvement réduit → --fx-progress: 1",
+    "react-native": "web uniquement : Animated.Value du ScrollView + interpolate fait la même chose sans abstraction",
+    "flutter": "web uniquement : ScrollController + AnimatedBuilder fait la même chose sans abstraction"
+  }
+}

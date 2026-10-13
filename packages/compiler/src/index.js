@@ -12,6 +12,7 @@ import { buildFlutter } from './targets/flutter.js';
 import { buildReactNative } from './targets/react-native.js';
 import { buildManifest, buildLlms, buildWebTypes } from './targets/manifest.js';
 import { header } from './header.js';
+import { loadFx, buildFx } from './fx.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const pkg = JSON.parse(readFileSync(join(here, '..', 'package.json'), 'utf8'));
@@ -55,6 +56,9 @@ export function compile(specDir, { version = VERSION } = {}) {
   const meta = { version };
   const css = buildCss(model, meta);
   const manifest = buildManifest(model, meta);
+  // Paquets d'effets optionnels : fichiers séparés, effets déclarés dans le contrat public.
+  const fx = buildFx(loadFx(realpathSync(resolve(specDir)), model.effects), meta);
+  Object.assign(manifest.effects, fx.manifestEffects);
   const files = {
     'noraivoire.css': css,
     'noraivoire.min.css': minifyCss(css),
@@ -64,6 +68,7 @@ export function compile(specDir, { version = VERSION } = {}) {
     'react-native/noraivoire.tsx': buildReactNative(model, meta),
     'manifest.json': JSON.stringify(manifest, null, 2) + '\n',
     'llms-full.txt': buildLlms(manifest),
+    ...fx.files,
   };
   const integrity = {};
   for (const [name, content] of Object.entries(files)) {

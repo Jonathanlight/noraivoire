@@ -25,6 +25,11 @@ export const PATTERNS = Object.freeze({
 const FORBIDDEN_KEYS = new Set(['__proto__', 'prototype', 'constructor']);
 const SHAPES = new Set(['interactive', 'container', 'label']);
 const EFFECT_KINDS = new Set(['orientation-transform', 'scroll-reveal', 'surface-glass']);
+// Effets des paquets optionnels (spec/fx/<paquet>/) : jamais compilés dans le cœur.
+export const FX_PACKAGE_KINDS = Object.freeze({
+  'fx-scroll': new Set(['scroll-pin', 'scroll-scrub', 'scroll-parallax']),
+  'fx-text': new Set(['text-split', 'text-scramble']),
+});
 const OPTION_TYPES = new Set(['number', 'boolean']);
 const REDUCED = new Set(['disable', 'keep']);
 const HAPTICS = new Set(['light', 'medium', 'heavy']);
@@ -162,10 +167,18 @@ export function validateComponent(spec, file) {
   return spec;
 }
 
-export function validateEffect(spec, file) {
+export function validateEffect(spec, file, pkg = null) {
   assertHeader(spec, 'effect', file);
   assertName(spec.effect, file, 'effect');
-  assert(EFFECT_KINDS.has(spec.kind), file, 'kind', `type d'effet inconnu (${[...EFFECT_KINDS].join(' | ')})`);
+  if (pkg === null) {
+    assert(spec.package === undefined, file, 'package', 'réservé aux effets de spec/fx/');
+    assert(EFFECT_KINDS.has(spec.kind), file, 'kind', `type d'effet inconnu (${[...EFFECT_KINDS].join(' | ')})`);
+  } else {
+    const kinds = FX_PACKAGE_KINDS[pkg];
+    assert(kinds !== undefined && Object.hasOwn(FX_PACKAGE_KINDS, pkg), file, 'package', 'paquet d\'effets inconnu');
+    assert(spec.package === pkg, file, 'package', `doit valoir « ${pkg} »`);
+    assert(kinds.has(spec.kind), file, 'kind', `type d'effet inconnu pour ${pkg} (${[...kinds].join(' | ')})`);
+  }
   assertText(spec.description, file, 'description');
   assertName(spec.input, file, 'input');
   assert(REDUCED.has(spec.reducedMotion), file, 'reducedMotion', 'disable | keep');
