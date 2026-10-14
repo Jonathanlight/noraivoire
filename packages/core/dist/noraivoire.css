@@ -1,5 +1,5 @@
 /*!
- * NoraIvoire 0.1.1 — fichier GÉNÉRÉ (css) depuis la spec. Ne pas modifier à la main.
+ * NoraIvoire 0.1.2 — fichier GÉNÉRÉ (css) depuis la spec. Ne pas modifier à la main.
  * © 2026 Jonathan KABLAN — Logiciel propriétaire, tous droits réservés.
  * Usage soumis au contrat de licence NoraIvoire. Redistribution interdite.
  */
@@ -17,7 +17,7 @@
 @layer nora.tokens {
   :root {
     color-scheme: light dark;
-    --nora-color-primary: #C94A0B;
+    --nora-color-primary: #C1470B;
     --nora-color-on-primary: #FFFFFF;
     --nora-color-neutral: #3B3F46;
     --nora-color-on-neutral: #FFFFFF;
@@ -25,7 +25,7 @@
     --nora-color-on-danger: #FFFFFF;
     --nora-color-success: #1B7F3B;
     --nora-color-on-success: #FFFFFF;
-    --nora-color-warning: #B35C00;
+    --nora-color-warning: #AC5800;
     --nora-color-on-warning: #FFFFFF;
     --nora-color-surface: #FFFFFF;
     --nora-color-surface-2: #F4F5F7;

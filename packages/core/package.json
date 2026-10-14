@@ -1,6 +1,6 @@
 {
   "name": "@jonathankablan/noraivoire-core",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "license": "UNLICENSED",
   "description": "Sorties compilées NoraIvoire (CSS, moteur, Dart, TSX, manifest). Propriétaire.",

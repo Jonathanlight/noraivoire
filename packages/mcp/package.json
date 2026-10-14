@@ -1,6 +1,6 @@
 {
   "name": "@jonathankablan/noraivoire-mcp",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "license": "UNLICENSED",
   "description": "Serveur MCP NoraIvoire (stdio, lecture seule) : composants, tokens, validation et recettes pour les agents IA. Propriétaire.",

@@ -82,10 +82,8 @@ test('contraste : chaque ton de lien est lisible sur les surfaces, le texte sur 
     }
   }
   for (const key of ['$value', '$dark']) assert.ok(contrast(colors['on-scrim'][key], colors.scrim[key]) >= 7, 'texte sur voile');
-  // Exception connue et documentée (PORTABILITY, TECHNICAL) : en clair, primary et warning sur surface-2
-  // restent sous 4,5:1 (4,31 et 4,33). Sur surface-2, utiliser data-tone="neutral". Toute autre dérive échoue.
-  assert.deepEqual(failures.map((f) => f.split(' : ')[0]), ['primary sur surface-2 ($value)', 'warning sur surface-2 ($value)']);
-  for (const f of failures) assert.ok(Number(f.split(' : ')[1]) >= 4.3, f);
+  // A-16 corrigé (primary #C1470B, warning #AC5800 en clair) : aucune exception, tous les tons sur toutes les surfaces.
+  assert.deepEqual(failures, []);
 });
 
 // ───────────── CSS ─────────────

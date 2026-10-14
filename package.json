@@ -1,6 +1,6 @@
 {
   "name": "@jonathankablan/noraivoire-monorepo",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "license": "UNLICENSED",
   "description": "NoraIvoire — langage de design universel : une spec, des sorties CSS, Flutter et React Native. Propriétaire.",

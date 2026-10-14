@@ -1,8 +1,8 @@
 /*
  * Charte « NoraIvoire » — les tokens du framework, sans surcharge de couleur. © 2026 Jonathan KABLAN — Propriétaire.
- * Seule exception : l'orange de marque (4,3:1 sur --brand-surface-2, 4,0:1 sur --brand-accent-soft en clair)
- * reste sous le seuil AA pour du petit texte. Le texte en accent est donc mêlé à 15 % d'encre
- * (5,0:1 dans le pire cas), sans changer la couleur des boutons ni des fonds. Voir A-16 (docs/AUDIT-REPORT.md).
+ * Seule exception : l'orange de marque, conforme sur les surfaces du framework (4,6:1 sur surface-2, A-16),
+ * reste à 4,3:1 sur le fond teinté --brand-accent-soft propre aux vitrines (menu actif, tuiles d'icônes).
+ * Le texte en accent y est donc mêlé à 15 % d'encre (5,0:1), sans changer les boutons ni les fonds.
  */
 @layer app.theme {
   :root {

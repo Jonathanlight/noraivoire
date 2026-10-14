@@ -905,7 +905,7 @@
     "w": 32
   },
   "light/avatar/primary/md": {
-    "bg": "#C94A0B",
+    "bg": "#C1470B",
     "fg": "#FFFFFF",
     "font": 16,
     "h": 40,
@@ -921,7 +921,7 @@
     "w": 40
   },
   "light/avatar/warning/md": {
-    "bg": "#B35C00",
+    "bg": "#AC5800",
     "fg": "#FFFFFF",
     "font": 16,
     "h": 40,
@@ -965,7 +965,7 @@
     "radius": "full"
   },
   "light/badge/primary/md": {
-    "bg": "#C94A0B",
+    "bg": "#C1470B",
     "borderWidth": 0,
     "fg": "#FFFFFF",
     "font": 16,
@@ -974,7 +974,7 @@
     "radius": "full"
   },
   "light/badge/primary/sm": {
-    "bg": "#C94A0B",
+    "bg": "#C1470B",
     "borderWidth": 0,
     "fg": "#FFFFFF",
     "font": 14,
@@ -1001,7 +1001,7 @@
     "radius": "full"
   },
   "light/badge/warning/md": {
-    "bg": "#B35C00",
+    "bg": "#AC5800",
     "borderWidth": 0,
     "fg": "#FFFFFF",
     "font": 16,
@@ -1010,7 +1010,7 @@
     "radius": "full"
   },
   "light/badge/warning/sm": {
-    "bg": "#B35C00",
+    "bg": "#AC5800",
     "borderWidth": 0,
     "fg": "#FFFFFF",
     "font": 14,
@@ -1085,7 +1085,7 @@
     "radius": 8
   },
   "light/btn/primary/lg": {
-    "bg": "#C94A0B",
+    "bg": "#C1470B",
     "borderWidth": 0,
     "fg": "#FFFFFF",
     "font": 18,
@@ -1096,7 +1096,7 @@
     "radius": 8
   },
   "light/btn/primary/md": {
-    "bg": "#C94A0B",
+    "bg": "#C1470B",
     "borderWidth": 0,
     "fg": "#FFFFFF",
     "font": 16,
@@ -1107,7 +1107,7 @@
     "radius": 8
   },
   "light/btn/primary/sm": {
-    "bg": "#C94A0B",
+    "bg": "#C1470B",
     "borderWidth": 0,
     "fg": "#FFFFFF",
     "font": 14,
@@ -1151,7 +1151,7 @@
     "radius": 8
   },
   "light/btn/warning/lg": {
-    "bg": "#B35C00",
+    "bg": "#AC5800",
     "borderWidth": 0,
     "fg": "#FFFFFF",
     "font": 18,
@@ -1162,7 +1162,7 @@
     "radius": 8
   },
   "light/btn/warning/md": {
-    "bg": "#B35C00",
+    "bg": "#AC5800",
     "borderWidth": 0,
     "fg": "#FFFFFF",
     "font": 16,
@@ -1173,7 +1173,7 @@
     "radius": 8
   },
   "light/btn/warning/sm": {
-    "bg": "#B35C00",
+    "bg": "#AC5800",
     "borderWidth": 0,
     "fg": "#FFFFFF",
     "font": 14,
@@ -1259,8 +1259,8 @@
       "mark": "#FFFFFF",
       "offBg": "#FFFFFF",
       "offBorder": "#5C626B",
-      "onBg": "#C94A0B",
-      "onBorder": "#C94A0B",
+      "onBg": "#C1470B",
+      "onBorder": "#C1470B",
       "radius": 4,
       "w": 22.5
     },
@@ -1277,8 +1277,8 @@
       "mark": "#FFFFFF",
       "offBg": "#FFFFFF",
       "offBorder": "#5C626B",
-      "onBg": "#C94A0B",
-      "onBorder": "#C94A0B",
+      "onBg": "#C1470B",
+      "onBorder": "#C1470B",
       "radius": 4,
       "w": 20
     },
@@ -1295,8 +1295,8 @@
       "mark": "#FFFFFF",
       "offBg": "#FFFFFF",
       "offBorder": "#5C626B",
-      "onBg": "#C94A0B",
-      "onBorder": "#C94A0B",
+      "onBg": "#C1470B",
+      "onBorder": "#C1470B",
       "radius": 4,
       "w": 17.5
     },
@@ -1331,8 +1331,8 @@
       "mark": "#FFFFFF",
       "offBg": "#FFFFFF",
       "offBorder": "#5C626B",
-      "onBg": "#B35C00",
-      "onBorder": "#B35C00",
+      "onBg": "#AC5800",
+      "onBorder": "#AC5800",
       "radius": 4,
       "w": 20
     },
@@ -1385,19 +1385,19 @@
     "visited": "#5C626B"
   },
   "light/link/primary/lg": {
-    "fg": "#C94A0B",
+    "fg": "#C1470B",
     "font": 18,
     "underline": true,
     "visited": "#5C626B"
   },
   "light/link/primary/md": {
-    "fg": "#C94A0B",
+    "fg": "#C1470B",
     "font": 16,
     "underline": true,
     "visited": "#5C626B"
   },
   "light/link/primary/sm": {
-    "fg": "#C94A0B",
+    "fg": "#C1470B",
     "font": 14,
     "underline": true,
     "visited": "#5C626B"
@@ -1409,7 +1409,7 @@
     "visited": "#5C626B"
   },
   "light/link/warning/md": {
-    "fg": "#B35C00",
+    "fg": "#AC5800",
     "font": 16,
     "underline": true,
     "visited": "#5C626B"
@@ -1451,7 +1451,7 @@
     "scrim": "#0B0C0F"
   },
   "light/navbar/neutral/lg": {
-    "active": "#C94A0B",
+    "active": "#C1470B",
     "bg": "#FFFFFF",
     "borderColor": "#DDE0E4",
     "borderWidth": 1,
@@ -1463,7 +1463,7 @@
     "padY": 12
   },
   "light/navbar/neutral/md": {
-    "active": "#C94A0B",
+    "active": "#C1470B",
     "bg": "#FFFFFF",
     "borderColor": "#DDE0E4",
     "borderWidth": 1,
@@ -1475,7 +1475,7 @@
     "padY": 8
   },
   "light/navbar/neutral/sm": {
-    "active": "#C94A0B",
+    "active": "#C1470B",
     "bg": "#FFFFFF",
     "borderColor": "#DDE0E4",
     "borderWidth": 1,
@@ -1532,8 +1532,8 @@
       "mark": "#FFFFFF",
       "offBg": "#FFFFFF",
       "offBorder": "#5C626B",
-      "onBg": "#C94A0B",
-      "onBorder": "#C94A0B",
+      "onBg": "#C1470B",
+      "onBorder": "#C1470B",
       "radius": "full",
       "w": 22.5
     },
@@ -1550,8 +1550,8 @@
       "mark": "#FFFFFF",
       "offBg": "#FFFFFF",
       "offBorder": "#5C626B",
-      "onBg": "#C94A0B",
-      "onBorder": "#C94A0B",
+      "onBg": "#C1470B",
+      "onBorder": "#C1470B",
       "radius": "full",
       "w": 20
     },
@@ -1568,8 +1568,8 @@
       "mark": "#FFFFFF",
       "offBg": "#FFFFFF",
       "offBorder": "#5C626B",
-      "onBg": "#C94A0B",
-      "onBorder": "#C94A0B",
+      "onBg": "#C1470B",
+      "onBorder": "#C1470B",
       "radius": "full",
       "w": 17.5
     },
@@ -1604,8 +1604,8 @@
       "mark": "#FFFFFF",
       "offBg": "#FFFFFF",
       "offBorder": "#5C626B",
-      "onBg": "#B35C00",
-      "onBorder": "#B35C00",
+      "onBg": "#AC5800",
+      "onBorder": "#AC5800",
       "radius": "full",
       "w": 20
     },
@@ -1661,8 +1661,8 @@
       "offBg": "#5C626B",
       "offBorder": "#5C626B",
       "offMark": "#FFFFFF",
-      "onBg": "#C94A0B",
-      "onBorder": "#C94A0B",
+      "onBg": "#C1470B",
+      "onBorder": "#C1470B",
       "radius": "full",
       "w": 40.5
     },
@@ -1680,8 +1680,8 @@
       "offBg": "#5C626B",
       "offBorder": "#5C626B",
       "offMark": "#FFFFFF",
-      "onBg": "#C94A0B",
-      "onBorder": "#C94A0B",
+      "onBg": "#C1470B",
+      "onBorder": "#C1470B",
       "radius": "full",
       "w": 36
     },
@@ -1699,8 +1699,8 @@
       "offBg": "#5C626B",
       "offBorder": "#5C626B",
       "offMark": "#FFFFFF",
-      "onBg": "#C94A0B",
-      "onBorder": "#C94A0B",
+      "onBg": "#C1470B",
+      "onBorder": "#C1470B",
       "radius": "full",
       "w": 31.5
     },
@@ -1737,8 +1737,8 @@
       "offBg": "#5C626B",
       "offBorder": "#5C626B",
       "offMark": "#FFFFFF",
-      "onBg": "#B35C00",
-      "onBorder": "#B35C00",
+      "onBg": "#AC5800",
+      "onBorder": "#AC5800",
       "radius": "full",
       "w": 36
     },

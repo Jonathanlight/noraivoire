@@ -1,7 +1,7 @@
 {
   "$schema": "https://noraivoire.local/schema/manifest-1.json",
   "name": "NoraIvoire",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "license": "UNLICENSED — propriétaire, © Jonathan KABLAN",
   "grammar": {
     "component": ".{composant}",

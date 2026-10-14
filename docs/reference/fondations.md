@@ -36,16 +36,16 @@ Contraste calculé avec la couleur `on-` correspondante (tons) ou avec la surfac
 
 | Token | Clair | Contraste | Sombre | Contraste |
 |---|---|---|---|---|
-| `--nora-color-primary` | `#C94A0B` | 4.70:1 | `#FF8A3D` | 8.03:1 |
-| `--nora-color-on-primary` | `#FFFFFF` | 4.70:1 | `#1A0F08` | 8.03:1 |
+| `--nora-color-primary` | `#C1470B` | 5.03:1 | `#FF8A3D` | 8.03:1 |
+| `--nora-color-on-primary` | `#FFFFFF` | 5.03:1 | `#1A0F08` | 8.03:1 |
 | `--nora-color-neutral` | `#3B3F46` | 10.58:1 | `#D5D8DD` | 12.67:1 |
 | `--nora-color-on-neutral` | `#FFFFFF` | 10.58:1 | `#14161A` | 12.67:1 |
 | `--nora-color-danger` | `#C92A2A` | 5.46:1 | `#FF6B6B` | 6.84:1 |
 | `--nora-color-on-danger` | `#FFFFFF` | 5.46:1 | `#1F0A0A` | 6.84:1 |
 | `--nora-color-success` | `#1B7F3B` | 5.07:1 | `#51CF66` | 9.13:1 |
 | `--nora-color-on-success` | `#FFFFFF` | 5.07:1 | `#08180C` | 9.13:1 |
-| `--nora-color-warning` | `#B35C00` | 4.72:1 | `#FFC078` | 11.42:1 |
-| `--nora-color-on-warning` | `#FFFFFF` | 4.72:1 | `#1E1204` | 11.42:1 |
+| `--nora-color-warning` | `#AC5800` | 5.06:1 | `#FFC078` | 11.42:1 |
+| `--nora-color-on-warning` | `#FFFFFF` | 5.06:1 | `#1E1204` | 11.42:1 |
 | `--nora-color-surface` | `#FFFFFF` | 1.00:1 | `#16181D` | 1.00:1 |
 | `--nora-color-surface-2` | `#F4F5F7` | 1.09:1 | `#1F2228` | 1.11:1 |
 | `--nora-color-text` | `#16181D` | 17.76:1 | `#EDEEF0` | 15.30:1 |

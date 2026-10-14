@@ -59,7 +59,7 @@ Format inspiré du W3C Design Tokens (`$type`, `$value`) avec une extension `$da
 
 ```json
 { "$nora": "tokens", "$version": "1.0.0",
-  "color": { "primary": { "$type": "color", "$value": "#C94A0B", "$dark": "#FF8A3D" } },
+  "color": { "primary": { "$type": "color", "$value": "#C1470B", "$dark": "#FF8A3D" } },
   "space": { "4": { "$type": "dimension", "$value": 16 } } }
 ```
 
@@ -117,7 +117,7 @@ Un champ invalide porte `aria-invalid="true"` et `aria-describedby` vers son `.f
 
 Nouvelles clés de taille, en liste blanche dans `validate.js` : `box` (côté d'un avatar, 16–256 px, obligatoire pour la forme `avatar`, refusé ailleurs) et `ratio` (`[largeur, hauteur]` entiers 1–64, obligatoire pour la forme `media`, refusé ailleurs). Toute autre clé de taille est refusée. Une navigation exige la partie `menu` et une zone ≥ 44 px ; un lien est un `<a href>`.
 
-Contraste : tous les tons de `.link` atteignent 4,5:1 sur `surface`. En clair, `primary` (4,31:1) et `warning` (4,33:1) restent sous le seuil sur `surface-2` : y utiliser `data-tone="neutral"`. L'exception est figée par `tests/unit/page.test.js` (constat A-16, ouvert). Les vitrines la contournent par charte avec `--brand-accent-text` (voir §10).
+Contraste : tous les tons de `.link` atteignent 4,5:1 sur `surface` et sur `surface-2`, en clair et en sombre (`tests/unit/page.test.js`, sans exception). En clair, `primary` (`#C1470B`, 4,61:1 sur `surface-2`) et `warning` (`#AC5800`, 4,63:1) ont été assombris de 4 % à teinte constante pour y parvenir (constat A-16). Les vitrines gardent `--brand-accent-text` pour les fonds teintés propres à chaque charte (voir §10).
 
 ### 3.2.3 Primitives de mise en page, utilitaires, surfaces
 

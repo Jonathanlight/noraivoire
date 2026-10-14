@@ -1,6 +1,6 @@
 {
   "name": "@jonathankablan/noraivoire-fx-text",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "license": "UNLICENSED",
   "description": "Effets de texte optionnels NoraIvoire (split, scramble), chargés à la demande. Propriétaire.",

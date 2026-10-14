@@ -1,4 +1,4 @@
-# NoraIvoire 0.1.1
+# NoraIvoire 0.1.2
 
 > Langage de design universel : une spec → CSS (HTML, Twig, JSP, React, Next.js, Vue, Angular), Flutter et React Native.
 > Logiciel propriétaire © Jonathan KABLAN. Ce fichier est le contrat complet de l'API : n'utilise RIEN qui n'y figure pas.

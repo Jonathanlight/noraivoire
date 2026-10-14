@@ -10,8 +10,10 @@ modèles (templates), sa documentation, ses jeux de tests et ses éléments grap
 1. ABSENCE DE LICENCE OPEN SOURCE
    Le Logiciel n'est pas distribué sous une licence open source. Aucun droit
    n'est concédé implicitement, par estoppel ou autrement. La simple mise à
-   disposition du Logiciel, y compris dans un dépôt privé ou un registre de
-   paquets privé, ne vaut pas concession de licence.
+   disposition du Logiciel, y compris dans un dépôt ou un registre de
+   paquets, public ou privé (notamment le registre npm public), et la
+   possibilité technique de le télécharger ou de l'installer ne valent pas
+   concession de licence.
 
 2. USAGE AUTORISÉ
    Tout usage du Logiciel est subordonné à un contrat de licence écrit et signé

@@ -1,4 +1,4 @@
-// NoraIvoire 0.1.1 — fichier GÉNÉRÉ (tsx) depuis la spec. Ne pas modifier à la main.
+// NoraIvoire 0.1.2 — fichier GÉNÉRÉ (tsx) depuis la spec. Ne pas modifier à la main.
 // © 2026 Jonathan KABLAN — Logiciel propriétaire, tous droits réservés.
 // Usage soumis au contrat de licence NoraIvoire. Redistribution interdite.
 /* eslint-disable */
@@ -26,14 +26,14 @@ import {
   type ViewStyle,
 } from 'react-native';
 
-export const noraVersion = '0.1.1';
+export const noraVersion = '0.1.2';
 
 export type NoraTone = 'primary' | 'neutral' | 'danger' | 'success' | 'warning';
 export type NoraSize = 'sm' | 'md' | 'lg' | 'wide' | 'standard' | 'square' | 'portrait';
 
 export const noraColors = {
   light: {
-    primary: '#C94A0B',
+    primary: '#C1470B',
     onPrimary: '#FFFFFF',
     neutral: '#3B3F46',
     onNeutral: '#FFFFFF',
@@ -41,7 +41,7 @@ export const noraColors = {
     onDanger: '#FFFFFF',
     success: '#1B7F3B',
     onSuccess: '#FFFFFF',
-    warning: '#B35C00',
+    warning: '#AC5800',
     onWarning: '#FFFFFF',
     surface: '#FFFFFF',
     surface2: '#F4F5F7',

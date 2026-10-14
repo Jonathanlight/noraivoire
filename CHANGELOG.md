@@ -2,6 +2,11 @@
 
 ## Non publié
 
+## 0.1.2 — 14 octobre 2026
+
+- Accessibilité (constat A-16 corrigé) : `color.primary` clair `#C94A0B` → `#C1470B` et `color.warning` clair `#B35C00` → `#AC5800`, assombris de 4 % à teinte constante. Tous les tons de lien atteignent désormais 4,5:1 sur `surface` et `surface-2` (4,61:1 et 4,63:1 au plus juste), sans exception ; texte blanc sur `primary` 5,03:1. Thème sombre inchangé. Captures web, goldens Flutter (macOS et Linux), parité, catalogue, référence, galerie et vitrines régénérés. 1 test durci.
+- Licence : l'article 1 précise que la mise à disposition dans un registre de paquets **public ou privé** (notamment npm) et la possibilité de télécharger ou d'installer le Logiciel ne valent pas concession de licence.
+
 ## 0.1.1 — 14 octobre 2026
 
 Première publication npm (`@jonathankablan/noraivoire-core`, `-cli`, `-mcp`, `-fx-scroll`, `-fx-text`). La version 0.1.0 n'a jamais été publiée : son numéro est resté bloqué sur le registre après une mise en attente (*staged publish*) non aboutie.

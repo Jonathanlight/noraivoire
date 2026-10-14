@@ -1,4 +1,4 @@
-// NoraIvoire 0.1.1 — fichier GÉNÉRÉ (dart) depuis la spec. Ne pas modifier à la main.
+// NoraIvoire 0.1.2 — fichier GÉNÉRÉ (dart) depuis la spec. Ne pas modifier à la main.
 // © 2026 Jonathan KABLAN — Logiciel propriétaire, tous droits réservés.
 // Usage soumis au contrat de licence NoraIvoire. Redistribution interdite.
 // ignore_for_file: lines_longer_than_80_chars
@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 /// Version de la spec NoraIvoire ayant produit ce fichier.
-const String noraVersion = '0.1.1';
+const String noraVersion = '0.1.2';
 
 enum NoraTone { primary, neutral, danger, success, warning }
 
@@ -62,7 +62,7 @@ class NoraColors {
   });
 
   static const light = NoraColors(
-    primary: Color(0xFFC94A0B),
+    primary: Color(0xFFC1470B),
     onPrimary: Color(0xFFFFFFFF),
     neutral: Color(0xFF3B3F46),
     onNeutral: Color(0xFFFFFFFF),
@@ -70,7 +70,7 @@ class NoraColors {
     onDanger: Color(0xFFFFFFFF),
     success: Color(0xFF1B7F3B),
     onSuccess: Color(0xFFFFFFFF),
-    warning: Color(0xFFB35C00),
+    warning: Color(0xFFAC5800),
     onWarning: Color(0xFFFFFFFF),
     surface: Color(0xFFFFFFFF),
     surface2: Color(0xFFF4F5F7),

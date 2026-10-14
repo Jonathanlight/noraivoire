@@ -2,7 +2,7 @@
   "$nora": "tokens",
   "$version": "1.0.0",
   "color": {
-    "primary":    { "$type": "color", "$value": "#C94A0B", "$dark": "#FF8A3D" },
+    "primary":    { "$type": "color", "$value": "#C1470B", "$dark": "#FF8A3D" },
     "on-primary": { "$type": "color", "$value": "#FFFFFF", "$dark": "#1A0F08" },
     "neutral":    { "$type": "color", "$value": "#3B3F46", "$dark": "#D5D8DD" },
     "on-neutral": { "$type": "color", "$value": "#FFFFFF", "$dark": "#14161A" },
@@ -10,7 +10,7 @@
     "on-danger":  { "$type": "color", "$value": "#FFFFFF", "$dark": "#1F0A0A" },
     "success":    { "$type": "color", "$value": "#1B7F3B", "$dark": "#51CF66" },
     "on-success": { "$type": "color", "$value": "#FFFFFF", "$dark": "#08180C" },
-    "warning":    { "$type": "color", "$value": "#B35C00", "$dark": "#FFC078" },
+    "warning":    { "$type": "color", "$value": "#AC5800", "$dark": "#FFC078" },
     "on-warning": { "$type": "color", "$value": "#FFFFFF", "$dark": "#1E1204" },
     "surface":    { "$type": "color", "$value": "#FFFFFF", "$dark": "#16181D" },
     "surface-2":  { "$type": "color", "$value": "#F4F5F7", "$dark": "#1F2228" },

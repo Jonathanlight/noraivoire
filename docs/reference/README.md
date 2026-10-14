@@ -2,7 +2,7 @@
 
 # Référence NoraIvoire
 
-Version 0.1.1. Fiche de chaque élément du manifest : aperçu en clair et en sombre, code pour chaque cible (HTML, React, Vue, Twig, Flutter, React Native), tokens, accessibilité et règles de contrôle. Architecture et principes : [TECHNICAL.md](../TECHNICAL.md).
+Version 0.1.2. Fiche de chaque élément du manifest : aperçu en clair et en sombre, code pour chaque cible (HTML, React, Vue, Twig, Flutter, React Native), tokens, accessibilité et règles de contrôle. Architecture et principes : [TECHNICAL.md](../TECHNICAL.md).
 
 ## Démarrer
 
