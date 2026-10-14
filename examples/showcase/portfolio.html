@@ -1,0 +1,161 @@
+<!doctype html>
+<!-- NoraIvoire — vitrine « Portfolio de studio ». © 2026 Jonathan KABLAN — Propriétaire, tous droits réservés.
+     Projets fictifs. Effets optionnels : fx-text (split, scramble) et fx-scroll (pin, scrub, parallax). -->
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Orbite Studio — design produit et systèmes de design</title>
+  <meta name="description" content="Portfolio de démonstration construit avec NoraIvoire : titre animé, mosaïque de projets, méthode épinglée au défilement, contact.">
+  <link rel="stylesheet" href="../../packages/core/dist/noraivoire.css">
+  <link rel="stylesheet" href="../../packages/core/dist/fx/fx-scroll.css">
+  <link rel="stylesheet" href="../../packages/core/dist/fx/fx-text.css">
+  <link rel="stylesheet" href="showcase.css">
+  <link rel="stylesheet" href="themes/saas.css" id="sc-charte">
+  <script type="module" src="showcase.js"></script>
+</head>
+<body>
+  <a class="sc-skip btn" data-tone="neutral" href="#contenu">Aller au contenu</a>
+  <header class="sc-header fx-glass">
+    <nav class="navbar sc-wrap" aria-label="Navigation principale">
+      <a class="navbar-brand sc-logo" href="portfolio.html"><svg aria-hidden="true"><use href="assets/sprite.svg#logo"/></svg>Orbite Studio</a>
+      <ul class="navbar-menu">
+        <li><a href="#projets">Projets</a></li>
+        <li><a href="#methode">Méthode</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <div class="navbar-actions">
+        <button class="btn sc-btn-quiet sc-btn-icon sc-mode" id="sc-mode" type="button" aria-label="Thème : système (changer)" hidden><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-sun"/></svg><span class="sr-only" data-sc-mode-label>Thème : système</span></button>
+        <a class="btn sc-hide-xs" data-tone="primary" href="#contact">Démarrer un projet</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="contenu">
+    <section class="sc-folio-hero" aria-labelledby="folio-titre">
+      <div class="sc-wrap sc-split">
+        <div class="stack">
+          <p class="sc-eyebrow">Studio de design produit · depuis 2014</p>
+          <h1 class="sc-display" id="folio-titre" data-fx="split" data-fx-split="words:true;stagger:70">Nous concevons des produits que l'on aime utiliser</h1>
+          <p class="sc-lead" data-fx="scramble" data-fx-scramble="duration:900">Recherche · Design produit · Systèmes de design · Front-end</p>
+          <ul class="sc-folio-tags sc-plain" aria-label="Expertises">
+            <li><span class="badge" data-tone="neutral" data-size="md">SaaS B2B</span></li>
+            <li><span class="badge" data-tone="neutral" data-size="md">Fintech</span></li>
+            <li><span class="badge" data-tone="neutral" data-size="md">Santé</span></li>
+            <li><span class="badge" data-tone="neutral" data-size="md">Services publics</span></li>
+          </ul>
+          <div class="cluster"><a class="btn" data-tone="primary" data-size="lg" href="#projets">Voir les projets</a><a class="btn sc-btn-ghost" data-size="lg" href="#contact">Nous écrire</a></div>
+        </div>
+        <div class="sc-overlay">
+          <figure class="sc-photo"><img src="assets/photos/arch-ribs-dark.webp" alt="Lames architecturales courbes formant un motif rythmé" width="640" height="960" data-fx="parallax" data-fx-parallax="speed:16"></figure>
+          <div class="sc-overlay-card fx-glass sc-frosted" data-fx="parallax" data-fx-parallax="speed:30">
+            <span class="badge" data-tone="success" data-size="sm">Disponible</span>
+            <b class="sc-heading">2 nouveaux projets au premier trimestre</b>
+            <span class="sc-tiny sc-muted">Réponse sous 48 h ouvrées</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sc-wrap sc-logos" aria-labelledby="folio-clients">
+      <h2 class="sc-small sc-muted" id="folio-clients">Ils nous ont confié leurs produits</h2>
+      <ul>
+        <li><svg role="img" aria-label="Kytra"><use href="assets/sprite.svg#c-kytra"/></svg></li>
+        <li><svg role="img" aria-label="Quorra"><use href="assets/sprite.svg#c-quorra"/></svg></li>
+        <li><svg role="img" aria-label="Nordel"><use href="assets/sprite.svg#c-nordel"/></svg></li>
+        <li><svg role="img" aria-label="Opaline"><use href="assets/sprite.svg#c-opaline"/></svg></li>
+        <li><svg role="img" aria-label="Halvio"><use href="assets/sprite.svg#c-halvio"/></svg></li>
+      </ul>
+    </section>
+
+    <section class="sc-section" id="projets" aria-labelledby="projets-titre">
+      <div class="sc-wrap">
+        <div class="sc-section-head sc-row"><div class="stack"><p class="sc-eyebrow">Projets choisis</p><h2 class="sc-title" id="projets-titre">Des interfaces au service du métier</h2></div><a class="btn sc-btn-ghost" href="#projets">Toutes les études de cas</a></div>
+        <div class="sc-mosaic">
+          <a class="sc-work sc-work-tall" href="#projets" data-fx="reveal"><figure class="sc-photo" aria-hidden="true"><img src="assets/photos/arch-towers-curve.webp" alt="" width="900" height="1125" loading="lazy"></figure><div class="sc-work-caption"><p>Kytra · Fintech</p><h3>Refonte de l'espace trésorerie</h3></div></a>
+          <a class="sc-work sc-work-wide" href="#projets" data-fx="reveal"><figure class="sc-photo" aria-hidden="true"><img src="assets/photos/interior-atrium.webp" alt="" width="1400" height="875" loading="lazy"></figure><div class="sc-work-caption"><p>Nordel · Opérations</p><h3>Un système de design pour 14 produits</h3></div></a>
+          <a class="sc-work" href="#projets" data-fx="reveal"><figure class="sc-photo" aria-hidden="true"><img src="assets/photos/arch-grid.webp" alt="" width="900" height="1350" loading="lazy"></figure><div class="sc-work-caption"><p>Quorra · Santé</p><h3>Prise de rendez-vous en 3 étapes</h3></div></a>
+          <a class="sc-work" href="#projets" data-fx="reveal"><figure class="sc-photo" aria-hidden="true"><img src="assets/photos/arch-ribs-light.webp" alt="" width="900" height="1350" loading="lazy"></figure><div class="sc-work-caption"><p>Opaline · Commerce</p><h3>Parcours d'achat mobile</h3></div></a>
+          <a class="sc-work" href="#projets" data-fx="reveal"><figure class="sc-photo" aria-hidden="true"><img src="assets/photos/office-hallway.webp" alt="" width="1200" height="800" loading="lazy"></figure><div class="sc-work-caption"><p>Halvio · Immobilier</p><h3>Outil de gestion de parc pour 30 sites</h3></div></a>
+          <a class="sc-work sc-work-wide" href="#projets" data-fx="reveal"><figure class="sc-photo" aria-hidden="true"><img src="assets/photos/arch-balconies.webp" alt="" width="1600" height="1000" loading="lazy"></figure><div class="sc-work-caption"><p>Ventrix · Industrie</p><h3>Supervision d'usine en temps réel</h3></div></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="sc-section sc-section-alt" id="methode" aria-labelledby="methode-titre">
+      <div class="sc-wrap sc-pinned" data-fx="scrub" data-fx-scrub="start:10;end:90">
+        <div class="sc-pin" data-fx="pin" data-fx-pin="top:96">
+          <p class="sc-eyebrow">Méthode</p>
+          <h2 class="sc-title" id="methode-titre">Quatre étapes, aucune surprise</h2>
+          <p class="sc-lead">Un cadre clair, des livrables à chaque étape et des décisions prises avec vos équipes, jamais à leur place.</p>
+          <div class="sc-scrub-bar" aria-hidden="true"><i></i></div>
+        </div>
+        <ol class="sc-plain">
+          <li class="sc-step"><span class="sc-step-num">01</span><h3 class="sc-heading">Explorer</h3><p class="sc-muted">Entretiens, analyse des données d'usage et cartographie des irritants. Nous partons de ce que vivent vos utilisateurs.</p></li>
+          <li class="sc-step"><span class="sc-step-num">02</span><h3 class="sc-heading">Définir</h3><p class="sc-muted">Priorités, indicateurs de succès et périmètre de la première version, validés avec les métiers.</p></li>
+          <li class="sc-step"><span class="sc-step-num">03</span><h3 class="sc-heading">Concevoir</h3><p class="sc-muted">Prototypes testés chaque semaine, système de design documenté, accessibilité vérifiée dès les maquettes.</p></li>
+          <li class="sc-step"><span class="sc-step-num">04</span><h3 class="sc-heading">Livrer</h3><p class="sc-muted">Composants front-end prêts pour la production, accompagnement de vos développeurs et mesure après lancement.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="sc-section" id="services" aria-labelledby="services-titre">
+      <div class="sc-wrap">
+        <div class="sc-section-head"><p class="sc-eyebrow">Services</p><h2 class="sc-title" id="services-titre">Ce que nous faisons le mieux</h2></div>
+        <div class="sc-grid sc-grid-4">
+          <article class="card sc-feature sc-lift"><span class="sc-icon-tile"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-search"/></svg></span><h3 class="sc-heading">Recherche</h3><p>Entretiens, tests d'utilisabilité, analyse quantitative.</p></article>
+          <article class="card sc-feature sc-lift"><span class="sc-icon-tile"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-pen"/></svg></span><h3 class="sc-heading">Design produit</h3><p>Parcours, prototypes interactifs, interfaces complexes.</p></article>
+          <article class="card sc-feature sc-lift"><span class="sc-icon-tile"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-layers"/></svg></span><h3 class="sc-heading">Systèmes de design</h3><p>Tokens, composants, documentation et gouvernance.</p></article>
+          <article class="card sc-feature sc-lift"><span class="sc-icon-tile"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-code"/></svg></span><h3 class="sc-heading">Front-end</h3><p>Composants accessibles, performants et testés.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="sc-section sc-section-alt" aria-labelledby="avis-titre">
+      <figure class="sc-wrap sc-narrow sc-big-quote">
+        <h2 class="sr-only" id="avis-titre">Témoignage</h2>
+        <svg class="sc-icon sc-icon-lg" aria-hidden="true"><use href="assets/sprite.svg#i-quote"/></svg>
+        <blockquote class="sc-subtitle">« Le studio a compris notre métier en deux semaines. Le système de design livré a divisé par deux le temps de conception de nos nouvelles fonctionnalités. »</blockquote>
+        <figcaption class="sc-person"><span class="avatar" data-tone="primary" data-size="lg" aria-hidden="true">LK</span><span><b>Lina K.</b><span class="sc-muted">Directrice produit, Kytra</span></span></figcaption>
+      </figure>
+    </section>
+
+    <section class="sc-section" id="contact" aria-labelledby="contact-titre">
+      <div class="sc-wrap sc-split sc-top">
+        <div class="stack">
+          <p class="sc-eyebrow">Contact</p>
+          <h2 class="sc-title" id="contact-titre">Parlons de votre produit</h2>
+          <p class="sc-lead">Décrivez votre projet en quelques lignes : nous revenons vers vous sous 48 heures ouvrées avec une première approche.</p>
+          <ul class="sc-reassure">
+            <li><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-mail"/></svg>bonjour@orbite-studio.example</li>
+            <li><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-phone"/></svg>+33 1 00 00 00 00</li>
+            <li><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-globe"/></svg>Paris · Abidjan · à distance</li>
+          </ul>
+        </div>
+        <div class="card"><form class="stack" action="#" method="post">
+          <div class="sc-pair">
+            <div class="field"><label class="field-label" for="c-nom">Nom</label><input class="input" id="c-nom" name="nom" type="text" autocomplete="name" required></div>
+            <div class="field"><label class="field-label" for="c-email">E-mail</label><input class="input" id="c-email" name="email" type="email" autocomplete="email" required></div>
+          </div>
+          <div class="field">
+            <label class="field-label" for="c-budget">Budget estimé</label>
+            <select class="select" id="c-budget" name="budget"><option>Moins de 20 k€</option><option selected>20 à 50 k€</option><option>50 à 150 k€</option><option>Plus de 150 k€</option></select>
+          </div>
+          <div class="field">
+            <label class="field-label" for="c-message">Votre projet</label>
+            <textarea class="textarea" id="c-message" name="message" rows="5" aria-describedby="c-message-aide"></textarea>
+            <p class="field-help" id="c-message-aide">Contexte, objectifs, échéance : tout nous aide à préparer l'échange.</p>
+          </div>
+          <label class="checkbox"><input type="checkbox" name="consentement" required> J'accepte d'être recontacté au sujet de ma demande</label>
+          <button class="btn" data-tone="primary" data-size="lg" type="submit">Envoyer la demande</button>
+        </form></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="sc-footer">
+    <div class="sc-wrap sc-footer-bottom"><span>© 2026 Orbite Studio — studio fictif de démonstration.</span><span><a class="link" href="index.html">Toutes les vitrines</a></span></div>
+  </footer>
+</body>
+</html>

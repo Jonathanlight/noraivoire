@@ -1,0 +1,78 @@
+/*
+ * Charte « SaaS » — indigo / violet moderne. © 2026 Jonathan KABLAN — Propriétaire.
+ * Ce fichier ne contient QUE des variables : copiez-le pour créer votre charte.
+ * Les --nora-* pilotent les composants du framework, les --brand-* la mise en page des vitrines.
+ */
+@layer app.theme {
+  :root {
+    --nora-color-primary: #4F35E8;
+    --nora-color-on-primary: #FFFFFF;
+    --nora-color-neutral: #262A3A;
+    --nora-color-on-neutral: #FFFFFF;
+    --nora-color-success: #127A49;
+    --nora-color-warning: #9A5B00;
+    --nora-color-danger: #C42B3B;
+    --nora-color-surface: #FFFFFF;
+    --nora-color-surface-2: #F5F5FB;
+    --nora-color-text: #141527;
+    --nora-color-text-muted: #585B70;
+    --nora-color-border: #E2E3EE;
+    --nora-color-focus: #4F35E8;
+
+    --brand-accent-2: #B321C9;
+    --brand-canvas: #FAFAFE;
+    --brand-ink: #0D0E1F;
+    --brand-shadow-color: #1B1550;
+    --brand-font-body: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --brand-font-display: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --brand-heading-weight: 750;
+    --brand-heading-tracking: -0.035em;
+    --brand-radius-sm: 8px;
+    --brand-radius-md: 12px;
+    --brand-radius-lg: 18px;
+    --brand-radius-xl: 28px;
+    --brand-radius-control: 10px;
+    --brand-photo-grayscale: 0.85;
+    --brand-tint-strength: 38%;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --nora-color-primary: #A99BFF;
+      --nora-color-on-primary: #140B45;
+      --nora-color-neutral: #D9DAE8;
+      --nora-color-on-neutral: #141527;
+      --nora-color-success: #4ED69A;
+      --nora-color-warning: #FFC46B;
+      --nora-color-danger: #FF7A88;
+      --nora-color-surface: #131425;
+      --nora-color-surface-2: #1B1C31;
+      --nora-color-text: #ECECF8;
+      --nora-color-text-muted: #A3A5BF;
+      --nora-color-border: #2B2D47;
+      --nora-color-focus: #A99BFF;
+      --brand-accent-2: #EA8CFF;
+      --brand-canvas: #0D0E1C;
+      --brand-ink: #FFFFFF;
+      --brand-shadow-color: #000000;
+    }
+  }
+  :root[data-theme="dark"] {
+    --nora-color-primary: #A99BFF;
+    --nora-color-on-primary: #140B45;
+    --nora-color-neutral: #D9DAE8;
+    --nora-color-on-neutral: #141527;
+    --nora-color-success: #4ED69A;
+    --nora-color-warning: #FFC46B;
+    --nora-color-danger: #FF7A88;
+    --nora-color-surface: #131425;
+    --nora-color-surface-2: #1B1C31;
+    --nora-color-text: #ECECF8;
+    --nora-color-text-muted: #A3A5BF;
+    --nora-color-border: #2B2D47;
+    --nora-color-focus: #A99BFF;
+    --brand-accent-2: #EA8CFF;
+    --brand-canvas: #0D0E1C;
+    --brand-ink: #FFFFFF;
+    --brand-shadow-color: #000000;
+  }
+}

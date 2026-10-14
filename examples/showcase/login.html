@@ -1,0 +1,74 @@
+<!doctype html>
+<!-- NoraIvoire — vitrine « Connexion ». © 2026 Jonathan KABLAN — Propriétaire, tous droits réservés. -->
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Connexion — Orbite</title>
+  <meta name="description" content="Écran de connexion de démonstration construit avec NoraIvoire.">
+  <link rel="stylesheet" href="../../packages/core/dist/noraivoire.css">
+  <link rel="stylesheet" href="../../packages/core/dist/fx/fx-scroll.css">
+  <link rel="stylesheet" href="showcase.css">
+  <link rel="stylesheet" href="themes/saas.css" id="sc-charte">
+  <script type="module" src="showcase.js"></script>
+</head>
+<body>
+  <a class="sc-skip btn" data-tone="neutral" href="#contenu">Aller au formulaire</a>
+  <div class="sc-auth">
+    <main class="sc-auth-form" id="contenu">
+      <div class="sc-auth-box">
+        <div class="sc-row">
+          <a class="sc-logo" href="saas.html"><svg aria-hidden="true"><use href="assets/sprite.svg#logo"/></svg>Orbite</a>
+          <button class="btn sc-btn-quiet sc-btn-icon sc-mode" id="sc-mode" type="button" aria-label="Thème : système (changer)" hidden><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-sun"/></svg><span class="sr-only" data-sc-mode-label>Thème : système</span></button>
+        </div>
+
+        <div class="stack">
+          <h1 class="sc-subtitle">Bon retour parmi nous</h1>
+          <p class="sc-muted">Connectez-vous pour retrouver votre espace de travail.</p>
+        </div>
+
+        <div class="stack">
+          <a class="btn sc-btn-ghost sc-btn-block" href="#sso"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-key"/></svg>Continuer avec le SSO de l'entreprise</a>
+          <a class="btn sc-btn-ghost sc-btn-block" href="#lien"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-mail"/></svg>Recevoir un lien de connexion par e-mail</a>
+        </div>
+
+        <p class="sc-divider">ou avec votre mot de passe</p>
+
+        <form class="stack" action="#" method="post">
+          <div class="field">
+            <label class="field-label" for="email">Adresse e-mail professionnelle</label>
+            <input class="input" id="email" name="email" type="email" autocomplete="email" required placeholder="nom@entreprise.example">
+          </div>
+          <div class="field">
+            <div class="sc-row">
+              <label class="field-label" for="mdp">Mot de passe</label>
+              <a class="link" data-size="sm" href="#oubli">Mot de passe oublié ?</a>
+            </div>
+            <div class="sc-password">
+              <input class="input" id="mdp" name="mdp" type="password" autocomplete="current-password" required minlength="8" aria-describedby="mdp-aide">
+              <button class="btn sc-btn-ghost" type="button" data-sc-reveal="mdp" aria-controls="mdp" aria-pressed="false" hidden>Afficher</button>
+            </div>
+            <p class="field-help" id="mdp-aide">8 caractères minimum.</p>
+          </div>
+          <label class="checkbox"><input type="checkbox" name="memoriser"> Rester connecté sur cet appareil</label>
+          <button class="btn sc-btn-block" data-tone="primary" data-size="lg" type="submit">Se connecter</button>
+        </form>
+
+        <p class="sc-small sc-muted">Pas encore de compte ? <a class="link" href="register.html">Créer un espace gratuitement</a></p>
+        <p class="sc-tiny sc-muted">Protégé par une authentification à deux facteurs. En vous connectant, vous acceptez nos <a class="link" href="#conditions">conditions d'utilisation</a> et notre <a class="link" href="#confidentialite">politique de confidentialité</a>.</p>
+      </div>
+    </main>
+
+    <aside class="sc-auth-visual" aria-label="Témoignage client">
+      <div class="sc-auth-stage">
+        <figure class="sc-photo"><img src="assets/photos/interior-atrium.webp" alt="" width="1400" height="875" data-fx="parallax" data-fx-parallax="speed:10"></figure>
+        <figure class="sc-auth-panel fx-glass sc-frosted">
+          <span class="sc-stars" role="img" aria-label="5 étoiles sur 5"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg></span>
+          <blockquote class="sc-heading">« En trois semaines, nos six sites travaillaient dans le même outil. Le reporting du lundi a tout simplement disparu. »</blockquote>
+          <figcaption class="sc-person"><span class="avatar" data-tone="primary" aria-hidden="true">AK</span><span><b>Awa K.</b><span class="sc-muted">Directrice des opérations, Nordel</span></span></figcaption>
+        </figure>
+      </div>
+    </aside>
+  </div>
+</body>
+</html>
