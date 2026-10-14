@@ -1,0 +1,289 @@
+<!doctype html>
+<!-- NoraIvoire — vitrine « Landing SaaS ». © 2026 Jonathan KABLAN — Propriétaire, tous droits réservés.
+     Marque fictive « Orbite » : nom, logo (assets/sprite.svg#logo) et charte (themes/*.css) se remplacent sans toucher au reste. -->
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Orbite — pilotez vos opérations depuis un seul espace</title>
+  <meta name="description" content="Landing page SaaS de démonstration construite avec NoraIvoire : héro, preuve sociale, fonctionnalités, tarifs, témoignages, FAQ.">
+  <link rel="stylesheet" href="../../packages/core/dist/noraivoire.css">
+  <link rel="stylesheet" href="../../packages/core/dist/fx/fx-scroll.css">
+  <link rel="stylesheet" href="showcase.css">
+  <link rel="stylesheet" href="themes/saas.css" id="sc-charte">
+  <script type="module" src="showcase.js"></script>
+</head>
+<body>
+  <a class="sc-skip btn" data-tone="neutral" href="#contenu">Aller au contenu</a>
+
+  <header class="sc-header fx-glass">
+    <div class="sc-wrap sc-header-inner">
+      <a class="sc-logo" href="saas.html"><svg aria-hidden="true"><use href="assets/sprite.svg#logo"/></svg>Orbite</a>
+      <nav class="sc-nav" aria-label="Navigation principale">
+        <a href="#fonctionnalites">Fonctionnalités</a>
+        <a href="#tarifs">Tarifs</a>
+        <a href="#clients">Clients</a>
+        <a href="#faq">FAQ</a>
+        <a href="blog.html">Ressources</a>
+      </nav>
+      <div class="sc-header-actions">
+        <button class="btn sc-btn-quiet sc-btn-icon sc-mode" id="sc-mode" type="button" aria-label="Thème : système (changer)" hidden><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-sun"/></svg><span class="sr-only" data-sc-mode-label>Thème : système</span></button>
+        <a class="btn sc-btn-quiet sc-hide-sm" href="login.html">Se connecter</a>
+        <a class="btn" data-tone="primary" href="register.html">Essai gratuit</a>
+        <details class="sc-menu">
+          <summary aria-label="Ouvrir le menu"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-menu"/></svg></summary>
+          <nav class="sc-menu-panel" aria-label="Navigation mobile">
+            <a href="#fonctionnalites">Fonctionnalités</a>
+            <a href="#tarifs">Tarifs</a>
+            <a href="#clients">Clients</a>
+            <a href="#faq">FAQ</a>
+            <a href="login.html">Se connecter</a>
+          </nav>
+        </details>
+      </div>
+    </div>
+  </header>
+
+  <main id="contenu">
+    <!-- Héro -->
+    <section class="sc-hero" aria-labelledby="hero-titre">
+      <div class="sc-wrap">
+        <div class="sc-hero-copy">
+          <a class="sc-pill" href="blog.html"><span class="badge" data-tone="primary" data-size="sm">Nouveau</span> Automatisations conditionnelles, disponibles pour tous <svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-arrow"/></svg></a>
+          <h1 class="sc-display" id="hero-titre">Pilotez vos opérations <span class="sc-gradient-text">depuis un seul espace</span></h1>
+          <p class="sc-lead">Orbite réunit demandes, workflows et indicateurs de toutes vos équipes. Moins d'outils, moins de relances, des décisions prises sur des chiffres à jour.</p>
+          <div class="sc-cta">
+            <a class="btn" data-tone="primary" data-size="lg" href="register.html">Démarrer gratuitement <svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-arrow"/></svg></a>
+            <a class="btn sc-btn-ghost" data-size="lg" href="#demo">Voir la démo (2 min)</a>
+          </div>
+          <div class="sc-proof">
+            <div class="sc-avatars" aria-hidden="true"><span class="sc-avatar">AK</span><span class="sc-avatar sc-avatar-2">ML</span><span class="sc-avatar sc-avatar-3">YT</span><span class="sc-avatar">SB</span></div>
+            <span class="sc-stars" role="img" aria-label="Note de 4,9 sur 5"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg></span>
+            <span><strong>4,9/5</strong> · plus de 2 300 équipes · sans carte bancaire</span>
+          </div>
+        </div>
+
+        <div class="sc-stage" id="demo">
+          <figure class="sc-photo sc-stage-backdrop" aria-hidden="true"><img src="assets/photos/arch-glass-curve.webp" alt="" width="1280" height="800" data-fx="parallax" data-fx-parallax="speed:14"></figure>
+
+          <div class="sc-window" role="img" aria-label="Aperçu de l'application Orbite : indicateurs de la semaine et courbe des demandes traitées">
+            <div class="sc-window-bar"><i></i><i></i><i></i><span class="sc-window-url">app.orbite.example/operations</span></div>
+            <div class="sc-app">
+              <div class="sc-app-side">
+                <span aria-current="true"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-home"/></svg>Vue d'ensemble</span>
+                <span><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-inbox"/></svg>Demandes</span>
+                <span><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-zap"/></svg>Automatisations</span>
+                <span><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-chart"/></svg>Rapports</span>
+                <span><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-users"/></svg>Équipes</span>
+                <span><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-settings"/></svg>Réglages</span>
+              </div>
+              <div class="sc-app-main">
+                <div class="sc-row"><b class="sc-heading">Cette semaine</b><span class="badge" data-tone="success" data-size="sm">À jour</span></div>
+                <div class="sc-app-kpis">
+                  <div class="sc-app-kpi"><span class="sc-tiny sc-muted">Demandes traitées</span><b>1 284</b><span class="sc-trend sc-trend-up">+12,4 %</span></div>
+                  <div class="sc-app-kpi"><span class="sc-tiny sc-muted">Délai moyen</span><b>3 h 10</b><span class="sc-trend sc-trend-up">−38 %</span></div>
+                  <div class="sc-app-kpi"><span class="sc-tiny sc-muted">Satisfaction</span><b>96 %</b><span class="sc-trend sc-trend-up">+4 pts</span></div>
+                </div>
+                <svg class="sc-chart" viewBox="0 0 600 180" aria-hidden="true">
+                  <line class="sc-chart-grid" x1="0" y1="20" x2="600" y2="20"/><line class="sc-chart-grid" x1="0" y1="80" x2="600" y2="80"/><line class="sc-chart-grid" x1="0" y1="140" x2="600" y2="140"/>
+                  <path class="sc-chart-area" d="M0 140 L0 120 C60 112 90 96 150 100 S240 70 300 74 S400 40 450 52 S550 24 600 18 L600 140 Z"/>
+                  <path class="sc-chart-line" d="M0 120 C60 112 90 96 150 100 S240 70 300 74 S400 40 450 52 S550 24 600 18"/>
+                  <path class="sc-chart-line-2" d="M0 130 C80 126 120 118 180 120 S300 104 360 106 S480 90 600 84"/>
+                  <circle class="sc-chart-dot" cx="450" cy="52" r="5"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="sc-float sc-float-a fx-glass sc-frosted" data-fx="parallax" data-fx-parallax="speed:30">
+            <span class="sc-tiny sc-muted">Délai moyen de traitement</span>
+            <b class="sc-subtitle sc-num">−38 %</b>
+            <span class="sc-trend sc-trend-up">en 90 jours</span>
+          </div>
+          <div class="sc-float sc-float-b fx-glass sc-frosted" data-fx="parallax" data-fx-parallax="speed:45;reverse:true">
+            <span class="sc-row"><span class="sc-icon-tile"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-zap"/></svg></span><span class="sc-small"><b>1 248</b> automatisations<br><span class="sc-muted">exécutées aujourd'hui</span></span></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Logos clients (fictifs) -->
+    <section class="sc-wrap sc-logos" aria-labelledby="logos-titre">
+      <h2 class="sc-small sc-muted" id="logos-titre">Ils pilotent leurs opérations avec Orbite</h2>
+      <ul>
+        <li><svg role="img" aria-label="Nordel"><use href="assets/sprite.svg#c-nordel"/></svg></li>
+        <li><svg role="img" aria-label="Kytra"><use href="assets/sprite.svg#c-kytra"/></svg></li>
+        <li><svg role="img" aria-label="Opaline"><use href="assets/sprite.svg#c-opaline"/></svg></li>
+        <li><svg role="img" aria-label="Ventrix"><use href="assets/sprite.svg#c-ventrix"/></svg></li>
+        <li><svg role="img" aria-label="Halvio"><use href="assets/sprite.svg#c-halvio"/></svg></li>
+        <li><svg role="img" aria-label="Quorra"><use href="assets/sprite.svg#c-quorra"/></svg></li>
+      </ul>
+    </section>
+
+    <!-- Fonctionnalités -->
+    <section class="sc-section sc-section-alt" id="fonctionnalites" aria-labelledby="features-titre">
+      <div class="sc-wrap">
+        <div class="sc-section-head sc-center">
+          <p class="sc-eyebrow">Fonctionnalités</p>
+          <h2 class="sc-title" id="features-titre">Tout ce qu'il faut pour faire tourner vos équipes</h2>
+          <p class="sc-lead">Des briques simples qui s'assemblent : vous démarrez en une après-midi, vous grandissez sans changer d'outil.</p>
+        </div>
+        <div class="sc-grid sc-grid-3">
+          <article class="card sc-feature sc-lift" data-fx="reveal"><span class="sc-icon-tile"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-inbox"/></svg></span><h3 class="sc-heading">Demandes centralisées</h3><p>Formulaires, e-mails et intégrations arrivent dans une file unique, triée et attribuée automatiquement.</p></article>
+          <article class="card sc-feature sc-lift" data-fx="reveal"><span class="sc-icon-tile"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-zap"/></svg></span><h3 class="sc-heading">Automatisations sans code</h3><p>Déclencheurs, conditions et actions : composez vos workflows en quelques clics, testez-les avant de les publier.</p></article>
+          <article class="card sc-feature sc-lift" data-fx="reveal"><span class="sc-icon-tile"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-chart"/></svg></span><h3 class="sc-heading">Rapports en temps réel</h3><p>Délais, volumes et satisfaction par équipe, avec des alertes quand un indicateur sort de sa cible.</p></article>
+          <article class="card sc-feature sc-lift" data-fx="reveal"><span class="sc-icon-tile"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-shield"/></svg></span><h3 class="sc-heading">Sécurité de niveau entreprise</h3><p>Authentification unique, rôles fins, journal d'audit et données chiffrées au repos comme en transit.</p></article>
+          <article class="card sc-feature sc-lift" data-fx="reveal"><span class="sc-icon-tile"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-plug"/></svg></span><h3 class="sc-heading">Plus de 120 intégrations</h3><p>Messagerie, CRM, facturation, stockage : connectez vos outils existants sans développement.</p></article>
+          <article class="card sc-feature sc-lift" data-fx="reveal"><span class="sc-icon-tile"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-globe"/></svg></span><h3 class="sc-heading">Pensé pour le multisite</h3><p>Fuseaux horaires, langues et devises par entité, avec une vue consolidée pour la direction.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Visuel + carte superposée -->
+    <section class="sc-section" aria-labelledby="equipes-titre">
+      <div class="sc-wrap sc-split">
+        <div class="sc-overlay">
+          <figure class="sc-photo"><img src="assets/photos/office-open.webp" alt="Plateau de bureaux ouvert et lumineux" width="1200" height="800" loading="lazy" data-fx="parallax" data-fx-parallax="speed:12"></figure>
+          <div class="sc-overlay-card fx-glass sc-frosted">
+            <span class="sc-tiny sc-muted">Temps gagné par agent</span>
+            <b class="sc-subtitle sc-num">6 h / semaine</b>
+            <div class="sc-progress" aria-hidden="true"><i class="sc-progress-72"></i></div>
+            <span class="sc-tiny sc-muted">Mesure moyenne après 3 mois</span>
+          </div>
+        </div>
+        <div class="stack" data-fx="reveal">
+          <p class="sc-eyebrow">Pour toutes les équipes</p>
+          <h2 class="sc-title" id="equipes-titre">Moins de coordination, plus de résultats</h2>
+          <p class="sc-lead">Support, finance, achats ou RH : chaque équipe garde ses règles, la direction garde la vue d'ensemble.</p>
+          <ul class="sc-checks">
+            <li><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-check"/></svg><span><b>Attribution intelligente</b> selon la charge, les compétences et les horaires.</span></li>
+            <li><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-check"/></svg><span><b>Engagements de service</b> suivis à la minute, avec escalade automatique.</span></li>
+            <li><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-check"/></svg><span><b>Base de connaissances</b> partagée, proposée au bon moment.</span></li>
+          </ul>
+          <div class="cluster"><a class="btn sc-btn-ghost" href="dashboard.html">Explorer le tableau de bord <svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-arrow"/></svg></a></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chiffres -->
+    <section class="sc-section sc-section-alt" aria-labelledby="chiffres-titre">
+      <div class="sc-wrap">
+        <h2 class="sr-only" id="chiffres-titre">Orbite en chiffres</h2>
+        <div class="sc-stats">
+          <div class="sc-stat"><b>2 300+</b><span class="sc-muted">équipes clientes</span></div>
+          <div class="sc-stat"><b>99,98 %</b><span class="sc-muted">de disponibilité sur 12 mois</span></div>
+          <div class="sc-stat"><b>18 M</b><span class="sc-muted">demandes traitées par an</span></div>
+          <div class="sc-stat"><b>4 min</b><span class="sc-muted">de délai de réponse du support</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tarifs -->
+    <section class="sc-section sc-pricing" id="tarifs" aria-labelledby="tarifs-titre">
+      <div class="sc-wrap">
+        <div class="sc-section-head sc-center">
+          <p class="sc-eyebrow">Tarifs</p>
+          <h2 class="sc-title" id="tarifs-titre">Un prix clair, qui grandit avec vous</h2>
+          <p class="sc-lead">14 jours d'essai sur toutes les offres. Sans engagement, résiliable à tout moment.</p>
+        </div>
+        <div class="sc-billing-row">
+          <fieldset class="sc-billing">
+            <legend>Facturation</legend>
+            <label class="radio"><input type="radio" name="facturation" value="mensuel" checked> Mensuelle</label>
+            <label class="radio"><input type="radio" name="facturation" value="annuel"> Annuelle <span class="badge" data-tone="success" data-size="sm">−20 %</span></label>
+          </fieldset>
+        </div>
+        <div class="sc-plans">
+          <article class="card sc-plan">
+            <div class="stack"><h3 class="sc-heading">Essentiel</h3><p class="sc-muted sc-small">Pour une équipe qui structure ses demandes.</p></div>
+            <p class="sc-price"><b class="sc-price-m">19 €</b><b class="sc-price-y">15 €</b><span class="sc-muted sc-small">/ agent / mois</span></p>
+            <a class="btn sc-btn-ghost sc-btn-block" href="register.html">Commencer l'essai</a>
+            <ul class="sc-checks"><li><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-check"/></svg>Jusqu'à 10 agents</li><li><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-check"/></svg>File de demandes et formulaires</li><li><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-check"/></svg>Rapports standards</li><li><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-check"/></svg>Support par e-mail</li></ul>
+          </article>
+          <article class="card sc-plan sc-plan-featured" aria-labelledby="plan-pro">
+            <span class="badge sc-plan-flag" data-tone="primary">Recommandé</span>
+            <div class="stack"><h3 class="sc-heading" id="plan-pro">Pro</h3><p class="sc-muted sc-small">Pour automatiser et piloter plusieurs équipes.</p></div>
+            <p class="sc-price"><b class="sc-price-m">39 €</b><b class="sc-price-y">31 €</b><span class="sc-muted sc-small">/ agent / mois</span></p>
+            <a class="btn sc-btn-block" data-tone="primary" href="register.html">Commencer l'essai</a>
+            <ul class="sc-checks"><li><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-check"/></svg>Agents illimités</li><li><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-check"/></svg>Automatisations conditionnelles</li><li><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-check"/></svg>Engagements de service et alertes</li><li><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-check"/></svg>120+ intégrations</li><li><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-check"/></svg>Support prioritaire</li></ul>
+          </article>
+          <article class="card sc-plan">
+            <div class="stack"><h3 class="sc-heading">Entreprise</h3><p class="sc-muted sc-small">Pour les organisations multisites et réglementées.</p></div>
+            <p class="sc-price"><b>Sur devis</b></p>
+            <a class="btn sc-btn-ghost sc-btn-block" href="#contact">Parler à un expert</a>
+            <ul class="sc-checks"><li><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-check"/></svg>Authentification unique et provisionnement</li><li><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-check"/></svg>Journal d'audit et rétention sur mesure</li><li><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-check"/></svg>Hébergement dédié</li><li><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-check"/></svg>Responsable de compte</li></ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Témoignages -->
+    <section class="sc-section sc-section-alt" id="clients" aria-labelledby="temoignages-titre">
+      <div class="sc-wrap">
+        <div class="sc-section-head sc-center">
+          <p class="sc-eyebrow">Témoignages</p>
+          <h2 class="sc-title" id="temoignages-titre">Adopté en quelques jours, indispensable en quelques semaines</h2>
+        </div>
+        <div class="sc-grid sc-grid-3">
+          <article class="card sc-quote" data-fx="reveal">
+            <span class="sc-stars" role="img" aria-label="5 étoiles sur 5"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg></span>
+            <blockquote>« Nous avons divisé par trois nos relances internes. Les équipes savent enfin qui fait quoi, et la direction n'attend plus le reporting du lundi. »</blockquote>
+            <p class="sc-person"><span class="sc-avatar" aria-hidden="true">AK</span><span><b>Awa K.</b><span class="sc-muted">Directrice des opérations, Nordel</span></span></p>
+          </article>
+          <article class="card sc-quote" data-fx="reveal">
+            <span class="sc-stars" role="img" aria-label="5 étoiles sur 5"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg></span>
+            <blockquote>« Les automatisations ont remplacé quatre outils et une dizaine de tableurs. Le déploiement sur nos six sites a pris moins d'un mois. »</blockquote>
+            <p class="sc-person"><span class="sc-avatar sc-avatar-2" aria-hidden="true">ML</span><span><b>Marc L.</b><span class="sc-muted">Responsable SI, Halvio</span></span></p>
+          </article>
+          <article class="card sc-quote" data-fx="reveal">
+            <span class="sc-stars" role="img" aria-label="5 étoiles sur 5"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg></span>
+            <blockquote>« Le support répond en quelques minutes et connaît notre configuration. On sent une équipe qui utilise son propre produit. »</blockquote>
+            <p class="sc-person"><span class="sc-avatar sc-avatar-3" aria-hidden="true">YT</span><span><b>Yasmine T.</b><span class="sc-muted">Cheffe de projet, Opaline</span></span></p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="sc-section" id="faq" aria-labelledby="faq-titre">
+      <div class="sc-wrap sc-narrow">
+        <div class="sc-section-head sc-center">
+          <p class="sc-eyebrow">Questions fréquentes</p>
+          <h2 class="sc-title" id="faq-titre">Vous vous demandez peut-être…</h2>
+        </div>
+        <div class="sc-faq">
+          <details open><summary>Combien de temps faut-il pour démarrer ?<svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-plus"/></svg></summary><p>La plupart des équipes reçoivent leurs premières demandes dans Orbite le jour même. Nos modèles prêts à l'emploi couvrent le support, les achats, la finance et les RH.</p></details>
+          <details><summary>Puis-je importer mes données existantes ?<svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-plus"/></svg></summary><p>Oui : import CSV, connecteurs pour les principaux outils du marché et API documentée. L'équipe d'accompagnement vous aide gratuitement pendant l'essai.</p></details>
+          <details><summary>Où sont hébergées les données ?<svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-plus"/></svg></summary><p>Dans l'Union européenne, sur une infrastructure certifiée, avec des sauvegardes chiffrées quotidiennes. L'offre Entreprise propose un hébergement dédié.</p></details>
+          <details><summary>Que se passe-t-il à la fin de l'essai ?<svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-plus"/></svg></summary><p>Rien sans votre accord : vous choisissez une offre ou votre espace passe en lecture seule pendant 30 jours, le temps d'exporter vos données.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <!-- Appel final -->
+    <section class="sc-wrap sc-section" id="contact" aria-labelledby="cta-titre">
+      <div class="sc-band">
+        <figure class="sc-photo" aria-hidden="true"><img src="assets/photos/arch-facade-fins.webp" alt="" width="1400" height="875" loading="lazy" data-fx="parallax" data-fx-parallax="speed:16"></figure>
+        <div class="sc-band-inner">
+          <h2 class="sc-title" id="cta-titre">Prêt à reprendre la main sur vos opérations ?</h2>
+          <p class="sc-lead">Essayez Orbite gratuitement pendant 14 jours, avec un accompagnement personnalisé.</p>
+          <div class="cluster"><a class="btn sc-btn-inverse" data-size="lg" href="register.html">Créer mon espace</a><a class="btn sc-btn-quiet" data-size="lg" href="#tarifs">Comparer les offres</a></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="sc-footer">
+    <div class="sc-wrap sc-footer-grid">
+      <div class="sc-footer-brand">
+        <a class="sc-logo" href="saas.html"><svg aria-hidden="true"><use href="assets/sprite.svg#logo"/></svg>Orbite</a>
+        <p class="sc-muted sc-small">La plateforme qui réunit demandes, workflows et indicateurs de toutes vos équipes.</p>
+      </div>
+      <nav aria-labelledby="f-produit"><h2 id="f-produit">Produit</h2><ul><li><a href="#fonctionnalites">Fonctionnalités</a></li><li><a href="#tarifs">Tarifs</a></li><li><a href="dashboard.html">Tableau de bord</a></li><li><a href="blog.html">Nouveautés</a></li></ul></nav>
+      <nav aria-labelledby="f-societe"><h2 id="f-societe">Société</h2><ul><li><a href="portfolio.html">Studio</a></li><li><a href="blog.html">Blog</a></li><li><a href="#contact">Contact</a></li></ul></nav>
+      <nav aria-labelledby="f-legal"><h2 id="f-legal">Légal</h2><ul><li><a href="#contenu">Confidentialité</a></li><li><a href="#contenu">Conditions</a></li><li><a href="#contenu">Sécurité</a></li></ul></nav>
+    </div>
+    <div class="sc-wrap sc-footer-bottom"><span>© 2026 Orbite — marque fictive de démonstration.</span><span>Construit avec NoraIvoire · <a href="index.html">Toutes les vitrines</a></span></div>
+  </footer>
+</body>
+</html>

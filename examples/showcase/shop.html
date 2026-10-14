@@ -1,0 +1,248 @@
+<!doctype html>
+<!-- NoraIvoire — vitrine « E-commerce ». © 2026 Jonathan KABLAN — Propriétaire, tous droits réservés.
+     Produits et prix fictifs. Photos : Unsplash (voir assets/photos/CREDITS.md). -->
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Orbite Maison — objets d'intérieur</title>
+  <meta name="description" content="Boutique de démonstration construite avec NoraIvoire : héro, catégories, produits, fiche produit, chargement, newsletter.">
+  <link rel="stylesheet" href="../../packages/core/dist/noraivoire.css">
+  <link rel="stylesheet" href="../../packages/core/dist/fx/fx-scroll.css">
+  <link rel="stylesheet" href="showcase.css">
+  <link rel="stylesheet" href="themes/saas.css" id="sc-charte">
+  <script type="module" src="showcase.js"></script>
+</head>
+<body>
+  <a class="sc-skip btn" data-tone="neutral" href="#contenu">Aller au contenu</a>
+
+  <div class="sc-strip" role="note">
+    <div class="sc-wrap">
+      <span><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-truck"/></svg>Livraison offerte dès 80 €</span>
+      <span class="sc-hide-sm"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-refresh"/></svg>Retours gratuits sous 30 jours</span>
+      <span class="sc-hide-sm"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-shield"/></svg>Paiement sécurisé</span>
+    </div>
+  </div>
+
+  <header class="sc-header fx-glass">
+    <div class="sc-wrap sc-header-inner">
+      <a class="sc-logo" href="shop.html"><svg aria-hidden="true"><use href="assets/sprite.svg#logo"/></svg>Orbite Maison</a>
+      <nav class="sc-nav" aria-label="Rayons">
+        <a href="#nouveautes" aria-current="page">Nouveautés</a>
+        <a href="#categories">Céramique</a>
+        <a href="#categories">Luminaires</a>
+        <a href="#categories">Mobilier</a>
+      </nav>
+      <form class="sc-search sc-hide-sm" role="search" action="#" method="get">
+        <label class="sr-only" for="q">Rechercher un produit</label>
+        <input class="input" id="q" name="q" type="search" placeholder="Rechercher un vase, une lampe…">
+      </form>
+      <div class="sc-header-actions">
+        <button class="btn sc-btn-quiet sc-btn-icon sc-mode" id="sc-mode" type="button" aria-label="Thème : système (changer)" hidden><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-sun"/></svg><span class="sr-only" data-sc-mode-label>Thème : système</span></button>
+        <a class="btn sc-btn-quiet sc-btn-icon sc-hide-xs" href="#favoris" aria-label="Favoris"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-heart"/></svg></a>
+        <a class="btn sc-btn-quiet sc-btn-icon sc-cart" href="#panier" aria-label="Panier, 2 articles"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-cart"/></svg><span class="badge" data-tone="primary" data-size="sm" aria-hidden="true">2</span></a>
+        <details class="sc-menu">
+          <summary aria-label="Ouvrir le menu"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-menu"/></svg></summary>
+          <nav class="sc-menu-panel" aria-label="Rayons (mobile)">
+            <a href="#nouveautes">Nouveautés</a><a href="#categories">Céramique</a><a href="#categories">Luminaires</a><a href="#categories">Mobilier</a>
+          </nav>
+        </details>
+      </div>
+    </div>
+  </header>
+
+  <main id="contenu">
+    <!-- Héro -->
+    <section class="sc-shop-hero" aria-labelledby="shop-titre">
+      <div class="sc-wrap sc-split">
+        <div class="stack" data-fx="reveal">
+          <p class="sc-eyebrow">Collection Atelier — automne</p>
+          <h1 class="sc-display" id="shop-titre">Des objets simples, faits pour durer</h1>
+          <p class="sc-lead">Céramiques tournées à la main, luminaires réparables et mobilier en séries courtes. Choisis pour leur matière, gardés pour leur usage.</p>
+          <div class="cluster">
+            <a class="btn" data-tone="primary" data-size="lg" href="#nouveautes">Découvrir la collection</a>
+            <a class="btn sc-btn-ghost" data-size="lg" href="#vedette">Voir le produit vedette</a>
+          </div>
+          <div class="sc-proof"><span class="sc-stars" role="img" aria-label="Note de 4,8 sur 5"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg></span><span><strong>4,8/5</strong> sur 3 900 avis vérifiés</span></div>
+        </div>
+        <div class="sc-shop-visual">
+          <figure class="sc-photo"><img src="assets/photos/product-vases-pair.webp" alt="Deux vases en céramique blanche posés sur un drapé de lin" width="800" height="800" data-fx="parallax" data-fx-parallax="speed:12"></figure>
+          <div class="sc-promo-card fx-glass sc-frosted" data-fx="parallax" data-fx-parallax="speed:28">
+            <span class="badge" data-tone="danger" data-size="sm">−20 %</span>
+            <b class="sc-heading">Semaine de la céramique</b>
+            <span class="sc-small sc-muted">Jusqu'au 20 octobre, code ATELIER20</span>
+          </div>
+          <div class="sc-rating-card fx-glass sc-frosted">
+            <span class="sc-icon-tile"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-heart"/></svg></span>
+            <span class="sc-small"><b>1 200</b> clients ce mois-ci</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Catégories -->
+    <section class="sc-section sc-section-alt" id="categories" aria-labelledby="cat-titre">
+      <div class="sc-wrap">
+        <div class="sc-section-head"><p class="sc-eyebrow">Rayons</p><h2 class="sc-title" id="cat-titre">Acheter par catégorie</h2></div>
+        <div class="sc-grid sc-grid-4">
+          <a class="sc-category sc-lift" href="#nouveautes"><figure class="sc-photo"><img src="assets/photos/product-jars.webp" alt="" width="800" height="800" loading="lazy"></figure><span class="sc-category-label fx-glass">Céramique <svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-arrow"/></svg></span></a>
+          <a class="sc-category sc-lift" href="#nouveautes"><figure class="sc-photo"><img src="assets/photos/product-lamp-shade.webp" alt="" width="800" height="800" loading="lazy"></figure><span class="sc-category-label fx-glass">Luminaires <svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-arrow"/></svg></span></a>
+          <a class="sc-category sc-lift" href="#nouveautes"><figure class="sc-photo"><img src="assets/photos/product-chair.webp" alt="" width="800" height="800" loading="lazy"></figure><span class="sc-category-label fx-glass">Mobilier <svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-arrow"/></svg></span></a>
+          <a class="sc-category sc-lift" href="#nouveautes"><figure class="sc-photo"><img src="assets/photos/product-vases-clay.webp" alt="" width="800" height="800" loading="lazy"></figure><span class="sc-category-label fx-glass">Terre cuite <svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-arrow"/></svg></span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Produits -->
+    <section class="sc-section" id="nouveautes" aria-labelledby="new-titre">
+      <div class="sc-wrap">
+        <div class="sc-section-head sc-row"><div class="stack"><p class="sc-eyebrow">Nouveautés</p><h2 class="sc-title" id="new-titre">Arrivées de la semaine</h2></div><a class="btn sc-btn-ghost" href="#nouveautes">Tout voir</a></div>
+        <ul class="sc-grid sc-grid-3 sc-plain" role="list">
+          <li class="sc-product">
+            <figure class="sc-photo" data-fx="tilt" data-fx-tilt="max:6"><span class="badge sc-product-badge" data-tone="primary" data-size="sm">Nouveau</span><img src="assets/photos/product-vase-ring.webp" alt="Vase en forme d'anneau, grès sable" width="800" height="800" loading="lazy"></figure>
+            <div class="sc-product-meta"><h3>Vase Anneau</h3><span class="sc-price-tag">48 €</span></div>
+            <div class="sc-row"><span class="sc-small sc-muted">Grès sable · 22 cm</span><span class="sc-stars" role="img" aria-label="4,9 sur 5"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg> <span class="sc-small sc-muted">4,9</span></span></div>
+            <button class="btn sc-btn-ghost sc-btn-block" type="button" aria-label="Ajouter le Vase Anneau au panier"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-plus"/></svg>Ajouter au panier</button>
+          </li>
+          <li class="sc-product">
+            <figure class="sc-photo" data-fx="tilt" data-fx-tilt="max:6"><span class="badge sc-product-badge" data-tone="danger" data-size="sm">−20 %</span><img src="assets/photos/product-jars.webp" alt="Trois jarres en céramique écrue" width="800" height="800" loading="lazy"></figure>
+            <div class="sc-product-meta"><h3>Jarres Brume (lot de 3)</h3><span class="sc-price-tag">72 € <span class="sc-price-old">90 €</span></span></div>
+            <div class="sc-row"><span class="sc-small sc-muted">Céramique émaillée</span><span class="sc-stars" role="img" aria-label="4,7 sur 5"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg> <span class="sc-small sc-muted">4,7</span></span></div>
+            <button class="btn sc-btn-ghost sc-btn-block" type="button" aria-label="Ajouter les Jarres Brume au panier"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-plus"/></svg>Ajouter au panier</button>
+          </li>
+          <li class="sc-product">
+            <figure class="sc-photo" data-fx="tilt" data-fx-tilt="max:6"><img src="assets/photos/product-lamp-shade.webp" alt="Lampe à poser avec abat-jour en tissu, allumée" width="800" height="800" loading="lazy"></figure>
+            <div class="sc-product-meta"><h3>Lampe Halo</h3><span class="sc-price-tag">129 €</span></div>
+            <div class="sc-row"><span class="sc-small sc-muted">Lin et céramique</span><span class="sc-stars" role="img" aria-label="4,8 sur 5"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg> <span class="sc-small sc-muted">4,8</span></span></div>
+            <button class="btn sc-btn-ghost sc-btn-block" type="button" aria-label="Ajouter la Lampe Halo au panier"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-plus"/></svg>Ajouter au panier</button>
+          </li>
+          <li class="sc-product">
+            <figure class="sc-photo" data-fx="tilt" data-fx-tilt="max:6"><img src="assets/photos/product-vases-clay.webp" alt="Trois vases en terre cuite sur un socle" width="800" height="800" loading="lazy"></figure>
+            <div class="sc-product-meta"><h3>Trio Terre</h3><span class="sc-price-tag">64 €</span></div>
+            <div class="sc-row"><span class="sc-small sc-muted">Terre cuite brute</span><span class="sc-stars" role="img" aria-label="4,6 sur 5"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg> <span class="sc-small sc-muted">4,6</span></span></div>
+            <button class="btn sc-btn-ghost sc-btn-block" type="button" aria-label="Ajouter le Trio Terre au panier"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-plus"/></svg>Ajouter au panier</button>
+          </li>
+          <li class="sc-product">
+            <figure class="sc-photo" data-fx="tilt" data-fx-tilt="max:6"><span class="badge sc-product-badge" data-tone="success" data-size="sm">Réparable</span><img src="assets/photos/product-lamp-arm.webp" alt="Lampe d'atelier à bras articulé sur un bureau en bois" width="800" height="800" loading="lazy"></figure>
+            <div class="sc-product-meta"><h3>Lampe d'atelier Axe</h3><span class="sc-price-tag">159 €</span></div>
+            <div class="sc-row"><span class="sc-small sc-muted">Acier et chêne</span><span class="sc-stars" role="img" aria-label="4,9 sur 5"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg> <span class="sc-small sc-muted">4,9</span></span></div>
+            <button class="btn sc-btn-ghost sc-btn-block" type="button" aria-label="Ajouter la Lampe d'atelier Axe au panier"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-plus"/></svg>Ajouter au panier</button>
+          </li>
+          <li class="sc-product">
+            <figure class="sc-photo" data-fx="tilt" data-fx-tilt="max:6"><img src="assets/photos/product-chair.webp" alt="Chaise blanche épurée dans une pièce baignée de lumière" width="800" height="800" loading="lazy"></figure>
+            <div class="sc-product-meta"><h3>Chaise Plume</h3><span class="sc-price-tag">210 €</span></div>
+            <div class="sc-row"><span class="sc-small sc-muted">Hêtre laqué</span><span class="sc-stars" role="img" aria-label="4,8 sur 5"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg> <span class="sc-small sc-muted">4,8</span></span></div>
+            <button class="btn sc-btn-ghost sc-btn-block" type="button" aria-label="Ajouter la Chaise Plume au panier"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-plus"/></svg>Ajouter au panier</button>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Fiche produit vedette -->
+    <section class="sc-section sc-section-alt" id="vedette" aria-labelledby="vedette-titre">
+      <div class="sc-wrap sc-split">
+        <div class="sc-gallery">
+          <figure class="sc-photo"><img src="assets/photos/product-vase-ring.webp" alt="Vase Anneau, vue de face" width="800" height="800" loading="lazy"></figure>
+          <figure class="sc-photo sc-zoom-a"><img src="assets/photos/product-vase-ring.webp" alt="Détail de la texture du grès" width="800" height="800" loading="lazy"></figure>
+          <figure class="sc-photo sc-zoom-b"><img src="assets/photos/product-vase-ring.webp" alt="Détail de l'ouverture du col" width="800" height="800" loading="lazy"></figure>
+          <figure class="sc-photo sc-zoom-c"><img src="assets/photos/product-vase-ring.webp" alt="Détail du galbe de l'anneau" width="800" height="800" loading="lazy"></figure>
+        </div>
+        <div class="stack">
+          <p class="sc-eyebrow">Produit vedette</p>
+          <h2 class="sc-title" id="vedette-titre">Vase Anneau</h2>
+          <div class="sc-proof sc-start"><span class="sc-stars" role="img" aria-label="Note de 4,9 sur 5"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg></span><span>4,9 · <a href="#avis">212 avis</a></span></div>
+          <p class="sc-price"><b>48 €</b><span class="sc-muted sc-small">TVA incluse</span></p>
+          <p class="sc-muted">Tourné à la main dans un grès à grain fin, puis émaillé à l'intérieur pour accueillir fleurs fraîches comme branchages secs. Chaque pièce est unique.</p>
+          <form class="stack" action="#" method="post">
+            <fieldset class="field">
+              <legend class="field-label">Teinte</legend>
+              <div class="cluster">
+                <label class="radio"><input type="radio" name="teinte" value="sable" checked> Sable</label>
+                <label class="radio"><input type="radio" name="teinte" value="craie"> Craie</label>
+                <label class="radio"><input type="radio" name="teinte" value="ardoise" disabled> Ardoise (épuisé)</label>
+              </div>
+            </fieldset>
+            <div class="sc-row sc-start">
+              <div class="field">
+                <label class="field-label" for="qte">Quantité</label>
+                <select class="select" id="qte" name="qte"><option>1</option><option>2</option><option>3</option><option>4</option></select>
+              </div>
+            </div>
+            <div class="cluster">
+              <button class="btn" data-tone="primary" data-size="lg" type="submit"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-cart"/></svg>Ajouter au panier</button>
+              <button class="btn sc-btn-ghost" data-size="lg" type="button"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-heart"/></svg>Favori</button>
+            </div>
+          </form>
+          <ul class="sc-reassure">
+            <li><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-truck"/></svg>Expédié sous 48 h, livraison offerte dès 80 €</li>
+            <li><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-refresh"/></svg>Retours gratuits sous 30 jours</li>
+            <li><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-shield"/></svg>Garantie casse pendant le transport</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Recommandations en cours de chargement + état vide -->
+    <section class="sc-section" aria-labelledby="reco-titre">
+      <div class="sc-wrap sc-split sc-top">
+        <div class="stack">
+          <h2 class="sc-subtitle" id="reco-titre">Recommandés pour vous</h2>
+          <div class="sc-grid sc-grid-3 sc-compact" aria-busy="true" aria-describedby="reco-etat">
+            <p class="sr-only" id="reco-etat">Chargement des recommandations…</p>
+            <div class="stack" aria-hidden="true"><span class="sc-skeleton sc-skeleton-media"></span><span class="sc-skeleton sc-skeleton-line"></span><span class="sc-skeleton sc-skeleton-short"></span></div>
+            <div class="stack" aria-hidden="true"><span class="sc-skeleton sc-skeleton-media"></span><span class="sc-skeleton sc-skeleton-line"></span><span class="sc-skeleton sc-skeleton-short"></span></div>
+            <div class="stack" aria-hidden="true"><span class="sc-skeleton sc-skeleton-media"></span><span class="sc-skeleton sc-skeleton-line"></span><span class="sc-skeleton sc-skeleton-short"></span></div>
+          </div>
+        </div>
+        <div class="card sc-empty" id="favoris">
+          <span class="sc-icon-tile"><svg class="sc-icon sc-icon-lg" aria-hidden="true"><use href="assets/sprite.svg#i-heart"/></svg></span>
+          <h2 class="sc-heading">Aucun favori pour l'instant</h2>
+          <p class="sc-muted sc-small">Touchez le cœur d'un produit pour le retrouver ici, sur tous vos appareils.</p>
+          <a class="btn sc-btn-ghost" href="#nouveautes">Parcourir les nouveautés</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Avis -->
+    <section class="sc-section sc-section-alt" id="avis" aria-labelledby="avis-titre">
+      <div class="sc-wrap">
+        <div class="sc-section-head"><p class="sc-eyebrow">Avis vérifiés</p><h2 class="sc-title" id="avis-titre">Ce qu'en disent nos clients</h2></div>
+        <div class="sc-grid sc-grid-3">
+          <article class="card sc-quote"><span class="sc-stars" role="img" aria-label="5 étoiles sur 5"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg></span><blockquote>« Emballage impeccable, vase encore plus beau qu'en photo. Le grès a une douceur incroyable. »</blockquote><p class="sc-person"><span class="sc-avatar" aria-hidden="true">CL</span><span><b>Claire L.</b><span class="sc-muted">Achat vérifié · Vase Anneau</span></span></p></article>
+          <article class="card sc-quote"><span class="sc-stars" role="img" aria-label="5 étoiles sur 5"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg></span><blockquote>« La lampe d'atelier est solide et toutes les pièces sont remplaçables. Exactement ce que je cherchais. »</blockquote><p class="sc-person"><span class="sc-avatar sc-avatar-2" aria-hidden="true">IB</span><span><b>Ibrahim B.</b><span class="sc-muted">Achat vérifié · Lampe Axe</span></span></p></article>
+          <article class="card sc-quote"><span class="sc-stars" role="img" aria-label="4 étoiles sur 5"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg></span><blockquote>« Très belles jarres. Livraison un jour plus tard que prévu, mais le service client a été réactif. »</blockquote><p class="sc-person"><span class="sc-avatar sc-avatar-3" aria-hidden="true">NS</span><span><b>Nadia S.</b><span class="sc-muted">Achat vérifié · Jarres Brume</span></span></p></article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="sc-wrap sc-section" aria-labelledby="news-titre">
+      <div class="sc-band">
+        <figure class="sc-photo" aria-hidden="true"><img src="assets/photos/product-lamp-arm.webp" alt="" width="800" height="800" loading="lazy" data-fx="parallax" data-fx-parallax="speed:14"></figure>
+        <div class="sc-band-inner">
+          <h2 class="sc-title" id="news-titre">−10 % sur votre première commande</h2>
+          <p>Une lettre par mois : nouvelles pièces, coulisses de l'atelier, ventes privées.</p>
+          <form class="sc-newsletter" action="#" method="post">
+            <label class="sr-only" for="news-email">Adresse e-mail</label>
+            <input class="input" id="news-email" name="email" type="email" autocomplete="email" placeholder="vous@exemple.fr" required>
+            <button class="btn sc-btn-inverse" type="submit">S'inscrire</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="sc-footer">
+    <div class="sc-wrap sc-footer-grid">
+      <div class="sc-footer-brand">
+        <a class="sc-logo" href="shop.html"><svg aria-hidden="true"><use href="assets/sprite.svg#logo"/></svg>Orbite Maison</a>
+        <p class="sc-muted sc-small">Objets d'intérieur durables, sélectionnés et expédiés depuis notre atelier.</p>
+      </div>
+      <nav aria-labelledby="f-boutique"><h2 id="f-boutique">Boutique</h2><ul><li><a href="#nouveautes">Nouveautés</a></li><li><a href="#categories">Catégories</a></li><li><a href="#vedette">Produit vedette</a></li></ul></nav>
+      <nav aria-labelledby="f-aide"><h2 id="f-aide">Aide</h2><ul><li><a href="#contenu">Livraison</a></li><li><a href="#contenu">Retours</a></li><li><a href="#contenu">Contact</a></li></ul></nav>
+      <nav aria-labelledby="f-compte"><h2 id="f-compte">Compte</h2><ul><li><a href="login.html">Se connecter</a></li><li><a href="register.html">Créer un compte</a></li><li><a href="#favoris">Favoris</a></li></ul></nav>
+    </div>
+    <div class="sc-wrap sc-footer-bottom"><span>© 2026 Orbite Maison — boutique fictive de démonstration.</span><span><a href="index.html">Toutes les vitrines</a></span></div>
+  </footer>
+</body>
+</html>

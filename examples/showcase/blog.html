@@ -1,0 +1,139 @@
+<!doctype html>
+<!-- NoraIvoire — vitrine « Blog ». © 2026 Jonathan KABLAN — Propriétaire, tous droits réservés.
+     Articles fictifs. Photos : Unsplash (voir assets/photos/CREDITS.md). -->
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Le blog — Orbite</title>
+  <meta name="description" content="Blog de démonstration construit avec NoraIvoire : article à la une, liste d'articles, article long, auteur, articles liés.">
+  <link rel="stylesheet" href="../../packages/core/dist/noraivoire.css">
+  <link rel="stylesheet" href="../../packages/core/dist/fx/fx-scroll.css">
+  <link rel="stylesheet" href="showcase.css">
+  <link rel="stylesheet" href="themes/saas.css" id="sc-charte">
+  <script type="module" src="showcase.js"></script>
+</head>
+<body>
+  <a class="sc-skip btn" data-tone="neutral" href="#contenu">Aller au contenu</a>
+  <header class="sc-header fx-glass">
+    <div class="sc-wrap sc-header-inner">
+      <a class="sc-logo" href="saas.html"><svg aria-hidden="true"><use href="assets/sprite.svg#logo"/></svg>Orbite</a>
+      <nav class="sc-nav" aria-label="Navigation principale">
+        <a href="saas.html">Produit</a>
+        <a href="blog.html" aria-current="page">Blog</a>
+        <a href="#article">Guides</a>
+        <a href="saas.html#clients">Clients</a>
+      </nav>
+      <div class="sc-header-actions">
+        <button class="btn sc-btn-quiet sc-btn-icon sc-mode" id="sc-mode" type="button" aria-label="Thème : système (changer)" hidden><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-sun"/></svg><span class="sr-only" data-sc-mode-label>Thème : système</span></button>
+        <a class="btn" data-tone="primary" href="#lettre">S'abonner</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="contenu">
+    <!-- À la une -->
+    <section class="sc-feature-post" aria-labelledby="une-titre">
+      <figure class="sc-photo" aria-hidden="true"><img src="assets/photos/blog-skyline.webp" alt="" width="1200" height="675" data-fx="parallax" data-fx-parallax="speed:22"></figure>
+      <div class="sc-wrap sc-feature-copy">
+        <p class="sc-eyebrow">À la une · Opérations</p>
+        <h1 id="une-titre">Ce que 2 300 équipes nous ont appris sur les délais de traitement</h1>
+        <p class="sc-lead">Nous avons analysé dix-huit millions de demandes. Trois habitudes distinguent les équipes les plus rapides — et aucune ne demande plus de monde.</p>
+        <div class="sc-byline"><span class="sc-avatar" aria-hidden="true">YT</span><span>Yasmine T. · <time datetime="2026-10-09">9 octobre 2026</time> · 8 min de lecture</span></div>
+        <div class="cluster"><a class="btn sc-btn-inverse" href="#article">Lire l'article <svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-arrow"/></svg></a></div>
+      </div>
+    </section>
+
+    <!-- Liste -->
+    <section class="sc-section" aria-labelledby="derniers-titre">
+      <div class="sc-wrap">
+        <div class="sc-section-head sc-row"><h2 class="sc-title" id="derniers-titre">Derniers articles</h2>
+          <nav aria-label="Catégories"><ul class="sc-chips"><li><a href="blog.html" aria-current="page">Tous</a></li><li><a href="#article">Opérations</a></li><li><a href="#article">Produit</a></li><li><a href="#article">Design</a></li><li><a href="#article">Ingénierie</a></li></ul></nav>
+        </div>
+        <div class="sc-grid sc-grid-3">
+          <a class="sc-post" href="#article" data-fx="reveal"><figure class="sc-photo"><img src="assets/photos/blog-notebook.webp" alt="" width="1200" height="750" loading="lazy"></figure><div class="sc-post-meta"><span>Produit</span><span>5 min</span></div><h3>Écrire une note de cadrage qu'on lit vraiment</h3><p>Une page, quatre questions, zéro jargon : notre modèle, et pourquoi il fonctionne.</p></a>
+          <a class="sc-post" href="#article" data-fx="reveal"><figure class="sc-photo"><img src="assets/photos/office-meeting-room.webp" alt="" width="1600" height="1000" loading="lazy"></figure><div class="sc-post-meta"><span>Opérations</span><span>7 min</span></div><h3>La revue hebdomadaire en 25 minutes chrono</h3><p>Ordre du jour fixe, indicateurs partagés, décisions écrites : le rituel de nos clients les plus efficaces.</p></a>
+          <a class="sc-post" href="#article" data-fx="reveal"><figure class="sc-photo"><img src="assets/photos/arch-wave.webp" alt="" width="1400" height="875" loading="lazy"></figure><div class="sc-post-meta"><span>Design</span><span>6 min</span></div><h3>Un système de design, c'est d'abord un contrat</h3><p>Tokens, composants et règles d'usage : comment éviter que la bibliothèque ne devienne un musée.</p></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Article type -->
+    <article class="sc-section sc-section-alt" id="article" aria-labelledby="article-titre">
+      <div class="sc-wrap">
+        <header class="sc-narrow stack sc-article-head">
+          <p class="sc-eyebrow">Guide · Opérations</p>
+          <h2 class="sc-title" id="article-titre">Trois habitudes des équipes les plus rapides</h2>
+          <div class="sc-byline sc-muted"><span class="sc-avatar" aria-hidden="true">YT</span><span>Yasmine T. · <time datetime="2026-10-09">9 octobre 2026</time> · 8 min de lecture</span></div>
+        </header>
+        <div class="sc-article-layout">
+          <nav class="sc-toc" aria-labelledby="sommaire"><b id="sommaire">Sommaire</b><a href="#h-trier">Trier avant de traiter</a><a href="#h-ecrire">Écrire les décisions</a><a href="#h-mesurer">Mesurer peu, mais souvent</a></nav>
+          <div class="sc-prose">
+            <p>Quand on compare les équipes qui traitent leurs demandes en moins de quatre heures à celles qui dépassent deux jours, la différence ne tient ni à la taille ni au budget. Elle tient à des habitudes, modestes et répétées.</p>
+            <h2 id="h-trier">Trier avant de traiter</h2>
+            <p>Les équipes rapides consacrent les dix premières minutes de la journée au tri : chaque demande reçoit une priorité, un responsable et une échéance. Rien n'est traité avant d'être trié.</p>
+            <blockquote>« Une demande sans responsable n'est pas en attente : elle est perdue. »</blockquote>
+            <figure>
+              <div class="sc-photo"><img src="assets/photos/blog-notebook-pen.webp" alt="Carnet ouvert et stylo posés sur une table blanche" width="1200" height="750" loading="lazy"></div>
+              <figcaption>Le tri du matin tient sur une page : priorité, responsable, échéance.</figcaption>
+            </figure>
+            <h2 id="h-ecrire">Écrire les décisions</h2>
+            <p>Chaque arbitrage est consigné en une phrase, à côté de la demande. Six mois plus tard, personne n'a besoin de reconstituer l'historique en réunion. Une automatisation suffit souvent à rendre la règle explicite :</p>
+<pre><code>quand demande.priorité = "haute"
+  et demande.sans_réponse &gt; 2 h
+alors  notifier(équipe.responsable)
+       ajouter_étiquette("escalade")</code></pre>
+            <h2 id="h-mesurer">Mesurer peu, mais souvent</h2>
+            <ul>
+              <li><b>Délai de première réponse</b>, revu chaque semaine.</li>
+              <li><b>Part des demandes hors délai</b>, avec la cause principale.</li>
+              <li><b>Satisfaction</b>, demandée en une seule question.</li>
+            </ul>
+            <p>Trois indicateurs suffisent. Au-delà, on passe plus de temps à commenter les tableaux qu'à améliorer le service.</p>
+            <div class="card sc-author">
+              <span class="sc-avatar sc-avatar-lg" aria-hidden="true">YT</span>
+              <div class="stack"><b>Yasmine T.</b><p class="sc-muted sc-small">Responsable des études chez Orbite. Elle accompagne les équipes opérations depuis dix ans et écrit sur les méthodes qui tiennent dans la durée.</p></div>
+            </div>
+          </div>
+          <aside class="sc-article-aside stack" aria-label="Partager">
+            <b class="sc-small">Partager</b>
+            <a class="btn sc-btn-ghost" data-size="sm" href="#article"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-mail"/></svg>Par e-mail</a>
+            <a class="btn sc-btn-ghost" data-size="sm" href="#article"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-globe"/></svg>Copier le lien</a>
+          </aside>
+        </div>
+      </div>
+    </article>
+
+    <!-- Articles liés -->
+    <section class="sc-section" aria-labelledby="lies-titre">
+      <div class="sc-wrap">
+        <div class="sc-section-head"><h2 class="sc-subtitle" id="lies-titre">À lire ensuite</h2></div>
+        <div class="sc-grid sc-grid-3">
+          <a class="sc-post" href="#article"><figure class="sc-photo"><img src="assets/photos/office-hallway.webp" alt="" width="1200" height="800" loading="lazy"></figure><div class="sc-post-meta"><span>Ingénierie</span><span>9 min</span></div><h3>Migrer 14 produits vers un même système de design</h3></a>
+          <a class="sc-post" href="#article"><figure class="sc-photo"><img src="assets/photos/arch-grid.webp" alt="" width="900" height="1350" loading="lazy"></figure><div class="sc-post-meta"><span>Produit</span><span>4 min</span></div><h3>Les états vides méritent mieux qu'une illustration</h3></a>
+          <a class="sc-post" href="#article"><figure class="sc-photo"><img src="assets/photos/office-meeting-chairs.webp" alt="" width="1200" height="800" loading="lazy"></figure><div class="sc-post-meta"><span>Opérations</span><span>6 min</span></div><h3>Préparer un audit sans arrêter la production</h3></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="sc-wrap sc-section" id="lettre" aria-labelledby="lettre-titre">
+      <div class="sc-band">
+        <figure class="sc-photo" aria-hidden="true"><img src="assets/photos/arch-balconies.webp" alt="" width="1600" height="1000" loading="lazy" data-fx="parallax" data-fx-parallax="speed:14"></figure>
+        <div class="sc-band-inner">
+          <h2 class="sc-title" id="lettre-titre">Un article utile par mois, pas plus</h2>
+          <p>Méthodes, retours d'expérience et modèles prêts à l'emploi. Désinscription en un clic.</p>
+          <form class="sc-newsletter" action="#" method="post">
+            <label class="sr-only" for="lettre-email">Adresse e-mail</label>
+            <input class="input" id="lettre-email" name="email" type="email" autocomplete="email" placeholder="vous@exemple.fr" required>
+            <button class="btn sc-btn-inverse" type="submit">S'abonner</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="sc-footer">
+    <div class="sc-wrap sc-footer-bottom"><span>© 2026 Orbite — blog fictif de démonstration. Photos : Unsplash.</span><span><a href="index.html">Toutes les vitrines</a></span></div>
+  </footer>
+</body>
+</html>

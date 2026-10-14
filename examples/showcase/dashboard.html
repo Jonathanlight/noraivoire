@@ -1,0 +1,191 @@
+<!doctype html>
+<!-- NoraIvoire — vitrine « Tableau de bord ». © 2026 Jonathan KABLAN — Propriétaire, tous droits réservés.
+     Données fictives. Graphiques en SVG en ligne : leurs couleurs viennent de la charte (--brand-chart-*). -->
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vue d'ensemble — Orbite</title>
+  <meta name="description" content="Tableau de bord de démonstration construit avec NoraIvoire : indicateurs, graphiques SVG, tableau, activité, états vides et de chargement.">
+  <link rel="stylesheet" href="../../packages/core/dist/noraivoire.css">
+  <link rel="stylesheet" href="showcase.css">
+  <link rel="stylesheet" href="themes/saas.css" id="sc-charte">
+  <script type="module" src="showcase.js"></script>
+</head>
+<body>
+  <a class="sc-skip btn" data-tone="neutral" href="#contenu">Aller au contenu</a>
+  <div class="sc-dash">
+    <aside class="sc-side" aria-label="Barre latérale">
+      <a class="sc-logo" href="saas.html"><svg aria-hidden="true"><use href="assets/sprite.svg#logo"/></svg>Orbite</a>
+      <nav aria-labelledby="nav-pilotage">
+        <p class="sc-side-title" id="nav-pilotage">Pilotage</p>
+        <a href="dashboard.html" aria-current="page"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-home"/></svg>Vue d'ensemble</a>
+        <a href="#demandes"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-inbox"/></svg>Demandes <span class="badge" data-tone="primary" data-size="sm">12</span></a>
+        <a href="#automatisations"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-zap"/></svg>Automatisations</a>
+        <a href="#rapports"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-chart"/></svg>Rapports</a>
+      </nav>
+      <nav aria-labelledby="nav-orga">
+        <p class="sc-side-title" id="nav-orga">Organisation</p>
+        <a href="#equipes"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-users"/></svg>Équipes</a>
+        <a href="#clients"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-box"/></svg>Clients</a>
+        <a href="#reglages"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-settings"/></svg>Réglages</a>
+      </nav>
+      <div class="sc-upgrade">
+        <figure class="sc-photo" aria-hidden="true"><img src="assets/photos/office-meeting-chairs.webp" alt="" width="1200" height="800" loading="lazy"></figure>
+        <div class="sc-upgrade-card fx-glass sc-frosted">
+          <b>Essai Pro : 9 jours restants</b>
+          <span class="sc-muted">Gardez les automatisations et les rapports avancés.</span>
+          <a class="btn" data-tone="primary" data-size="sm" href="saas.html#tarifs">Choisir une offre</a>
+        </div>
+      </div>
+    </aside>
+
+    <main class="sc-main" id="contenu">
+      <div class="sc-topbar">
+        <form class="sc-search" role="search" action="#" method="get">
+          <label class="sr-only" for="recherche">Rechercher une demande, un client</label>
+          <input class="input" id="recherche" name="q" type="search" placeholder="Rechercher une demande, un client…">
+        </form>
+        <button class="btn sc-btn-ghost sc-btn-icon sc-mode" id="sc-mode" type="button" aria-label="Thème : système (changer)" hidden><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-sun"/></svg><span class="sr-only" data-sc-mode-label>Thème : système</span></button>
+        <a class="btn sc-btn-ghost sc-btn-icon sc-cart" href="#activite" aria-label="Notifications, 3 non lues"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-bell"/></svg><span class="badge" data-tone="danger" data-size="sm" aria-hidden="true">3</span></a>
+        <span class="sc-person"><span class="sc-avatar" aria-hidden="true">AK</span><span class="sc-hide-sm"><b>Awa Koné</b><span class="sc-muted sc-tiny">Administratrice</span></span></span>
+      </div>
+
+      <div class="sc-page-head">
+        <div class="stack">
+          <h1 class="sc-subtitle">Vue d'ensemble</h1>
+          <p class="sc-muted sc-small">Mardi 14 octobre 2026 · données mises à jour il y a 2 minutes</p>
+        </div>
+        <div class="cluster">
+          <label class="sr-only" for="periode">Période</label>
+          <select class="select" id="periode" name="periode"><option>7 derniers jours</option><option selected>30 derniers jours</option><option>Trimestre en cours</option></select>
+          <a class="btn sc-btn-ghost" href="#rapports"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-download"/></svg>Exporter</a>
+          <a class="btn" data-tone="primary" href="#demandes"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-plus"/></svg>Nouvelle demande</a>
+        </div>
+      </div>
+
+      <!-- Indicateurs -->
+      <section class="sc-grid sc-grid-4" aria-label="Indicateurs clés">
+        <article class="card sc-kpi">
+          <div class="sc-kpi-top"><span>Demandes traitées</span><span class="sc-icon-tile"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-inbox"/></svg></span></div>
+          <b>4 812</b>
+          <div class="sc-row"><span class="sc-trend sc-trend-up">+12,4 % <span class="sr-only">par rapport à la période précédente</span></span><svg class="sc-chart" viewBox="0 0 120 40" aria-hidden="true"><path class="sc-chart-line" d="M2 32 L18 28 L34 30 L50 22 L66 24 L82 14 L98 16 L118 6"/></svg></div>
+        </article>
+        <article class="card sc-kpi">
+          <div class="sc-kpi-top"><span>Délai moyen</span><span class="sc-icon-tile"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-clock"/></svg></span></div>
+          <b>3 h 10</b>
+          <div class="sc-row"><span class="sc-trend sc-trend-up">−38 % <span class="sr-only">de délai, amélioration</span></span><svg class="sc-chart" viewBox="0 0 120 40" aria-hidden="true"><path class="sc-chart-line" d="M2 8 L18 12 L34 10 L50 18 L66 20 L82 26 L98 28 L118 32"/></svg></div>
+        </article>
+        <article class="card sc-kpi">
+          <div class="sc-kpi-top"><span>Satisfaction</span><span class="sc-icon-tile"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-heart"/></svg></span></div>
+          <b>96 %</b>
+          <div class="sc-row"><span class="sc-trend sc-trend-up">+4 pts</span><svg class="sc-chart" viewBox="0 0 120 40" aria-hidden="true"><path class="sc-chart-line" d="M2 26 L18 24 L34 25 L50 20 L66 18 L82 19 L98 12 L118 10"/></svg></div>
+        </article>
+        <article class="card sc-kpi">
+          <div class="sc-kpi-top"><span>Hors délai</span><span class="sc-icon-tile"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-bell"/></svg></span></div>
+          <b>27</b>
+          <div class="sc-row"><span class="sc-trend sc-trend-down">+3 <span class="sr-only">demandes hors délai, dégradation</span></span><svg class="sc-chart" viewBox="0 0 120 40" aria-hidden="true"><path class="sc-chart-line-2" d="M2 30 L18 30 L34 26 L50 28 L66 22 L82 24 L98 18 L118 16"/></svg></div>
+        </article>
+      </section>
+
+      <!-- Graphiques -->
+      <div class="sc-dash-grid">
+        <section class="card" aria-labelledby="g-volume" id="rapports">
+          <div class="sc-panel-head"><h2 id="g-volume">Demandes reçues et traitées</h2><ul class="sc-legend sc-inline"><li><span class="sc-dot"></span>Traitées</li><li><span class="sc-dot sc-dot-2"></span>Reçues</li></ul></div>
+          <svg class="sc-chart" viewBox="0 0 640 240" role="img" aria-labelledby="g-volume g-volume-desc">
+            <desc id="g-volume-desc">Sur 30 jours, les demandes traitées passent de 120 à 210 par jour et rattrapent les demandes reçues à partir du 20e jour.</desc>
+            <line class="sc-chart-grid" x1="40" y1="20" x2="640" y2="20"/><line class="sc-chart-grid" x1="40" y1="80" x2="640" y2="80"/><line class="sc-chart-grid" x1="40" y1="140" x2="640" y2="140"/><line class="sc-chart-grid" x1="40" y1="200" x2="640" y2="200"/>
+            <text class="sc-chart-axis" x="0" y="24">240</text><text class="sc-chart-axis" x="0" y="84">160</text><text class="sc-chart-axis" x="0" y="144">80</text><text class="sc-chart-axis" x="8" y="204">0</text>
+            <path class="sc-chart-area" d="M40 200 L40 110 C100 104 130 96 190 100 S300 78 360 82 S470 50 520 58 S600 40 640 36 L640 200 Z"/>
+            <path class="sc-chart-line" d="M40 110 C100 104 130 96 190 100 S300 78 360 82 S470 50 520 58 S600 40 640 36"/>
+            <path class="sc-chart-line-2" d="M40 84 C110 80 150 76 210 80 S320 66 380 70 S480 56 540 58 S610 48 640 46"/>
+            <circle class="sc-chart-dot" cx="520" cy="58" r="5"/>
+            <text class="sc-chart-axis" x="40" y="228">15 sept.</text><text class="sc-chart-axis" x="320" y="228">30 sept.</text><text class="sc-chart-axis" x="590" y="228">14 oct.</text>
+          </svg>
+        </section>
+        <section class="card" aria-labelledby="g-canaux">
+          <div class="sc-panel-head"><h2 id="g-canaux">Canaux d'entrée</h2></div>
+          <div class="sc-donut">
+            <figure>
+              <svg class="sc-chart" viewBox="0 0 120 120" role="img" aria-labelledby="g-canaux"><circle class="sc-ring-track" cx="60" cy="60" r="46" stroke-width="16"/>
+                <circle class="sc-ring-1" cx="60" cy="60" r="46" stroke-width="16" pathLength="100" stroke-dasharray="44 56" stroke-dashoffset="25"/>
+                <circle class="sc-ring-2" cx="60" cy="60" r="46" stroke-width="16" pathLength="100" stroke-dasharray="28 72" stroke-dashoffset="-19"/>
+                <circle class="sc-ring-3" cx="60" cy="60" r="46" stroke-width="16" pathLength="100" stroke-dasharray="18 82" stroke-dashoffset="-47"/>
+                <circle class="sc-ring-4" cx="60" cy="60" r="46" stroke-width="16" pathLength="100" stroke-dasharray="10 90" stroke-dashoffset="-65"/></svg>
+              <figcaption><b>4 812</b>demandes</figcaption>
+            </figure>
+            <ul class="sc-legend">
+              <li><span class="sc-dot"></span>Formulaires<b>44 %</b></li>
+              <li><span class="sc-dot sc-dot-2"></span>E-mail<b>28 %</b></li>
+              <li><span class="sc-dot sc-dot-3"></span>Intégrations<b>18 %</b></li>
+              <li><span class="sc-dot sc-dot-4"></span>Téléphone<b>10 %</b></li>
+            </ul>
+          </div>
+        </section>
+      </div>
+
+      <!-- Tableau + activité -->
+      <div class="sc-dash-grid">
+        <section class="card" aria-labelledby="t-demandes" id="demandes">
+          <div class="sc-panel-head"><h2 id="t-demandes">Dernières demandes</h2><a class="btn sc-btn-quiet" data-size="sm" href="#demandes">Tout voir</a></div>
+          <div class="sc-table-wrap" tabindex="0" role="region" aria-labelledby="t-demandes">
+            <table class="sc-table">
+              <thead><tr><th scope="col">N°</th><th scope="col">Client</th><th scope="col">Sujet</th><th scope="col">Statut</th><th scope="col" class="sc-num">Échéance</th></tr></thead>
+              <tbody>
+                <tr><td>#4821</td><td><span class="sc-client"><span class="sc-avatar" aria-hidden="true">NO</span>Nordel</span></td><td>Accès SSO pour 40 agents</td><td><span class="badge" data-tone="warning" data-size="sm">En cours</span></td><td class="sc-num">Aujourd'hui</td></tr>
+                <tr><td>#4820</td><td><span class="sc-client"><span class="sc-avatar sc-avatar-2" aria-hidden="true">KY</span>Kytra</span></td><td>Export comptable mensuel</td><td><span class="badge" data-tone="success" data-size="sm">Résolue</span></td><td class="sc-num">13 oct.</td></tr>
+                <tr><td>#4819</td><td><span class="sc-client"><span class="sc-avatar sc-avatar-3" aria-hidden="true">OP</span>Opaline</span></td><td>Nouveau workflow achats</td><td><span class="badge" data-tone="primary" data-size="sm">Nouvelle</span></td><td class="sc-num">16 oct.</td></tr>
+                <tr><td>#4818</td><td><span class="sc-client"><span class="sc-avatar" aria-hidden="true">VE</span>Ventrix</span></td><td>Erreur d'intégration CRM</td><td><span class="badge" data-tone="danger" data-size="sm">Hors délai</span></td><td class="sc-num">12 oct.</td></tr>
+                <tr><td>#4817</td><td><span class="sc-client"><span class="sc-avatar sc-avatar-2" aria-hidden="true">HA</span>Halvio</span></td><td>Ajout d'un site à Lyon</td><td><span class="badge" data-tone="success" data-size="sm">Résolue</span></td><td class="sc-num">11 oct.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+        <section class="card" aria-labelledby="a-activite" id="activite">
+          <div class="sc-panel-head"><h2 id="a-activite">Activité récente</h2></div>
+          <ul class="sc-feed">
+            <li><span class="sc-avatar" aria-hidden="true">ML</span><p><b>Marc L.</b> a résolu la demande #4820<time datetime="2026-10-14T09:42">il y a 12 min</time></p></li>
+            <li><span class="sc-avatar sc-avatar-2" aria-hidden="true">YT</span><p><b>Yasmine T.</b> a publié l'automatisation « Escalade VIP »<time datetime="2026-10-14T09:10">il y a 44 min</time></p></li>
+            <li><span class="sc-avatar sc-avatar-3" aria-hidden="true">SB</span><p><b>Sékou B.</b> a invité 3 agents dans l'équipe Achats<time datetime="2026-10-14T08:31">il y a 1 h</time></p></li>
+            <li><span class="sc-avatar" aria-hidden="true">AK</span><p><b>Awa K.</b> a modifié l'objectif trimestriel<time datetime="2026-10-13T17:05">hier</time></p></li>
+          </ul>
+        </section>
+      </div>
+
+      <!-- Équipes, objectif, états -->
+      <div class="sc-grid sc-grid-3">
+        <section class="card" aria-labelledby="g-equipes" id="equipes">
+          <div class="sc-panel-head"><h2 id="g-equipes">Volume par équipe</h2></div>
+          <svg class="sc-chart" viewBox="0 0 300 170" role="img" aria-labelledby="g-equipes g-equipes-desc">
+            <desc id="g-equipes-desc">Support 1 640 demandes, Finance 980, Achats 1 120, RH 620, IT 452.</desc>
+            <line class="sc-chart-grid" x1="0" y1="140" x2="300" y2="140"/>
+            <rect class="sc-chart-bar" x="12" y="20" width="36" height="120" rx="6"/><rect class="sc-chart-bar-2" x="70" y="68" width="36" height="72" rx="6"/><rect class="sc-chart-bar" x="128" y="58" width="36" height="82" rx="6"/><rect class="sc-chart-bar-2" x="186" y="94" width="36" height="46" rx="6"/><rect class="sc-chart-bar-2" x="244" y="107" width="36" height="33" rx="6"/>
+            <text class="sc-chart-axis" x="10" y="162">Support</text><text class="sc-chart-axis" x="68" y="162">Finance</text><text class="sc-chart-axis" x="128" y="162">Achats</text><text class="sc-chart-axis" x="196" y="162">RH</text><text class="sc-chart-axis" x="254" y="162">IT</text>
+          </svg>
+        </section>
+        <section class="sc-goal" aria-labelledby="o-titre">
+          <figure class="sc-photo" aria-hidden="true"><img src="assets/photos/office-meeting-room.webp" alt="" width="1600" height="1000" loading="lazy"></figure>
+          <div class="sc-goal-card fx-glass sc-frosted">
+            <h2 class="sc-small" id="o-titre">Objectif du trimestre</h2>
+            <b class="sc-heading sc-num">15 000 demandes à moins de 4 h</b>
+            <div class="sc-progress" role="progressbar" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100" aria-label="Avancement de l'objectif"><i class="sc-progress-72"></i></div>
+            <span class="sc-tiny sc-muted">72 % atteint · 26 jours restants</span>
+          </div>
+        </section>
+        <div class="stack">
+          <section class="card sc-empty" aria-labelledby="e-alertes">
+            <span class="sc-icon-tile"><svg class="sc-icon sc-icon-lg" aria-hidden="true"><use href="assets/sprite.svg#i-shield"/></svg></span>
+            <h2 class="sc-heading" id="e-alertes">Aucune alerte critique</h2>
+            <p class="sc-muted sc-small">Tout fonctionne normalement. Vous serez prévenu si un indicateur sort de sa cible.</p>
+          </section>
+          <section class="card stack" aria-labelledby="c-rapport" aria-busy="true">
+            <h2 class="sc-small" id="c-rapport">Rapport mensuel en cours de génération…</h2>
+            <span class="sc-skeleton sc-skeleton-line" aria-hidden="true"></span><span class="sc-skeleton" aria-hidden="true"></span><span class="sc-skeleton sc-skeleton-short" aria-hidden="true"></span>
+          </section>
+        </div>
+      </div>
+      <p class="sc-tiny sc-muted">Données fictives de démonstration · <a href="index.html">Toutes les vitrines</a></p>
+    </main>
+  </div>
+</body>
+</html>

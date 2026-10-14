@@ -1,0 +1,107 @@
+<!doctype html>
+<!-- NoraIvoire — vitrine « Inscription ». © 2026 Jonathan KABLAN — Propriétaire, tous droits réservés.
+     États de démonstration figés (e-mail déjà utilisé, robustesse moyenne) : aucune logique métier. -->
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Créer un espace — Orbite</title>
+  <meta name="description" content="Écran d'inscription de démonstration construit avec NoraIvoire : étapes, erreurs reliées, robustesse du mot de passe.">
+  <link rel="stylesheet" href="../../packages/core/dist/noraivoire.css">
+  <link rel="stylesheet" href="../../packages/core/dist/fx/fx-scroll.css">
+  <link rel="stylesheet" href="showcase.css">
+  <link rel="stylesheet" href="themes/saas.css" id="sc-charte">
+  <script type="module" src="showcase.js"></script>
+</head>
+<body>
+  <a class="sc-skip btn" data-tone="neutral" href="#contenu">Aller au formulaire</a>
+  <div class="sc-auth">
+    <main class="sc-auth-form" id="contenu">
+      <div class="sc-auth-box">
+        <div class="sc-row">
+          <a class="sc-logo" href="saas.html"><svg aria-hidden="true"><use href="assets/sprite.svg#logo"/></svg>Orbite</a>
+          <span class="sc-small sc-muted">Déjà inscrit ? <a href="login.html">Se connecter</a></span>
+        </div>
+
+        <ol class="sc-steps" aria-label="Étapes de l'inscription">
+          <li aria-current="step">1. Compte</li>
+          <li>2. Espace</li>
+          <li>3. Équipe</li>
+        </ol>
+
+        <div class="stack">
+          <h1 class="sc-subtitle">Créez votre espace en 2 minutes</h1>
+          <p class="sc-muted">14 jours d'essai complet, sans carte bancaire.</p>
+        </div>
+
+        <a class="btn sc-btn-ghost sc-btn-block" href="#sso"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-key"/></svg>S'inscrire avec le SSO de l'entreprise</a>
+        <p class="sc-divider">ou</p>
+
+        <form class="stack" action="#" method="post">
+          <div class="sc-pair">
+            <div class="field">
+              <label class="field-label" for="prenom">Prénom</label>
+              <input class="input" id="prenom" name="prenom" type="text" autocomplete="given-name" required value="Awa">
+            </div>
+            <div class="field">
+              <label class="field-label" for="nom">Nom</label>
+              <input class="input" id="nom" name="nom" type="text" autocomplete="family-name" required value="Koné">
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="email">Adresse e-mail professionnelle</label>
+            <input class="input" id="email" name="email" type="email" autocomplete="email" required value="awa@nordel.example" aria-invalid="true" aria-describedby="email-erreur">
+            <p class="field-error" id="email-erreur">Cette adresse est déjà associée à un compte. <a href="login.html">Se connecter</a> ou utilisez une autre adresse.</p>
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="taille">Taille de l'équipe</label>
+            <select class="select" id="taille" name="taille">
+              <option>1 à 10 personnes</option>
+              <option selected>11 à 50 personnes</option>
+              <option>51 à 200 personnes</option>
+              <option>Plus de 200 personnes</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="mdp">Mot de passe</label>
+            <div class="sc-password">
+              <input class="input" id="mdp" name="mdp" type="password" autocomplete="new-password" required minlength="12" value="orbite2026" aria-describedby="mdp-force mdp-regles">
+              <button class="btn sc-btn-ghost" type="button" data-sc-reveal="mdp" aria-controls="mdp" aria-pressed="false" hidden>Afficher</button>
+            </div>
+            <div class="sc-meter" data-level="2" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+            <p class="field-help" id="mdp-force">Robustesse : moyenne. Ajoutez des caractères pour la renforcer.</p>
+            <ul class="sc-rules" id="mdp-regles" aria-label="Règles du mot de passe">
+              <li data-ok><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-check"/></svg>Au moins une lettre et un chiffre (respecté)</li>
+              <li><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-plus"/></svg>12 caractères minimum (non respecté)</li>
+              <li><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-plus"/></svg>Un caractère spécial (non respecté)</li>
+            </ul>
+          </div>
+
+          <label class="checkbox"><input type="checkbox" name="cgu" required> J'accepte les conditions d'utilisation et la politique de confidentialité</label>
+          <label class="checkbox"><input type="checkbox" name="nouveautes"> Recevoir une lettre mensuelle sur les nouveautés (facultatif)</label>
+          <button class="btn sc-btn-block" data-tone="primary" data-size="lg" type="submit">Créer mon espace <svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-arrow"/></svg></button>
+        </form>
+        <p class="sc-tiny sc-muted">Lire les <a href="#conditions">conditions d'utilisation</a> et la <a href="#confidentialite">politique de confidentialité</a>. Vous pourrez supprimer votre espace à tout moment.</p>
+      </div>
+    </main>
+
+    <aside class="sc-auth-visual" aria-label="Inclus dans l'essai">
+      <div class="sc-auth-stage">
+        <figure class="sc-photo"><img src="assets/photos/arch-wave.webp" alt="" width="1400" height="875" data-fx="parallax" data-fx-parallax="speed:10"></figure>
+        <div class="sc-auth-panel fx-glass sc-frosted">
+          <p class="sc-eyebrow">Inclus dans l'essai</p>
+          <h2 class="sc-heading">Toutes les fonctionnalités Pro, pendant 14 jours</h2>
+          <ul class="sc-checks sc-small">
+            <li><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-check"/></svg>Agents et automatisations illimités</li>
+            <li><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-check"/></svg>Import de vos données accompagné</li>
+            <li><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-check"/></svg>Support prioritaire en français</li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+  </div>
+</body>
+</html>

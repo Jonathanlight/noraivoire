@@ -1,0 +1,65 @@
+<!doctype html>
+<!-- NoraIvoire — index des vitrines. © 2026 Jonathan KABLAN — Propriétaire, tous droits réservés.
+     Sélecteur de charte : ?charte=saas|corporate|nature|noraivoire (lu par showcase.js, propagé aux liens). -->
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vitrines NoraIvoire</title>
+  <meta name="description" content="Sept pages complètes construites avec NoraIvoire, re-thémables en changeant un seul fichier de charte.">
+  <link rel="stylesheet" href="../../packages/core/dist/noraivoire.css">
+  <link rel="stylesheet" href="showcase.css">
+  <link rel="stylesheet" href="themes/saas.css" id="sc-charte">
+  <script type="module" src="showcase.js"></script>
+</head>
+<body>
+  <a class="sc-skip btn" data-tone="neutral" href="#contenu">Aller au contenu</a>
+  <header class="sc-header fx-glass">
+    <div class="sc-wrap sc-header-inner">
+      <a class="sc-logo" href="index.html"><svg aria-hidden="true"><use href="assets/sprite.svg#logo"/></svg>Vitrines</a>
+      <div class="sc-header-actions">
+        <button class="btn sc-btn-quiet sc-btn-icon sc-mode" id="sc-mode" type="button" aria-label="Thème : système (changer)" hidden><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-sun"/></svg><span class="sr-only" data-sc-mode-label>Thème : système</span></button>
+        <a class="btn sc-btn-ghost" href="saas.html">Ouvrir la landing</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="contenu">
+    <section class="sc-hero" aria-labelledby="index-titre">
+      <div class="sc-wrap sc-hero-copy">
+        <p class="sc-eyebrow">Exemples NoraIvoire</p>
+        <h1 class="sc-display" id="index-titre">Sept pages complètes, <span class="sc-gradient-text">une charte à changer</span></h1>
+        <p class="sc-lead">Landing SaaS, connexion, inscription, boutique, tableau de bord, portfolio et blog. Toutes les couleurs, polices, rayons et ombres viennent d'un seul fichier de variables.</p>
+        <nav aria-labelledby="chartes-titre" class="stack">
+          <h2 class="sc-small sc-muted" id="chartes-titre">Choisir une charte</h2>
+          <ul class="sc-chartes sc-plain">
+            <li><a href="index.html?charte=saas" data-sc-charte="saas" aria-current="true"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-palette"/></svg>SaaS</a></li>
+            <li><a href="index.html?charte=corporate" data-sc-charte="corporate" aria-current="false"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-palette"/></svg>Corporate</a></li>
+            <li><a href="index.html?charte=nature" data-sc-charte="nature" aria-current="false"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-palette"/></svg>Nature</a></li>
+            <li><a href="index.html?charte=noraivoire" data-sc-charte="noraivoire" aria-current="false"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-palette"/></svg>Tokens NoraIvoire</a></li>
+          </ul>
+        </nav>
+      </div>
+    </section>
+
+    <section class="sc-section" aria-labelledby="pages-titre">
+      <div class="sc-wrap">
+        <h2 class="sr-only" id="pages-titre">Les vitrines</h2>
+        <ul class="sc-grid sc-grid-3 sc-plain">
+          <li><a class="sc-tile" href="saas.html"><span class="sc-tile-shot sc-lift"><img src="../../docs/gallery/showcase-saas-light.png" alt="" width="1440" height="900" loading="lazy"></span><h2>Landing SaaS <span class="badge" data-tone="primary" data-size="sm">Pièce maîtresse</span></h2><p>Héro, preuve sociale, fonctionnalités, tarifs mensuels ou annuels, témoignages, FAQ.</p></a></li>
+          <li><a class="sc-tile" href="dashboard.html"><span class="sc-tile-shot sc-lift"><img src="../../docs/gallery/showcase-dashboard-light.png" alt="" width="1440" height="900" loading="lazy"></span><h2>Tableau de bord</h2><p>Indicateurs, graphiques SVG, tableau, activité, états vides et de chargement.</p></a></li>
+          <li><a class="sc-tile" href="shop.html"><span class="sc-tile-shot sc-lift"><img src="../../docs/gallery/showcase-shop-light.png" alt="" width="1440" height="900" loading="lazy"></span><h2>E-commerce</h2><p>Héro produit, catégories, grille, fiche avec galerie et variantes, avis.</p></a></li>
+          <li><a class="sc-tile" href="login.html"><span class="sc-tile-shot sc-lift"><img src="../../docs/gallery/showcase-login-light.png" alt="" width="1440" height="900" loading="lazy"></span><h2>Connexion</h2><p>SSO, lien magique, mot de passe affichable, témoignage en verre.</p></a></li>
+          <li><a class="sc-tile" href="register.html"><span class="sc-tile-shot sc-lift"><img src="../../docs/gallery/showcase-register-light.png" alt="" width="1440" height="900" loading="lazy"></span><h2>Inscription</h2><p>Étapes, erreur reliée, robustesse du mot de passe, consentements.</p></a></li>
+          <li><a class="sc-tile" href="portfolio.html"><span class="sc-tile-shot sc-lift"><img src="../../docs/gallery/showcase-portfolio-light.png" alt="" width="1440" height="900" loading="lazy"></span><h2>Portfolio</h2><p>Titre animé, mosaïque de projets, méthode épinglée au défilement.</p></a></li>
+          <li><a class="sc-tile" href="blog.html"><span class="sc-tile-shot sc-lift"><img src="../../docs/gallery/showcase-blog-light.png" alt="" width="1440" height="900" loading="lazy"></span><h2>Blog</h2><p>Article à la une en parallaxe, liste, article long, auteur, articles liés.</p></a></li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="sc-footer">
+    <div class="sc-wrap sc-footer-bottom"><span>© 2026 Jonathan KABLAN — NoraIvoire, logiciel propriétaire. Marques et contenus fictifs.</span><span>Photos : <a href="assets/photos/CREDITS.md">Unsplash, crédits</a></span></div>
+  </footer>
+</body>
+</html>

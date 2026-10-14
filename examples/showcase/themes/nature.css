@@ -1,0 +1,80 @@
+/*
+ * Charte « Nature » — vert forêt et terre, formes arrondies. © 2026 Jonathan KABLAN — Propriétaire.
+ * Ce fichier ne contient QUE des variables : copiez-le pour créer votre charte.
+ */
+@layer app.theme {
+  :root {
+    --nora-color-primary: #2A6544;
+    --nora-color-on-primary: #FFFFFF;
+    --nora-color-neutral: #3A3328;
+    --nora-color-on-neutral: #FFFFFF;
+    --nora-color-success: #2A6544;
+    --nora-color-warning: #8C5413;
+    --nora-color-danger: #A63A24;
+    --nora-color-surface: #FFFDF9;
+    --nora-color-surface-2: #F3EEE4;
+    --nora-color-text: #1F1B14;
+    --nora-color-text-muted: #635B4E;
+    --nora-color-border: #E2D9C8;
+    --nora-color-focus: #2A6544;
+
+    --brand-accent-2: #A3622A;
+    --brand-chart-3: #3F6E8C;
+    --brand-canvas: #F9F5EC;
+    --brand-ink: #18150F;
+    --brand-shadow-color: #3A2A10;
+    --brand-font-body: "Avenir Next", Avenir, "Segoe UI", system-ui, sans-serif;
+    --brand-font-display: "Avenir Next", Avenir, "Segoe UI", system-ui, sans-serif;
+    --brand-heading-weight: 700;
+    --brand-heading-tracking: -0.02em;
+    --brand-radius-sm: 10px;
+    --brand-radius-md: 16px;
+    --brand-radius-lg: 24px;
+    --brand-radius-xl: 36px;
+    --brand-radius-control: 999px;
+    --brand-photo-grayscale: 0.55;
+    --brand-tint-strength: 30%;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --nora-color-primary: #8FD4A8;
+      --nora-color-on-primary: #0D2417;
+      --nora-color-neutral: #E2DACB;
+      --nora-color-on-neutral: #1F1B14;
+      --nora-color-success: #8FD4A8;
+      --nora-color-warning: #E8B36B;
+      --nora-color-danger: #F2937B;
+      --nora-color-surface: #191712;
+      --nora-color-surface-2: #23201A;
+      --nora-color-text: #F1ECE2;
+      --nora-color-text-muted: #B3AA99;
+      --nora-color-border: #3A352B;
+      --nora-color-focus: #8FD4A8;
+      --brand-accent-2: #E3A66C;
+      --brand-chart-3: #8EC1E0;
+      --brand-canvas: #12110D;
+      --brand-ink: #FFFFFF;
+      --brand-shadow-color: #000000;
+    }
+  }
+  :root[data-theme="dark"] {
+    --nora-color-primary: #8FD4A8;
+    --nora-color-on-primary: #0D2417;
+    --nora-color-neutral: #E2DACB;
+    --nora-color-on-neutral: #1F1B14;
+    --nora-color-success: #8FD4A8;
+    --nora-color-warning: #E8B36B;
+    --nora-color-danger: #F2937B;
+    --nora-color-surface: #191712;
+    --nora-color-surface-2: #23201A;
+    --nora-color-text: #F1ECE2;
+    --nora-color-text-muted: #B3AA99;
+    --nora-color-border: #3A352B;
+    --nora-color-focus: #8FD4A8;
+    --brand-accent-2: #E3A66C;
+    --brand-chart-3: #8EC1E0;
+    --brand-canvas: #12110D;
+    --brand-ink: #FFFFFF;
+    --brand-shadow-color: #000000;
+  }
+}
