@@ -5,10 +5,10 @@ Version 0.1.0 · 14 octobre 2026 · © Jonathan KABLAN — Propriétaire
 ## 1. Commandes
 
 ```bash
-npm test                    # 185 tests (node:test, aucun framework)
+npm test                    # 193 tests (node:test, aucun framework)
 npm run test:rn             # 136 tests de rendu React Native (Jest + Testing Library, preset officiel RN)
 npm run audit:licenses      # licences de tout l'arbre npm : aucune licence copyleft ni dépendance runtime
-npm run test:visual         # 43 tests Playwright : 12 captures + axe-core + rendu sans JS + variante legacy + mesures de parité + catalogue (navigateurs requis)
+npm run test:visual         # 90 tests Playwright : 12 captures + axe-core + rendu sans JS + variante legacy + mesures de parité + catalogue + vitrines (navigateurs requis)
 npm run parity:update       # régénère les mesures de parité CSS / Flutter / React Native (navigateurs et Flutter requis)
 npm run test:jsp            # 14 tests : modèles JSP exécutés dans Tomcat (JDK 17+ et Tomcat 10.1+ requis)
 npm run check               # valide les modèles et les recettes
@@ -39,6 +39,7 @@ npm run verify              # tout, dans l'ordre
 | `tests/unit/jsp-template.test.js` | 3 | Tag JSP `<nora:btn>` aligné sur les listes blanches des Twig Components : préfixes d'URL autorisés, refus de `//` et `/\`, types de bouton |
 | `tests/unit/catalog.test.js` | 9 | Catalogue (`tools/catalog`) : une page par composant et effet du manifest, composant ajouté → page générée, aucun script / style / gestionnaire inline, code affiché identique au rendu, `nora check` sans erreur ni avertissement sur chaque page, liens et ressources valides, structure accessible, tokens clair / sombre et contraste, `prettify` / JSX |
 | `tests/unit/page.test.js` | 12 | Composants de mise en page `link`, `navbar`, `avatar`, `media` : manifest (ajouts seulement), liste blanche de `box` / `ratio` / clés de taille et contraintes de forme, contraste des liens sur les surfaces (exception figée : `primary` et `warning` sur `surface-2` en clair), CSS (soulignement, focus, lien externe, liens de navigation ≥ 44 px, page courante, menu défilant, format fixe, surimpression, contraste forcé, `:where()`), widgets Flutter et composants React Native (rôles, sémantique, mouvement réduit, imports) |
+| `tests/unit/showcase.test.js` | 8 | Vitrines : aucune couleur en dur hors de `themes/` (CSS, HTML, SVG) et contre-épreuve, chartes réduites à des variables (clair et sombre), pages compatibles CSP stricte, ressources locales, photos Unsplash créditées (WebP réels, ≤ 120 Ko, toutes utilisées), `nora check` sans erreur ni avertissement, composants du framework utilisés |
 | `tests/unit/audit.test.js` | 1 | L'audit complet passe (90/90) |
 | `examples/flutter_app/test/fx_test.dart` (Flutter) | 3 | `NoraScramble` : texte final, label sémantique, mouvement réduit ; `NoraParallax` : décalage au défilement, aucun en mouvement réduit |
 | `tests/jsp/run.mjs` (Tomcat, `npm run test:jsp`) | 14 | `page.jsp` et `<nora:btn>` exécutés dans Tomcat 11 : HTTP 200 sans erreur Jasper, `nora check`, échappement, 10 URL dangereuses refusées, URL autorisées échappées, ton / taille / type en liste blanche |
@@ -75,6 +76,8 @@ Les copies dans `lib/` ne sont pas versionnées : la source de vérité reste `s
 Les goldens sont rangés **par plateforme** (`test/goldens/macos/`, `test/goldens/linux/`), comme les captures Playwright : au premier passage du CI, le rendu Linux différait de 2,6 à 16 % des références macOS (rastérisation, texte), au-delà de toute tolérance raisonnable. Chaque plateforme compare à ses propres images avec une tolérance de 0,5 % (`NORA_GOLDEN_TOLERANCE`, plafonnée à 5 %). Références macOS : `flutter test --update-goldens` en local. Références Linux : `gh workflow run goldens` (même version de Flutter, 3.47.7, que le job CI), puis télécharger l'artefact `flutter-goldens-linux`, le vérifier et le versionner dans `test/goldens/linux/`.
 
 ### Catalogue des composants (Playwright)
+
+`tests/visual/showcase.spec.mjs` (47 tests, inclus dans `npm run test:visual`) couvre les vitrines `examples/showcase/` : pour chacune des 8 pages, axe-core sans violation sérieuse ni critique en clair et en sombre avec console propre, aucun débordement horizontal à 375 px, mouvement réduit respecté (aucune transformation ni animation active sur les éléments `data-fx`), et changement effectif de l'accent calculé dans les 4 chartes (`?charte=saas|corporate|nature|noraivoire`) ; plus la propagation de la charte aux liens, l'affichage du mot de passe, la bascule de facturation annuelle sans JavaScript, et 4 captures de référence par plateforme (landing et tableau de bord, clair et sombre). Les captures du README (`docs/gallery/showcase-*.jpg`, JPEG 1280 × 800) se régénèrent par `npm run showcase:shots`.
 
 `tests/visual/catalog.spec.mjs` (14 tests, inclus dans `npm run test:visual`) génère `site/` puis vérifie : axe-core sans violation sérieuse ni critique sur l'accueil et les pages `btn`, `field`, `radio` en clair et en sombre ; bascule de thème (clair, sombre, retour au système, préférence conservée d'une page à l'autre) ; filtre de navigation ; onglets au clavier (flèches) ; rendu sans JavaScript (onglets déroulés) ; moteur et paquets d'effets chargés sans erreur ; aucun débordement horizontal à 375 px. Les captures du README (`docs/catalog/`) se régénèrent par `npm run catalog:shots`.
 

@@ -17,23 +17,19 @@
 <body>
   <a class="sc-skip btn" data-tone="neutral" href="#contenu">Aller au contenu</a>
   <header class="sc-header fx-glass">
-    <div class="sc-wrap sc-header-inner">
-      <a class="sc-logo" href="portfolio.html"><svg aria-hidden="true"><use href="assets/sprite.svg#logo"/></svg>Orbite Studio</a>
-      <nav class="sc-nav" aria-label="Navigation principale">
-        <a href="#projets">Projets</a>
-        <a href="#methode">Méthode</a>
-        <a href="#services">Services</a>
-        <a href="#contact">Contact</a>
-      </nav>
-      <div class="sc-header-actions">
+    <nav class="navbar sc-wrap" aria-label="Navigation principale">
+      <a class="navbar-brand sc-logo" href="portfolio.html"><svg aria-hidden="true"><use href="assets/sprite.svg#logo"/></svg>Orbite Studio</a>
+      <ul class="navbar-menu">
+        <li><a href="#projets">Projets</a></li>
+        <li><a href="#methode">Méthode</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <div class="navbar-actions">
         <button class="btn sc-btn-quiet sc-btn-icon sc-mode" id="sc-mode" type="button" aria-label="Thème : système (changer)" hidden><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-sun"/></svg><span class="sr-only" data-sc-mode-label>Thème : système</span></button>
         <a class="btn sc-hide-xs" data-tone="primary" href="#contact">Démarrer un projet</a>
-        <details class="sc-menu">
-          <summary aria-label="Ouvrir le menu"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-menu"/></svg></summary>
-          <nav class="sc-menu-panel" aria-label="Navigation mobile"><a href="#projets">Projets</a><a href="#methode">Méthode</a><a href="#services">Services</a><a href="#contact">Contact</a></nav>
-        </details>
       </div>
-    </div>
+    </nav>
   </header>
 
   <main id="contenu">
@@ -121,7 +117,7 @@
         <h2 class="sr-only" id="avis-titre">Témoignage</h2>
         <svg class="sc-icon sc-icon-lg" aria-hidden="true"><use href="assets/sprite.svg#i-quote"/></svg>
         <blockquote class="sc-subtitle">« Le studio a compris notre métier en deux semaines. Le système de design livré a divisé par deux le temps de conception de nos nouvelles fonctionnalités. »</blockquote>
-        <figcaption class="sc-person"><span class="sc-avatar sc-avatar-lg" aria-hidden="true">LK</span><span><b>Lina K.</b><span class="sc-muted">Directrice produit, Kytra</span></span></figcaption>
+        <figcaption class="sc-person"><span class="avatar" data-tone="primary" data-size="lg" aria-hidden="true">LK</span><span><b>Lina K.</b><span class="sc-muted">Directrice produit, Kytra</span></span></figcaption>
       </figure>
     </section>
 
@@ -159,7 +155,7 @@
   </main>
 
   <footer class="sc-footer">
-    <div class="sc-wrap sc-footer-bottom"><span>© 2026 Orbite Studio — studio fictif de démonstration.</span><span><a href="index.html">Toutes les vitrines</a></span></div>
+    <div class="sc-wrap sc-footer-bottom"><span>© 2026 Orbite Studio — studio fictif de démonstration.</span><span><a class="link" href="index.html">Toutes les vitrines</a></span></div>
   </footer>
 </body>
 </html>

@@ -16,19 +16,19 @@
 <body>
   <a class="sc-skip btn" data-tone="neutral" href="#contenu">Aller au contenu</a>
   <header class="sc-header fx-glass">
-    <div class="sc-wrap sc-header-inner">
-      <a class="sc-logo" href="saas.html"><svg aria-hidden="true"><use href="assets/sprite.svg#logo"/></svg>Orbite</a>
-      <nav class="sc-nav" aria-label="Navigation principale">
-        <a href="saas.html">Produit</a>
-        <a href="blog.html" aria-current="page">Blog</a>
-        <a href="#article">Guides</a>
-        <a href="saas.html#clients">Clients</a>
-      </nav>
-      <div class="sc-header-actions">
+    <nav class="navbar sc-wrap" aria-label="Navigation principale">
+      <a class="navbar-brand sc-logo" href="saas.html"><svg aria-hidden="true"><use href="assets/sprite.svg#logo"/></svg>Orbite</a>
+      <ul class="navbar-menu">
+        <li><a href="saas.html">Produit</a></li>
+        <li><a href="blog.html" aria-current="page">Blog</a></li>
+        <li><a href="#article">Guides</a></li>
+        <li><a href="saas.html#clients">Clients</a></li>
+      </ul>
+      <div class="navbar-actions">
         <button class="btn sc-btn-quiet sc-btn-icon sc-mode" id="sc-mode" type="button" aria-label="Thème : système (changer)" hidden><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-sun"/></svg><span class="sr-only" data-sc-mode-label>Thème : système</span></button>
         <a class="btn" data-tone="primary" href="#lettre">S'abonner</a>
       </div>
-    </div>
+    </nav>
   </header>
 
   <main id="contenu">
@@ -39,7 +39,7 @@
         <p class="sc-eyebrow">À la une · Opérations</p>
         <h1 id="une-titre">Ce que 2 300 équipes nous ont appris sur les délais de traitement</h1>
         <p class="sc-lead">Nous avons analysé dix-huit millions de demandes. Trois habitudes distinguent les équipes les plus rapides — et aucune ne demande plus de monde.</p>
-        <div class="sc-byline"><span class="sc-avatar" aria-hidden="true">YT</span><span>Yasmine T. · <time datetime="2026-10-09">9 octobre 2026</time> · 8 min de lecture</span></div>
+        <div class="sc-byline"><span class="avatar" data-tone="primary" aria-hidden="true">YT</span><span>Yasmine T. · <time datetime="2026-10-09">9 octobre 2026</time> · 8 min de lecture</span></div>
         <div class="cluster"><a class="btn sc-btn-inverse" href="#article">Lire l'article <svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-arrow"/></svg></a></div>
       </div>
     </section>
@@ -51,9 +51,9 @@
           <nav aria-label="Catégories"><ul class="sc-chips"><li><a href="blog.html" aria-current="page">Tous</a></li><li><a href="#article">Opérations</a></li><li><a href="#article">Produit</a></li><li><a href="#article">Design</a></li><li><a href="#article">Ingénierie</a></li></ul></nav>
         </div>
         <div class="sc-grid sc-grid-3">
-          <a class="sc-post" href="#article" data-fx="reveal"><figure class="sc-photo"><img src="assets/photos/blog-notebook.webp" alt="" width="1200" height="750" loading="lazy"></figure><div class="sc-post-meta"><span>Produit</span><span>5 min</span></div><h3>Écrire une note de cadrage qu'on lit vraiment</h3><p>Une page, quatre questions, zéro jargon : notre modèle, et pourquoi il fonctionne.</p></a>
-          <a class="sc-post" href="#article" data-fx="reveal"><figure class="sc-photo"><img src="assets/photos/office-meeting-room.webp" alt="" width="1600" height="1000" loading="lazy"></figure><div class="sc-post-meta"><span>Opérations</span><span>7 min</span></div><h3>La revue hebdomadaire en 25 minutes chrono</h3><p>Ordre du jour fixe, indicateurs partagés, décisions écrites : le rituel de nos clients les plus efficaces.</p></a>
-          <a class="sc-post" href="#article" data-fx="reveal"><figure class="sc-photo"><img src="assets/photos/arch-wave.webp" alt="" width="1400" height="875" loading="lazy"></figure><div class="sc-post-meta"><span>Design</span><span>6 min</span></div><h3>Un système de design, c'est d'abord un contrat</h3><p>Tokens, composants et règles d'usage : comment éviter que la bibliothèque ne devienne un musée.</p></a>
+          <a class="sc-post" href="#article" data-fx="reveal"><figure class="media sc-photo" data-size="wide"><img src="assets/photos/blog-notebook.webp" alt="" width="1200" height="750" loading="lazy"></figure><div class="sc-post-meta"><span>Produit</span><span>5 min</span></div><h3>Écrire une note de cadrage qu'on lit vraiment</h3><p>Une page, quatre questions, zéro jargon : notre modèle, et pourquoi il fonctionne.</p></a>
+          <a class="sc-post" href="#article" data-fx="reveal"><figure class="media sc-photo" data-size="wide"><img src="assets/photos/office-meeting-room.webp" alt="" width="1600" height="1000" loading="lazy"></figure><div class="sc-post-meta"><span>Opérations</span><span>7 min</span></div><h3>La revue hebdomadaire en 25 minutes chrono</h3><p>Ordre du jour fixe, indicateurs partagés, décisions écrites : le rituel de nos clients les plus efficaces.</p></a>
+          <a class="sc-post" href="#article" data-fx="reveal"><figure class="media sc-photo" data-size="wide"><img src="assets/photos/arch-wave.webp" alt="" width="1400" height="875" loading="lazy"></figure><div class="sc-post-meta"><span>Design</span><span>6 min</span></div><h3>Un système de design, c'est d'abord un contrat</h3><p>Tokens, composants et règles d'usage : comment éviter que la bibliothèque ne devienne un musée.</p></a>
         </div>
       </div>
     </section>
@@ -64,7 +64,7 @@
         <header class="sc-narrow stack sc-article-head">
           <p class="sc-eyebrow">Guide · Opérations</p>
           <h2 class="sc-title" id="article-titre">Trois habitudes des équipes les plus rapides</h2>
-          <div class="sc-byline sc-muted"><span class="sc-avatar" aria-hidden="true">YT</span><span>Yasmine T. · <time datetime="2026-10-09">9 octobre 2026</time> · 8 min de lecture</span></div>
+          <div class="sc-byline sc-muted"><span class="avatar" data-tone="primary" aria-hidden="true">YT</span><span>Yasmine T. · <time datetime="2026-10-09">9 octobre 2026</time> · 8 min de lecture</span></div>
         </header>
         <div class="sc-article-layout">
           <nav class="sc-toc" aria-labelledby="sommaire"><b id="sommaire">Sommaire</b><a href="#h-trier">Trier avant de traiter</a><a href="#h-ecrire">Écrire les décisions</a><a href="#h-mesurer">Mesurer peu, mais souvent</a></nav>
@@ -73,9 +73,7 @@
             <h2 id="h-trier">Trier avant de traiter</h2>
             <p>Les équipes rapides consacrent les dix premières minutes de la journée au tri : chaque demande reçoit une priorité, un responsable et une échéance. Rien n'est traité avant d'être trié.</p>
             <blockquote>« Une demande sans responsable n'est pas en attente : elle est perdue. »</blockquote>
-            <figure>
-              <div class="sc-photo"><img src="assets/photos/blog-notebook-pen.webp" alt="Carnet ouvert et stylo posés sur une table blanche" width="1200" height="750" loading="lazy"></div>
-              <figcaption>Le tri du matin tient sur une page : priorité, responsable, échéance.</figcaption>
+            <figure class="media sc-photo" data-size="wide"><img src="assets/photos/blog-notebook-pen.webp" alt="Carnet ouvert et stylo posés sur une table blanche" width="1200" height="750" loading="lazy"><figcaption class="media-caption">Le tri du matin tient sur une page : priorité, responsable, échéance.</figcaption>
             </figure>
             <h2 id="h-ecrire">Écrire les décisions</h2>
             <p>Chaque arbitrage est consigné en une phrase, à côté de la demande. Six mois plus tard, personne n'a besoin de reconstituer l'historique en réunion. Une automatisation suffit souvent à rendre la règle explicite :</p>
@@ -91,7 +89,7 @@ alors  notifier(équipe.responsable)
             </ul>
             <p>Trois indicateurs suffisent. Au-delà, on passe plus de temps à commenter les tableaux qu'à améliorer le service.</p>
             <div class="card sc-author">
-              <span class="sc-avatar sc-avatar-lg" aria-hidden="true">YT</span>
+              <span class="avatar" data-tone="primary" data-size="lg" aria-hidden="true">YT</span>
               <div class="stack"><b>Yasmine T.</b><p class="sc-muted sc-small">Responsable des études chez Orbite. Elle accompagne les équipes opérations depuis dix ans et écrit sur les méthodes qui tiennent dans la durée.</p></div>
             </div>
           </div>
@@ -109,9 +107,9 @@ alors  notifier(équipe.responsable)
       <div class="sc-wrap">
         <div class="sc-section-head"><h2 class="sc-subtitle" id="lies-titre">À lire ensuite</h2></div>
         <div class="sc-grid sc-grid-3">
-          <a class="sc-post" href="#article"><figure class="sc-photo"><img src="assets/photos/office-hallway.webp" alt="" width="1200" height="800" loading="lazy"></figure><div class="sc-post-meta"><span>Ingénierie</span><span>9 min</span></div><h3>Migrer 14 produits vers un même système de design</h3></a>
-          <a class="sc-post" href="#article"><figure class="sc-photo"><img src="assets/photos/arch-grid.webp" alt="" width="900" height="1350" loading="lazy"></figure><div class="sc-post-meta"><span>Produit</span><span>4 min</span></div><h3>Les états vides méritent mieux qu'une illustration</h3></a>
-          <a class="sc-post" href="#article"><figure class="sc-photo"><img src="assets/photos/office-meeting-chairs.webp" alt="" width="1200" height="800" loading="lazy"></figure><div class="sc-post-meta"><span>Opérations</span><span>6 min</span></div><h3>Préparer un audit sans arrêter la production</h3></a>
+          <a class="sc-post" href="#article"><figure class="media sc-photo" data-size="wide"><img src="assets/photos/office-hallway.webp" alt="" width="1200" height="800" loading="lazy"></figure><div class="sc-post-meta"><span>Ingénierie</span><span>9 min</span></div><h3>Migrer 14 produits vers un même système de design</h3></a>
+          <a class="sc-post" href="#article"><figure class="media sc-photo" data-size="wide"><img src="assets/photos/arch-grid.webp" alt="" width="900" height="1350" loading="lazy"></figure><div class="sc-post-meta"><span>Produit</span><span>4 min</span></div><h3>Les états vides méritent mieux qu'une illustration</h3></a>
+          <a class="sc-post" href="#article"><figure class="media sc-photo" data-size="wide"><img src="assets/photos/office-meeting-chairs.webp" alt="" width="1200" height="800" loading="lazy"></figure><div class="sc-post-meta"><span>Opérations</span><span>6 min</span></div><h3>Préparer un audit sans arrêter la production</h3></a>
         </div>
       </div>
     </section>
@@ -133,7 +131,7 @@ alors  notifier(équipe.responsable)
   </main>
 
   <footer class="sc-footer">
-    <div class="sc-wrap sc-footer-bottom"><span>© 2026 Orbite — blog fictif de démonstration. Photos : Unsplash.</span><span><a href="index.html">Toutes les vitrines</a></span></div>
+    <div class="sc-wrap sc-footer-bottom"><span>© 2026 Orbite — blog fictif de démonstration. Photos : Unsplash.</span><span><a class="link" href="index.html">Toutes les vitrines</a></span></div>
   </footer>
 </body>
 </html>

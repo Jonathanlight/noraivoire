@@ -31,6 +31,30 @@ Captures **réelles** de chaque modèle, produites par `npm run gallery` (Chromi
 
 Les dépendances de chaque exemple (React, Vue, Next.js, Angular, Vite, react-native-web, Symfony) restent dans son propre `package.json` ou `composer.json` : la racine et `@noraivoire/core` gardent **zéro dépendance runtime**.
 
+### Vitrines — `examples/showcase/`
+
+Sept pages complètes au standard corporate / SaaS (landing, connexion, inscription, e-commerce, tableau de bord, portfolio, blog), avec photos, parallaxe, verre et superpositions — **re-thémables pour tout projet en changeant un seul fichier de charte** (aucune couleur, police, ombre ni rayon en dur, vérifié par un test). Mode d'emploi et variables de marque : [`examples/showcase/README.md`](examples/showcase/README.md).
+
+```bash
+npm run showcase:serve    # puis http://127.0.0.1:4173/examples/showcase/index.html  (?charte=saas|corporate|nature|noraivoire)
+```
+
+<table>
+<tr><td align="center" width="33%"><a href="examples/showcase/saas.html"><img src="docs/gallery/showcase-saas-light.jpg" alt="Vitrine Landing SaaS" width="300"></a><br><sub>Landing SaaS</sub></td><td align="center" width="33%"><a href="examples/showcase/dashboard.html"><img src="docs/gallery/showcase-dashboard-light.jpg" alt="Vitrine Tableau de bord" width="300"></a><br><sub>Tableau de bord</sub></td><td align="center" width="33%"><a href="examples/showcase/shop.html"><img src="docs/gallery/showcase-shop-light.jpg" alt="Vitrine E-commerce" width="300"></a><br><sub>E-commerce</sub></td></tr>
+<tr><td align="center" width="33%"><a href="examples/showcase/login.html"><img src="docs/gallery/showcase-login-light.jpg" alt="Vitrine Connexion" width="300"></a><br><sub>Connexion</sub></td><td align="center" width="33%"><a href="examples/showcase/register.html"><img src="docs/gallery/showcase-register-light.jpg" alt="Vitrine Inscription" width="300"></a><br><sub>Inscription</sub></td><td align="center" width="33%"><a href="examples/showcase/portfolio.html"><img src="docs/gallery/showcase-portfolio-light.jpg" alt="Vitrine Portfolio" width="300"></a><br><sub>Portfolio</sub></td></tr>
+<tr><td align="center" width="33%"><a href="examples/showcase/blog.html"><img src="docs/gallery/showcase-blog-light.jpg" alt="Vitrine Blog" width="300"></a><br><sub>Blog</sub></td><td align="center" width="33%"><a href="examples/showcase/saas.html"><img src="docs/gallery/showcase-saas-dark.jpg" alt="Landing SaaS en thème sombre" width="300"></a><br><sub>Landing, thème sombre</sub></td><td align="center" width="33%"><a href="examples/showcase/dashboard.html"><img src="docs/gallery/showcase-dashboard-dark.jpg" alt="Tableau de bord en thème sombre" width="300"></a><br><sub>Tableau de bord, thème sombre</sub></td></tr>
+</table>
+
+Les mêmes pages, seule la charte change (`themes/saas.css`, `themes/corporate.css`, `themes/nature.css`, ou les tokens NoraIvoire par défaut) :
+
+<table>
+<tr><th></th><th>SaaS</th><th>Corporate</th><th>Nature</th><th>Tokens NoraIvoire</th></tr>
+<tr><th>Landing</th><td><img src="docs/gallery/showcase-saas-light.jpg" alt="Landing, charte SaaS" width="200"></td><td><img src="docs/gallery/showcase-saas-corporate-light.jpg" alt="Landing, charte Corporate" width="200"></td><td><img src="docs/gallery/showcase-saas-nature-light.jpg" alt="Landing, charte Nature" width="200"></td><td><img src="docs/gallery/showcase-saas-noraivoire-light.jpg" alt="Landing, tokens NoraIvoire" width="200"></td></tr>
+<tr><th>Tableau de bord</th><td><img src="docs/gallery/showcase-dashboard-light.jpg" alt="Tableau de bord, charte SaaS" width="200"></td><td><img src="docs/gallery/showcase-dashboard-corporate-light.jpg" alt="Tableau de bord, charte Corporate" width="200"></td><td><img src="docs/gallery/showcase-dashboard-nature-light.jpg" alt="Tableau de bord, charte Nature" width="200"></td><td><img src="docs/gallery/showcase-dashboard-noraivoire-light.jpg" alt="Tableau de bord, tokens NoraIvoire" width="200"></td></tr>
+</table>
+
+Photos : [Unsplash](https://unsplash.com), stockées localement, sans personne reconnaissable ni marque ; crédits dans [`examples/showcase/assets/photos/CREDITS.md`](examples/showcase/assets/photos/CREDITS.md). Captures : `npm run showcase:shots`.
+
 ### HTML — `templates/html/index.html`
 
 <img src="docs/gallery/html-light.png" alt="Page de démonstration HTML, thème clair" width="420"> <img src="docs/gallery/html-dark.png" alt="Page de démonstration HTML, thème sombre" width="420">
@@ -88,7 +112,7 @@ npm run catalog:serve     # génère site/ puis l'ouvre sur http://127.0.0.1:417
 
 ```bash
 npm ci --ignore-scripts
-npm run verify        # build + 185 tests + validation des modèles + audit (90 contrôles)
+npm run verify        # build + 193 tests + validation des modèles + audit (90 contrôles)
 ```
 
 Commandes unitaires :
@@ -136,10 +160,11 @@ recipes/              20 écrans de référence indexés par intention (recipes/
 examples/flutter_app/ Projet Flutter : analyse et golden tests du Dart généré (npm run flutter:sync)
 examples/jsp-app/     Application JSP : modèles exécutés dans Tomcat (npm run jsp:serve, npm run test:jsp)
 examples/{react,vue,nextjs,angular,react-native-web,twig}/  Exemples lançables des modèles (captures : npm run gallery)
+examples/showcase/    Vitrines corporate / SaaS re-thémables (themes/*.css, npm run showcase:serve)
 docs/gallery/         Captures de la galerie du README (générées)
 recipes/              20 écrans de référence indexés par intention (recipes/index.json)
 adapters/symfony-bundle/ Bundle Symfony : Twig Components Nora:*, enums PHP, AssetMapper, nora:check (npm run symfony:sync)
-tests/                185 tests node + 136 tests de rendu React Native (tests/rn, npm run test:rn)
+tests/                193 tests node + 136 tests de rendu React Native (tests/rn, npm run test:rn)
 docs/                 Documentation technique, portabilité, sécurité, audit, tests, licence
 PROMPT.md             Prompt complet pour poursuivre le projet avec un agent IA
 ```

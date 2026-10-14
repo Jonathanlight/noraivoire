@@ -14,7 +14,7 @@
   ],
   "scripts": {
     "build": "node packages/compiler/src/cli.js build --spec spec --out packages/core/dist",
-    "check": "node packages/cli/src/cli.js check templates recipes --format=text",
+    "check": "node packages/cli/src/cli.js check templates recipes examples/showcase --format=text",
     "test": "node --test tests/unit/*.test.js",
     "audit:deps": "npm audit --omit=dev --audit-level=moderate",
     "audit:security": "node packages/cli/src/cli.js audit",
@@ -34,7 +34,9 @@
     "catalog": "node tools/catalog/build.mjs",
     "catalog:serve": "node tools/catalog/serve.mjs --build",
     "catalog:shots": "node tools/catalog/shoot.mjs",
-    "gallery": "node tests/gallery/run.mjs"
+    "gallery": "node tests/gallery/run.mjs",
+    "showcase:serve": "node tests/visual/serve.mjs",
+    "showcase:shots": "node examples/showcase/tool/shoot.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.13.0",

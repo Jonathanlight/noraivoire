@@ -36,6 +36,16 @@ L'arbre complet (537 paquets à la création) est contrôlé par `npm run audit:
 
 Ces outils servent uniquement aux tests : ils ne sont ni copiés dans `packages/core/dist/`, ni distribués aux licenciés. MPL-2.0 est un copyleft faible au niveau du fichier : sans modification ni redistribution d'axe-core, aucune obligation ne s'applique au code NoraIvoire.
 
+### Photos des vitrines (`examples/showcase/assets/photos/`)
+
+23 photos téléchargées le 14 octobre 2026 depuis [Unsplash](https://unsplash.com), sous la [Licence Unsplash](https://unsplash.com/license) : usage gratuit, y compris commercial, sans attribution obligatoire ; interdiction de les revendre telles quelles ou d'en faire un service concurrent. Aucune photo Unsplash+ (licence différente). Photographes, pages d'origine et dates : [`examples/showcase/assets/photos/CREDITS.md`](examples/showcase/assets/photos/CREDITS.md).
+
+- Sujets choisis sans personne reconnaissable ni marque visible (architecture, bureaux vides, objets génériques).
+- Recadrées et compressées en WebP, servies localement (aucun lien vers images.unsplash.com).
+- Utilisées **uniquement** dans les vitrines d'exemple et leurs captures du README : jamais dans `packages/core/dist/` ni dans le produit distribué aux licenciés.
+
+Les logos clients, icônes et le logo « Orbite » des vitrines sont des créations originales (SVG) ; les marques citées (Orbite, Nordel, Kytra, Opaline, Ventrix, Halvio, Quorra) sont fictives.
+
 ## Plateformes ciblées (fournies par le projet du licencié)
 
 | Plateforme | Licence |

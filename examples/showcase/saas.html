@@ -17,31 +17,21 @@
   <a class="sc-skip btn" data-tone="neutral" href="#contenu">Aller au contenu</a>
 
   <header class="sc-header fx-glass">
-    <div class="sc-wrap sc-header-inner">
-      <a class="sc-logo" href="saas.html"><svg aria-hidden="true"><use href="assets/sprite.svg#logo"/></svg>Orbite</a>
-      <nav class="sc-nav" aria-label="Navigation principale">
-        <a href="#fonctionnalites">Fonctionnalités</a>
-        <a href="#tarifs">Tarifs</a>
-        <a href="#clients">Clients</a>
-        <a href="#faq">FAQ</a>
-        <a href="blog.html">Ressources</a>
-      </nav>
-      <div class="sc-header-actions">
+    <nav class="navbar sc-wrap" aria-label="Navigation principale">
+      <a class="navbar-brand sc-logo" href="saas.html"><svg aria-hidden="true"><use href="assets/sprite.svg#logo"/></svg>Orbite</a>
+      <ul class="navbar-menu">
+        <li><a href="#fonctionnalites">Fonctionnalités</a></li>
+        <li><a href="#tarifs">Tarifs</a></li>
+        <li><a href="#clients">Clients</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="blog.html">Ressources</a></li>
+      </ul>
+      <div class="navbar-actions">
         <button class="btn sc-btn-quiet sc-btn-icon sc-mode" id="sc-mode" type="button" aria-label="Thème : système (changer)" hidden><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-sun"/></svg><span class="sr-only" data-sc-mode-label>Thème : système</span></button>
         <a class="btn sc-btn-quiet sc-hide-sm" href="login.html">Se connecter</a>
         <a class="btn" data-tone="primary" href="register.html">Essai gratuit</a>
-        <details class="sc-menu">
-          <summary aria-label="Ouvrir le menu"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-menu"/></svg></summary>
-          <nav class="sc-menu-panel" aria-label="Navigation mobile">
-            <a href="#fonctionnalites">Fonctionnalités</a>
-            <a href="#tarifs">Tarifs</a>
-            <a href="#clients">Clients</a>
-            <a href="#faq">FAQ</a>
-            <a href="login.html">Se connecter</a>
-          </nav>
-        </details>
       </div>
-    </div>
+    </nav>
   </header>
 
   <main id="contenu">
@@ -57,7 +47,7 @@
             <a class="btn sc-btn-ghost" data-size="lg" href="#demo">Voir la démo (2 min)</a>
           </div>
           <div class="sc-proof">
-            <div class="sc-avatars" aria-hidden="true"><span class="sc-avatar">AK</span><span class="sc-avatar sc-avatar-2">ML</span><span class="sc-avatar sc-avatar-3">YT</span><span class="sc-avatar">SB</span></div>
+            <div class="avatar-group" aria-hidden="true"><span class="avatar" data-tone="primary" aria-hidden="true">AK</span><span class="avatar" data-tone="success" aria-hidden="true">ML</span><span class="avatar" data-tone="neutral" aria-hidden="true">YT</span><span class="avatar" data-tone="primary" aria-hidden="true">SB</span></div>
             <span class="sc-stars" role="img" aria-label="Note de 4,9 sur 5"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg></span>
             <span><strong>4,9/5</strong> · plus de 2 300 équipes · sans carte bancaire</span>
           </div>
@@ -228,17 +218,17 @@
           <article class="card sc-quote" data-fx="reveal">
             <span class="sc-stars" role="img" aria-label="5 étoiles sur 5"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg></span>
             <blockquote>« Nous avons divisé par trois nos relances internes. Les équipes savent enfin qui fait quoi, et la direction n'attend plus le reporting du lundi. »</blockquote>
-            <p class="sc-person"><span class="sc-avatar" aria-hidden="true">AK</span><span><b>Awa K.</b><span class="sc-muted">Directrice des opérations, Nordel</span></span></p>
+            <p class="sc-person"><span class="avatar" data-tone="primary" aria-hidden="true">AK</span><span><b>Awa K.</b><span class="sc-muted">Directrice des opérations, Nordel</span></span></p>
           </article>
           <article class="card sc-quote" data-fx="reveal">
             <span class="sc-stars" role="img" aria-label="5 étoiles sur 5"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg></span>
             <blockquote>« Les automatisations ont remplacé quatre outils et une dizaine de tableurs. Le déploiement sur nos six sites a pris moins d'un mois. »</blockquote>
-            <p class="sc-person"><span class="sc-avatar sc-avatar-2" aria-hidden="true">ML</span><span><b>Marc L.</b><span class="sc-muted">Responsable SI, Halvio</span></span></p>
+            <p class="sc-person"><span class="avatar" data-tone="success" aria-hidden="true">ML</span><span><b>Marc L.</b><span class="sc-muted">Responsable SI, Halvio</span></span></p>
           </article>
           <article class="card sc-quote" data-fx="reveal">
             <span class="sc-stars" role="img" aria-label="5 étoiles sur 5"><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg><svg class="sc-icon" aria-hidden="true"><use href="assets/sprite.svg#i-star"/></svg></span>
             <blockquote>« Le support répond en quelques minutes et connaît notre configuration. On sent une équipe qui utilise son propre produit. »</blockquote>
-            <p class="sc-person"><span class="sc-avatar sc-avatar-3" aria-hidden="true">YT</span><span><b>Yasmine T.</b><span class="sc-muted">Cheffe de projet, Opaline</span></span></p>
+            <p class="sc-person"><span class="avatar" data-tone="neutral" aria-hidden="true">YT</span><span><b>Yasmine T.</b><span class="sc-muted">Cheffe de projet, Opaline</span></span></p>
           </article>
         </div>
       </div>
@@ -283,7 +273,7 @@
       <nav aria-labelledby="f-societe"><h2 id="f-societe">Société</h2><ul><li><a href="portfolio.html">Studio</a></li><li><a href="blog.html">Blog</a></li><li><a href="#contact">Contact</a></li></ul></nav>
       <nav aria-labelledby="f-legal"><h2 id="f-legal">Légal</h2><ul><li><a href="#contenu">Confidentialité</a></li><li><a href="#contenu">Conditions</a></li><li><a href="#contenu">Sécurité</a></li></ul></nav>
     </div>
-    <div class="sc-wrap sc-footer-bottom"><span>© 2026 Orbite — marque fictive de démonstration.</span><span>Construit avec NoraIvoire · <a href="index.html">Toutes les vitrines</a></span></div>
+    <div class="sc-wrap sc-footer-bottom"><span>© 2026 Orbite — marque fictive de démonstration.</span><span>Construit avec NoraIvoire · <a class="link" href="index.html">Toutes les vitrines</a></span></div>
   </footer>
 </body>
 </html>
