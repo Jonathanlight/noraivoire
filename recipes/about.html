@@ -10,13 +10,17 @@
   <script type="module" src="../packages/core/dist/noraivoire.auto.js"></script>
 </head>
 <body>
-  <header class="container cluster py-4">
-    <a class="font-bold text-lg" href="home.html">Boutique Démo</a>
-    <nav class="cluster" aria-label="Navigation principale">
-      <a href="products.html">Produits</a>
-      <a href="pricing.html">Tarifs</a>
-      <a href="search.html">Recherche</a>
-      <a class="btn" data-tone="neutral" data-size="sm" href="cart.html">Panier <span class="badge" data-tone="primary">2</span></a>
+  <header>
+    <nav class="navbar" aria-label="Navigation principale">
+      <a class="navbar-brand" href="home.html">Boutique Démo</a>
+      <ul class="navbar-menu">
+        <li><a href="products.html">Produits</a></li>
+        <li><a href="pricing.html">Tarifs</a></li>
+        <li><a href="search.html">Recherche</a></li>
+      </ul>
+      <div class="navbar-actions">
+        <a class="btn" data-tone="neutral" data-size="sm" href="cart.html">Panier <span class="badge" data-tone="primary">2</span></a>
+      </div>
     </nav>
   </header>
   <main class="container stack py-8">
@@ -26,24 +30,24 @@
     </section>
     <section class="stack" aria-labelledby="equipe">
       <h2 id="equipe" class="text-lg font-bold">L'équipe</h2>
-      <ul class="grid-auto">
+      <ul class="grid-auto p-0">
       <li class="card stack text-center">
-        <span class="text-xl font-bold" role="img" aria-label="Portrait">A</span>
+        <span class="avatar mx-auto" data-tone="primary" data-size="lg" aria-hidden="true">A</span>
         <h3 class="font-bold">Membre A</h3>
         <p class="text-sm text-muted">Direction</p>
       </li>
       <li class="card stack text-center">
-        <span class="text-xl font-bold" role="img" aria-label="Portrait">B</span>
+        <span class="avatar mx-auto" data-tone="success" data-size="lg" aria-hidden="true">B</span>
         <h3 class="font-bold">Membre B</h3>
         <p class="text-sm text-muted">Design</p>
       </li>
       <li class="card stack text-center">
-        <span class="text-xl font-bold" role="img" aria-label="Portrait">C</span>
+        <span class="avatar mx-auto" data-tone="warning" data-size="lg" aria-hidden="true">C</span>
         <h3 class="font-bold">Membre C</h3>
         <p class="text-sm text-muted">Logistique</p>
       </li>
       <li class="card stack text-center">
-        <span class="text-xl font-bold" role="img" aria-label="Portrait">D</span>
+        <span class="avatar mx-auto" data-tone="neutral" data-size="lg" aria-hidden="true">D</span>
         <h3 class="font-bold">Membre D</h3>
         <p class="text-sm text-muted">Service client</p>
       </li>
@@ -54,7 +58,7 @@
     </div>
   </main>
   <footer class="container py-8 text-sm text-muted">
-    <p>© 2026 Boutique Démo — données fictives. <a href="contact.html">Contact</a> · <a href="about.html">À propos</a></p>
+    <p>© 2026 Boutique Démo — données fictives. <a class="link" data-tone="neutral" href="contact.html">Contact</a> · <a class="link" data-tone="neutral" href="about.html">À propos</a></p>
   </footer>
 </body>
 </html>

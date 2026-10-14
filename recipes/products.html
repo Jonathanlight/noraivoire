@@ -10,13 +10,17 @@
   <script type="module" src="../packages/core/dist/noraivoire.auto.js"></script>
 </head>
 <body>
-  <header class="container cluster py-4">
-    <a class="font-bold text-lg" href="home.html">Boutique Démo</a>
-    <nav class="cluster" aria-label="Navigation principale">
-      <a href="products.html">Produits</a>
-      <a href="pricing.html">Tarifs</a>
-      <a href="search.html">Recherche</a>
-      <a class="btn" data-tone="neutral" data-size="sm" href="cart.html">Panier <span class="badge" data-tone="primary">2</span></a>
+  <header>
+    <nav class="navbar" aria-label="Navigation principale">
+      <a class="navbar-brand" href="home.html">Boutique Démo</a>
+      <ul class="navbar-menu">
+        <li><a href="products.html" aria-current="page">Produits</a></li>
+        <li><a href="pricing.html">Tarifs</a></li>
+        <li><a href="search.html">Recherche</a></li>
+      </ul>
+      <div class="navbar-actions">
+        <a class="btn" data-tone="neutral" data-size="sm" href="cart.html">Panier <span class="badge" data-tone="primary">2</span></a>
+      </div>
     </nav>
   </header>
   <main class="container stack py-8">
@@ -39,34 +43,34 @@
     <section class="grid-auto" aria-label="Produits">
       <article class="card stack" data-fx="reveal">
         <span class="badge" data-tone="primary">Nouveau</span>
-        <h2 class="text-lg font-bold"><a href="product.html">Lampe en rotin</a></h2>
+        <h2 class="text-lg font-bold"><a class="link" href="product.html">Lampe en rotin</a></h2>
         <p class="text-muted">45,00 €</p>
         <button class="btn" type="button">Ajouter au panier</button>
       </article>
       <article class="card stack" data-fx="reveal">
-        <h2 class="text-lg font-bold"><a href="product.html">Tasse en céramique</a></h2>
+        <h2 class="text-lg font-bold"><a class="link" href="product.html">Tasse en céramique</a></h2>
         <p class="text-muted">12,00 €</p>
         <button class="btn" type="button">Ajouter au panier</button>
       </article>
       <article class="card stack" data-fx="reveal">
         <span class="badge" data-tone="success">Promo</span>
-        <h2 class="text-lg font-bold"><a href="product.html">Carnet en pagne</a></h2>
+        <h2 class="text-lg font-bold"><a class="link" href="product.html">Carnet en pagne</a></h2>
         <p class="text-muted">9,50 €</p>
         <button class="btn" type="button">Ajouter au panier</button>
       </article>
       <article class="card stack" data-fx="reveal">
-        <h2 class="text-lg font-bold"><a href="product.html">Panier tressé</a></h2>
+        <h2 class="text-lg font-bold"><a class="link" href="product.html">Panier tressé</a></h2>
         <p class="text-muted">32,00 €</p>
         <button class="btn" type="button">Ajouter au panier</button>
       </article>
       <article class="card stack" data-fx="reveal">
-        <h2 class="text-lg font-bold"><a href="product.html">Coussin wax</a></h2>
+        <h2 class="text-lg font-bold"><a class="link" href="product.html">Coussin wax</a></h2>
         <p class="text-muted">28,00 €</p>
         <button class="btn" type="button">Ajouter au panier</button>
       </article>
       <article class="card stack" data-fx="reveal">
         <span class="badge" data-tone="warning">Rupture</span>
-        <h2 class="text-lg font-bold"><a href="product.html">Plateau en bois</a></h2>
+        <h2 class="text-lg font-bold"><a class="link" href="product.html">Plateau en bois</a></h2>
         <p class="text-muted">39,00 €</p>
         <button class="btn" type="button">Ajouter au panier</button>
       </article>
@@ -78,7 +82,7 @@
     </nav>
   </main>
   <footer class="container py-8 text-sm text-muted">
-    <p>© 2026 Boutique Démo — données fictives. <a href="contact.html">Contact</a> · <a href="about.html">À propos</a></p>
+    <p>© 2026 Boutique Démo — données fictives. <a class="link" data-tone="neutral" href="contact.html">Contact</a> · <a class="link" data-tone="neutral" href="about.html">À propos</a></p>
   </footer>
 </body>
 </html>

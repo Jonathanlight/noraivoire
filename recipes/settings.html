@@ -10,13 +10,15 @@
   <script type="module" src="../packages/core/dist/noraivoire.auto.js"></script>
 </head>
 <body>
-  <header class="container cluster py-4">
-    <a class="font-bold text-lg" href="dashboard.html">Espace Démo</a>
-    <nav class="cluster" aria-label="Navigation de l'application">
-      <a href="dashboard.html">Tableau de bord</a>
-      <a href="notifications.html">Notifications <span class="badge" data-tone="danger">3</span></a>
-      <a href="profile.html">Profil</a>
-      <a href="settings.html">Paramètres</a>
+  <header>
+    <nav class="navbar" aria-label="Navigation de l'application">
+      <a class="navbar-brand" href="dashboard.html">Espace Démo</a>
+      <ul class="navbar-menu">
+        <li><a href="dashboard.html">Tableau de bord</a></li>
+        <li><a href="notifications.html">Notifications <span class="badge" data-tone="danger">3</span></a></li>
+        <li><a href="profile.html">Profil</a></li>
+        <li><a href="settings.html" aria-current="page">Paramètres</a></li>
+      </ul>
     </nav>
   </header>
   <main class="container stack py-8">
