@@ -93,7 +93,16 @@ function componentVars(c, tokens) {
   const decl = Object.entries(c.tokens).map(([k, ref]) => `--${n}-${k}: ${toCssValue(resolveRef(ref, tokens, vars, where))};`);
   const size = c.sizes[c.defaults.size];
   for (const k of ['pad-y', 'pad-x', 'font']) decl.push(`--${n}-${k}: ${toCssValue(resolveRef(size[k], tokens, vars, where))};`);
+  decl.push(...sizeExtras(n, size));
   return decl;
+}
+
+/** Variables propres à certaines formes : côté d'un avatar (box), format d'un média (ratio). */
+function sizeExtras(n, size) {
+  const out = [];
+  if (size.box !== undefined) out.push(`--${n}-box: ${rem(size.box)};`);
+  if (size.ratio !== undefined) out.push(`--${n}-ratio: ${size.ratio[0]} / ${size.ratio[1]};`);
+  return out;
 }
 
 /** Règles de variantes : tons (tokens dépendant de $tone) et tailles (espacements, police). */
@@ -113,7 +122,8 @@ function variantRules(c, tokens) {
     if (s === d.size) continue;
     const sz = c.sizes[s];
     const sv = { tone: d.tone, size: s };
-    out.push(`  :where(.${n}[data-size="${s}"]) { --${n}-pad-y: ${toCssValue(resolveRef(sz['pad-y'], tokens, sv, where))}; --${n}-pad-x: ${toCssValue(resolveRef(sz['pad-x'], tokens, sv, where))}; --${n}-font: ${toCssValue(resolveRef(sz.font, tokens, sv, where))}; }`);
+    const extras = sizeExtras(n, sz).join(' ');
+    out.push(`  :where(.${n}[data-size="${s}"]) { --${n}-pad-y: ${toCssValue(resolveRef(sz['pad-y'], tokens, sv, where))}; --${n}-pad-x: ${toCssValue(resolveRef(sz['pad-x'], tokens, sv, where))}; --${n}-font: ${toCssValue(resolveRef(sz.font, tokens, sv, where))};${extras ? ` ${extras}` : ''} }`);
   }
   return out;
 }
@@ -241,11 +251,117 @@ function formRules(c, tokens, shape) {
   return out.join('\n');
 }
 
+/**
+ * Composants de mise en page : lien, barre de navigation, avatar, média.
+ * Mouvement réduit : les transitions sont neutralisées par la couche base.
+ */
+function pageRules(c, tokens, shape) {
+  const n = c.component;
+  const dur = pressDuration(c, tokens);
+  const st = c.states ?? {};
+  const ring = st.focus?.ring ?? 2;
+  const focusVar = st.focus?.token ? `var(--${n}-${st.focus.token})` : 'var(--nora-color-focus)';
+  const has = (p) => (c.parts ?? []).includes(p);
+  const out = [];
+  if (shape === 'link') {
+    out.push(block(`:where(.${n})`, [
+      ...componentVars(c, tokens),
+      `color: var(--${n}-fg);`, 'text-decoration-line: underline;', 'text-decoration-thickness: 1px;', 'text-underline-offset: 0.2em;',
+      'border-radius: 2px;', 'cursor: pointer;',
+      `transition: text-decoration-thickness ${dur} ease, color ${dur} ease;`,
+    ]));
+    out.push(...variantRules(c, tokens));
+    // Taille explicite seulement : un lien dans un paragraphe hérite de la police du texte.
+    out.push(`  :where(.${n}[data-size]) { font-size: var(--${n}-font); }`);
+    out.push(`  :where(.${n}:hover) { text-decoration-thickness: 2px; }`);
+    out.push(`  :where(.${n}:focus-visible) { outline: ${ring}px solid ${focusVar}; outline-offset: 2px; text-decoration-thickness: 2px; }`);
+    out.push(`  :where(.${n}[data-visited]:visited) { color: var(--${n}-visited); }`);
+    out.push(`  :where(.${n}[target="_blank"], .${n}[rel~="external"])::after { content: "\\2197"; content: "\\2197" / ""; display: inline-block; margin-inline-start: 0.15em; text-decoration: none; }`);
+    out.push(`  :where(.${n}[target="_blank"]:dir(rtl), .${n}[rel~="external"]:dir(rtl))::after { content: "\\2196"; content: "\\2196" / ""; }`);
+  } else if (shape === 'nav') {
+    const min = c.a11y.minTarget;
+    out.push(block(`:where(.${n})`, [
+      ...componentVars(c, tokens),
+      'display: flex;', 'flex-wrap: wrap;', 'align-items: center;', `column-gap: var(--${n}-pad-x);`, `row-gap: var(--${n}-pad-y);`,
+      `padding-block: var(--${n}-pad-y);`, `padding-inline: var(--${n}-pad-x);`, `font-size: var(--${n}-font);`,
+      `color: var(--${n}-fg);`, `background-color: var(--${n}-bg);`,
+      c.tokens.border ? `border-block-end: 1px solid var(--${n}-border);` : 'border: 0;',
+    ]));
+    out.push(...variantRules(c, tokens));
+    if (has('brand')) {
+      out.push(block(`:where(.${n}-brand)`, [
+        'display: inline-flex;', 'align-items: center;', 'gap: 0.5em;', `min-block-size: ${min}px;`, 'margin-inline-end: auto;',
+        'font-weight: 700;', 'font-size: 1.125em;', 'color: inherit;', 'text-decoration: none;',
+      ]));
+    }
+    if (has('menu')) {
+      const m = `:where(.${n}-menu)`;
+      out.push(block(m, [
+        'display: flex;', 'align-items: center;', 'gap: 0.25em;', 'min-inline-size: 0;', 'margin: 0;', 'padding: 0;', 'list-style: none;',
+        'overflow-x: auto;', 'scroll-snap-type: x proximity;', 'scrollbar-width: thin;',
+      ]));
+      out.push(`  ${m} > :where(li) { flex: none; scroll-snap-align: start; }`);
+      out.push(block(`${m} :where(a)`, [
+        'display: inline-flex;', 'align-items: center;', `min-block-size: ${min}px;`, 'padding-inline: 0.75em;',
+        `color: var(--${n}-muted);`, 'font-weight: 500;', 'text-decoration: none;', 'white-space: nowrap;', 'border-radius: var(--nora-radius-md);',
+        `transition: color ${dur} ease, background-color ${dur} ease;`,
+      ]));
+      out.push(`  ${m} :where(a:hover) { color: var(--${n}-fg); background-color: color-mix(in srgb, var(--${n}-fg) 6%, transparent); }`);
+      out.push(`  ${m} :where(a:focus-visible) { outline: ${ring}px solid ${focusVar}; outline-offset: -${ring}px; }`);
+      out.push(`  ${m} :where(a[aria-current="page"]) { color: var(--${n}-active); font-weight: 600; box-shadow: inset 0 -2px 0 var(--${n}-active); }`);
+      // Petit écran : le menu passe sous la marque, sur toute la largeur, et défile horizontalement (sans JS).
+      out.push(`  @media (max-width: 40rem) {\n    ${m} { order: 3; flex-basis: 100%; }\n  }`);
+      out.push(`  @media (forced-colors: active) {\n    ${m} :where(a[aria-current="page"]) { text-decoration: underline; text-decoration-thickness: 2px; }\n  }`);
+    }
+    if (has('actions')) out.push(`  :where(.${n}-actions) { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5em; }`);
+  } else if (shape === 'avatar') {
+    out.push(block(`:where(.${n})`, [
+      ...componentVars(c, tokens),
+      'display: inline-flex;', 'align-items: center;', 'justify-content: center;', 'flex: none;', 'vertical-align: middle;',
+      `inline-size: var(--${n}-box);`, `block-size: var(--${n}-box);`, `border-radius: var(--${n}-radius);`, 'overflow: hidden;',
+      `background-color: var(--${n}-bg);`, `color: var(--${n}-fg);`, `font-size: var(--${n}-font);`, 'font-weight: 600;', 'line-height: 1;',
+      'text-transform: uppercase;', 'object-fit: cover;', 'user-select: none;',
+    ]));
+    out.push(...variantRules(c, tokens));
+    if (has('group')) {
+      out.push(`  :where(.${n}-group) { display: inline-flex; align-items: center; }`);
+      out.push(`  :where(.${n}-group > .${n}) { box-shadow: 0 0 0 2px var(--${n}-ring); }`);
+      out.push(`  :where(.${n}-group > .${n} + .${n}) { margin-inline-start: calc(var(--${n}-box) * -0.25); }`);
+    }
+    out.push(`  @media (forced-colors: active) {\n    :where(.${n}) { border: 1px solid CanvasText; }\n  }`);
+  } else {
+    // media : image au format fixe, légende dessous, texte en surimpression sur l'image.
+    out.push(block(`:where(.${n})`, [
+      ...componentVars(c, tokens),
+      'display: grid;', 'margin: 0;', 'min-inline-size: 0;', 'isolation: isolate;',
+    ]));
+    out.push(...variantRules(c, tokens));
+    const visual = `:where(.${n}) > :where(img, picture, video, svg, canvas, iframe)`;
+    out.push(block(visual, [
+      'grid-area: 1 / 1;', 'display: block;', 'inline-size: 100%;', 'block-size: auto;', `aspect-ratio: var(--${n}-ratio);`,
+      'object-fit: cover;', `border-radius: var(--${n}-radius);`, `background-color: var(--${n}-bg);`, 'overflow: hidden;',
+    ]));
+    out.push(`  :where(.${n}) > :where(picture) > :where(img) { inline-size: 100%; block-size: 100%; object-fit: cover; }`);
+    if (has('overlay')) {
+      out.push(block(`:where(.${n}-overlay)`, [
+        'grid-area: 1 / 1;', 'align-self: end;', 'z-index: 1;', 'padding-block: 3em var(--' + n + '-pad-y);', `padding-inline: var(--${n}-pad-x);`,
+        `color: var(--${n}-on-scrim);`, 'font-weight: 600;', 'text-shadow: 0 1px 2px rgb(0 0 0 / 0.45);',
+        `background: linear-gradient(to top, color-mix(in srgb, var(--${n}-scrim) 85%, transparent), transparent);`,
+        `border-end-start-radius: var(--${n}-radius);`, `border-end-end-radius: var(--${n}-radius);`,
+      ]));
+      out.push(`  @media (forced-colors: active) {\n    :where(.${n}-overlay) { background: Canvas; color: CanvasText; text-shadow: none; }\n  }`);
+    }
+    if (has('caption')) out.push(`  :where(.${n}-caption) { padding-block-start: var(--${n}-pad-y); font-size: var(--${n}-font); color: var(--${n}-fg); }`);
+  }
+  return out.join('\n');
+}
+
 function componentRules(c, tokens) {
   const n = c.component;
   const where = `component:${n}`;
   const shape = shapeFromRole(c);
   if (shape === 'control' || shape === 'toggle' || shape === 'group') return formRules(c, tokens, shape);
+  if (shape === 'link' || shape === 'nav' || shape === 'avatar' || shape === 'media') return pageRules(c, tokens, shape);
   const d = c.defaults;
   const vars = { tone: d.tone, size: d.size };
   const decl = [];

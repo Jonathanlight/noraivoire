@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" preserveAspectRatio="xMidYMid slice">
+  <!-- NoraIvoire — illustration de démonstration (formes et textiles, motif wax stylisé). © 2026 Jonathan KABLAN — Propriétaire. -->
+  <rect width="1200" height="1200" fill="#1B7F3B"/>
+  <g fill="none" stroke-width="28">
+    <circle cx="300" cy="300" r="180" stroke="#FFC078"/>
+    <circle cx="300" cy="300" r="110" stroke="#FFFFFF" opacity="0.8"/>
+    <circle cx="900" cy="300" r="180" stroke="#FF8A3D"/>
+    <circle cx="900" cy="300" r="110" stroke="#FFC078" opacity="0.9"/>
+    <circle cx="300" cy="900" r="180" stroke="#FF8A3D"/>
+    <circle cx="300" cy="900" r="110" stroke="#FFFFFF" opacity="0.8"/>
+    <circle cx="900" cy="900" r="180" stroke="#FFC078"/>
+    <circle cx="900" cy="900" r="110" stroke="#FFFFFF" opacity="0.8"/>
+  </g>
+  <path d="M600 420 L780 600 L600 780 L420 600 Z" fill="#C94A0B"/>
+  <path d="M600 500 L700 600 L600 700 L500 600 Z" fill="#FFE2A8"/>
+  <path d="M0 600 H1200 M600 0 V1200" stroke="#0E4A22" stroke-width="10" opacity="0.35"/>
+</svg>

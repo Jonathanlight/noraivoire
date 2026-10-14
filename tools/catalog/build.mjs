@@ -191,6 +191,39 @@ export function componentExamples(name, c, manifest) {
       }
       break;
     }
+    case 'link': {
+      toneSizeGrid((t, s) => `<a class="${name}" data-tone="${t}" data-size="${s}" href="#exemples">Lien ${label(t)} ${s}</a>`);
+      groups.push({ title: 'Dans un paragraphe', note: 'Sans data-size, le lien hérite de la police du texte.', html: `<p>Consultez <a class="${name}" href="#exemples">nos conditions de livraison</a> avant de commander.</p>` });
+      groups.push({ title: 'Externe et visité', note: 'rel="external" ou target="_blank" : flèche décorative (non lue). data-visited : couleur atténuée une fois visité.', html: `<p class="cluster"><a class="${name}" href="#exemples" rel="external">Site partenaire</a> <a class="${name}" href="#exemples" data-visited>Article déjà lu</a></p>` });
+      break;
+    }
+    case 'nav': {
+      const p = (k) => `${name}-${k}`;
+      const bar = (size, current, withActions = true) => `<nav class="${name}"${size ? ` data-size="${size}"` : ''} aria-label="Exemple ${size ?? 'principal'}">`
+        + `<a class="${p('brand')}" href="#exemples">Nora<strong>Ivoire</strong></a>`
+        + `<ul class="${p('menu')}">${['Accueil', 'Boutique', 'Journal', 'Contact'].map((l, i) => `<li><a href="#exemples"${i === current ? ' aria-current="page"' : ''}>${l}</a></li>`).join('')}</ul>`
+        + (withActions && c.parts.includes(p('actions')) ? `<div class="${p('actions')}"><a class="btn" data-tone="neutral" data-size="sm" href="#exemples">Connexion</a><a class="btn" data-size="sm" href="#exemples">Essai gratuit</a></div>` : '')
+        + '</nav>';
+      groups.push({ title: 'Barre complète', note: 'Marque, menu (page courante : aria-current="page") et actions. Réduisez la fenêtre : le menu passe sous la marque et défile, sans JavaScript.', html: bar(null, 1) });
+      groups.push({ title: 'Tailles', note: `data-size : ${sizes.join(', ')}.`, html: sizes.filter((x) => x !== c.defaults.size).map((x) => bar(x, 0, false)).join('\n') });
+      break;
+    }
+    case 'avatar': {
+      const group = c.parts.includes(`${name}-group`) ? `${name}-group` : null;
+      groups.push({ title: 'Image', note: 'alt obligatoire : le nom de la personne (alt="" si l\'avatar est purement décoratif).', html: `<div class="cluster">${sizes.map((x) => `<img class="${name}" data-size="${x}" src="assets/img/avatar.svg" alt="Awa Koné">`).join('')}</div>` });
+      groups.push({ title: 'Initiales et tons', note: `Sans image : role="img" et aria-label. data-tone : ${tones.join(', ')}.`, html: `<div class="cluster">${tones.map((t, i) => `<span class="${name}" data-tone="${t}" role="img" aria-label="Personne ${i + 1}">${['AK', 'YK', 'FD', 'MB', 'SC'][i % 5]}</span>`).join('')}</div>` });
+      if (group) groups.push({ title: 'Groupe empilé', note: `.${group} : chevauchement d'un quart, anneau de la couleur de surface.`, html: `<div class="${group}"><img class="${name}" src="assets/img/avatar.svg" alt="Awa Koné"><span class="${name}" data-tone="primary" role="img" aria-label="Yao Kouassi">YK</span><span class="${name}" data-tone="success" role="img" aria-label="Fatou Diallo">FD</span><span class="${name}" role="img" aria-label="Et 12 autres personnes">+12</span></div>` });
+      break;
+    }
+    case 'media': {
+      const has2 = (k) => c.parts.includes(`${name}-${k}`);
+      const img = (src, alt) => `<img src="assets/img/${src}" alt="${alt}" loading="lazy">`;
+      groups.push({ title: 'Formats', note: `data-size fixe le format, l'image est recadrée (object-fit: cover) : ${sizes.join(', ')}.`,
+        html: `<div class="grid-auto">${sizes.map((x) => `<figure class="${name}" data-size="${x}">${img('paysage.svg', 'Lagune au coucher du soleil')}${has2('caption') ? `<figcaption class="${name}-caption">Format ${x}</figcaption>` : ''}</figure>`).join('')}</div>` });
+      if (has2('overlay')) groups.push({ title: 'Texte en surimpression', note: `.${name}-overlay : dégradé de lisibilité sous le texte, lisible sur toute image.`, html: `<figure class="${name}" data-size="${c.defaults.size}">${img('atelier.svg', 'Motif textile wax stylisé')}<div class="${name}-overlay"><p class="text-lg font-bold">Collection Abidjan</p><p>Pièces uniques, tissées à la main.</p></div>${has2('caption') ? `<figcaption class="${name}-caption">Illustration de démonstration</figcaption>` : ''}</figure>` });
+      groups.push({ title: 'Avec un effet', note: 'Tout effet s\'applique au bloc, par exemple data-fx="tilt" (coupé en mouvement réduit).', html: `<figure class="${name}" data-size="square" data-fx="tilt">${img('atelier.svg', 'Motif textile wax stylisé')}</figure>` });
+      break;
+    }
     default:
       groups.push({ title: 'Exemple', note: 'Exemple du manifest.', html: c.example ?? `<${el} class="${name}">${name}</${el}>` });
   }
@@ -248,6 +281,26 @@ export function frameworkSnippets(name, c, example) {
       flutter = `${f}(\n  label: 'E-mail',\n  help: 'Professionnel de préférence.',\n  error: erreur,\n  child: const NoraInput(),\n)`;
       rn = `<${r} label="E-mail" help="Professionnel de préférence." error={erreur}>\n  <NoraInput />\n</${r}>`;
       tw = `<twig:${twig} id="email" label="E-mail" help="Professionnel de préférence." error="{{ erreur }}">\n  <twig:Nora:Input type="email" {{ ...control }} />\n</twig:${twig}>`;
+      break;
+    case 'link':
+      flutter = `${f}(\n  onPressed: () => ouvrir('/tarifs'),\n  child: const Text('Voir les tarifs'),\n)`;
+      rn = `<${r} href="https://exemple.ci/tarifs">Voir les tarifs</${r}>`;
+      tw = `<twig:${twig} href="/tarifs">Voir les tarifs</twig:${twig}>`;
+      break;
+    case 'nav':
+      flutter = `${f}(\n  label: 'Principale',\n  brand: const Text('NoraIvoire'),\n  items: [\n    ${f}Item(label: 'Accueil', current: true, onTap: () {}),\n    ${f}Item(label: 'Boutique', onTap: () {}),\n  ],\n  actions: [NoraBtn(size: NoraSize.sm, onPressed: () {}, child: const Text('Connexion'))],\n)`;
+      rn = `<${r}\n  label="Principale"\n  brand="NoraIvoire"\n  items={[{ label: 'Accueil', current: true, href: '/' }, { label: 'Boutique', href: '/boutique' }]}\n  actions={<NoraBtn size="sm">Connexion</NoraBtn>}\n/>`;
+      tw = `<twig:${twig} aria-label="Principale">\n  <a class="${name}-brand" href="/">NoraIvoire</a>\n  <ul class="${name}-menu"><li><a href="/" aria-current="page">Accueil</a></li></ul>\n</twig:${twig}>`;
+      break;
+    case 'avatar':
+      flutter = `${f}(\n  image: const AssetImage('assets/awa.jpg'),\n  initials: 'AK',\n  label: 'Awa Koné',\n)`;
+      rn = `<${r} source={require('./awa.jpg')} initials="AK" label="Awa Koné" />`;
+      tw = `<twig:${twig} as="span" tone="primary" role="img" aria-label="Awa Koné">AK</twig:${twig}>`;
+      break;
+    case 'media':
+      flutter = `${f}(\n  size: ${S},\n  overlay: const Text('Grand-Bassam'),\n  caption: const Text('Photo : équipe NoraIvoire'),\n  child: const Image(image: AssetImage('assets/plage.jpg'), semanticLabel: 'Plage au coucher du soleil', fit: BoxFit.cover),\n)`;
+      rn = `<${r}\n  source={require('./plage.jpg')}\n  alt="Plage au coucher du soleil"\n  overlay="Grand-Bassam"\n  caption="Photo : équipe NoraIvoire"\n/>`;
+      tw = `<twig:${twig} size="${c.defaults.size}">\n  <img src="{{ asset('images/plage.jpg') }}" alt="Plage au coucher du soleil" loading="lazy">\n  <figcaption class="${name}-caption">Photo : équipe NoraIvoire</figcaption>\n</twig:${twig}>`;
       break;
     default:
       flutter = `${f}()`;
@@ -440,10 +493,13 @@ ${sections}
 
 /** Surcharge de démonstration : rayon et couleur de fond si le composant les expose. */
 export function overrideFor(name, c) {
+  if (c.shape === 'nav') return null; // menu en couleur atténuée : un fond foncé de démonstration le rendrait illisible
   const decl = [];
+  // Texte posé sur la page (lien, légende) : jamais blanc, sinon illisible sur le fond clair du catalogue.
+  const onPage = c.shape === 'link' || c.shape === 'media';
   if (c.tokens.includes(`--${name}-radius`)) decl.push(`--${name}-radius: 0px;`);
-  if (c.tokens.includes(`--${name}-bg`)) decl.push(`--${name}-bg: #0B7285;`);
-  if (c.tokens.includes(`--${name}-fg`)) decl.push(`--${name}-fg: #FFFFFF;`);
+  if (c.tokens.includes(`--${name}-bg`) && c.shape !== 'media') decl.push(`--${name}-bg: #0B7285;`);
+  if (c.tokens.includes(`--${name}-fg`)) decl.push(`--${name}-fg: ${onPage ? '#0B7285' : '#FFFFFF'};`);
   if (!decl.length) return null;
   const cls = `marque-${name}`;
   const el = c.elements[0];
@@ -451,6 +507,9 @@ export function overrideFor(name, c) {
   if (c.shape === 'toggle') inner = `<label class="${name} ${cls}"><input type="${c.a11y.inputType ?? 'checkbox'}"${c.a11y.role === 'switch' ? ' role="switch"' : ''} name="${cls}" checked> Personnalisé</label>`;
   else if (c.shape === 'control') inner = `<div class="stack"><label for="${cls}">Personnalisé</label>${el === 'select' ? `<select class="${name} ${cls}" id="${cls}"><option>Option</option></select>` : el === 'textarea' ? `<textarea class="${name} ${cls}" id="${cls}"></textarea>` : `<input class="${name} ${cls}" id="${cls}" type="text">`}</div>`;
   else if (c.shape === 'group') inner = `<div class="${name} ${cls}"><label${c.parts.includes(`${name}-label`) ? ` class="${name}-label"` : ''} for="${cls}-c">Personnalisé</label><input id="${cls}-c" name="${cls}" type="text"></div>`;
+  else if (c.shape === 'avatar') inner = `<span class="${name} ${cls}" role="img" aria-label="Personnalisé">PE</span>`;
+  else if (c.shape === 'media') inner = `<figure class="${name} ${cls}"><img src="assets/img/paysage.svg" alt="Lagune au coucher du soleil"></figure>`;
+  else if (c.shape === 'link') inner = `<a class="${name} ${cls}" href="#exemples">Personnalisé</a>`;
   else if (VOID.has(el)) inner = `<${el} class="${name} ${cls}">`;
   else inner = `<${el} class="${name} ${cls}"${el === 'button' ? ' type="button"' : ''}>Personnalisé</${el}>`;
   return { html: inner, css: `.${cls} {\n  ${decl.join('\n  ')}\n}`, rule: `.${cls} { ${decl.join(' ')} }` };
@@ -637,6 +696,9 @@ export function buildCatalog({ manifest, css }) {
   return files;
 }
 
+/** Illustrations de tools/catalog/assets/, copiées dans site/assets/img/. */
+export const IMAGES = Object.freeze(['avatar.svg', 'paysage.svg', 'atelier.svg']);
+
 /** Fichiers de dist copiés tels quels dans site/assets/. */
 export function distAssets(manifest) {
   const list = ['noraivoire.css', 'noraivoire.engine.js'];
@@ -660,6 +722,9 @@ export function writeCatalog(out = join(ROOT, 'site')) {
     copyFileSync(join(DIST, rel), join(out, 'assets', rel));
   }
   copyFileSync(join(HERE, 'catalog.js'), join(out, 'assets', 'catalog.js'));
+  // Illustrations de démonstration (SVG locaux, sans visage ni marque) pour avatar et média.
+  mkdirSync(join(out, 'assets', 'img'), { recursive: true });
+  for (const f of IMAGES) copyFileSync(join(HERE, 'assets', f), join(out, 'assets', 'img', f));
   return { out, pages: Object.keys(files).filter((f) => f.endsWith('.html')).length };
 }
 

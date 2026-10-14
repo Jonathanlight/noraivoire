@@ -1,0 +1,30 @@
+{
+  "$nora": "component",
+  "$version": "1.0.0",
+  "component": "avatar",
+  "shape": "avatar",
+  "description": "Avatar rond : <img class=\"avatar\" src=\"…\" alt=\"Nom\"> ou initiales <span class=\"avatar\" role=\"img\" aria-label=\"Nom\">AK</span> (alt=\"\" ou aria-hidden=\"true\" s'il est décoratif). Groupe empilé avec chevauchement : <div class=\"avatar-group\">.",
+  "elements": ["img", "span"],
+  "parts": ["group"],
+  "variants": {
+    "tone": ["primary", "neutral", "danger", "success", "warning"],
+    "size": ["sm", "md", "lg"]
+  },
+  "defaults": { "tone": "neutral", "size": "md" },
+  "tokens": {
+    "bg": "{color.$tone}",
+    "fg": "{color.on-$tone}",
+    "radius": "{radius.full}",
+    "ring": "{color.surface}"
+  },
+  "sizes": {
+    "sm": { "pad-y": 0, "pad-x": 0, "font": "{font.sm}", "box": 32 },
+    "md": { "pad-y": 0, "pad-x": 0, "font": "{font.md}", "box": 40 },
+    "lg": { "pad-y": 0, "pad-x": 0, "font": "{font.xl}", "box": 64 }
+  },
+  "states": {},
+  "motion": {},
+  "a11y": { "role": "img", "minTarget": 0, "requiresLabel": true, "anchorRequiresHref": false },
+  "feedback": {},
+  "example": "<div class=\"avatar-group\"><img class=\"avatar\" src=\"/avatars/awa.jpg\" alt=\"Awa Koné\"><span class=\"avatar\" data-tone=\"primary\" role=\"img\" aria-label=\"Yao Kouassi\">YK</span></div>"
+}

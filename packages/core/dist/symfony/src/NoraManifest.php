@@ -15,6 +15,13 @@ final class NoraManifest
 
     /** @var array<string, array{tones: list<string>, sizes: list<string>, defaults: array{tone: string, size: string}, elements: list<string>, twig: string}> */
     public const COMPONENTS = [
+        'avatar' => [
+            'tones' => ['primary', 'neutral', 'danger', 'success', 'warning'],
+            'sizes' => ['sm', 'md', 'lg'],
+            'defaults' => ['tone' => 'neutral', 'size' => 'md'],
+            'elements' => ['img', 'span'],
+            'twig' => 'Nora:Avatar',
+        ],
         'badge' => [
             'tones' => ['primary', 'neutral', 'danger', 'success', 'warning'],
             'sizes' => ['sm', 'md'],
@@ -56,6 +63,27 @@ final class NoraManifest
             'defaults' => ['tone' => 'neutral', 'size' => 'md'],
             'elements' => ['input'],
             'twig' => 'Nora:Input',
+        ],
+        'link' => [
+            'tones' => ['primary', 'neutral', 'danger', 'success', 'warning'],
+            'sizes' => ['sm', 'md', 'lg'],
+            'defaults' => ['tone' => 'primary', 'size' => 'md'],
+            'elements' => ['a'],
+            'twig' => 'Nora:Link',
+        ],
+        'media' => [
+            'tones' => ['neutral'],
+            'sizes' => ['wide', 'standard', 'square', 'portrait'],
+            'defaults' => ['tone' => 'neutral', 'size' => 'wide'],
+            'elements' => ['figure', 'div'],
+            'twig' => 'Nora:Media',
+        ],
+        'navbar' => [
+            'tones' => ['neutral'],
+            'sizes' => ['sm', 'md', 'lg'],
+            'defaults' => ['tone' => 'neutral', 'size' => 'md'],
+            'elements' => ['nav'],
+            'twig' => 'Nora:Navbar',
         ],
         'radio' => [
             'tones' => ['primary', 'neutral', 'danger', 'success', 'warning'],

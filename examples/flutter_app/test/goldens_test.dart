@@ -57,7 +57,7 @@ void main() {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    for (final size in NoraSize.values)
+                    for (final size in const [NoraSize.sm, NoraSize.md, NoraSize.lg])
                       Padding(
                         padding: const EdgeInsets.only(right: NoraSpace.s2),
                         child: NoraBtn(

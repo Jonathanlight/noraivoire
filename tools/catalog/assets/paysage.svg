@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+  <!-- NoraIvoire — illustration de démonstration (lagune au coucher du soleil). © 2026 Jonathan KABLAN — Propriétaire. -->
+  <defs>
+    <linearGradient id="ciel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2B1B4A"/>
+      <stop offset="0.45" stop-color="#C94A0B"/>
+      <stop offset="0.75" stop-color="#FFB45C"/>
+    </linearGradient>
+    <linearGradient id="eau" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#E0782E"/>
+      <stop offset="1" stop-color="#1F2A44"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#ciel)"/>
+  <circle cx="1080" cy="470" r="120" fill="#FFE2A8" opacity="0.95"/>
+  <path d="M0 560 C220 470 380 520 560 480 C760 436 920 520 1120 500 C1320 480 1460 430 1600 460 V900 H0 Z" fill="#3A2340"/>
+  <path d="M0 620 C260 560 520 640 800 600 C1060 564 1320 640 1600 600 V900 H0 Z" fill="#1E1630"/>
+  <rect y="640" width="1600" height="260" fill="url(#eau)" opacity="0.85"/>
+  <path d="M960 690 h240 M900 730 h360 M1000 770 h180 M940 810 h300" stroke="#FFE2A8" stroke-width="6" stroke-linecap="round" opacity="0.5"/>
+  <path d="M230 640 c8 -90 14 -150 6 -230 M236 420 c-40 -10 -90 10 -120 40 M236 420 c40 -18 100 -8 130 22 M236 420 c-20 -40 -60 -60 -100 -60 M236 420 c22 -42 70 -58 108 -50" stroke="#140F20" stroke-width="10" fill="none" stroke-linecap="round"/>
+</svg>

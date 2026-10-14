@@ -1,0 +1,34 @@
+{
+  "$nora": "component",
+  "$version": "1.0.0",
+  "component": "navbar",
+  "shape": "nav",
+  "description": "Barre de navigation : <nav class=\"navbar\" aria-label=\"…\"> avec .navbar-brand, une liste .navbar-menu de liens (page courante : aria-current=\"page\") et .navbar-actions. Sans JavaScript : sur petit écran, le menu passe sous la marque et défile horizontalement.",
+  "elements": ["nav"],
+  "parts": ["brand", "menu", "actions"],
+  "variants": {
+    "tone": ["neutral"],
+    "size": ["sm", "md", "lg"]
+  },
+  "defaults": { "tone": "neutral", "size": "md" },
+  "tokens": {
+    "bg": "{color.surface}",
+    "fg": "{color.text}",
+    "muted": "{color.text-muted}",
+    "border": "{color.border}",
+    "active": "{color.primary}",
+    "focus": "{color.focus}"
+  },
+  "sizes": {
+    "sm": { "pad-y": 4, "pad-x": 12, "font": "{font.sm}" },
+    "md": { "pad-y": 8, "pad-x": 16, "font": "{font.md}" },
+    "lg": { "pad-y": 12, "pad-x": 24, "font": "{font.lg}" }
+  },
+  "states": {
+    "focus": { "ring": 2, "token": "focus" }
+  },
+  "motion": { "press": { "duration": "{duration.fast}" } },
+  "a11y": { "role": "navigation", "minTarget": 44, "requiresLabel": true, "anchorRequiresHref": true },
+  "feedback": {},
+  "example": "<nav class=\"navbar\" aria-label=\"Principale\"><a class=\"navbar-brand\" href=\"/\">Marque</a><ul class=\"navbar-menu\"><li><a href=\"/\" aria-current=\"page\">Accueil</a></li><li><a href=\"/produits\">Produits</a></li><li><a href=\"/contact\">Contact</a></li></ul><div class=\"navbar-actions\"><a class=\"btn\" data-size=\"sm\" href=\"/connexion\">Connexion</a></div></nav>"
+}

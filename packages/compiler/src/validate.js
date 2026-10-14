@@ -23,10 +23,13 @@ export const PATTERNS = Object.freeze({
 });
 
 const FORBIDDEN_KEYS = new Set(['__proto__', 'prototype', 'constructor']);
-const SHAPES = new Set(['interactive', 'container', 'label', 'control', 'toggle', 'group']);
+const SHAPES = new Set(['interactive', 'container', 'label', 'control', 'toggle', 'group', 'link', 'nav', 'avatar', 'media']);
 const STATES = new Set(['pressed', 'disabled', 'focus', 'invalid']);
 // Sous-éléments stylés d'un composant (classe `.{composant}-{partie}`) : liste fermée.
-const PARTS = new Set(['label', 'help', 'error']);
+const PARTS = new Set(['label', 'help', 'error', 'brand', 'menu', 'actions', 'caption', 'overlay', 'group']);
+// Clés d'une taille : espacements et police ; `box` (côté d'un avatar, px) et `ratio` ([largeur, hauteur]
+// d'un média) selon la forme.
+const SIZE_KEYS = new Set(['pad-y', 'pad-x', 'font', 'box', 'ratio']);
 const EFFECT_KINDS = new Set(['orientation-transform', 'scroll-reveal', 'surface-glass']);
 // Effets des paquets optionnels (spec/fx/<paquet>/) : jamais compilés dans le cœur.
 export const FX_PACKAGE_KINDS = Object.freeze({
@@ -155,6 +158,12 @@ export function validateComponent(spec, file) {
     const def = spec.sizes[s];
     assert(isObj(def), file, `sizes.${s}`, 'définition de taille manquante');
     for (const k of ['pad-y', 'pad-x', 'font']) assertNumOrRef(def[k], file, `sizes.${s}.${k}`);
+    for (const k of Object.keys(def)) assert(SIZE_KEYS.has(k), file, `sizes.${s}.${k}`, `clé inconnue (${[...SIZE_KEYS].join(' | ')})`);
+    if (def.box !== undefined) assert(isNum(def.box) && def.box >= 16 && def.box <= 256, file, `sizes.${s}.box`, 'côté 16–256 px attendu');
+    if (def.ratio !== undefined) {
+      assert(Array.isArray(def.ratio) && def.ratio.length === 2 && def.ratio.every((n) => Number.isInteger(n) && n >= 1 && n <= 64),
+        file, `sizes.${s}.ratio`, 'format [largeur, hauteur] entiers 1–64 attendu');
+    }
   }
 
   if (spec.states !== undefined) {
@@ -195,6 +204,22 @@ export function validateComponent(spec, file) {
     assert(spec.a11y.requiresLabel === true, file, 'a11y.requiresLabel', 'un contrôle de formulaire exige un label');
   }
   if (shape === 'toggle') assert(spec.a11y.inputType !== undefined, file, 'a11y.inputType', 'type d\'input attendu (ex. checkbox)');
+  const sizeDefs = spec.variants.size.map((sz) => [sz, spec.sizes[sz]]);
+  if (shape === 'avatar') {
+    for (const [sz, def] of sizeDefs) assert(def.box !== undefined, file, `sizes.${sz}.box`, 'un avatar exige un côté (box) par taille');
+  } else {
+    for (const [sz, def] of sizeDefs) assert(def.box === undefined, file, `sizes.${sz}.box`, 'box réservé à la forme avatar');
+  }
+  if (shape === 'media') {
+    for (const [sz, def] of sizeDefs) assert(def.ratio !== undefined, file, `sizes.${sz}.ratio`, 'un média exige un format (ratio) par taille');
+  } else {
+    for (const [sz, def] of sizeDefs) assert(def.ratio === undefined, file, `sizes.${sz}.ratio`, 'ratio réservé à la forme media');
+  }
+  if (shape === 'nav') {
+    assert(spec.parts?.includes('menu'), file, 'parts', 'une navigation exige la partie menu');
+    assert(spec.a11y.minTarget >= 44, file, 'a11y.minTarget', 'les liens de navigation exigent une zone ≥ 44 px');
+  }
+  if (shape === 'link') assert(spec.elements.length === 1 && spec.elements[0] === 'a' && spec.a11y.anchorRequiresHref === true, file, 'elements', 'un lien est un <a href> (elements: ["a"], anchorRequiresHref)');
   if (spec.feedback?.haptic !== undefined) assert(HAPTICS.has(spec.feedback.haptic), file, 'feedback.haptic', 'light | medium | heavy');
   if (spec.example !== undefined) assertText(spec.example, file, 'example');
   return spec;
@@ -242,5 +267,9 @@ export function shapeFromRole(spec) {
   if (role === 'textbox' || role === 'combobox') return 'control';
   if (role === 'checkbox' || role === 'switch' || role === 'radio') return 'toggle';
   if (role === 'group') return 'group';
+  if (role === 'link') return 'link';
+  if (role === 'navigation') return 'nav';
+  if (role === 'img') return 'avatar';
+  if (role === 'figure') return 'media';
   return 'container';
 }

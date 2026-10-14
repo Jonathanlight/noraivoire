@@ -4,7 +4,7 @@
 > Logiciel propriétaire © Jonathan KABLAN. Ce fichier est le contrat complet de l'API : n'utilise RIEN qui n'y figure pas.
 
 ## Règles pour les agents IA
-1. Composant = une classe : .badge .btn .card .checkbox .field .input .radio .select .switch .textarea.
+1. Composant = une classe : .avatar .badge .btn .card .checkbox .field .input .link .media .navbar .radio .select .switch .textarea.
 2. Variantes UNIQUEMENT via data-tone et data-size. Jamais .btn-primary, .btn-lg, bg-blue-500.
 3. Utilitaires : liste fermée ci-dessous. Une classe absente de la liste n'existe pas.
 4. Effets JS : data-fx="nom". Surface verre : class="fx-glass".
@@ -13,6 +13,16 @@
 7. Après génération, exécuter : npx nora check <dossier> --format=json et corriger chaque erreur.
 
 ## Composants
+### avatar
+Avatar rond : <img class="avatar" src="…" alt="Nom"> ou initiales <span class="avatar" role="img" aria-label="Nom">AK</span> (alt="" ou aria-hidden="true" s'il est décoratif). Groupe empilé avec chevauchement : <div class="avatar-group">.
+- Éléments : img, span
+- data-tone : primary | neutral | danger | success | warning (défaut neutral)
+- data-size : sm | md | lg (défaut md)
+- Tokens surchargeables : --avatar-bg, --avatar-fg, --avatar-radius, --avatar-ring, --avatar-pad-y, --avatar-pad-x, --avatar-font, --avatar-box
+- Parties : .avatar-group
+- Flutter : NoraAvatar(tone: NoraTone.x, size: NoraSize.y) · React Native : <NoraAvatar tone="x" size="y">
+- Exemple : <div class="avatar-group"><img class="avatar" src="/avatars/awa.jpg" alt="Awa Koné"><span class="avatar" data-tone="primary" role="img" aria-label="Yao Kouassi">YK</span></div>
+
 ### badge
 Étiquette courte de statut.
 - Éléments : span
@@ -71,6 +81,37 @@ Champ de saisie sur une ligne. Toujours associé à un <label for> (ou placé da
 - États : focus, invalid, disabled
 - Flutter : NoraInput(tone: NoraTone.x, size: NoraSize.y) · React Native : <NoraInput tone="x" size="y">
 - Exemple : <label class="field-label" for="email">E-mail</label> <input class="input" id="email" type="email" name="email" autocomplete="email">
+
+### link
+Lien texte : <a class="link" href="…">. Souligné, focus visible, ton de couleur. Lien externe (target="_blank" ou rel="external") signalé par une flèche décorative ; data-visited distingue les liens déjà visités.
+- Éléments : a
+- data-tone : primary | neutral | danger | success | warning (défaut primary)
+- data-size : sm | md | lg (défaut md)
+- Tokens surchargeables : --link-fg, --link-visited, --link-focus, --link-pad-y, --link-pad-x, --link-font
+- États : focus
+- Flutter : NoraLink(tone: NoraTone.x, size: NoraSize.y) · React Native : <NoraLink tone="x" size="y">
+- Exemple : <a class="link" href="/tarifs">Voir les tarifs</a>
+
+### media
+Bloc image ou illustration : <figure class="media" data-size="wide"> avec <img alt="…" loading="lazy">, légende .media-caption (<figcaption>) et texte en surimpression .media-overlay (dégradé de lisibilité). data-size fixe le format : wide 16/9, standard 4/3, square 1/1, portrait 3/4.
+- Éléments : figure, div
+- data-tone : neutral (défaut neutral)
+- data-size : wide | standard | square | portrait (défaut wide)
+- Tokens surchargeables : --media-bg, --media-fg, --media-radius, --media-scrim, --media-on-scrim, --media-pad-y, --media-pad-x, --media-font, --media-ratio
+- Parties : .media-caption, .media-overlay
+- Flutter : NoraMedia(tone: NoraTone.x, size: NoraSize.y) · React Native : <NoraMedia tone="x" size="y">
+- Exemple : <figure class="media" data-size="wide"><img src="/images/plage.jpg" alt="Plage de Grand-Bassam au coucher du soleil" loading="lazy"><div class="media-overlay">Grand-Bassam</div><figcaption class="media-caption">Photo : équipe NoraIvoire</figcaption></figure>
+
+### navbar
+Barre de navigation : <nav class="navbar" aria-label="…"> avec .navbar-brand, une liste .navbar-menu de liens (page courante : aria-current="page") et .navbar-actions. Sans JavaScript : sur petit écran, le menu passe sous la marque et défile horizontalement.
+- Éléments : nav
+- data-tone : neutral (défaut neutral)
+- data-size : sm | md | lg (défaut md)
+- Tokens surchargeables : --navbar-bg, --navbar-fg, --navbar-muted, --navbar-border, --navbar-active, --navbar-focus, --navbar-pad-y, --navbar-pad-x, --navbar-font
+- Parties : .navbar-brand, .navbar-menu, .navbar-actions
+- États : focus
+- Flutter : NoraNavbar(tone: NoraTone.x, size: NoraSize.y) · React Native : <NoraNavbar tone="x" size="y">
+- Exemple : <nav class="navbar" aria-label="Principale"><a class="navbar-brand" href="/">Marque</a><ul class="navbar-menu"><li><a href="/" aria-current="page">Accueil</a></li><li><a href="/produits">Produits</a></li><li><a href="/contact">Contact</a></li></ul><div class="navbar-actions"><a class="btn" data-size="sm" href="/connexion">Connexion</a></div></nav>
 
 ### radio
 Bouton radio : un <label class="radio"> contenant <input type="radio" name="…"> et son texte (zone cliquable ≥ 44 px). Grouper les options d'une même question dans un <fieldset class="field"> avec <legend class="field-label">.
@@ -132,7 +173,7 @@ p-0 px-0 py-0 m-0 mx-0 my-0 gap-0 p-1 px-1 py-1 m-1 mx-1 my-1 gap-1 p-2 px-2 py-
 <html data-theme="dark|light"> ; sans attribut : suit le système.
 
 ## Tokens
-- color : --nora-color-primary --nora-color-on-primary --nora-color-neutral --nora-color-on-neutral --nora-color-danger --nora-color-on-danger --nora-color-success --nora-color-on-success --nora-color-warning --nora-color-on-warning --nora-color-surface --nora-color-surface-2 --nora-color-text --nora-color-text-muted --nora-color-border --nora-color-focus
+- color : --nora-color-primary --nora-color-on-primary --nora-color-neutral --nora-color-on-neutral --nora-color-danger --nora-color-on-danger --nora-color-success --nora-color-on-success --nora-color-warning --nora-color-on-warning --nora-color-surface --nora-color-surface-2 --nora-color-text --nora-color-text-muted --nora-color-border --nora-color-focus --nora-color-scrim --nora-color-on-scrim
 - space : --nora-space-0 --nora-space-1 --nora-space-2 --nora-space-3 --nora-space-4 --nora-space-6 --nora-space-8 --nora-space-12
 - radius : --nora-radius-none --nora-radius-sm --nora-radius-md --nora-radius-lg --nora-radius-full
 - font : --nora-font-sm --nora-font-md --nora-font-lg --nora-font-xl

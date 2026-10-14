@@ -16,6 +16,10 @@ enum NoraSize: string
     case Sm = 'sm';
     case Md = 'md';
     case Lg = 'lg';
+    case Wide = 'wide';
+    case Standard = 'standard';
+    case Square = 'square';
+    case Portrait = 'portrait';
 
     /** @return list<string> */
     public static function values(): array

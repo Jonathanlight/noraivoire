@@ -17,7 +17,7 @@ const String noraVersion = '0.1.0';
 
 enum NoraTone { primary, neutral, danger, success, warning }
 
-enum NoraSize { sm, md, lg }
+enum NoraSize { sm, md, lg, wide, standard, square, portrait }
 
 @immutable
 class NoraColors {
@@ -37,6 +37,8 @@ class NoraColors {
   final Color textMuted;
   final Color border;
   final Color focus;
+  final Color scrim;
+  final Color onScrim;
 
   const NoraColors({
     required this.primary,
@@ -55,6 +57,8 @@ class NoraColors {
     required this.textMuted,
     required this.border,
     required this.focus,
+    required this.scrim,
+    required this.onScrim,
   });
 
   static const light = NoraColors(
@@ -74,6 +78,8 @@ class NoraColors {
     textMuted: Color(0xFF5C626B),
     border: Color(0xFFDDE0E4),
     focus: Color(0xFF1C7ED6),
+    scrim: Color(0xFF0B0C0F),
+    onScrim: Color(0xFFFFFFFF),
   );
 
   static const dark = NoraColors(
@@ -93,6 +99,8 @@ class NoraColors {
     textMuted: Color(0xFFA0A6AF),
     border: Color(0xFF2E323A),
     focus: Color(0xFF74C0FC),
+    scrim: Color(0xFF0B0C0F),
+    onScrim: Color(0xFFFFFFFF),
   );
 
   NoraColors lerp(NoraColors other, double t) => NoraColors(
@@ -112,6 +120,8 @@ class NoraColors {
       textMuted: Color.lerp(textMuted, other.textMuted, t)!,
       border: Color.lerp(border, other.border, t)!,
       focus: Color.lerp(focus, other.focus, t)!,
+      scrim: Color.lerp(scrim, other.scrim, t)!,
+      onScrim: Color.lerp(onScrim, other.onScrim, t)!,
       );
 }
 
@@ -301,6 +311,129 @@ class _NoraRevealState extends State<NoraReveal> {
   }
 }
 
+/// Avatar rond : <img class="avatar" src="…" alt="Nom"> ou initiales <span class="avatar" role="img" aria-label="Nom">AK</span> (alt="" ou aria-hidden="true" s'il est décoratif). Groupe empilé avec chevauchement : <div class="avatar-group">.
+class NoraAvatar extends StatelessWidget {
+  const NoraAvatar({
+    super.key,
+    this.image,
+    this.initials,
+    this.label,
+    this.tone = NoraTone.neutral,
+    this.size = NoraSize.md,
+  }) : assert(image != null || initials != null, 'image ou initiales attendues');
+
+  final ImageProvider? image;
+
+  /// Initiales affichées sans image (ou si l'image ne se charge pas).
+  final String? initials;
+
+  /// Nom annoncé par les lecteurs d'écran ; `null` = avatar décoratif (équivalent d'alt="").
+  final String? label;
+  final NoraTone tone;
+  final NoraSize size;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = NoraTheme.of(context).colors;
+    final bg = switch (tone) {
+      NoraTone.primary => colors.primary,
+      NoraTone.neutral => colors.neutral,
+      NoraTone.danger => colors.danger,
+      NoraTone.success => colors.success,
+      NoraTone.warning => colors.warning,
+    };
+    final fg = switch (tone) {
+      NoraTone.primary => colors.onPrimary,
+      NoraTone.neutral => colors.onNeutral,
+      NoraTone.danger => colors.onDanger,
+      NoraTone.success => colors.onSuccess,
+      NoraTone.warning => colors.onWarning,
+    };
+    final (padY, padX, fontSize) = switch (size) {
+      NoraSize.sm => (0.0, 0.0, 14.0),
+      NoraSize.md => (0.0, 0.0, 16.0),
+      NoraSize.lg => (0.0, 0.0, 24.0),
+      _ => (0.0, 0.0, 16.0),
+    };
+    final box = switch (size) {
+      NoraSize.sm => 32.0,
+      NoraSize.md => 40.0,
+      NoraSize.lg => 64.0,
+      _ => 40.0,
+    };
+    final initialsText = Center(
+      child: Text(
+        (initials ?? '').toUpperCase(),
+        style: TextStyle(color: fg, fontSize: fontSize, fontWeight: FontWeight.w600, height: 1.0),
+      ),
+    );
+    final img = image;
+    final Widget inner = img == null
+        ? initialsText
+        : Image(
+            image: img,
+            width: box,
+            height: box,
+            fit: BoxFit.cover,
+            excludeFromSemantics: true,
+            errorBuilder: (context, error, stack) => initialsText,
+          );
+    final avatar = SizedBox.square(
+      dimension: box,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(NoraRadius.full),
+        child: ColoredBox(color: bg, child: Padding(padding: EdgeInsets.symmetric(vertical: padY, horizontal: padX), child: inner)),
+      ),
+    );
+    final name = label;
+    return name == null ? ExcludeSemantics(child: avatar) : Semantics(image: true, label: name, excludeSemantics: true, child: avatar);
+  }
+}
+
+/// Groupe d'avatars empilés avec chevauchement (équivalent de .avatar-group).
+/// Les enfants doivent utiliser la même taille que le groupe.
+class NoraAvatarGroup extends StatelessWidget {
+  const NoraAvatarGroup({super.key, required this.children, this.size = NoraSize.md});
+
+  final List<NoraAvatar> children;
+  final NoraSize size;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = NoraTheme.of(context).colors;
+    final ring = colors.surface;
+    final box = switch (size) {
+      NoraSize.sm => 32.0,
+      NoraSize.md => 40.0,
+      NoraSize.lg => 64.0,
+      _ => 40.0,
+    };
+    final step = box * 0.75;
+    return SizedBox(
+      width: children.isEmpty ? 0 : box + step * (children.length - 1),
+      height: box,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          for (var i = 0; i < children.length; i++)
+            PositionedDirectional(
+              start: i * step,
+              top: 0,
+              child: DecoratedBox(
+                position: DecorationPosition.foreground,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: ring, width: 2, strokeAlign: BorderSide.strokeAlignOutside),
+                ),
+                child: children[i],
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
 /// Étiquette courte de statut.
 class NoraBadge extends StatelessWidget {
   const NoraBadge({
@@ -403,6 +536,7 @@ class _NoraBtnState extends State<NoraBtn> {
       NoraSize.sm => (6.0, 12.0, 14.0),
       NoraSize.md => (10.0, 20.0, 16.0),
       NoraSize.lg => (14.0, 28.0, 18.0),
+      _ => (10.0, 20.0, 16.0),
     };
     final enabled = widget.onPressed != null;
     final reduceMotion = MediaQuery.maybeDisableAnimationsOf(context) ?? false;
@@ -487,6 +621,7 @@ class NoraCard extends StatelessWidget {
       NoraSize.sm => (12.0, 12.0, 14.0),
       NoraSize.md => (16.0, 16.0, 16.0),
       NoraSize.lg => (24.0, 24.0, 16.0),
+      _ => (16.0, 16.0, 16.0),
     };
     final radius = BorderRadius.circular(NoraRadius.lg);
     Widget box = DecoratedBox(
@@ -567,6 +702,7 @@ class NoraCheckbox extends StatelessWidget {
       NoraSize.sm => (4.0, 8.0, 14.0),
       NoraSize.md => (6.0, 10.0, 16.0),
       NoraSize.lg => (8.0, 12.0, 18.0),
+      _ => (6.0, 10.0, 16.0),
     };
     final scope = NoraFieldScope.maybeOf(context);
     final isInvalid = invalid ?? (scope?.error != null);
@@ -672,6 +808,7 @@ class NoraField extends StatelessWidget {
       NoraSize.sm => (4.0, 0.0, 14.0),
       NoraSize.md => (6.0, 0.0, 16.0),
       NoraSize.lg => (8.0, 0.0, 18.0),
+      _ => (6.0, 0.0, 16.0),
     };
     final help = this.help;
     final error = this.error;
@@ -760,6 +897,7 @@ class NoraInput extends StatelessWidget {
       NoraSize.sm => (6.0, 10.0, 14.0),
       NoraSize.md => (10.0, 12.0, 16.0),
       NoraSize.lg => (12.0, 16.0, 18.0),
+      _ => (10.0, 12.0, 16.0),
     };
     final scope = NoraFieldScope.maybeOf(context);
     final isInvalid = invalid ?? (scope?.error != null);
@@ -797,6 +935,411 @@ class NoraInput extends StatelessWidget {
           cursorColor: focus,
           style: TextStyle(color: fg, fontSize: fontSize, height: 1.4),
           decoration: decoration,
+        ),
+      ),
+    );
+  }
+}
+
+/// Lien texte : <a class="link" href="…">. Souligné, focus visible, ton de couleur. Lien externe (target="_blank" ou rel="external") signalé par une flèche décorative ; data-visited distingue les liens déjà visités.
+class NoraLink extends StatefulWidget {
+  const NoraLink({
+    super.key,
+    required this.child,
+    this.onPressed,
+    this.tone = NoraTone.primary,
+    this.size,
+    this.external = false,
+    this.visited = false,
+    this.semanticLabel,
+  });
+
+  /// Texte du lien (son nom accessible).
+  final Widget child;
+  final VoidCallback? onPressed;
+  final NoraTone tone;
+
+  /// `null` : hérite de la police du texte environnant (équivalent d'un lien sans data-size).
+  final NoraSize? size;
+
+  /// Lien qui quitte l'application : flèche décorative et indication pour les lecteurs d'écran.
+  final bool external;
+
+  /// Lien déjà visité (équivalent de data-visited).
+  final bool visited;
+  final String? semanticLabel;
+
+  @override
+  State<NoraLink> createState() => _NoraLinkState();
+}
+
+class _NoraLinkState extends State<NoraLink> {
+  bool _hovered = false;
+  bool _focused = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = NoraTheme.of(context).colors;
+    final tone = widget.tone;
+    final fg = switch (tone) {
+      NoraTone.primary => colors.primary,
+      NoraTone.neutral => colors.neutral,
+      NoraTone.danger => colors.danger,
+      NoraTone.success => colors.success,
+      NoraTone.warning => colors.warning,
+    };
+    final visitedColor = colors.textMuted;
+    final focus = colors.focus;
+    final size = widget.size;
+    final double? fontSize = size == null
+        ? null
+        : switch (size) {
+          NoraSize.sm => 14.0,
+          NoraSize.md => 16.0,
+          NoraSize.lg => 18.0,
+          _ => 16.0,
+          };
+    final color = widget.visited ? visitedColor : fg;
+    final enabled = widget.onPressed != null;
+    final rtl = Directionality.of(context) == TextDirection.rtl;
+
+    return Semantics(
+      link: true,
+      enabled: enabled,
+      label: widget.semanticLabel,
+      hint: widget.external ? 'ouvre une autre application ou fenêtre' : null,
+      child: FocusableActionDetector(
+        enabled: enabled,
+        mouseCursor: enabled ? SystemMouseCursors.click : MouseCursor.defer,
+        onShowHoverHighlight: (v) => setState(() => _hovered = v),
+        onShowFocusHighlight: (v) => setState(() => _focused = v),
+        actions: <Type, Action<Intent>>{
+          ActivateIntent: CallbackAction<ActivateIntent>(onInvoke: (_) {
+            widget.onPressed?.call();
+            return null;
+          }),
+        },
+        child: GestureDetector(
+          onTap: widget.onPressed,
+          behavior: HitTestBehavior.opaque,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(2),
+              border: Border.all(
+                color: _focused ? focus : const Color(0x00000000),
+                width: 2.0,
+                strokeAlign: BorderSide.strokeAlignOutside,
+              ),
+            ),
+            child: DefaultTextStyle.merge(
+              style: TextStyle(
+                color: color,
+                fontSize: fontSize,
+                decoration: TextDecoration.underline,
+                decorationColor: color,
+                decorationThickness: _hovered || _focused ? 2.0 : 1.0,
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Flexible(child: widget.child),
+                  if (widget.external)
+                    ExcludeSemantics(
+                      child: Text(rtl ? ' \u2196' : ' \u2197', style: const TextStyle(decoration: TextDecoration.none)),
+                    ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Bloc image ou illustration : <figure class="media" data-size="wide"> avec <img alt="…" loading="lazy">, légende .media-caption (<figcaption>) et texte en surimpression .media-overlay (dégradé de lisibilité). data-size fixe le format : wide 16/9, standard 4/3, square 1/1, portrait 3/4.
+class NoraMedia extends StatelessWidget {
+  const NoraMedia({super.key, required this.child, this.overlay, this.caption, this.size = NoraSize.wide});
+
+  /// Visuel (ex. `Image(image: …, semanticLabel: '…', fit: BoxFit.cover)`), recadré au format.
+  final Widget child;
+
+  /// Texte en surimpression, posé sur un dégradé de lisibilité (.media-overlay).
+  final Widget? overlay;
+
+  /// Légende sous le visuel (.media-caption).
+  final Widget? caption;
+
+  /// Format : wide 16/9, standard 4/3, square 1/1, portrait 3/4.
+  final NoraSize size;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = NoraTheme.of(context).colors;
+    final bg = colors.surface2;
+    final fg = colors.textMuted;
+    final scrim = colors.scrim;
+    final onScrim = colors.onScrim;
+    final (padY, padX, fontSize) = switch (size) {
+      NoraSize.wide => (8.0, 16.0, 14.0),
+      NoraSize.standard => (8.0, 16.0, 14.0),
+      NoraSize.square => (8.0, 16.0, 14.0),
+      NoraSize.portrait => (8.0, 16.0, 14.0),
+      _ => (8.0, 16.0, 14.0),
+    };
+    final ratio = switch (size) {
+      NoraSize.wide => 16 / 9,
+      NoraSize.standard => 4 / 3,
+      NoraSize.square => 1 / 1,
+      NoraSize.portrait => 3 / 4,
+      _ => 16 / 9,
+    };
+    final overlayWidget = overlay;
+    final captionWidget = caption;
+    final inherited = DefaultTextStyle.of(context).style.fontSize ?? 16.0;
+    final visual = ClipRRect(
+      borderRadius: BorderRadius.circular(NoraRadius.lg),
+      child: AspectRatio(
+        aspectRatio: ratio,
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            ColoredBox(color: bg),
+            child,
+            if (overlayWidget != null)
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                      colors: [scrim.withValues(alpha: 0.85), scrim.withValues(alpha: 0)],
+                    ),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(padX, inherited * 3, padX, padY),
+                    child: DefaultTextStyle.merge(
+                      style: TextStyle(
+                        color: onScrim,
+                        fontWeight: FontWeight.w600,
+                        shadows: const [Shadow(color: Color(0x73000000), offset: Offset(0, 1), blurRadius: 2)],
+                      ),
+                      child: overlayWidget,
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+    return Semantics(
+      container: true,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          visual,
+          if (captionWidget != null)
+            Padding(
+              padding: EdgeInsets.only(top: padY),
+              child: DefaultTextStyle.merge(style: TextStyle(color: fg, fontSize: fontSize), child: captionWidget),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Lien d'un [NoraNavbar] : `current` marque la page courante (aria-current="page").
+@immutable
+class NoraNavbarItem {
+  const NoraNavbarItem({required this.label, this.onTap, this.current = false});
+
+  final String label;
+  final VoidCallback? onTap;
+  final bool current;
+}
+
+/// Barre de navigation : <nav class="navbar" aria-label="…"> avec .navbar-brand, une liste .navbar-menu de liens (page courante : aria-current="page") et .navbar-actions. Sans JavaScript : sur petit écran, le menu passe sous la marque et défile horizontalement.
+class NoraNavbar extends StatelessWidget {
+  const NoraNavbar({
+    super.key,
+    required this.label,
+    this.brand,
+    this.items = const [],
+    this.actions = const [],
+    this.size = NoraSize.md,
+  });
+
+  /// Nom de la navigation (équivalent d'aria-label), annoncé par les lecteurs d'écran.
+  final String label;
+  final Widget? brand;
+  final List<NoraNavbarItem> items;
+  final List<Widget> actions;
+  final NoraSize size;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = NoraTheme.of(context).colors;
+    final bg = colors.surface;
+    final fg = colors.text;
+    final muted = colors.textMuted;
+    final border = colors.border;
+    final active = colors.primary;
+    final focus = colors.focus;
+    final (padY, padX, fontSize) = switch (size) {
+      NoraSize.sm => (4.0, 12.0, 14.0),
+      NoraSize.md => (8.0, 16.0, 16.0),
+      NoraSize.lg => (12.0, 24.0, 18.0),
+      _ => (8.0, 16.0, 16.0),
+    };
+    final reduceMotion = MediaQuery.maybeDisableAnimationsOf(context) ?? false;
+
+    final menu = SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          for (final item in items)
+            Padding(
+              padding: EdgeInsetsDirectional.only(end: fontSize * 0.25),
+              child: _NoraNavbarLink(
+                item: item,
+                fontSize: fontSize,
+                fg: fg,
+                muted: muted,
+                active: active,
+                focus: focus,
+                reduceMotion: reduceMotion,
+              ),
+            ),
+        ],
+      ),
+    );
+    final brandWidget = brand;
+    final brandBox = brandWidget == null
+        ? const SizedBox.shrink()
+        : ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: 44.0),
+            child: Align(
+              alignment: AlignmentDirectional.centerStart,
+              widthFactor: 1,
+              child: DefaultTextStyle.merge(
+                style: TextStyle(color: fg, fontSize: fontSize * 1.125, fontWeight: FontWeight.w700),
+                child: brandWidget,
+              ),
+            ),
+          );
+    final actionBar = Wrap(spacing: 8, runSpacing: 8, crossAxisAlignment: WrapCrossAlignment.center, children: actions);
+
+    return Semantics(
+      container: true,
+      explicitChildNodes: true,
+      label: label,
+      child: DecoratedBox(
+        decoration: BoxDecoration(color: bg, border: Border(bottom: BorderSide(color: border))),
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: padY, horizontal: padX),
+          child: DefaultTextStyle.merge(
+            style: TextStyle(color: fg, fontSize: fontSize),
+            child: Material(
+              type: MaterialType.transparency,
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  // Petit écran (< 640 px, comme la règle CSS à 40rem) : le menu passe sous la marque et défile.
+                  if (constraints.maxWidth < 640) {
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Row(children: [Expanded(child: brandBox), actionBar]),
+                        SizedBox(height: padY),
+                        Align(alignment: AlignmentDirectional.centerStart, child: menu),
+                      ],
+                    );
+                  }
+                  return Row(
+                    children: [
+                      brandBox,
+                      const Spacer(),
+                      Flexible(child: menu),
+                      SizedBox(width: padX),
+                      actionBar,
+                    ],
+                  );
+                },
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _NoraNavbarLink extends StatefulWidget {
+  const _NoraNavbarLink({
+    required this.item,
+    required this.fontSize,
+    required this.fg,
+    required this.muted,
+    required this.active,
+    required this.focus,
+    required this.reduceMotion,
+  });
+
+  final NoraNavbarItem item;
+  final double fontSize;
+  final Color fg;
+  final Color muted;
+  final Color active;
+  final Color focus;
+  final bool reduceMotion;
+
+  @override
+  State<_NoraNavbarLink> createState() => _NoraNavbarLinkState();
+}
+
+class _NoraNavbarLinkState extends State<_NoraNavbarLink> {
+  bool _hovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final item = widget.item;
+    final color = item.current ? widget.active : (_hovered ? widget.fg : widget.muted);
+    return Semantics(
+      link: true,
+      selected: item.current,
+      value: item.current ? 'page courante' : null,
+      child: InkWell(
+        onTap: item.onTap,
+        onHover: (v) => setState(() => _hovered = v),
+        borderRadius: BorderRadius.circular(NoraRadius.md),
+        focusColor: widget.focus.withValues(alpha: 0.24),
+        hoverColor: widget.fg.withValues(alpha: 0.06),
+        splashFactory: widget.reduceMotion ? NoSplash.splashFactory : null,
+        highlightColor: widget.reduceMotion ? const Color(0x00000000) : null,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            border: Border(bottom: BorderSide(color: item.current ? widget.active : const Color(0x00000000), width: 2)),
+          ),
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minHeight: 44.0),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: widget.fontSize * 0.75),
+              child: Center(
+                widthFactor: 1,
+                child: Text(
+                  item.label,
+                  style: TextStyle(color: color, fontWeight: item.current ? FontWeight.w600 : FontWeight.w500),
+                ),
+              ),
+            ),
+          ),
         ),
       ),
     );
@@ -886,6 +1429,7 @@ class NoraRadio<T> extends StatelessWidget {
       NoraSize.sm => (4.0, 8.0, 14.0),
       NoraSize.md => (6.0, 10.0, 16.0),
       NoraSize.lg => (8.0, 12.0, 18.0),
+      _ => (6.0, 10.0, 16.0),
     };
     final scope = NoraFieldScope.maybeOf(context);
     final group = RadioGroup.maybeOf<T>(context);
@@ -1017,6 +1561,7 @@ class _NoraSelectState<T> extends State<NoraSelect<T>> {
       NoraSize.sm => (6.0, 10.0, 14.0),
       NoraSize.md => (10.0, 12.0, 16.0),
       NoraSize.lg => (12.0, 16.0, 18.0),
+      _ => (10.0, 12.0, 16.0),
     };
     final scope = NoraFieldScope.maybeOf(context);
     final isInvalid = invalid ?? (scope?.error != null);
@@ -1123,6 +1668,7 @@ class NoraSwitch extends StatelessWidget {
       NoraSize.sm => (4.0, 8.0, 14.0),
       NoraSize.md => (6.0, 10.0, 16.0),
       NoraSize.lg => (8.0, 12.0, 18.0),
+      _ => (6.0, 10.0, 16.0),
     };
     final scope = NoraFieldScope.maybeOf(context);
     final isInvalid = invalid ?? (scope?.error != null);
@@ -1253,6 +1799,7 @@ class NoraTextarea extends StatelessWidget {
       NoraSize.sm => (6.0, 10.0, 14.0),
       NoraSize.md => (10.0, 12.0, 16.0),
       NoraSize.lg => (12.0, 16.0, 18.0),
+      _ => (10.0, 12.0, 16.0),
     };
     final scope = NoraFieldScope.maybeOf(context);
     final isInvalid = invalid ?? (scope?.error != null);

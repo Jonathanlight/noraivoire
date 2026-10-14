@@ -1,0 +1,32 @@
+{
+  "$nora": "component",
+  "$version": "1.0.0",
+  "component": "media",
+  "shape": "media",
+  "description": "Bloc image ou illustration : <figure class=\"media\" data-size=\"wide\"> avec <img alt=\"…\" loading=\"lazy\">, légende .media-caption (<figcaption>) et texte en surimpression .media-overlay (dégradé de lisibilité). data-size fixe le format : wide 16/9, standard 4/3, square 1/1, portrait 3/4.",
+  "elements": ["figure", "div"],
+  "parts": ["caption", "overlay"],
+  "variants": {
+    "tone": ["neutral"],
+    "size": ["wide", "standard", "square", "portrait"]
+  },
+  "defaults": { "tone": "neutral", "size": "wide" },
+  "tokens": {
+    "bg": "{color.surface-2}",
+    "fg": "{color.text-muted}",
+    "radius": "{radius.lg}",
+    "scrim": "{color.scrim}",
+    "on-scrim": "{color.on-scrim}"
+  },
+  "sizes": {
+    "wide": { "pad-y": 8, "pad-x": 16, "font": "{font.sm}", "ratio": [16, 9] },
+    "standard": { "pad-y": 8, "pad-x": 16, "font": "{font.sm}", "ratio": [4, 3] },
+    "square": { "pad-y": 8, "pad-x": 16, "font": "{font.sm}", "ratio": [1, 1] },
+    "portrait": { "pad-y": 8, "pad-x": 16, "font": "{font.sm}", "ratio": [3, 4] }
+  },
+  "states": {},
+  "motion": {},
+  "a11y": { "role": "figure", "minTarget": 0, "requiresLabel": true, "anchorRequiresHref": false },
+  "feedback": {},
+  "example": "<figure class=\"media\" data-size=\"wide\"><img src=\"/images/plage.jpg\" alt=\"Plage de Grand-Bassam au coucher du soleil\" loading=\"lazy\"><div class=\"media-overlay\">Grand-Bassam</div><figcaption class=\"media-caption\">Photo : équipe NoraIvoire</figcaption></figure>"
+}

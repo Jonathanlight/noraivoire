@@ -17,7 +17,9 @@
     "text":       { "$type": "color", "$value": "#16181D", "$dark": "#EDEEF0" },
     "text-muted": { "$type": "color", "$value": "#5C626B", "$dark": "#A0A6AF" },
     "border":     { "$type": "color", "$value": "#DDE0E4", "$dark": "#2E323A" },
-    "focus":      { "$type": "color", "$value": "#1C7ED6", "$dark": "#74C0FC" }
+    "focus":      { "$type": "color", "$value": "#1C7ED6", "$dark": "#74C0FC" },
+    "scrim":      { "$type": "color", "$value": "#0B0C0F", "$dark": "#0B0C0F" },
+    "on-scrim":   { "$type": "color", "$value": "#FFFFFF", "$dark": "#FFFFFF" }
   },
   "space": {
     "0": { "$type": "dimension", "$value": 0 },
