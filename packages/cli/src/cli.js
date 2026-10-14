@@ -5,8 +5,8 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { join, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
 import { checkPaths } from './check.js';
-import { runAudit } from './audit.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(here, '..', '..', '..');
@@ -15,9 +15,20 @@ const cmd = args[0];
 const format = (args.find((a) => a.startsWith('--format=')) ?? '--format=text').split('=')[1];
 const positional = args.slice(1).filter((a) => !a.startsWith('--'));
 
+/** Manifest du dépôt source, sinon celui du paquet @jonathankablan/noraivoire-core installé. */
+function defaultManifest() {
+  const inRepo = join(repoRoot, 'packages', 'core', 'dist', 'manifest.json');
+  if (existsSync(inRepo)) return inRepo;
+  try {
+    return createRequire(import.meta.url).resolve('@jonathankablan/noraivoire-core/manifest.json');
+  } catch {
+    return inRepo;
+  }
+}
+
 function loadManifest() {
   const flag = args.find((a) => a.startsWith('--manifest='));
-  const path = flag ? flag.slice('--manifest='.length) : join(repoRoot, 'packages', 'core', 'dist', 'manifest.json');
+  const path = flag ? flag.slice('--manifest='.length) : defaultManifest();
   if (!existsSync(path)) {
     console.error('✖ manifest.json introuvable : lancer « npm run build » ou passer --manifest=<chemin>');
     process.exit(2);
@@ -39,6 +50,14 @@ if (cmd === 'check') {
   }
   process.exit(errors ? 1 : 0);
 } else if (cmd === 'audit') {
+  // L'audit vérifie le dépôt source (spec, compilateur) : absent du paquet publié.
+  let runAudit;
+  try {
+    ({ runAudit } = await import('./audit.js'));
+  } catch {
+    console.error('✖ nora audit ne s\'exécute que dans le dépôt source NoraIvoire');
+    process.exit(2);
+  }
   const report = runAudit(repoRoot);
   if (format === 'json') {
     console.log(JSON.stringify(report, null, 2));

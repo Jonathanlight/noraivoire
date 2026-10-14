@@ -1,6 +1,6 @@
 // NoraIvoire — directive Vue 3 : <div v-fx:tilt="{ max: 12 }"> © 2026 Jonathan KABLAN — Propriétaire.
 import type { Directive } from 'vue';
-import { attach } from '@noraivoire/core/engine';
+import { attach } from '@jonathankablan/noraivoire-core/engine';
 
 const cleanups = new WeakMap<HTMLElement, () => void>();
 

@@ -29,7 +29,7 @@ Captures **réelles** de chaque modèle, produites par `npm run gallery` (Chromi
 | Flutter | `npm run flutter:sync && cd examples/flutter_app && flutter run -d chrome` | [`templates/flutter/main.dart`](templates/flutter/main.dart) |
 | React Native | navigateur : `cd examples/react-native-web && npm ci --ignore-scripts && npm run dev` · appareil : copier `App.tsx` et `noraivoire.tsx` dans un projet Expo | [`templates/react-native/App.tsx`](templates/react-native/App.tsx) |
 
-Les dépendances de chaque exemple (React, Vue, Next.js, Angular, Vite, react-native-web, Symfony) restent dans son propre `package.json` ou `composer.json` : la racine et `@noraivoire/core` gardent **zéro dépendance runtime**.
+Les dépendances de chaque exemple (React, Vue, Next.js, Angular, Vite, react-native-web, Symfony) restent dans son propre `package.json` ou `composer.json` : la racine et `@jonathankablan/noraivoire-core` gardent **zéro dépendance runtime**.
 
 ### Vitrines — `examples/showcase/`
 
@@ -110,11 +110,27 @@ npm run catalog:serve     # génère site/ puis l'ouvre sur http://127.0.0.1:417
 </picture>
 <img src="docs/catalog/index-light.png" alt="Accueil du catalogue : principes, composants, nuancier." width="640">
 
+## Installer depuis npm
+
+```bash
+npm install @jonathankablan/noraivoire-core            # CSS, moteur, Flutter, React Native, manifest
+npm install --save-dev @jonathankablan/noraivoire-cli  # npx nora check src
+npx -y @jonathankablan/noraivoire-mcp                  # serveur MCP pour agents IA
+npm install @jonathankablan/noraivoire-fx-scroll @jonathankablan/noraivoire-fx-text   # effets optionnels
+```
+
+```html
+<link rel="stylesheet" href="node_modules/@jonathankablan/noraivoire-core/dist/noraivoire.css">
+<script type="module" src="node_modules/@jonathankablan/noraivoire-core/dist/noraivoire.auto.js"></script>
+```
+
+Logiciel propriétaire : la mise à disposition sur npm ne vaut pas concession de licence (voir [LICENSE](LICENSE)). Publication : `npm run release:check` puis `npm run release:publish` ([TECHNICAL §9](docs/TECHNICAL.md#9-versionnage-et-publication)).
+
 ## Démarrage
 
 ```bash
 npm ci --ignore-scripts
-npm run verify        # build + 199 tests + validation des modèles + audit (90 contrôles)
+npm run verify        # build + 203 tests + validation des modèles + audit (90 contrôles)
 ```
 
 Commandes unitaires :
@@ -166,7 +182,7 @@ examples/showcase/    Vitrines corporate / SaaS re-thémables (themes/*.css, npm
 docs/gallery/         Captures de la galerie du README (générées)
 docs/reference/       Référence générée : une fiche par composant, effet, token, utilitaire et règle (npm run docs:reference)
 adapters/symfony-bundle/ Bundle Symfony : Twig Components Nora:*, enums PHP, AssetMapper, nora:check (npm run symfony:sync)
-tests/                199 tests node + 136 tests de rendu React Native (tests/rn, npm run test:rn)
+tests/                203 tests node + 136 tests de rendu React Native (tests/rn, npm run test:rn)
 docs/                 Documentation technique, portabilité, sécurité, audit, tests, licence
 tools/catalog/        Catalogue des composants généré depuis le manifest (site/, non versionné)
 tools/docs/           Générateur de la référence docs/reference/ et de ses aperçus

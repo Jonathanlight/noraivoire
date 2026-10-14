@@ -133,7 +133,7 @@ test('mcp : traversée de chemin et fichier absent refusés', async () => {
   const r = await s.call('nora_recipe', { intent: 'tarifs' });
   assert.equal(r.result.isError, true);
   assert.match(r.result.content[0].text, /nom de fichier refusé/);
-  assert.doesNotMatch(r.result.content[0].text, /@noraivoire\/monorepo/);
+  assert.doesNotMatch(r.result.content[0].text, /@jonathankablan\/noraivoire-monorepo/);
   const m = await s.call('nora_recipe', { intent: 'fichier absent' });
   assert.equal(m.result.isError, true);
   assert.match(m.result.content[0].text, /introuvable/);

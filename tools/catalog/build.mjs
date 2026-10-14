@@ -323,7 +323,7 @@ function nav(manifest, current) {
   const link = (href, text) => `<li><a href="${href}"${href === current ? ' aria-current="page"' : ''}>${escapeHtml(text)}</a></li>`;
   const comps = Object.keys(manifest.components).sort().map((n) => link(pageOfComponent(n), n));
   const fx = Object.entries(manifest.effects).sort(([a], [b]) => a.localeCompare(b))
-    .map(([n, e]) => link(pageOfEffect(n), e.package ? `${n} (${e.package.replace('@noraivoire/', '')})` : n));
+    .map(([n, e]) => link(pageOfEffect(n), e.package ? `${n} (${e.package.replace('@jonathankablan/noraivoire-', '')})` : n));
   return `<nav class="cat-nav" aria-label="Catalogue">
   <div class="cat-search" hidden><label class="sr-only" for="cat-filtre">Filtrer le catalogue</label><input class="input" id="cat-filtre" type="search" placeholder="Filtrer…" data-size="sm"></div>
   <p class="cat-nav-title">Démarrer</p><ul>${link('index.html', 'Fondations')}${link('utilitaires.html', 'Utilitaires')}${link('mise-en-page.html', 'Mise en page')}</ul>
@@ -530,7 +530,7 @@ function effectPage(manifest, name, e) {
     demo = `<div class="${card} cat-fx-demo" data-fx="${name}" data-fx-${name}="${defaults}"><h3 class="text-md font-bold">Effet ${name}</h3><p>${e.input === 'scroll' ? 'Faites défiler la page.' : e.input === 'orientation' ? 'Survolez ou inclinez l\'appareil.' : 'Apparaît à l\'entrée dans la fenêtre.'}</p></div>`;
   }
   const scroller = e.input === 'scroll' ? '<div class="cat-scroll-spacer" aria-hidden="true"></div>' : '';
-  const fxFile = e.package ? e.package.replace('@noraivoire/', '') : null;
+  const fxFile = e.package ? e.package.replace('@jonathankablan/noraivoire-', '') : null;
   const install = fxFile ? code(`<link rel="stylesheet" href="fx/${fxFile}.css">\n<script type="module">\n  import * as moteur from './noraivoire.engine.js';\n  import { install } from './fx/${fxFile}.js';\n  install(moteur);\n  moteur.start();\n</script>`) : '';
   const rows = opts.map(([k, o]) => [`<code>${k}</code>`, o.type, `<code>${o.default}</code>`, o.type === 'number' ? `${o.min} → ${o.max}` : 'true / false']);
   const platforms = Object.entries(e.platforms ?? {}).map(([p, v]) => [escapeHtml(p), escapeHtml(v)]);
@@ -693,7 +693,7 @@ export function buildCatalog({ manifest, css }) {
   files['mise-en-page.html'] = layoutPage(manifest);
   files['assets/catalog.css'] = catalogCss(manifest, values, overrides);
   // Paquets d'effets optionnels à installer par catalog.js (dérivés du manifest).
-  const packages = [...new Set(Object.values(manifest.effects).map((e) => e.package).filter(Boolean))].map((p) => p.replace('@noraivoire/', ''));
+  const packages = [...new Set(Object.values(manifest.effects).map((e) => e.package).filter(Boolean))].map((p) => p.replace('@jonathankablan/noraivoire-', ''));
   files['assets/catalog-fx.js'] = `// Généré par tools/catalog/build.mjs depuis le manifest. © 2026 Jonathan KABLAN — Propriétaire.\n${packages.map((p, i) => `import { install as i${i} } from './fx/${p}.js';`).join('\n')}\nexport const installs = [${packages.map((_, i) => `i${i}`).join(', ')}];\n`;
   return files;
 }
@@ -704,7 +704,7 @@ export const IMAGES = Object.freeze(['avatar.svg', 'paysage.svg', 'atelier.svg']
 /** Fichiers de dist copiés tels quels dans site/assets/. */
 export function distAssets(manifest) {
   const list = ['noraivoire.css', 'noraivoire.engine.js'];
-  const packages = [...new Set(Object.values(manifest.effects).map((e) => e.package).filter(Boolean))].map((p) => p.replace('@noraivoire/', ''));
+  const packages = [...new Set(Object.values(manifest.effects).map((e) => e.package).filter(Boolean))].map((p) => p.replace('@jonathankablan/noraivoire-', ''));
   for (const p of packages) list.push(`fx/${p}.js`, `fx/${p}.css`);
   return list;
 }

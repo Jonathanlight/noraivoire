@@ -25,7 +25,7 @@ _Capture en mouvement réduit : état final affiché. Démonstration animée : `
 <script type="module">
   import * as moteur from './noraivoire.engine.js';
   import { install } from './fx/fx-scroll.js';
-  install(moteur); // paquet optionnel @noraivoire/fx-scroll
+  install(moteur); // paquet optionnel @jonathankablan/noraivoire-fx-scroll
   moteur.start();
 </script>
 ```
@@ -48,4 +48,4 @@ Dans `data-fx-scrub="clé:valeur;…"` ; une valeur hors bornes est ramenée dan
 | react-native | web uniquement : Animated.Value du ScrollView + interpolate fait la même chose sans abstraction |
 | flutter | web uniquement : ScrollController + AnimatedBuilder fait la même chose sans abstraction |
 
-Paquet optionnel **@noraivoire/fx-scroll** : aucun effet de bord à l'import, budget 2 Kio gzip.
+Paquet optionnel **@jonathankablan/noraivoire-fx-scroll** : aucun effet de bord à l'import, budget 2 Kio gzip.

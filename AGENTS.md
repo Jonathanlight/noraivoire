@@ -1,6 +1,6 @@
 # AGENTS.md — NoraIvoire
 
-Projet **propriétaire** (© Jonathan KABLAN). Ne jamais publier, copier hors du dépôt ou ajouter de code copyleft.
+Projet **propriétaire** (© Jonathan KABLAN). Ne jamais copier hors du dépôt ni ajouter de code copyleft. Publication npm : seulement les 5 paquets `@jonathankablan/noraivoire-*`, par `npm run release:publish` (décision de l'auteur du 14 octobre 2026) ; jamais `npm publish` depuis les sources.
 
 ## Commandes
 
@@ -22,6 +22,8 @@ npm run catalog          # catalogue des composants (site/, non versionné)
 npm run gallery          # captures du README (docs/gallery/)
 npm run docs:reference   # référence Markdown docs/reference/ (depuis le manifest)
 npm run docs:reference:shots  # aperçus clair / sombre de la référence (Playwright)
+npm run release:check    # assemble les paquets npm (build/npm/), les installe hors ligne et les exécute
+npm run release:publish  # publication npm (confirmation explicite, session npm login)
 ```
 
 ## Règles

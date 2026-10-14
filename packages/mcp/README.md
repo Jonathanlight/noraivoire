@@ -1,4 +1,4 @@
-# @noraivoire/mcp — Serveur MCP NoraIvoire
+# @jonathankablan/noraivoire-mcp — Serveur MCP NoraIvoire
 
 © 2026 Jonathan KABLAN — Propriétaire, tous droits réservés. Usage réservé aux licenciés.
 
@@ -39,6 +39,15 @@ Le dossier des recettes peut être changé avec la variable `NORA_MCP_RECIPES`. 
 | `recipes/index.json` / fichier de recette | 256 Kio chacun, 500 recettes au plus |
 
 Les lots JSON-RPC (tableaux) ne sont pas acceptés, conformément au protocole MCP depuis la version `2025-06-18`.
+
+## Installation depuis npm
+
+```bash
+npm install --save-dev @jonathankablan/noraivoire-mcp
+claude mcp add nora -- npx -y @jonathankablan/noraivoire-mcp
+```
+
+Configuration JSON équivalente (Claude Desktop, Cursor, VS Code) : `"command": "npx"`, `"args": ["-y", "@jonathankablan/noraivoire-mcp"]`. Le paquet embarque le manifest (dépendance `@jonathankablan/noraivoire-core`) et les 20 recettes ; `NORA_MCP_RECIPES` reste disponible pour une autre bibliothèque. Les configurations ci-dessous lancent le serveur depuis le dépôt source.
 
 ## Configuration
 
@@ -116,7 +125,7 @@ Vérifier avec `claude mcp list` puis `/mcp` dans une session.
 
 ### Autres clients
 
-Tout client MCP compatible stdio : commande `node`, argument le chemin de `packages/mcp/src/server.js`, variable facultative `NORA_MCP_RECIPES`. Le binaire `nora-mcp` est déclaré dans `package.json` pour une installation depuis le registre privé.
+Tout client MCP compatible stdio : commande `node`, argument le chemin de `packages/mcp/src/server.js`, variable facultative `NORA_MCP_RECIPES`. Le binaire `nora-mcp` est fourni par le paquet npm (voir « Installation depuis npm »).
 
 ## Essai manuel
 

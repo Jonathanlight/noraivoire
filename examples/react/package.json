@@ -1,5 +1,5 @@
 {
-  "name": "@noraivoire/example-react",
+  "name": "@jonathankablan/noraivoire-example-react",
   "version": "0.1.0",
   "private": true,
   "license": "UNLICENSED",
@@ -13,7 +13,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@noraivoire/core": "file:../../packages/core",
+    "@jonathankablan/noraivoire-core": "file:../../packages/core",
     "react": "19.3.0",
     "react-dom": "19.3.0"
   },

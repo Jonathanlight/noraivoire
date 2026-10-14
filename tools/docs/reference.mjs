@@ -157,7 +157,7 @@ function componentDoc(manifest, name, c) {
 function effectDoc(manifest, name, e) {
   const opts = Object.entries(e.options ?? {});
   const defaults = opts.map(([k, o]) => `${k}:${o.default}`).join(';');
-  const fxFile = e.package ? e.package.replace('@noraivoire/', '') : null;
+  const fxFile = e.package ? e.package.replace('@jonathankablan/noraivoire-', '') : null;
   const out = [header(`Effet \`${name}\``, prose(e.description), '../')];
   out.push(`${preview(`effet-${name}`, '../', `Effet ${name}`)}\n\n_Capture en mouvement réduit : état final affiché. Démonstration animée : \`npm run catalog:serve\` puis \`${pageOfEffect(name)}\`._\n`);
   out.push('## Usage web\n');

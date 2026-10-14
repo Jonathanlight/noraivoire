@@ -110,10 +110,10 @@ final class NoraChecker
 
     private function resolveCli(): string
     {
-        $cli = $this->cliPath ?? $this->projectDir.'/node_modules/@noraivoire/cli/src/cli.js';
+        $cli = $this->cliPath ?? $this->projectDir.'/node_modules/@jonathankablan/noraivoire-cli/src/cli.js';
         $real = realpath($cli);
         if ($real === false || !is_file($real) || !str_ends_with($real, '.js')) {
-            throw new NoraCheckException(\sprintf('CLI NoraIvoire introuvable (%s) : installez @noraivoire/cli ou réglez noraivoire.cli_path.', $cli));
+            throw new NoraCheckException(\sprintf('CLI NoraIvoire introuvable (%s) : installez @jonathankablan/noraivoire-cli ou réglez noraivoire.cli_path.', $cli));
         }
 
         return $real;

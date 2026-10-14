@@ -42,12 +42,12 @@ Version 0.1.0. Fiche de chaque élément du manifest : aperçu en clair et en so
 | Effet | Aperçu | Description | Paquet |
 |---|---|---|---|
 | [`glass`](effets/glass.md) | <img src="apercus/effet-glass-light.png" alt="glass" width="220"> | Surface translucide floutée (glassmorphism). | cœur |
-| [`parallax`](effets/parallax.md) | <img src="apercus/effet-parallax-light.png" alt="parallax" width="220"> | Décale verticalement l'élément selon sa position dans la fenêtre (effet de profondeur). | `@noraivoire/fx-scroll` |
-| [`pin`](effets/pin.md) | <img src="apercus/effet-pin-light.png" alt="pin" width="220"> | Épingle l'élément (position: sticky) pendant le défilement de son parent et expose la progression dans --fx-pin-progress. | `@noraivoire/fx-scroll` |
+| [`parallax`](effets/parallax.md) | <img src="apercus/effet-parallax-light.png" alt="parallax" width="220"> | Décale verticalement l'élément selon sa position dans la fenêtre (effet de profondeur). | `@jonathankablan/noraivoire-fx-scroll` |
+| [`pin`](effets/pin.md) | <img src="apercus/effet-pin-light.png" alt="pin" width="220"> | Épingle l'élément (position: sticky) pendant le défilement de son parent et expose la progression dans --fx-pin-progress. | `@jonathankablan/noraivoire-fx-scroll` |
 | [`reveal`](effets/reveal.md) | <img src="apercus/effet-reveal-light.png" alt="reveal" width="220"> | Fait apparaître l'élément (fondu + translation) quand il entre dans la zone visible. | cœur |
-| [`scramble`](effets/scramble.md) | <img src="apercus/effet-scramble-light.png" alt="scramble" width="220"> | Révèle un texte court en faisant défiler des caractères aléatoires ; le texte réel est exposé aux lecteurs d'écran. | `@noraivoire/fx-text` |
-| [`scrub`](effets/scrub.md) | <img src="apercus/effet-scrub-light.png" alt="scrub" width="220"> | Expose la progression de l'élément dans la fenêtre (0 → 1) dans --fx-progress, pour piloter une animation CSS au défilement. | `@noraivoire/fx-scroll` |
-| [`split`](effets/split.md) | <img src="apercus/effet-split-light.png" alt="split" width="220"> | Découpe un texte en lettres ou en mots animés en cascade à l'apparition ; le texte complet reste lu une seule fois par les lecteurs d'écran. | `@noraivoire/fx-text` |
+| [`scramble`](effets/scramble.md) | <img src="apercus/effet-scramble-light.png" alt="scramble" width="220"> | Révèle un texte court en faisant défiler des caractères aléatoires ; le texte réel est exposé aux lecteurs d'écran. | `@jonathankablan/noraivoire-fx-text` |
+| [`scrub`](effets/scrub.md) | <img src="apercus/effet-scrub-light.png" alt="scrub" width="220"> | Expose la progression de l'élément dans la fenêtre (0 → 1) dans --fx-progress, pour piloter une animation CSS au défilement. | `@jonathankablan/noraivoire-fx-scroll` |
+| [`split`](effets/split.md) | <img src="apercus/effet-split-light.png" alt="split" width="220"> | Découpe un texte en lettres ou en mots animés en cascade à l'apparition ; le texte complet reste lu une seule fois par les lecteurs d'écran. | `@jonathankablan/noraivoire-fx-text` |
 | [`tilt`](effets/tilt.md) | <img src="apercus/effet-tilt-light.png" alt="tilt" width="220"> | Incline l'élément selon l'orientation de l'utilisateur : souris sur desktop, gyroscope sur mobile. | cœur |
 
 ## Régénérer

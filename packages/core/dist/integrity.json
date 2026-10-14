@@ -165,16 +165,16 @@
       "gzip": 512
     },
     "manifest.json": {
-      "sha256": "7a8534b4b4c4f1c42f60df0b96fac954ce3b30c59800c64a1ccf99ec18a40fcc",
-      "sri": "sha384-5m9dWXSxjwwgTyiGmI5TWPuZkL73wx6xrHOiQGttvEOhn1ZSM6wvfnrCGYCYO50r",
-      "bytes": 28947,
-      "gzip": 5749
+      "sha256": "8e51db1e88ae8c089521b195cefbc9e0131008838da5ac6eaf690f26aae37374",
+      "sri": "sha384-A6KoLVolHGFOaffojfKpLj+RFw+/xNSJDXMCCA/+LAPOrH+XE5+qAW+RDFBdA2r8",
+      "bytes": 29097,
+      "gzip": 5758
     },
     "llms-full.txt": {
-      "sha256": "a10bcdf829d6c55342afe9599676820e3ff5a7cfa3bd2461951c1b17f4e3ad8a",
-      "sri": "sha384-zeMBzO6j8kAuehoLYT/KeFJu+e27HLo1Lm0knQDXkl19gDQRg6eR6FRyxhV9/mF2",
-      "bytes": 16005,
-      "gzip": 4775
+      "sha256": "4bc38d62e6bd8651ef143e0ed1dddea562754b88d2e62f0297570682a776483f",
+      "sri": "sha384-Oy/IWoAR39Bv8l+dFXIKvCf/axx0JVAiN04/Dd6A6DNyL+04LUNSMuY4dpJjCC2t",
+      "bytes": 16080,
+      "gzip": 4786
     },
     "fx/fx-scroll.js": {
       "sha256": "acdab3b1772d615e0f07cc893408a6ba776b482239cb4a3aa3a2b25f5ee0de6c",

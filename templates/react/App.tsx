@@ -1,7 +1,7 @@
 // NoraIvoire — modèle React (Vite). © 2026 Jonathan KABLAN — Propriétaire.
-// main.tsx : import '@noraivoire/core/css'; import { start } from '@noraivoire/core/engine'; start();
+// main.tsx : import '@jonathankablan/noraivoire-core/css'; import { start } from '@jonathankablan/noraivoire-core/engine'; start();
 import { useId, useState } from 'react';
-import type { NoraTone } from '@noraivoire/core/types';
+import type { NoraTone } from '@jonathankablan/noraivoire-core/types';
 import { useFx } from './useFx';
 
 type Product = { id: string; name: string; inStock: boolean };

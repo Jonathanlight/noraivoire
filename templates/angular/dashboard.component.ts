@@ -1,6 +1,6 @@
 // NoraIvoire — composant Angular standalone. © 2026 Jonathan KABLAN — Propriétaire.
 import { Component, signal } from '@angular/core';
-import type { NoraTone } from '@noraivoire/core/types';
+import type { NoraTone } from '@jonathankablan/noraivoire-core/types';
 import { NoraFxDirective } from './nora-fx.directive';
 
 @Component({

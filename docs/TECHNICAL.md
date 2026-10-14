@@ -175,10 +175,10 @@ Limite connue : un token de composant (`--btn-bg`) défini sur un **parent** n'e
 
 ## 5. Moteur d'effets web
 
-API (`@noraivoire/core/engine`, types dans `noraivoire.engine.d.ts`) :
+API (`@jonathankablan/noraivoire-core/engine`, types dans `noraivoire.engine.d.ts`) :
 
 ```js
-import { defineEffect, hasEffect, start, stop, attach, parseOptions, parseEffectList } from '@noraivoire/core/engine';
+import { defineEffect, hasEffect, start, stop, attach, parseOptions, parseEffectList } from '@jonathankablan/noraivoire-core/engine';
 
 defineEffect('magnet', {
   options: { strength: { type: 'number', default: 0.3, min: 0, max: 1 } },
@@ -214,8 +214,8 @@ Les effets avancés ne sont **pas** dans le cœur : chacun vit dans un paquet ch
 
 | Paquet | Effets | Spec | Sorties (`packages/core/dist/`) |
 |---|---|---|---|
-| `@noraivoire/fx-scroll` | `pin`, `scrub`, `parallax` | `spec/fx/scroll/*.nora.json` | `fx/fx-scroll.js`, `fx/fx-scroll.css`, `NoraParallax` (Flutter, RN) |
-| `@noraivoire/fx-text` | `split`, `scramble` | `spec/fx/text/*.nora.json` | `fx/fx-text.js`, `fx/fx-text.css`, `NoraScramble` (Flutter, RN) |
+| `@jonathankablan/noraivoire-fx-scroll` | `pin`, `scrub`, `parallax` | `spec/fx/scroll/*.nora.json` | `fx/fx-scroll.js`, `fx/fx-scroll.css`, `NoraParallax` (Flutter, RN) |
+| `@jonathankablan/noraivoire-fx-text` | `split`, `scramble` | `spec/fx/text/*.nora.json` | `fx/fx-text.js`, `fx/fx-text.css`, `NoraScramble` (Flutter, RN) |
 
 Le compilateur (`packages/compiler/src/fx.js`) lit `spec/fx/<paquet>/`, valide chaque effet (`package` obligatoire, types d'effet propres au paquet, nom unique y compris face au cœur), puis produit le JS (copie de `packages/fx-*/src/index.js` avec en-tête), le CSS (`@layer nora.effects`), `flutter/noraivoire_fx.dart` et `react-native/noraivoire-fx.tsx`. Les effets sont ajoutés à `manifest.effects` avec un champ `package` : `nora check` les reconnaît et `llms-full.txt` indique comment les charger.
 
@@ -428,11 +428,31 @@ Les aperçus (`apercus/*.png`) sont des captures de l'élément exact du catalog
 
 Si le composant exige une forme absente de `SHAPES` (`validate.js`), l'ajouter à `SHAPES` et `shapeFromRole`, aux trois cibles (dont `flutter-page.js` / `react-native-page.js` pour une forme de page), aux exemples du catalogue (`tools/catalog/build.mjs`) et, si besoin, aux règles de `nora check`, **dans le même commit**, avec un test par cible.
 
-## 9. Versionnage
+## 9. Versionnage et publication
 
 - Le **manifest est l'API publique**. Ajouter = mineure ; retirer ou renommer = majeure.
 - Une classe dépréciée reste fonctionnelle pendant toute la version majeure suivante. Prévu : avertissement de `nora check` sur les classes dépréciées (non implémenté en 0.1, aucune dépréciation à ce jour).
 - Chaque fichier généré porte la version de la spec qui l'a produit.
+
+**Publication npm** (registre public, décision de l'auteur du 14 octobre 2026). Cinq paquets, tous à la même version, dépendances internes à version exacte :
+
+| Paquet | Contenu | Dépend de |
+|---|---|---|
+| `@jonathankablan/noraivoire-core` | `dist/` complet (CSS, moteur et types, Flutter, React Native, `fx/`, manifest, `llms-full.txt`) | — |
+| `@jonathankablan/noraivoire-cli` | `nora check` (`cli.js`, `check.js`, `tokenize.js`) ; `nora audit` est réservé au dépôt source | core |
+| `@jonathankablan/noraivoire-mcp` | serveur MCP et les 20 recettes | cli, core |
+| `@jonathankablan/noraivoire-fx-scroll`, `-fx-text` | sources des paquets d'effets (`install(moteur)`) | — |
+
+Les `package.json` des sources restent `"private": true` (contrôlé par l'audit) : `tools/release/pack.mjs` assemble une copie publiable dans `build/npm/` (non versionné), sans `private`, avec `LICENSE`, un README et `publishConfig.access: public`. Hors du dépôt, `nora check` et `nora-mcp` trouvent le manifest par la résolution du paquet core, et le serveur MCP ses recettes dans le paquet.
+
+```bash
+npm run release:pack      # build/npm/<paquet>/ et archives .tgz
+npm run release:check     # installation hors ligne des archives dans un projet vierge, puis exécution réelle
+npm login                 # compte jonathankablan
+npm run release:publish -- --confirmer-publication-publique [--otp=123456]
+```
+
+`release:publish` refuse sans la confirmation explicite, vérifie le compte (`npm whoami`), relance `release:check`, publie dans l'ordre des dépendances et ignore une version déjà publiée (relance sans risque après un code OTP expiré). Un paquet public ne peut être retiré que pendant 72 h : toute nouvelle publication passe par une nouvelle version (même `version` dans les paquets publiés et la racine, vérifiée par `pack.mjs`). `tests/unit/release.test.js` vérifie les invariants (noms, sources privées, aucun import hors paquet, contenu attendu).
 
 ## 10. Exemples, vitrines et vérification
 

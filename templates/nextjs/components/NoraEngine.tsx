@@ -3,7 +3,7 @@
 // le HTML rendu par le serveur reste identique → aucun mismatch d'hydratation.
 // suppressHydrationWarning sur <html> couvre uniquement l'attribut data-nora-engine posé au démarrage.
 import { useEffect } from 'react';
-import { start, stop } from '@noraivoire/core/engine';
+import { start, stop } from '@jonathankablan/noraivoire-core/engine';
 
 export function NoraEngine() {
   useEffect(() => {

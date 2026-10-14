@@ -115,7 +115,7 @@ Code de sortie : `0` sans erreur, `1` si des erreurs sont trouvées ou si l'anal
 # config/packages/noraivoire.yaml
 noraivoire:
     node_binary: node                 # nom dans le PATH ou chemin absolu
-    cli_path: null                    # défaut : %kernel.project_dir%/node_modules/@noraivoire/cli/src/cli.js
+    cli_path: null                    # défaut : %kernel.project_dir%/node_modules/@jonathankablan/noraivoire-cli/src/cli.js
     check_paths: [templates]
     timeout: 60                       # secondes, 1 à 600
 ```

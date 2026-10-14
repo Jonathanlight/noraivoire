@@ -25,7 +25,7 @@ _Capture en mouvement réduit : état final affiché. Démonstration animée : `
 <script type="module">
   import * as moteur from './noraivoire.engine.js';
   import { install } from './fx/fx-text.js';
-  install(moteur); // paquet optionnel @noraivoire/fx-text
+  install(moteur); // paquet optionnel @jonathankablan/noraivoire-fx-text
   moteur.start();
 </script>
 ```
@@ -62,4 +62,4 @@ Dans `data-fx-scramble="clé:valeur;…"` ; une valeur hors bornes est ramenée 
 | react-native | NoraScramble : Text + accessibilityLabel |
 | flutter | NoraScramble : AnimationController + Semantics(label) |
 
-Paquet optionnel **@noraivoire/fx-text** : aucun effet de bord à l'import, budget 2 Kio gzip.
+Paquet optionnel **@jonathankablan/noraivoire-fx-text** : aucun effet de bord à l'import, budget 2 Kio gzip.

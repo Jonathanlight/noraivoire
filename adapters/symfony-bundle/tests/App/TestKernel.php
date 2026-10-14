@@ -64,7 +64,7 @@ final class TestKernel extends Kernel
         $container->extension('twig', ['default_path' => '%kernel.project_dir%/tests/Fixtures/templates', 'strict_variables' => true]);
         $container->extension('twig_component', ['anonymous_template_directory' => 'components/', 'defaults' => []]);
         $container->extension('noraivoire', [
-            // CLI du dépôt : en projet réel, node_modules/@noraivoire/cli/src/cli.js (valeur par défaut).
+            // CLI du dépôt : en projet réel, node_modules/@jonathankablan/noraivoire-cli/src/cli.js (valeur par défaut).
             'cli_path' => '%kernel.project_dir%/../../packages/cli/src/cli.js',
             'check_paths' => ['tests/Fixtures/templates/ok'],
         ]);

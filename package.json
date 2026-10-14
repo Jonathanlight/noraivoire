@@ -1,5 +1,5 @@
 {
-  "name": "@noraivoire/monorepo",
+  "name": "@jonathankablan/noraivoire-monorepo",
   "version": "0.1.0",
   "private": true,
   "license": "UNLICENSED",
@@ -38,7 +38,10 @@
     "docs:reference:shots": "node tools/docs/shoot.mjs",
     "gallery": "node tests/gallery/run.mjs",
     "showcase:serve": "node tests/visual/serve.mjs",
-    "showcase:shots": "node examples/showcase/tool/shoot.mjs"
+    "showcase:shots": "node examples/showcase/tool/shoot.mjs",
+    "release:pack": "node tools/release/pack.mjs",
+    "release:check": "node tools/release/check.mjs",
+    "release:publish": "node tools/release/publish.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.13.0",

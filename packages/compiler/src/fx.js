@@ -316,9 +316,9 @@ export function buildFx(fx, meta) {
     for (const e of effects) {
       const native = { 'scroll-parallax': 'NoraParallax', 'text-scramble': 'NoraScramble' }[e.kind] ?? null;
       manifestEffects[e.effect] = {
-        usage: `data-fx="${e.effect}" data-fx-${e.effect}="clé:valeur;…" — paquet optionnel @noraivoire/${pkg} : charger fx/${pkg}.css et appeler install(moteur) depuis fx/${pkg}.js`,
+        usage: `data-fx="${e.effect}" data-fx-${e.effect}="clé:valeur;…" — paquet optionnel @jonathankablan/noraivoire-${pkg} : charger fx/${pkg}.css et appeler install(moteur) depuis fx/${pkg}.js`,
         kind: e.kind,
-        package: `@noraivoire/${pkg}`,
+        package: `@jonathankablan/noraivoire-${pkg}`,
         input: e.input,
         description: e.description,
         options: e.options,

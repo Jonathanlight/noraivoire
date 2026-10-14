@@ -38,11 +38,11 @@ test('compilation : fichiers séparés, cœur inchangé, effets déclarés dans 
   }
   assert.doesNotMatch(files['noraivoire.css'], /parallax|data-fx-piece/);
   assert.doesNotMatch(files['flutter/noraivoire.dart'], /NoraParallax/);
-  assert.equal(manifest.effects.parallax.package, '@noraivoire/fx-scroll');
-  assert.equal(manifest.effects.split.package, '@noraivoire/fx-text');
+  assert.equal(manifest.effects.parallax.package, '@jonathankablan/noraivoire-fx-scroll');
+  assert.equal(manifest.effects.split.package, '@jonathankablan/noraivoire-fx-text');
   assert.equal(manifest.effects.parallax.flutter, 'NoraParallax');
   assert.equal(manifest.effects.split.flutter, null);
-  assert.match(files['llms-full.txt'], /scramble : .*@noraivoire\/fx-text/);
+  assert.match(files['llms-full.txt'], /scramble : .*@jonathankablan\/noraivoire-fx-text/);
   for (const f of ['fx/fx-scroll.js', 'fx/fx-text.js']) assert.ok(integrity[f].gzip <= BUDGETS.fxGzip, `${f} : ${integrity[f].gzip} o`);
   for (const f of ['fx/fx-scroll.css', 'fx/fx-text.css']) {
     assert.match(files[f], /^@layer nora\.effects \{/m);
@@ -59,7 +59,7 @@ test('parité : les options JS des effets sont celles de la spec', async () => {
   const { manifest } = compile(SPEC);
   for (const [name, e] of Object.entries(manifest.effects)) {
     if (!e.package) continue;
-    const js = pkgs[e.package.replace('@noraivoire/', '')][name];
+    const js = pkgs[e.package.replace('@jonathankablan/noraivoire-', '')][name];
     assert.deepEqual(js.options, e.options, name);
   }
 });

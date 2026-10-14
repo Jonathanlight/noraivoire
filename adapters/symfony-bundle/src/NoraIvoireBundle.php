@@ -43,7 +43,7 @@ final class NoraIvoireBundle extends AbstractBundle
                     ->cannotBeEmpty()
                 ->end()
                 ->scalarNode('cli_path')
-                    ->info('Chemin du CLI NoraIvoire (cli.js). Par défaut : node_modules/@noraivoire/cli/src/cli.js du projet.')
+                    ->info('Chemin du CLI NoraIvoire (cli.js). Par défaut : node_modules/@jonathankablan/noraivoire-cli/src/cli.js du projet.')
                     ->defaultNull()
                 ->end()
                 ->arrayNode('check_paths')

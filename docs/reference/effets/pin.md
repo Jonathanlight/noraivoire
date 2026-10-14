@@ -25,7 +25,7 @@ _Capture en mouvement réduit : état final affiché. Démonstration animée : `
 <script type="module">
   import * as moteur from './noraivoire.engine.js';
   import { install } from './fx/fx-scroll.js';
-  install(moteur); // paquet optionnel @noraivoire/fx-scroll
+  install(moteur); // paquet optionnel @jonathankablan/noraivoire-fx-scroll
   moteur.start();
 </script>
 ```
@@ -47,4 +47,4 @@ Dans `data-fx-pin="clé:valeur;…"` ; une valeur hors bornes est ramenée dans 
 | react-native | non généré : ScrollView stickyHeaderIndices est l'équivalent natif |
 | flutter | non généré : SliverPersistentHeader(pinned: true) est l'équivalent natif |
 
-Paquet optionnel **@noraivoire/fx-scroll** : aucun effet de bord à l'import, budget 2 Kio gzip.
+Paquet optionnel **@jonathankablan/noraivoire-fx-scroll** : aucun effet de bord à l'import, budget 2 Kio gzip.

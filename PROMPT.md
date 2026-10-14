@@ -35,7 +35,7 @@ templates/        modèles par framework · tests/ · docs/
 7. **Flutter :** imports `dart:*` et `package:flutter/*` uniquement ; `Semantics`, zone tactile ≥ 44, `MediaQuery.maybeDisableAnimationsOf`. **React Native :** imports `react` et `react-native` uniquement ; capacités natives injectées via `configureNora()`.
 8. **Accessibilité :** `prefers-reduced-motion` respecté partout, focus visible, rôle et label sur tout élément interactif.
 9. **Budgets :** CSS min+gzip ≤ 15 Kio, moteur gzip ≤ 4 Kio. Si tu les dépasses, arrête-toi et propose un découpage.
-10. **Licence :** chaque fichier généré garde l'en-tête de propriété. Ne publie jamais sur le registre npm public. N'ajoute aucun code sous licence copyleft (GPL, AGPL, LGPL).
+10. **Licence :** chaque fichier généré garde l'en-tête de propriété. Publication npm : uniquement les 5 paquets `@jonathankablan/noraivoire-{core,cli,mcp,fx-scroll,fx-text}`, en public par décision de l'auteur (14 octobre 2026), et seulement par `npm run release:publish` (contrôle des archives, confirmation explicite). Jamais `npm publish` depuis les sources (elles restent `"private": true`), jamais d'autre paquet ni d'autre registre sans accord. N'ajoute aucun code sous licence copyleft (GPL, AGPL, LGPL).
 11. **Langue :** commentaires, messages d'erreur, documentation et messages de commit en **français**.
 
 ### Définition de « terminé »
@@ -91,4 +91,4 @@ Crée `bench/` : 50 tâches UI décrites en français, un script qui interroge p
 
 ## Prompt court (utilisation du framework dans un projet)
 
-> Tu génères de l'interface avec **NoraIvoire**. Lis `node_modules/@noraivoire/core/dist/llms-full.txt` : c'est le contrat complet, n'utilise rien qui n'y figure pas. Variantes uniquement via `data-tone` et `data-size`, effets via `data-fx`, surface verre via `fx-glass`. Jamais de classes Bootstrap ou Tailwind. Après chaque génération, exécute `npx nora check <dossier> --format=json` et corrige toutes les erreurs avant de rendre la main.
+> Tu génères de l'interface avec **NoraIvoire**. Lis `node_modules/@jonathankablan/noraivoire-core/dist/llms-full.txt` : c'est le contrat complet, n'utilise rien qui n'y figure pas. Variantes uniquement via `data-tone` et `data-size`, effets via `data-fx`, surface verre via `fx-glass`. Jamais de classes Bootstrap ou Tailwind. Après chaque génération, exécute `npx nora check <dossier> --format=json` et corrige toutes les erreurs avant de rendre la main.

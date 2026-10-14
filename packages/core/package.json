@@ -1,5 +1,5 @@
 {
-  "name": "@noraivoire/core",
+  "name": "@jonathankablan/noraivoire-core",
   "version": "0.1.0",
   "private": true,
   "license": "UNLICENSED",
@@ -10,12 +10,23 @@
     ".": "./dist/noraivoire.css",
     "./css": "./dist/noraivoire.css",
     "./min.css": "./dist/noraivoire.min.css",
-    "./engine": { "types": "./dist/noraivoire.engine.d.ts", "default": "./dist/noraivoire.engine.js" },
+    "./engine": {
+      "types": "./dist/noraivoire.engine.d.ts",
+      "default": "./dist/noraivoire.engine.js"
+    },
     "./auto": "./dist/noraivoire.auto.js",
     "./types": "./dist/noraivoire.types.ts",
     "./native": "./dist/react-native/noraivoire.tsx",
-    "./manifest.json": "./dist/manifest.json"
+    "./manifest.json": "./dist/manifest.json",
+    "./legacy.min.css": "./dist/noraivoire.legacy.min.css",
+    "./native-fx": "./dist/react-native/noraivoire-fx.tsx",
+    "./fx/*": "./dist/fx/*",
+    "./flutter/*": "./dist/flutter/*",
+    "./llms-full.txt": "./dist/llms-full.txt",
+    "./package.json": "./package.json"
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "dependencies": {}
 }

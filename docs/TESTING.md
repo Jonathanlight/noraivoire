@@ -5,7 +5,7 @@ Version 0.1.0 · 14 octobre 2026 · © Jonathan KABLAN — Propriétaire
 ## 1. Commandes
 
 ```bash
-npm test                    # 199 tests (node:test, aucun framework)
+npm test                    # 203 tests (node:test, aucun framework)
 npm run test:rn             # 136 tests de rendu React Native (Jest + Testing Library, preset officiel RN)
 npm run audit:licenses      # licences de tout l'arbre npm : aucune licence copyleft ni dépendance runtime
 npm run test:visual         # 98 tests Playwright : 12 captures + axe-core + rendu sans JS + variante legacy + mesures de parité + catalogue + vitrines (navigateurs requis)
@@ -41,6 +41,7 @@ npm run verify              # tout, dans l'ordre
 | `tests/unit/page.test.js` | 12 | Composants de mise en page `link`, `navbar`, `avatar`, `media` : manifest (ajouts seulement), liste blanche de `box` / `ratio` / clés de taille et contraintes de forme, contraste des liens sur les surfaces (exception figée : `primary` et `warning` sur `surface-2` en clair), CSS (soulignement, focus, lien externe, liens de navigation ≥ 44 px, page courante, menu défilant, format fixe, surimpression, contraste forcé, `:where()`), widgets Flutter et composants React Native (rôles, sémantique, mouvement réduit, imports) |
 | `tests/unit/showcase.test.js` | 8 | Vitrines : aucune couleur en dur hors de `themes/` (CSS, HTML, SVG) et contre-épreuve, chartes réduites à des variables (clair et sombre), pages compatibles CSP stricte, ressources locales, photos Unsplash créditées (WebP réels, ≤ 120 Ko, toutes utilisées), `nora check` sans erreur ni avertissement, composants du framework utilisés |
 | `tests/unit/reference.test.js` | 5 | Référence générée (`docs/reference/`) : à jour, une fiche par composant et effet avec le code des 6 cibles, chaque token et utilitaire cité, aperçus clair / sombre présents sans orphelin, aucune balise brute hors du code, exemple fautif de chaque règle de `nora check` détecté et exemple corrigé accepté |
+| `tests/unit/release.test.js` | 4 | Paquets npm assemblés (`tools/release/pack.mjs`) : noms `@jonathankablan/noraivoire-*`, version et dépendances internes exactes, `LICENSE` et README, sources restées `private`, aucun import hors paquet ni non déclaré, contenu attendu (cli sans audit, mcp avec recettes, exports de core résolus). Exécution réelle des archives installées : `npm run release:check` |
 | `tests/unit/audit.test.js` | 1 | L'audit complet passe (90/90) |
 | `examples/flutter_app/test/fx_test.dart` (Flutter) | 3 | `NoraScramble` : texte final, label sémantique, mouvement réduit ; `NoraParallax` : décalage au défilement, aucun en mouvement réduit |
 | `tests/jsp/run.mjs` (Tomcat, `npm run test:jsp`) | 14 | `page.jsp` et `<nora:btn>` exécutés dans Tomcat 11 : HTTP 200 sans erreur Jasper, `nora check`, échappement, 10 URL dangereuses refusées, URL autorisées échappées, ton / taille / type en liste blanche |

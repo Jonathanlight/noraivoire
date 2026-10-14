@@ -1,8 +1,8 @@
 <!-- NoraIvoire — modèle Vue 3 / Nuxt. © 2026 Jonathan KABLAN — Propriétaire.
-     main.ts : import '@noraivoire/core/css'; app.directive('fx', vFx); -->
+     main.ts : import '@jonathankablan/noraivoire-core/css'; app.directive('fx', vFx); -->
 <script setup lang="ts">
 import { ref } from 'vue';
-import type { NoraTone } from '@noraivoire/core/types';
+import type { NoraTone } from '@jonathankablan/noraivoire-core/types';
 import { vFx } from './vFx';
 
 const items = ref([

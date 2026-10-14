@@ -825,9 +825,9 @@
       "reactNative": "NoraTilt"
     },
     "parallax": {
-      "usage": "data-fx=\"parallax\" data-fx-parallax=\"clé:valeur;…\" — paquet optionnel @noraivoire/fx-scroll : charger fx/fx-scroll.css et appeler install(moteur) depuis fx/fx-scroll.js",
+      "usage": "data-fx=\"parallax\" data-fx-parallax=\"clé:valeur;…\" — paquet optionnel @jonathankablan/noraivoire-fx-scroll : charger fx/fx-scroll.css et appeler install(moteur) depuis fx/fx-scroll.js",
       "kind": "scroll-parallax",
-      "package": "@noraivoire/fx-scroll",
+      "package": "@jonathankablan/noraivoire-fx-scroll",
       "input": "scroll",
       "description": "Décale verticalement l'élément selon sa position dans la fenêtre (effet de profondeur).",
       "options": {
@@ -852,9 +852,9 @@
       "reactNative": "NoraParallax"
     },
     "pin": {
-      "usage": "data-fx=\"pin\" data-fx-pin=\"clé:valeur;…\" — paquet optionnel @noraivoire/fx-scroll : charger fx/fx-scroll.css et appeler install(moteur) depuis fx/fx-scroll.js",
+      "usage": "data-fx=\"pin\" data-fx-pin=\"clé:valeur;…\" — paquet optionnel @jonathankablan/noraivoire-fx-scroll : charger fx/fx-scroll.css et appeler install(moteur) depuis fx/fx-scroll.js",
       "kind": "scroll-pin",
-      "package": "@noraivoire/fx-scroll",
+      "package": "@jonathankablan/noraivoire-fx-scroll",
       "input": "scroll",
       "description": "Épingle l'élément (position: sticky) pendant le défilement de son parent et expose la progression dans --fx-pin-progress.",
       "options": {
@@ -875,9 +875,9 @@
       "reactNative": null
     },
     "scrub": {
-      "usage": "data-fx=\"scrub\" data-fx-scrub=\"clé:valeur;…\" — paquet optionnel @noraivoire/fx-scroll : charger fx/fx-scroll.css et appeler install(moteur) depuis fx/fx-scroll.js",
+      "usage": "data-fx=\"scrub\" data-fx-scrub=\"clé:valeur;…\" — paquet optionnel @jonathankablan/noraivoire-fx-scroll : charger fx/fx-scroll.css et appeler install(moteur) depuis fx/fx-scroll.js",
       "kind": "scroll-scrub",
-      "package": "@noraivoire/fx-scroll",
+      "package": "@jonathankablan/noraivoire-fx-scroll",
       "input": "scroll",
       "description": "Expose la progression de l'élément dans la fenêtre (0 → 1) dans --fx-progress, pour piloter une animation CSS au défilement.",
       "options": {
@@ -904,9 +904,9 @@
       "reactNative": null
     },
     "scramble": {
-      "usage": "data-fx=\"scramble\" data-fx-scramble=\"clé:valeur;…\" — paquet optionnel @noraivoire/fx-text : charger fx/fx-text.css et appeler install(moteur) depuis fx/fx-text.js",
+      "usage": "data-fx=\"scramble\" data-fx-scramble=\"clé:valeur;…\" — paquet optionnel @jonathankablan/noraivoire-fx-text : charger fx/fx-text.css et appeler install(moteur) depuis fx/fx-text.js",
       "kind": "text-scramble",
-      "package": "@noraivoire/fx-text",
+      "package": "@jonathankablan/noraivoire-fx-text",
       "input": "visibility",
       "description": "Révèle un texte court en faisant défiler des caractères aléatoires ; le texte réel est exposé aux lecteurs d'écran.",
       "options": {
@@ -927,9 +927,9 @@
       "reactNative": "NoraScramble"
     },
     "split": {
-      "usage": "data-fx=\"split\" data-fx-split=\"clé:valeur;…\" — paquet optionnel @noraivoire/fx-text : charger fx/fx-text.css et appeler install(moteur) depuis fx/fx-text.js",
+      "usage": "data-fx=\"split\" data-fx-split=\"clé:valeur;…\" — paquet optionnel @jonathankablan/noraivoire-fx-text : charger fx/fx-text.css et appeler install(moteur) depuis fx/fx-text.js",
       "kind": "text-split",
-      "package": "@noraivoire/fx-text",
+      "package": "@jonathankablan/noraivoire-fx-text",
       "input": "visibility",
       "description": "Découpe un texte en lettres ou en mots animés en cascade à l'apparition ; le texte complet reste lu une seule fois par les lecteurs d'écran.",
       "options": {

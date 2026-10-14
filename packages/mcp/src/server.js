@@ -3,9 +3,10 @@
 // © 2026 Jonathan KABLAN — Propriétaire, tous droits réservés.
 //
 // stdout ne porte que des messages JSON-RPC ; les journaux vont sur stderr.
-// Dossier des recettes : NORA_MCP_RECIPES (par défaut <dépôt>/recipes).
+// Dossier des recettes : NORA_MCP_RECIPES (par défaut <dépôt>/recipes, ou recipes/ livré avec le paquet).
 
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
+import { createRequire } from 'node:module';
 import { resolve, dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createTools } from './tools.js';
@@ -20,13 +21,18 @@ const log = (msg) => process.stderr.write(`[nora-mcp] ${msg}\n`);
 
 let manifest;
 try {
-  manifest = JSON.parse(readFileSync(join(repoRoot, 'packages', 'core', 'dist', 'manifest.json'), 'utf8'));
+  // Dépôt source, sinon paquet @jonathankablan/noraivoire-core installé.
+  const inRepo = join(repoRoot, 'packages', 'core', 'dist', 'manifest.json');
+  const path = existsSync(inRepo) ? inRepo : createRequire(import.meta.url).resolve('@jonathankablan/noraivoire-core/manifest.json');
+  manifest = JSON.parse(readFileSync(path, 'utf8'));
 } catch (err) {
   log(`manifest.json illisible (lancer « npm run build ») : ${err.message}`);
   process.exit(1);
 }
 
-const recipesDir = resolve(process.env.NORA_MCP_RECIPES || join(repoRoot, 'recipes'));
+// Recettes : NORA_MCP_RECIPES, sinon celles du dépôt source, sinon celles livrées avec le paquet.
+const recipesDir = resolve(process.env.NORA_MCP_RECIPES
+  || (existsSync(join(repoRoot, 'recipes', 'index.json')) ? join(repoRoot, 'recipes') : join(here, '..', 'recipes')));
 const protocol = createProtocol(createTools({ manifest, recipesDir }), { log });
 const send = (msg) => process.stdout.write(`${JSON.stringify(msg)}\n`);
 

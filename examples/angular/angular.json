@@ -16,7 +16,7 @@
             "index": "src/index.html",
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.json",
-            "styles": ["node_modules/@noraivoire/core/dist/noraivoire.css"],
+            "styles": ["node_modules/@jonathankablan/noraivoire-core/dist/noraivoire.css"],
             "preserveSymlinks": false
           },
           "configurations": {

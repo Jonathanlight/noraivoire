@@ -1,5 +1,5 @@
 // Server Component : aucun 'use client', aucun JS envoyé pour cette page.
-import type { NoraTone } from '@noraivoire/core/types';
+import type { NoraTone } from '@jonathankablan/noraivoire-core/types';
 
 async function getOrders() {
   return [

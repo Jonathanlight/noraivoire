@@ -7,7 +7,7 @@
 
 import { readFileSync, lstatSync, realpathSync } from 'node:fs';
 import { join, sep } from 'node:path';
-import { checkSource } from '../../cli/src/check.js';
+import { checkSource } from '@jonathankablan/noraivoire-cli/check';
 
 export const LIMITS = Object.freeze({
   markup: 200 * 1024, // caractères acceptés par nora_validate

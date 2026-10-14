@@ -1,6 +1,6 @@
 // NoraIvoire — Next.js App Router. © 2026 Jonathan KABLAN — Propriétaire.
 // Le CSS est global ; les composants restent des Server Components. Seul <NoraEngine/> est client.
-import '@noraivoire/core/css';
+import '@jonathankablan/noraivoire-core/css';
 import type { ReactNode } from 'react';
 import { NoraEngine } from '../components/NoraEngine';
 
