@@ -7,6 +7,7 @@
 //
 //   npm run gallery                      toutes les cibles
 //   npm run gallery -- --only=react,vue  quelques cibles
+//   npm run test:templates               axe-core sur chaque modèle web (clair et sombre), sans capture
 //
 // Prérequis selon la cible : Node (toujours), PHP 8.4+ et Composer (twig), JDK 17+ et Tomcat 10.1+
 // (jsp), Flutter (flutter). Une cible dont l'outil manque est signalée et ignorée, jamais simulée.
@@ -17,6 +18,7 @@ import { createReadStream, existsSync, mkdirSync, readFileSync, realpathSync, st
 import { dirname, extname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
 import { resolveSafe } from '../visual/serve.mjs';
 import { freePort } from '../../examples/jsp-app/tool/tomcat.mjs';
 
@@ -91,10 +93,15 @@ async function startProcess(cmd, args, cwd, url, env = {}) {
   };
 }
 
+const AXE = process.argv.includes('--axe');
+const AXE_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa', 'best-practice'];
+const BLOCKING = new Set(['serious', 'critical']);
+const violations = [];
+
 const DESKTOP = { width: 1280, height: 800 };
 const PHONE = { width: 390, height: 844 };
 
-/** Capture une URL et écrit docs/gallery/<nom>-<schéma>.png. */
+/** Capture une URL et écrit docs/gallery/<nom>-<schéma>.png ; avec --axe, l'analyse sans rien écrire. */
 async function capture(browser, url, name, { schemes = ['light', 'dark'], viewport = DESKTOP, scale = 1 } = {}) {
   const files = [];
   for (const colorScheme of schemes) {
@@ -107,6 +114,14 @@ async function capture(browser, url, name, { schemes = ['light', 'dark'], viewpo
     await page.mouse.move(0, 0);
     await page.waitForTimeout(150);
     if (errors.length) throw new Error(`${name} (${colorScheme}) : erreur JavaScript ${errors[0]}`);
+    if (AXE) {
+      const result = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze();
+      for (const v of result.violations.filter((x) => BLOCKING.has(x.impact))) {
+        violations.push(`${name} (${colorScheme}) · ${v.impact} · ${v.id} : ${v.help}\n    ${v.nodes.map((n) => n.target.join(' ')).join('\n    ')}`);
+      }
+      await context.close();
+      continue;
+    }
     const file = join(OUT, `${name}-${colorScheme}.png`);
     await page.screenshot({ path: file, animations: 'disabled' });
     files.push(file);
@@ -199,6 +214,10 @@ try {
   for (const name of wanted) {
     try {
       const files = await TARGETS[name](browser);
+      if (AXE) {
+        console.log(`axe : ${name} ✔`);
+        continue;
+      }
       optimize(files);
       for (const f of files) done.push(`${f.slice(ROOT.length + 1)} (${Math.round(statSync(f).size / 1024)} Kio)`);
       console.log(`galerie : ${name} ✔`);
@@ -210,7 +229,12 @@ try {
 } finally {
   await browser.close();
 }
-console.log(`\n${done.length} capture(s) :\n  ${done.join('\n  ')}`);
+if (AXE) {
+  console.log(violations.length ? `\n${violations.length} violation(s) sérieuse(s) ou critique(s) :\n  ${violations.join('\n  ')}` : '\naxe : aucune violation sérieuse ou critique');
+  if (violations.length) process.exitCode = 1;
+} else {
+  console.log(`\n${done.length} capture(s) :\n  ${done.join('\n  ')}`);
+}
 if (skipped.length) {
   console.log(`\nIgnorées :\n  ${skipped.join('\n  ')}`);
   process.exitCode = 1;

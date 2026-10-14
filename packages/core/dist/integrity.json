@@ -3,22 +3,22 @@
   "version": "0.1.2",
   "files": {
     "noraivoire.css": {
-      "sha256": "8185304a67ea886477afa8165de35a6c03d0501da9281e6de735d806a5e5b3d5",
-      "sri": "sha384-yHR9FXXfC578BOrRP/5O5zlN2kT48+paCX0HG2rILFZ8K50FFZgkHWrxqv9VvDVz",
-      "bytes": 38151,
-      "gzip": 6882
+      "sha256": "a03a39527636f9a25a464ca05095f770c014f7d7db57e69b73670a3c439affb9",
+      "sri": "sha384-KMoTZvtrDiUU4tdK3VvgbSL+iRVuU1AqtlSZWQGys8NFwwBndPSr1AANAr3dFVG6",
+      "bytes": 38201,
+      "gzip": 6897
     },
     "noraivoire.min.css": {
-      "sha256": "449eda5451a4ceab13e627ad2e32436febf4a377ab2a95d250568d7e278d4fe2",
-      "sri": "sha384-xyNUwxDM908lUlzzFGnBU6oj9+TXcCkIBc+kN3+HIoqJMduDd8PvQD5jC06nJJ49",
-      "bytes": 33433,
-      "gzip": 6466
+      "sha256": "ac3a45ac0bc184187e48d972aabb647f5d19778e71e5e036c689dc23627f1163",
+      "sri": "sha384-6+Nmw1ETuPpjzgQYC/LCkVxzPvpS8JVDuH4dZO10QHqwq0eXPOWLds6gZzSqy+7W",
+      "bytes": 33481,
+      "gzip": 6482
     },
     "noraivoire.legacy.min.css": {
-      "sha256": "f53eff2d3c87a7ed3b6fe89ca7bc26197352c1200c5112a596c9fc8cbeb33672",
-      "sri": "sha384-taF1EpTwMzmBPbiXKECAYK63tpqrR5fAsJDaqGnBzC6Ztvra84EzuMzi8HCndbzR",
-      "bytes": 33186,
-      "gzip": 6376
+      "sha256": "230f7cfe81ff7097f65754307947ba0098bd2e90c0e4a9e268572277d2448060",
+      "sri": "sha384-GeDCp85UL5WTkA+PaTszwE3D34fCYU4f4r3paogNDgw6EJ9MBt6F1kplwm2RWcke",
+      "bytes": 33234,
+      "gzip": 6390
     },
     "noraivoire.engine.js": {
       "sha256": "ce917cf7550e5d112607f337ff1a26ce15ece6fb6ad8fea64321566640de205f",
@@ -51,10 +51,10 @@
       "gzip": 12128
     },
     "react-native/noraivoire.tsx": {
-      "sha256": "e252afdb2e357277acea5cb16d7bc4d33a5492a6e48493cf8c67463e9bf749cf",
-      "sri": "sha384-DuMnC+SgekyCWnkxDl+o3wYQhOFEB0JNPGkUiIvMyzWO8BKiNMDrRoC59EH3mTJo",
-      "bytes": 53212,
-      "gzip": 11168
+      "sha256": "fe432b77437bcca894aac16a954857b529baed3758214057a161b0896379a48c",
+      "sri": "sha384-NCvezGw+cXc09DiY6rqnEesMcafVcZ4dsIi/LrJ3gsXqZ84Cpm8CQCCcYI2x03EW",
+      "bytes": 53385,
+      "gzip": 11197
     },
     "symfony/src/NoraManifest.php": {
       "sha256": "b4fb87f2453abf697fda0c79064e16e95c1e597f51f57a228b0f369ae4826d1d",

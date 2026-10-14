@@ -176,6 +176,7 @@ ${state}
         accessibilityHint={field?.error ?? field?.help}
         accessibilityValue={{ text: selected?.label ?? placeholder ?? '' }}
         accessibilityState={{ disabled: isDisabled, expanded: open }}
+        aria-expanded={open}
         disabled={isDisabled}
         onPress={() => {
           setFocused(true);
@@ -200,6 +201,7 @@ ${state}
                   key={o.value}
                   accessibilityRole="radio"
                   accessibilityState={{ checked }}
+                  aria-checked={checked}
                   onPress={() => {
                     onChange?.(o.value);
                     close();
@@ -254,6 +256,8 @@ ${state}
 }`;
 }
 
+// États : accessibilityState pour iOS / Android, doublé d'aria-checked / aria-expanded (RN 0.71+),
+// seuls lus par react-native-web : sans eux, un contrôle décoché ou replié n'expose aucun état sur le web.
 function toggleComp(c) {
   const n = camel(c.component);
   const P = `Nora${pascal(c.component)}`;
@@ -294,7 +298,7 @@ function toggleComp(c) {
           justifyContent: 'center',
         }}
       >
-        {/* Coche décorative : l'état est porté par accessibilityState.checked, le glyphe n'est pas lu. */}
+        {/* Coche décorative : l'état est porté par accessibilityState.checked et aria-checked, le glyphe n'est pas lu. */}
         {checked ? <Text importantForAccessibility="no" accessibilityElementsHidden style={{ color: onAccent, fontSize: s.font * 0.85, fontWeight: '700', lineHeight: s.font }}>✓</Text> : null}
       </View>`;
   const anim = isSwitch
@@ -338,6 +342,7 @@ ${anim}
       accessibilityRole="${isSwitch ? 'switch' : 'checkbox'}"
       accessibilityLabel={typeof children === 'string' ? children : undefined}
       accessibilityState={{ checked, disabled: isDisabled }}
+      aria-checked={checked}
       accessibilityHint={field?.error ?? field?.help}
       disabled={isDisabled}
       hitSlop={4}
@@ -423,6 +428,7 @@ export function ${P}<T extends ${P}Value>({ value, children, tone, size, invalid
       accessibilityRole="radio"
       accessibilityLabel={typeof children === 'string' ? children : undefined}
       accessibilityState={{ checked, disabled: isDisabled }}
+      aria-checked={checked}
       accessibilityHint={field?.error ?? field?.help}
       disabled={isDisabled}
       hitSlop={4}

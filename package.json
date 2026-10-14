@@ -29,6 +29,7 @@
     "test:visual:update": "node tests/visual/update.mjs",
     "parity:update": "node tests/parity/update.mjs",
     "test:jsp": "node --test --test-concurrency=1 tests/jsp/run.mjs",
+    "test:templates": "node tests/gallery/run.mjs --axe --only=react,vue,angular,nextjs,react-native,twig,jsp",
     "test:rn": "jest -c tests/rn/jest.config.cjs",
     "audit:licenses": "node tests/rn/check-licenses.mjs",
     "catalog": "node tools/catalog/build.mjs",

@@ -2,6 +2,11 @@
 
 ## Non publié
 
+- CSS (constat A-18 corrigé) : une carte qui porte une primitive de mise en page (`.card.stack`, `.card.cluster`, `.card.grid-auto`) garde son `display` ; le `display: block` de `.card`, dans la couche `nora.components` qui suit `nora.layout`, annulait la pile et collait titre, champs et liens dans 17 recettes. Feuilles standard et legacy. Captures des recettes de la galerie régénérées. 1 test.
+- React Native (constat A-19 corrigé) : `NoraCheckbox`, `NoraSwitch`, `NoraRadio` et les options de `NoraSelect` portent aussi `aria-checked`, le combobox `aria-expanded` (props RN 0.71+). react-native-web ignore `accessibilityState` : sur le web, un contrôle décoché ou une liste repliée n'exposait aucun état (axe-core : `aria-required-attr`, critique). iOS et Android inchangés. 1 test.
+- Tests : `npm run test:templates` — axe-core sur les modèles React, Vue, Angular, Next.js, React Native (react-native-web), Twig (Symfony) et JSP (Tomcat) lancés réellement, clair et sombre, sans erreur JavaScript (option `--axe` de `tests/gallery/run.mjs`, aucune capture écrite) ; job CI `templates`.
+- Tests : axe-core sur les 20 recettes (`tests/visual/recipes.spec.mjs`, clair et sombre, 375 et 1280 px, console propre, aucun débordement à 375 px) ; 81 tests Playwright.
+
 ## 0.1.2 — 14 octobre 2026
 
 - Accessibilité (constat A-16 corrigé) : `color.primary` clair `#C94A0B` → `#C1470B` et `color.warning` clair `#B35C00` → `#AC5800`, assombris de 4 % à teinte constante. Tous les tons de lien atteignent désormais 4,5:1 sur `surface` et `surface-2` (4,61:1 et 4,63:1 au plus juste), sans exception ; texte blanc sur `primary` 5,03:1. Thème sombre inchangé. Captures web, goldens Flutter (macOS et Linux), parité, catalogue, référence, galerie et vitrines régénérés. 1 test durci.

@@ -248,9 +248,9 @@
     background: var(--card-bg);
     color: var(--card-fg);
     border-radius: var(--card-radius);
-    display: block;
     border: 1px solid var(--card-border);
   }
+  :where(.card:not(.stack, .cluster, .grid-auto)) { display: block; }
   :where(.card[data-size="sm"]) { --card-pad-y: 0.75rem; --card-pad-x: 0.75rem; --card-font: var(--nora-font-sm); }
   :where(.card[data-size="lg"]) { --card-pad-y: 1.5rem; --card-pad-x: 1.5rem; --card-font: var(--nora-font-md); }
   :where(.checkbox) {

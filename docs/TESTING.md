@@ -8,9 +8,10 @@ Version 0.1.0 · 14 octobre 2026 · © Jonathan KABLAN — Propriétaire
 npm test                    # 203 tests (node:test, aucun framework)
 npm run test:rn             # 136 tests de rendu React Native (Jest + Testing Library, preset officiel RN)
 npm run audit:licenses      # licences de tout l'arbre npm : aucune licence copyleft ni dépendance runtime
-npm run test:visual         # 98 tests Playwright : 12 captures + axe-core + rendu sans JS + variante legacy + mesures de parité + catalogue + vitrines (navigateurs requis)
+npm run test:visual         # 179 tests Playwright : 12 captures + axe-core + rendu sans JS + variante legacy + mesures de parité + recettes + catalogue + vitrines (navigateurs requis)
 npm run parity:update       # régénère les mesures de parité CSS / Flutter / React Native (navigateurs et Flutter requis)
 npm run test:jsp            # 14 tests : modèles JSP exécutés dans Tomcat (JDK 17+ et Tomcat 10.1+ requis)
+npm run test:templates      # axe-core sur les modèles React, Vue, Angular, Next.js, React Native (web), Twig et JSP lancés réellement
 npm run check               # valide les modèles, les recettes et les vitrines
 npm run audit:security      # 90 contrôles
 npm run verify              # tout, dans l'ordre
@@ -98,6 +99,7 @@ npm run test:visual:update -- --linux   # Linux seulement
 | `tests/visual/a11y.spec.mjs` | 6 | axe-core (WCAG 2.0 → 2.2 AA + bonnes pratiques) : 0 violation `serious` ou `critical`, clair et sombre, 375 et 1280 px ; sans JavaScript, aucune carte `reveal` ni texte masqué |
 | `tests/visual/legacy.spec.mjs` | 2 | `noraivoire.legacy.min.css` (sans `@layer`) : rendu identique au pixel à la feuille standard, clair et sombre |
 | `tests/visual/parity.spec.mjs` | 1 | Mesures CSS de parité sur `tests/visual/parity.html`, comparées à `tests/parity/web.json` |
+| `tests/visual/recipes.spec.mjs` | 81 | Les 20 recettes de `recipes/index.json` : axe-core sans violation `serious` ou `critical`, clair et sombre, 375 et 1280 px, console propre, aucun débordement horizontal à 375 px |
 | `tests/visual/catalog.spec.mjs` | 22 | Catalogue généré (voir ci-dessus) |
 | `tests/visual/showcase.spec.mjs` | 55 | Vitrines (voir ci-dessus) |
 
@@ -157,6 +159,8 @@ Champs comparés (`tests/parity/model.mjs`) : couleurs de fond, de texte et de b
 | JSP | `jsp:sync` puis Tomcat isolé (`examples/jsp-app/tool/tomcat.mjs`, partagé avec `npm run test:jsp`) | JDK 17+, Tomcat 10.1+ |
 | Flutter | `flutter test --update-goldens tool/gallery_test.dart` (hors de `test/`), police Roboto et icônes Material chargées depuis le SDK au lieu de la police de test à glyphes carrés | Flutter |
 
+`npm run test:templates` lance les mêmes modèles web de la même façon (`--axe`), mais n'écrit aucune capture : axe-core (WCAG 2.0 → 2.2 AA + bonnes pratiques) analyse chaque page en clair et en sombre, mouvement réduit, sans erreur JavaScript, et la commande échoue sur toute violation `serious` ou `critical`. Le HTML et les recettes sont déjà couverts par `npm run test:visual` ; Flutter n'est pas une page web (sa sémantique est testée par `flutter test`). Une cible dont l'outil manque (PHP, JDK) est signalée et fait échouer la commande, jamais simulée. Hors de `verify` (PHP, JDK et Tomcat requis ensemble) ; exécuté par le job CI `templates`.
+
 Chromium en 1280 × 800 (390 × 844 pour React Native), `reducedMotion: 'reduce'`, clair et sombre pour HTML, React, Vue, Flutter et React Native ; vignettes des recettes à l'échelle 0,5. Une erreur JavaScript de la page fait échouer la capture ; une cible dont l'outil manque est listée comme ignorée (code de sortie 1), jamais simulée. `npm run gallery -- --only=react,vue` limite les cibles. Les licences des arbres npm des exemples se contrôlent avec `node tests/rn/check-licenses.mjs --dir=examples/<cible>`.
 
 ## 3. Benchmark IA
@@ -172,6 +176,7 @@ Chromium en 1280 × 800 (390 × 844 pour React Native), `reducedMotion: 'reduce'
 5. `symfony` (PHP 8.4 et 8.5) : `npm run symfony:sync`, Composer sans scripts ni plugins, contrôle des licences, PHPUnit.
 6. `jsp` : JDK 21 (Temurin), Tomcat 11.0.27 téléchargé depuis l'archive Apache avec somme SHA-512 vérifiée, puis `npm run test:jsp`.
 7. `react-native-render` : build, `dist` identique, `npm run audit:licenses`, puis `npm run test:rn`.
+8. `templates` : PHP 8.4 et Composer, JDK 21 et Tomcat 11.0.27 (SHA-512 vérifiée), Chromium installé par Playwright, puis `npm run test:templates` (axe-core sur les 7 modèles web lancés réellement).
 
 Workflow séparé `.github/workflows/goldens.yml` (`workflow_dispatch`, lancé par `gh workflow run goldens`) : régénère les goldens Flutter Linux (Flutter 3.47.7) et les publie dans l'artefact `flutter-goldens-linux`, à vérifier puis versionner dans `examples/flutter_app/test/goldens/linux/`.
 
@@ -181,7 +186,6 @@ Workflow séparé `.github/workflows/goldens.yml` (`workflow_dispatch`, lancé p
 
 | Priorité | Test | Outil |
 |---|---|---|
-| P1 | Régression visuelle et axe-core des autres modèles (après les recettes) | Playwright |
 | P2 | Benchmark « IA » : exécution réelle des 50 tâches de `bench/` (code livré, voir `bench/README.md`) | `npm run bench -- --yes` |
 
 ## 6. Règle de contribution

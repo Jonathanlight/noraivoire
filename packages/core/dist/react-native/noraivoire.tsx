@@ -635,6 +635,7 @@ export function NoraCheckbox({ checked, onChange, children, tone, size, invalid,
       accessibilityRole="checkbox"
       accessibilityLabel={typeof children === 'string' ? children : undefined}
       accessibilityState={{ checked, disabled: isDisabled }}
+      aria-checked={checked}
       accessibilityHint={field?.error ?? field?.help}
       disabled={isDisabled}
       hitSlop={4}
@@ -667,7 +668,7 @@ export function NoraCheckbox({ checked, onChange, children, tone, size, invalid,
           justifyContent: 'center',
         }}
       >
-        {/* Coche décorative : l'état est porté par accessibilityState.checked, le glyphe n'est pas lu. */}
+        {/* Coche décorative : l'état est porté par accessibilityState.checked et aria-checked, le glyphe n'est pas lu. */}
         {checked ? <Text importantForAccessibility="no" accessibilityElementsHidden style={{ color: onAccent, fontSize: s.font * 0.85, fontWeight: '700', lineHeight: s.font }}>✓</Text> : null}
       </View>
       {typeof children === 'string' ? <Text style={{ color: colors[checkboxSpec.colors.fg], fontSize: s.font, flexShrink: 1 }}>{children}</Text> : children}
@@ -1029,6 +1030,7 @@ export function NoraRadio<T extends NoraRadioValue>({ value, children, tone, siz
       accessibilityRole="radio"
       accessibilityLabel={typeof children === 'string' ? children : undefined}
       accessibilityState={{ checked, disabled: isDisabled }}
+      aria-checked={checked}
       accessibilityHint={field?.error ?? field?.help}
       disabled={isDisabled}
       hitSlop={4}
@@ -1120,6 +1122,7 @@ export function NoraSelect({ options, value, onChange, placeholder, size, invali
         accessibilityHint={field?.error ?? field?.help}
         accessibilityValue={{ text: selected?.label ?? placeholder ?? '' }}
         accessibilityState={{ disabled: isDisabled, expanded: open }}
+        aria-expanded={open}
         disabled={isDisabled}
         onPress={() => {
           setFocused(true);
@@ -1144,6 +1147,7 @@ export function NoraSelect({ options, value, onChange, placeholder, size, invali
                   key={o.value}
                   accessibilityRole="radio"
                   accessibilityState={{ checked }}
+                  aria-checked={checked}
                   onPress={() => {
                     onChange?.(o.value);
                     close();
@@ -1204,6 +1208,7 @@ export function NoraSwitch({ checked, onChange, children, tone, size, invalid, h
       accessibilityRole="switch"
       accessibilityLabel={typeof children === 'string' ? children : undefined}
       accessibilityState={{ checked, disabled: isDisabled }}
+      aria-checked={checked}
       accessibilityHint={field?.error ?? field?.help}
       disabled={isDisabled}
       hitSlop={4}

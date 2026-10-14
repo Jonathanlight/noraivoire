@@ -212,6 +212,16 @@ test('css : une étiquette (badge) ne s\'étire pas dans une pile flex (parité 
   assert.match(files['react-native/noraivoire.tsx'], /alignSelf: 'flex-start'/);
 });
 
+test('css : une carte qui porte .stack, .cluster ou .grid-auto garde la mise en page (A-18)', () => {
+  const { files } = compile(SPEC);
+  for (const css of [files['noraivoire.css'], files['noraivoire.legacy.min.css']]) {
+    const card = css.match(/:where\(\.card\) ?\{[^}]*\}/)[0];
+    // nora.layout précède nora.components : un display inconditionnel annulerait la primitive.
+    assert.doesNotMatch(card, /display/);
+    assert.match(css, /:where\(\.card:not\(\.stack, \.cluster, \.grid-auto\)\) ?\{ ?display: block;? ?\}/);
+  }
+});
+
 test('css legacy : variante sans @layer, mêmes règles dans le même ordre (A-06)', () => {
   const { files } = compile(SPEC);
   const legacy = files['noraivoire.legacy.min.css'];

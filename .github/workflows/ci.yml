@@ -185,3 +185,39 @@ jobs:
       - run: npm run build
       - name: exécution réelle des modèles JSP (Tomcat, JSTL vérifiée par SHA-256)
         run: npm run test:jsp
+
+  templates:
+    # axe-core sur chaque modèle lancé réellement (npm run test:templates) : React, Vue, Angular,
+    # Next.js, React Native (react-native-web), Twig (Symfony, php -S) et JSP (Tomcat).
+    # Hors du conteneur Playwright, qui n'a ni PHP ni JDK : Chromium installé par Playwright.
+    runs-on: ubuntu-latest
+    env:
+      TOMCAT_VERSION: '11.0.27'
+      TOMCAT_SHA512: 'a617896307cada4884b24f80c4e977ddad8b3e0f88ce0e2a6eea29d5f332498e276ae5976c227a9c8daecf05c7c90def684a3766dd5a81f47a56d8b1adf43dc3'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          tools: composer:v2
+          coverage: none
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Tomcat (archive Apache, somme SHA-512 vérifiée)
+        run: |
+          curl -fsSLo /tmp/tomcat.tar.gz "https://archive.apache.org/dist/tomcat/tomcat-11/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz"
+          echo "${TOMCAT_SHA512}  /tmp/tomcat.tar.gz" | sha512sum -c -
+          mkdir -p /tmp/tomcat && tar -xzf /tmp/tomcat.tar.gz -C /tmp/tomcat --strip-components=1
+          echo "CATALINA_HOME=/tmp/tomcat" >> "$GITHUB_ENV"
+      - run: npm ci --ignore-scripts
+      - name: Chromium (version liée à @playwright/test)
+        run: npx playwright install --with-deps chromium
+      - run: npm run build
+      - name: axe-core sur les modèles (npm ci --ignore-scripts et Composer sans script ni plugin dans chaque exemple)
+        run: npm run test:templates

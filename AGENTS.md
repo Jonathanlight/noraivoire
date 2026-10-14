@@ -15,6 +15,7 @@ npm run test:rn          # rendu React Native (Jest, hors verify)
 npm run audit:licenses   # aucune licence copyleft dans node_modules
 npm run test:visual      # Playwright : captures, axe-core, catalogue, vitrines (hors verify)
 npm run test:jsp         # modèles JSP dans Tomcat (JDK et Tomcat requis)
+npm run test:templates   # axe-core sur les modèles React, Vue, Angular, Next.js, RN web, Twig, JSP
 npm run parity:update    # mesures de parité CSS / Flutter / React Native
 npm run symfony:sync     # copie le Twig généré dans adapters/symfony-bundle/
 npm run flutter:sync     # copie le Dart généré dans examples/flutter_app/

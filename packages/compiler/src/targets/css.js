@@ -85,6 +85,9 @@ const LAYOUT = `@layer nora.layout {
   :where(.cq) { container-type: inline-size; }
 }`;
 
+/** Primitives de mise en page qui fixent `display` : un composant conteneur ne les écrase pas. */
+const LAYOUT_DISPLAY = '.stack, .cluster, .grid-auto';
+
 /** Variables d'un composant : tokens, espacements et police de la taille par défaut. */
 function componentVars(c, tokens) {
   const n = c.component;
@@ -397,12 +400,14 @@ function componentRules(c, tokens) {
     // inline-size: fit-content : pas d'étirement dans une pile flex ou une grille (parité avec
     // alignSelf RN), sans forcer l'alignement en haut dans une ligne flex (align-self reste auto).
     decl.push('display: inline-flex;', 'align-items: center;', 'inline-size: fit-content;', 'font-weight: 600;', 'line-height: 1;', 'white-space: nowrap;');
-  } else {
-    decl.push('display: block;');
-    if (c.tokens.border) decl.push(`border: 1px solid var(--${n}-border);`);
+  } else if (c.tokens.border) {
+    decl.push(`border: 1px solid var(--${n}-border);`);
   }
 
   const out = [`  :where(.${n}) {\n${decl.map((x) => `    ${x}`).join('\n')}\n  }`];
+  // Conteneur : bloc, sauf s'il porte une primitive de mise en page (nora.layout précède
+  // nora.components, un `display: block` inconditionnel annulerait `.card.stack`).
+  if (shape !== 'interactive' && shape !== 'label') out.push(`  :where(.${n}:not(${LAYOUT_DISPLAY})) { display: block; }`);
 
   for (const tone of c.variants.tone) {
     if (tone === d.tone) continue;

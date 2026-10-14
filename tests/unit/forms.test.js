@@ -264,3 +264,19 @@ test('css : le libellé d\'un groupe n\'est estompé que si tous ses contrôles 
   assert.ok(css.includes(':where(.field:has(:disabled):not(:has(:enabled))) > :where(.field-label)'));
   assert.ok(!css.includes(':where(.field:has(:disabled)) > :where(.field-label)'));
 });
+
+test('react native : états doublés en aria-* pour react-native-web (case, interrupteur, radio, liste)', () => {
+  const tsx = compile(SPEC).files['react-native/noraivoire.tsx'];
+  // react-native-web ignore accessibilityState : sans aria-*, un contrôle décoché ou replié n'expose aucun état.
+  for (const [state, aria] of [
+    ['accessibilityState={{ checked, disabled: isDisabled }}', 'aria-checked={checked}'],
+    ['accessibilityState={{ checked }}', 'aria-checked={checked}'],
+    ['accessibilityState={{ disabled: isDisabled, expanded: open }}', 'aria-expanded={open}'],
+  ]) {
+    const at = [...tsx.matchAll(new RegExp(state.replace(/[{}]/g, '\\$&'), 'g'))].map((m) => m.index);
+    assert.ok(at.length > 0, state);
+    for (const i of at) assert.match(tsx.slice(i, i + state.length + 80), new RegExp(`\\n\\s*${aria.replace(/[{}]/g, '\\$&')}\\n`), state);
+  }
+  // Case, interrupteur, radio, option de la liste.
+  assert.equal(tsx.match(/aria-checked=\{checked\}/g).length, 4);
+});

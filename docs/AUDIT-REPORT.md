@@ -2,7 +2,7 @@
 
 **Version auditée :** 0.1.0 · **Date :** 14 octobre 2026 · **Périmètre :** dépôt complet
 **CI GitHub :** 10 jobs réussis le 14 octobre 2026 (Node 20 et 22, Flutter, Playwright, Symfony PHP 8.4 et 8.5, JSP/Tomcat, React Native types et rendu).
-**Méthode :** audit automatisé (`nora audit`, 90 contrôles), 203 tests node, 44 tests Flutter et 61 tests PHPUnit, 136 tests de rendu React Native (Jest), 14 tests JSP dans Tomcat, 98 tests Playwright (captures, axe-core, catalogue, vitrines), vérification TypeScript stricte, `npm audit`, revue manuelle du code.
+**Méthode :** audit automatisé (`nora audit`, 90 contrôles), 205 tests node, 44 tests Flutter et 61 tests PHPUnit, 136 tests de rendu React Native (Jest), 14 tests JSP dans Tomcat, 179 tests Playwright (captures, axe-core, recettes, catalogue, vitrines), vérification TypeScript stricte, `npm audit`, revue manuelle du code.
 © Jonathan KABLAN — Document confidentiel
 
 ## 1. Synthèse
@@ -27,7 +27,7 @@
 
 | Indicateur | Valeur |
 |---|---|
-| Tests | 203 / 203 réussis (node) · 136 / 136 (rendu React Native, Jest) · 44 / 44 (Flutter, dont 20 goldens) · 61 / 61 (PHPUnit, bundle Symfony) · 98 / 98 (Playwright : 12 captures, 4 axe-core, 2 sans JS, 2 legacy, 1 parité, 22 catalogue, 55 vitrines) · 14 / 14 (JSP dans Tomcat 11) |
+| Tests | 205 / 205 réussis (node) · 136 / 136 (rendu React Native, Jest) · 44 / 44 (Flutter, dont 20 goldens) · 61 / 61 (PHPUnit, bundle Symfony) · 179 / 179 (Playwright : 12 captures, 4 axe-core, 2 sans JS, 2 legacy, 1 parité, 81 recettes, 22 catalogue, 55 vitrines) · 14 / 14 (JSP dans Tomcat 11) |
 | Contrôles d'audit | 90 / 90 réussis |
 | Modèles validés par `nora check` | 13 fichiers + 20 recettes, 0 erreur, 0 avertissement |
 | Erreurs TypeScript (strict) sur le TSX généré | 0 |
@@ -66,6 +66,8 @@
 | A-15 | Faible | React Native : la coche `✓` d'une case cochée était lue par les lecteurs d'écran (nom « ✓ J'accepte ») ; `NoraTilt` s'abonnait au capteur d'orientation avant de connaître la préférence de mouvement réduit (lecture asynchrone, `false` par défaut) ; le modèle utilisait `SafeAreaView` du cœur, déprécié. | **Corrigé** — coche masquée (`importantForAccessibility="no"`, `accessibilityElementsHidden`) et nom explicite des cases, interrupteurs et radios ; `useMotionPreference()` (vrai / faux / inconnu) : capteur seulement une fois le mouvement confirmé autorisé ; modèle sur `View`, `SafeAreaView` de react-native-safe-area-context recommandé ; détectés par les tests de rendu (`tests/rn/`) |
 | A-16 | Faible | Contraste : un lien `.link` en ton `primary` (4,31:1) ou `warning` (4,33:1) sur `surface-2` reste sous 4,5:1 en thème clair (tous les tons passent sur `surface`). | **Corrigé** — `primary` clair `#C94A0B` → `#C1470B` (4,61:1 sur `surface-2`, 5,03:1 avec le texte blanc) et `warning` `#B35C00` → `#AC5800` (4,63:1), assombris de 4 % à teinte constante ; exception supprimée de `tests/unit/page.test.js` ; captures, goldens et parité régénérés |
 | A-17 | Faible | Flutter : `NoraNavbar` s'étirait sur toute la hauteur disponible (`Center` / `Align` sans `heightFactor`) et le menu partageait l'espace à 50/50 avec un `Spacer` au lieu de prendre sa largeur naturelle. | **Corrigé** — révélé par les goldens ; menu calé à droite dans un `Expanded`, comme `margin-inline-end: auto` en CSS |
+| A-18 | Faible | CSS : `.card` posait `display: block` dans `nora.components`, couche qui suit `nora.layout` ; une carte `.card.stack` (17 recettes) perdait la pile flex et son espacement : titre, formulaire et liens collés. Révélé par axe-core sur les recettes (`target-size` : lien isolé à 2 px du bouton dans `forgot-password.html`). | **Corrigé** — `display: block` seulement hors `.stack`, `.cluster` et `.grid-auto` (`:where()`, spécificité nulle conservée), standard et legacy ; 1 test node, 81 tests Playwright des recettes ; captures des recettes de la galerie régénérées. CSS seul : Flutter et React Native n'ont pas de primitive équivalente sur la carte |
+| A-19 | Moyenne | React Native sur le web : react-native-web ignore `accessibilityState` ; une case, un interrupteur ou une radio décochés et la liste déroulante repliée n'exposaient aucun état (`aria-checked`, `aria-expanded` absents, axe-core `aria-required-attr`, critique). iOS et Android n'étaient pas touchés. | **Corrigé** — props `aria-checked` / `aria-expanded` (React Native 0.71+) en plus d'`accessibilityState` ; révélé par `npm run test:templates` (axe-core sur chaque modèle lancé réellement) ; 1 test node, TypeScript strict (RN 0.81) et 136 tests de rendu inchangés |
 
 ## 4. Conditions avant commercialisation
 
