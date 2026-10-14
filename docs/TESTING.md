@@ -5,7 +5,7 @@ Version 0.1.0 · 14 octobre 2026 · © Jonathan KABLAN — Propriétaire
 ## 1. Commandes
 
 ```bash
-npm test                    # 193 tests (node:test, aucun framework)
+npm test                    # 194 tests (node:test, aucun framework)
 npm run test:rn             # 136 tests de rendu React Native (Jest + Testing Library, preset officiel RN)
 npm run audit:licenses      # licences de tout l'arbre npm : aucune licence copyleft ni dépendance runtime
 npm run test:visual         # 90 tests Playwright : 12 captures + axe-core + rendu sans JS + variante legacy + mesures de parité + catalogue + vitrines (navigateurs requis)

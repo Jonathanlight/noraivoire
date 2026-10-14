@@ -258,3 +258,9 @@ test('react native : NoraTilt n\'écoute le capteur qu\'une fois le mouvement co
   const tilt = tsx.slice(tsx.indexOf('export function NoraTilt'), tsx.indexOf('export type NoraRevealProps'));
   assert.match(tilt, /if \(motion !== false \|\| !noraConfig\.orientation\) return;/);
 });
+
+test('css : le libellé d\'un groupe n\'est estompé que si tous ses contrôles sont désactivés', () => {
+  const css = compile(SPEC).files['noraivoire.css'];
+  assert.ok(css.includes(':where(.field:has(:disabled):not(:has(:enabled))) > :where(.field-label)'));
+  assert.ok(!css.includes(':where(.field:has(:disabled)) > :where(.field-label)'));
+});

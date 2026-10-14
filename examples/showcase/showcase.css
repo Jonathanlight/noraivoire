@@ -148,9 +148,7 @@
     --textarea-radius: var(--brand-radius-control);
     font-family: var(--brand-font-body);
   }
-  /* Badge : ne pas s'étirer sans casser l'alignement dans une ligne flex (contournement local d'un
-     align-self: flex-start du framework, signalé). */
-  .badge { --badge-radius: var(--brand-radius-pill); align-self: auto; inline-size: fit-content; }
+  .badge { --badge-radius: var(--brand-radius-pill); }
 }
 
 /* ───────────────────────── 3. Briques d'interface ───────────────────────── */
@@ -620,9 +618,6 @@
   .sc-zoom-a img { object-position: 40% 60%; scale: 1.6; }
   .sc-zoom-b img { object-position: 70% 70%; scale: 2; }
   .sc-zoom-c img { object-position: 20% 30%; scale: 1.4; }
-  /* Groupe d'options dont UNE seule est indisponible : le libellé du groupe reste lisible
-     (contournement local de .field:has(:disabled) > .field-label du framework, signalé). */
-  .sc-options > .field-label { opacity: 1; }
   .sc-reassure { display: grid; gap: var(--brand-space-3); padding: var(--brand-space-4) 0 0; margin: 0; list-style: none; border-block-start: var(--brand-border-width) solid var(--brand-border); font-size: var(--brand-text-sm); }
   .sc-reassure li { display: flex; gap: var(--brand-space-3); align-items: center; color: var(--brand-muted); }
   .sc-reassure .sc-icon { color: var(--brand-ink); }

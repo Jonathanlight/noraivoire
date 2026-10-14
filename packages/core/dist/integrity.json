@@ -3,22 +3,22 @@
   "version": "0.1.0",
   "files": {
     "noraivoire.css": {
-      "sha256": "1c56eeb7aad990c557f8cca3169fc98eeb0c5834068f5d01dab6c7e5144db530",
-      "sri": "sha384-F3PwlStJTYmGOIDiP5V2Jm+xr1J6OKyZUwvxhSMRiM5ZYljJd2q8sAhYX1a3FVG4",
-      "bytes": 38154,
-      "gzip": 6879
+      "sha256": "d4940fc5e972196ae5c8a7b8eb4c5b00914cf59c4d26a201fada3fff92dfba73",
+      "sri": "sha384-qHFndoVMy2+0HzN6hk0PPoPU4rTWsmPfPFwBzvJT1TbWZGO5v2Wit7wjJBT5w/dH",
+      "bytes": 38151,
+      "gzip": 6880
     },
     "noraivoire.min.css": {
-      "sha256": "4fbb48bb6932dc75855ffa4685556a711530cde7f184079b60f62c959e01942a",
-      "sri": "sha384-rXkmTKumRZk4cGZPxAA2bfQE/3lm9mwK+GuopydNyxATKvgN1RVqPFuqrmAVYVYJ",
-      "bytes": 33431,
-      "gzip": 6463
+      "sha256": "0efb759ac2a08fb977c90ab5e2cc6379313fe3c34045e7bac1f406b869592077",
+      "sri": "sha384-yXxa7R/nyeiCZCsOZPofzCyDZXNq5t5PRRhcGQ15+BPbzE94uoiWH7uaRc4aBIMj",
+      "bytes": 33433,
+      "gzip": 6466
     },
     "noraivoire.legacy.min.css": {
-      "sha256": "73617a95af31af0d05226c02a611989c5cdd2a8ae9e40a5639e2f04dc443f904",
-      "sri": "sha384-kMiHXNEllWVaA6V2oO9QEBQWYYu1y8Y66zi4ThCzWT64NtdrKCk401Y+3HTVuu3z",
-      "bytes": 33184,
-      "gzip": 6372
+      "sha256": "f161abf687f6f66c6144b7636af7e7c685f388d57d3a83fcd4aff61e43b03e8c",
+      "sri": "sha384-MI3w9MdtUXfK3mV99Xy1sPqDGr437HkAlMnyDsXafrZW3adzDYH2wm4ZXbO0kHva",
+      "bytes": 33186,
+      "gzip": 6375
     },
     "noraivoire.engine.js": {
       "sha256": "0e3b958be6b32ef2669c64399689bbcf9e06ec64b793f2668a1c0e518eae3645",

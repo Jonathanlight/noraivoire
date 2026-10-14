@@ -187,8 +187,7 @@
     border-radius: var(--badge-radius);
     display: inline-flex;
     align-items: center;
-    align-self: flex-start;
-    justify-self: start;
+    inline-size: fit-content;
     font-weight: 600;
     line-height: 1;
     white-space: nowrap;
@@ -339,7 +338,7 @@
   :where(.field-help) { margin: 0; font-size: 0.875em; color: var(--field-muted); }
   :where(.field-error) { margin: 0; font-size: 0.875em; font-weight: 600; color: var(--field-invalid); }
   :where(.field-error:empty) { display: none; }
-  :where(.field:has(:disabled)) > :where(.field-label) { opacity: 0.5; }
+  :where(.field:has(:disabled):not(:has(:enabled))) > :where(.field-label) { opacity: 0.5; }
   :where(.input) {
     --input-bg: var(--nora-color-surface);
     --input-fg: var(--nora-color-text);

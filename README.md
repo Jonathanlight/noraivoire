@@ -112,7 +112,7 @@ npm run catalog:serve     # génère site/ puis l'ouvre sur http://127.0.0.1:417
 
 ```bash
 npm ci --ignore-scripts
-npm run verify        # build + 193 tests + validation des modèles + audit (90 contrôles)
+npm run verify        # build + 194 tests + validation des modèles + audit (90 contrôles)
 ```
 
 Commandes unitaires :
@@ -164,7 +164,7 @@ examples/showcase/    Vitrines corporate / SaaS re-thémables (themes/*.css, npm
 docs/gallery/         Captures de la galerie du README (générées)
 recipes/              20 écrans de référence indexés par intention (recipes/index.json)
 adapters/symfony-bundle/ Bundle Symfony : Twig Components Nora:*, enums PHP, AssetMapper, nora:check (npm run symfony:sync)
-tests/                193 tests node + 136 tests de rendu React Native (tests/rn, npm run test:rn)
+tests/                194 tests node + 136 tests de rendu React Native (tests/rn, npm run test:rn)
 docs/                 Documentation technique, portabilité, sécurité, audit, tests, licence
 PROMPT.md             Prompt complet pour poursuivre le projet avec un agent IA
 ```

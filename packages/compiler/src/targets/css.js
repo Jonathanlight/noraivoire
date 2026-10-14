@@ -246,7 +246,9 @@ function formRules(c, tokens, shape) {
       out.push(`  :where(.${n}-error) { margin: 0; font-size: 0.875em; font-weight: 600; color: ${invalidVar}; }`);
       out.push(`  :where(.${n}-error:empty) { display: none; }`);
     }
-    if (parts.has('label')) out.push(`  :where(.${n}:has(:disabled)) > :where(.${n}-label) { opacity: ${opacity}; }`);
+    // Libellé estompé seulement si TOUS les contrôles du groupe sont désactivés (une option
+    // indisponible dans un groupe ne doit pas rendre le libellé du groupe illisible).
+    if (parts.has('label')) out.push(`  :where(.${n}:has(:disabled):not(:has(:enabled))) > :where(.${n}-label) { opacity: ${opacity}; }`);
   }
   return out.join('\n');
 }
@@ -392,8 +394,9 @@ function componentRules(c, tokens) {
       `transition: background-color ${dur} ease, transform ${dur} ease;`,
     );
   } else if (shape === 'label') {
-    // align-self / justify-self : pas d'étirement dans une pile flex ou une grille (parité avec alignSelf RN).
-    decl.push('display: inline-flex;', 'align-items: center;', 'align-self: flex-start;', 'justify-self: start;', 'font-weight: 600;', 'line-height: 1;', 'white-space: nowrap;');
+    // inline-size: fit-content : pas d'étirement dans une pile flex ou une grille (parité avec
+    // alignSelf RN), sans forcer l'alignement en haut dans une ligne flex (align-self reste auto).
+    decl.push('display: inline-flex;', 'align-items: center;', 'inline-size: fit-content;', 'font-weight: 600;', 'line-height: 1;', 'white-space: nowrap;');
   } else {
     decl.push('display: block;');
     if (c.tokens.border) decl.push(`border: 1px solid var(--${n}-border);`);

@@ -34,6 +34,7 @@
 - Tests de rendu React Native (`tests/rn/`, `npm run test:rn`, job CI `react-native-render`) : Jest 29 + preset officiel React Native 0.87 + Testing Library 14, dépendances de dev en versions exactes ; 94 tests (styles conformes à `tests/parity/rn.json`, rôles et états accessibles, `NoraField`, `NoraSelect` en modale, mouvement réduit, `configureNora`, modèle `App.tsx`). Contrôle des licences de tout l'arbre npm (`npm run audit:licenses`).
 - React Native (constat A-15) : coche décorative de `NoraCheckbox` masquée aux lecteurs d'écran et nom accessible explicite des cases, interrupteurs et radios ; `useMotionPreference()` : `NoraTilt` n'écoute plus le capteur avant de connaître la préférence de mouvement réduit ; modèle sans `SafeAreaView` déprécié. 2 tests node.
 - Flutter / CI : goldens par plateforme (`test/goldens/{macos,linux}/`) au lieu d'une tolérance élargie, Flutter 3.47.7 figé en CI, workflow manuel `goldens` qui produit les références Linux.
+- CSS : badge en `inline-size: fit-content` (plus d'`align-self: flex-start` qui le collait en haut dans une ligne flex) ; libellé d'un `field` estompé seulement si tous ses contrôles sont désactivés. Contournements des vitrines retirés, rendu identique. 1 test.
 
 ## 0.1.0 — 14 octobre 2026
 

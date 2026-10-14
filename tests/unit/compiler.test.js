@@ -206,8 +206,9 @@ test('sécurité : une description multi-ligne ne peut pas injecter de code nati
 test('css : une étiquette (badge) ne s\'étire pas dans une pile flex (parité RN alignSelf)', () => {
   const { files } = compile(SPEC);
   const badge = files['noraivoire.css'].match(/:where\(\.badge\) \{[^}]*\}/)[0];
-  assert.match(badge, /align-self: flex-start;/);
-  assert.match(badge, /justify-self: start;/);
+  assert.match(badge, /inline-size: fit-content;/);
+  // Pas d'align-self forcé : dans une ligne flex, le badge reste aligné par son conteneur.
+  assert.doesNotMatch(badge, /align-self/);
   assert.match(files['react-native/noraivoire.tsx'], /alignSelf: 'flex-start'/);
 });
 
