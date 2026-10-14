@@ -1,0 +1,23 @@
+{
+  "name": "@noraivoire/example-vue",
+  "version": "0.1.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "description": "NoraIvoire — exemple Vue 3 (Vite) lançable, à partir de templates/vue. Propriétaire.",
+  "author": "Jonathan KABLAN",
+  "type": "module",
+  "scripts": {
+    "sync": "node tool/sync.mjs",
+    "dev": "node tool/sync.mjs && vite",
+    "build": "node tool/sync.mjs && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@noraivoire/core": "file:../../packages/core",
+    "vue": "3.5.43"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "6.0.9",
+    "vite": "8.3.1"
+  }
+}

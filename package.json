@@ -20,6 +20,7 @@
     "audit:security": "node packages/cli/src/cli.js audit",
     "flutter:sync": "node examples/flutter_app/tool/sync.mjs",
     "jsp:sync": "node examples/jsp-app/tool/sync.mjs",
+    "jsp:serve": "node examples/jsp-app/tool/serve.mjs",
     "symfony:sync": "node adapters/symfony-bundle/tool/sync.mjs",
     "verify": "npm run build && npm test && npm run check && npm run audit:security",
     "bench": "node bench/run.js",
@@ -32,7 +33,8 @@
     "audit:licenses": "node tests/rn/check-licenses.mjs",
     "catalog": "node tools/catalog/build.mjs",
     "catalog:serve": "node tools/catalog/serve.mjs --build",
-    "catalog:shots": "node tools/catalog/shoot.mjs"
+    "catalog:shots": "node tools/catalog/shoot.mjs",
+    "gallery": "node tests/gallery/run.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.13.0",

@@ -1,0 +1,24 @@
+{
+  "name": "@noraivoire/example-react",
+  "version": "0.1.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "description": "NoraIvoire — exemple React (Vite) lançable, à partir de templates/react. Propriétaire.",
+  "author": "Jonathan KABLAN",
+  "type": "module",
+  "scripts": {
+    "sync": "node tool/sync.mjs",
+    "dev": "node tool/sync.mjs && vite",
+    "build": "node tool/sync.mjs && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@noraivoire/core": "file:../../packages/core",
+    "react": "19.3.0",
+    "react-dom": "19.3.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "6.1.1",
+    "vite": "8.3.1"
+  }
+}

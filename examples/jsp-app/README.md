@@ -8,6 +8,7 @@ Application web minimale (WAR éclaté, sans Maven ni Gradle) qui exécute réel
 npm run build
 npm run jsp:sync     # assemble examples/jsp-app/build/ROOT/ (non versionné)
 npm run test:jsp     # démarre Tomcat, vérifie le rendu réel, arrête Tomcat
+npm run jsp:serve    # garde Tomcat lancé pour essayer la page (Ctrl+C pour arrêter)
 ```
 
 ## Contenu
