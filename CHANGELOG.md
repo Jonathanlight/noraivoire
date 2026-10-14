@@ -2,6 +2,7 @@
 
 ## Non publié
 
+- Catalogue des composants (`tools/catalog/`, `npm run catalog`, `npm run catalog:serve`) : site statique façon Bootstrap / Tailwind généré depuis le manifest — fondations (nuancier clair / sombre avec contrastes, espacements, rayons, typographie, durées), une page par composant (tons × tailles, états, tokens surchargeables, accessibilité, code HTML / React / Vue / Twig / Flutter / React Native à copier), une page par effet, utilitaires et mise en page ; bascule de thème, filtre, onglets au clavier, CSP stricte (aucun JS inline). Captures dans `docs/catalog/` et section « Catalogue des composants » du README. 9 tests node, 14 tests Playwright.
 - JSP (constat A-14 levé) : modèles exécutés réellement dans Tomcat 11 (`examples/jsp-app/`, `npm run jsp:sync`, `npm run test:jsp`, job CI `jsp` avec Tomcat vérifié par SHA-512) ; le tag `<nora:btn>` refuse désormais `/\hôte` et accepte `type="reset"`, comme les Twig Components. 14 tests Tomcat, 3 tests node.
 - Dépôt : ajout de `.npmrc` (`ignore-scripts=true`), `.gitignore` et `.github/workflows/ci.yml` (jobs `verify`, `flutter`, `react-native-types`).
 - Benchmark IA (`bench/`) : 50 tâches UI, interrogation de plusieurs modèles avec et sans `llms-full.txt`, score `nora check`, rapport Markdown ; mode `--dry-run` sans réseau, clés en variables d'environnement uniquement ; 13 tests.

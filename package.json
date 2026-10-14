@@ -29,7 +29,10 @@
     "parity:update": "node tests/parity/update.mjs",
     "test:jsp": "node --test --test-concurrency=1 tests/jsp/run.mjs",
     "test:rn": "jest -c tests/rn/jest.config.cjs",
-    "audit:licenses": "node tests/rn/check-licenses.mjs"
+    "audit:licenses": "node tests/rn/check-licenses.mjs",
+    "catalog": "node tools/catalog/build.mjs",
+    "catalog:serve": "node tools/catalog/serve.mjs --build",
+    "catalog:shots": "node tools/catalog/shoot.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.13.0",

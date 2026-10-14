@@ -13,11 +13,25 @@ NoraIvoire est un langage de design universel. Une **spec** (tokens, composants,
 
 **Logiciel propriétaire — © 2026 Jonathan KABLAN — tous droits réservés.** Voir [LICENSE](LICENSE).
 
+## Catalogue des composants
+
+Toutes les fondations (couleurs clair/sombre et contrastes, espacements, rayons, typographie), chaque composant (tons × tailles, états, tokens, accessibilité, code HTML / React / Vue / Twig / Flutter / React Native à copier), chaque effet et chaque utilitaire, sur un site statique **généré depuis le manifest** — à la manière de la documentation Bootstrap ou Tailwind.
+
+```bash
+npm run catalog:serve     # génère site/ puis l'ouvre sur http://127.0.0.1:4174/site/index.html
+```
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/catalog/composant-btn-dark.png">
+  <img src="docs/catalog/composant-btn-light.png" alt="Page « btn » du catalogue : onglets de code par framework, boutons dans les cinq tons, code HTML associé." width="640">
+</picture>
+<img src="docs/catalog/index-light.png" alt="Accueil du catalogue : principes, composants, nuancier." width="640">
+
 ## Démarrage
 
 ```bash
 npm ci --ignore-scripts
-npm run verify        # build + 162 tests + validation des modèles + audit (86 contrôles)
+npm run verify        # build + 171 tests + validation des modèles + audit (86 contrôles)
 ```
 
 Commandes unitaires :
@@ -66,7 +80,7 @@ examples/flutter_app/ Projet Flutter : analyse et golden tests du Dart généré
 examples/jsp-app/     Application JSP : modèles exécutés dans Tomcat (npm run jsp:sync, npm run test:jsp)
 recipes/              20 écrans de référence indexés par intention (recipes/index.json)
 adapters/symfony-bundle/ Bundle Symfony : Twig Components Nora:*, enums PHP, AssetMapper, nora:check (npm run symfony:sync)
-tests/                162 tests node + 94 tests de rendu React Native (tests/rn, npm run test:rn)
+tests/                171 tests node + 94 tests de rendu React Native (tests/rn, npm run test:rn)
 docs/                 Documentation technique, portabilité, sécurité, audit, tests, licence
 PROMPT.md             Prompt complet pour poursuivre le projet avec un agent IA
 ```

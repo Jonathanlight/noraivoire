@@ -351,6 +351,28 @@ Index `recipes/index.json`, lu par l'outil MCP `nora_recipe` :
 
 Les formulaires utilisent les composants `field` (avec `.field-label`, `.field-help`, `.field-error`), `input`, `select`, `textarea`, `checkbox` et `switch` ; `forgot-password.html` montre l'état invalide (`aria-invalid="true"` relié au message par `aria-describedby`). Les boutons radio restent natifs (aucun composant `radio` dans le manifest), groupés et étiquetés.
 
+### 7.4 Catalogue des composants (`tools/catalog/`)
+
+Site statique façon documentation Bootstrap / Tailwind, **généré depuis `packages/core/dist/manifest.json`** par `tools/catalog/build.mjs` (Node, sans dépendance) ; aucune liste de composants codée en dur : un composant ajouté à la spec obtient sa page au prochain build.
+
+```bash
+npm run catalog          # génère site/ (non versionné)
+npm run catalog:serve    # génère puis sert site/ sur http://127.0.0.1:4174/site/index.html
+npm run catalog:shots    # captures du README dans docs/catalog/ (Playwright ; oxipng si présent)
+```
+
+| Page | Contenu |
+|---|---|
+| `index.html` (Fondations) | Grammaire du manifest, liste des composants, nuancier clair / sombre avec contraste calculé, espacements, rayons, typographie, durées (valeurs lues dans `noraivoire.css`) |
+| `composant-<nom>.html` | Description ; onglets d'usage HTML / React (JSX) / Vue / Twig / Flutter / React Native ; exemples en direct (tons × tailles, états invalide et désactivé, parties) ; tokens surchargeables avec exemple de surcharge ; table d'accessibilité |
+| `effet-<nom>.html` | Démonstration interactive, chargement du paquet optionnel le cas échéant, options et bornes, comportement en mouvement réduit, mise en œuvre par cible |
+| `utilitaires.html`, `mise-en-page.html` | Chaque utilitaire et primitive de mise en page du manifest, démontré |
+
+- **Exemples dérivés de la forme** (`shape`) et du rôle d'accessibilité du composant (interactif, étiquette, conteneur, contrôle, case / interrupteur / radio, groupe) ; le même fragment HTML, mis en forme par `prettify()`, est **rendu et affiché** (vérifié par test).
+- **CSP stricte** : aucun script ni style inline ; `assets/catalog.js` (thème, filtre, onglets, copie, démonstration du focus, moteur et paquets d'effets via `assets/catalog-fx.js` généré) construit le DOM par `createElement` / `textContent`. Amélioration progressive : sans JS, les onglets sont déroulés et les boutons propres au JS masqués.
+- **Thème** : bascule système → clair → sombre par `data-theme` sur `<html>` (mécanisme existant de la CSS) ; préférence mémorisée dans `localStorage` si disponible (dans un `try`).
+- **Habillage** : `assets/catalog.css` (généré) dans `@layer catalog`, déclaré après les couches `nora.*` ; les démonstrations d'utilitaires utilisent des classes neutres (`.cat-demo`) pour que seul l'utilitaire agisse.
+
 ## 8. Ajouter un composant
 
 1. Créer `spec/components/<nom>.nora.json`.
