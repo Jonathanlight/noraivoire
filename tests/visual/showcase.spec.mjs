@@ -37,6 +37,20 @@ for (const name of PAGES) {
     });
   }
 
+  test(`vitrine ${name} : contraste AA avec chaque charte (clair et sombre)`, async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    const failures = [];
+    for (const charte of CHARTES.filter((c) => c !== 'saas')) {
+      for (const colorScheme of ['light', 'dark']) {
+        await page.emulateMedia({ colorScheme, reducedMotion: 'reduce' });
+        await open(page, url(name, charte));
+        const { violations } = await new AxeBuilder({ page }).withRules(['color-contrast']).analyze();
+        if (violations.length) failures.push(`[${charte} · ${colorScheme}]\n${describe(violations)}`);
+      }
+    }
+    expect(failures, failures.join('\n')).toEqual([]);
+  });
+
   test(`vitrine ${name} : aucun débordement horizontal à 375 px`, async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 800 });
     await open(page, url(name));

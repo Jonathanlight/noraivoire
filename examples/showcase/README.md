@@ -44,6 +44,7 @@ Une charte définit deux familles de variables :
 |---|---|---|
 | `--brand-accent` / `--brand-accent-contrast` | Couleur d'accent et texte posé dessus | `--nora-color-primary` / `--nora-color-on-primary` |
 | `--brand-accent-2` | Second accent (dégradés, séries de graphiques) | `--nora-color-focus` |
+| `--brand-accent-text` | Accent appliqué au texte (surtitres, numéros, liens, menu actif) — à assombrir si l'accent passe sous 4,5:1 sur `--brand-surface-2` ou `--brand-accent-soft` (le test `contraste AA avec chaque charte` le signale) | `--brand-accent` |
 | `--brand-accent-soft`, `--brand-accent-line` | Fond teinté et bordure teintée (tuiles d'icônes, sélection) | mélanges de l'accent |
 | `--brand-ink`, `--brand-text`, `--brand-muted` | Titres, texte courant, texte secondaire | `--nora-color-text`, `--nora-color-text-muted` |
 | `--brand-canvas`, `--brand-surface`, `--brand-surface-2`, `--brand-border` | Fond de page, cartes, sections alternées, bordures | `--nora-color-surface*`, `--nora-color-border` |

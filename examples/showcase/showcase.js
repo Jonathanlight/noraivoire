@@ -6,12 +6,12 @@
 
 import * as nora from '../../packages/core/dist/noraivoire.engine.js';
 
-/** Chartes disponibles : nom (paramètre ?charte=) → feuille de variables (null = tokens du framework). */
+/** Chartes disponibles : nom (paramètre ?charte=) → feuille de variables (noraivoire = tokens du framework). */
 export const CHARTES = Object.freeze({
   saas: 'themes/saas.css',
   corporate: 'themes/corporate.css',
   nature: 'themes/nature.css',
-  noraivoire: null,
+  noraivoire: 'themes/noraivoire.css',
 });
 const DEFAULT_CHARTE = 'saas';
 

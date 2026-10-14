@@ -18,6 +18,9 @@
     /* Couleurs */
     --brand-accent: var(--nora-color-primary);
     --brand-accent-contrast: var(--nora-color-on-primary);
+    /* Accent appliqué au TEXTE (surtitres, numéros, liens, menu actif) : à assombrir dans la charte
+       si l'accent passe sous 4,5:1 sur --brand-surface-2 ou --brand-accent-soft. */
+    --brand-accent-text: var(--brand-accent);
     --brand-accent-2: var(--nora-color-focus);
     --brand-accent-soft: color-mix(in srgb, var(--brand-accent) 11%, var(--brand-surface));
     --brand-accent-line: color-mix(in srgb, var(--brand-accent) 28%, var(--brand-border));
@@ -153,6 +156,9 @@
 
 /* ───────────────────────── 3. Briques d'interface ───────────────────────── */
 @layer app.ui {
+  /* Liens du framework au ton par défaut : même accent lisible que le texte de la charte. */
+  :where(.link:not([data-tone])) { --link-fg: var(--brand-accent-text); }
+
   .sc-skip {
     position: absolute;
     inset-inline-start: var(--brand-space-4);
@@ -174,7 +180,7 @@
     font-weight: 650;
     letter-spacing: 0.09em;
     text-transform: uppercase;
-    color: var(--brand-accent);
+    color: var(--brand-accent-text);
   }
   .sc-display { font-size: var(--brand-text-4xl); }
   .sc-title { font-size: var(--brand-text-3xl); }
@@ -218,7 +224,7 @@
     block-size: 2.75rem;
     border-radius: var(--brand-radius-md);
     background: var(--brand-accent-soft);
-    color: var(--brand-accent);
+    color: var(--brand-accent-text);
     border: var(--brand-border-width) solid var(--brand-accent-line);
   }
 
@@ -638,7 +644,7 @@
   .sc-side-title { padding-inline: var(--brand-space-3); font-size: var(--brand-text-xs); font-weight: 650; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brand-muted); }
   .sc-side nav a { display: flex; align-items: center; gap: var(--brand-space-3); min-block-size: var(--brand-target); padding-inline: var(--brand-space-3); border-radius: var(--brand-radius-md); color: var(--brand-muted); font-size: var(--brand-text-sm); font-weight: 550; text-decoration: none; }
   .sc-side nav a:hover { background: var(--brand-surface-2); color: var(--brand-ink); }
-  .sc-side nav a[aria-current="page"] { background: var(--brand-accent-soft); color: var(--brand-accent); }
+  .sc-side nav a[aria-current="page"] { background: var(--brand-accent-soft); color: var(--brand-accent-text); }
   .sc-side nav a .badge { margin-inline-start: auto; }
   .sc-upgrade { margin-block-start: auto; position: relative; overflow: hidden; border-radius: var(--brand-radius-lg); }
   .sc-upgrade .sc-photo { position: absolute; inset: 0; border-radius: 0; }
@@ -712,7 +718,7 @@
   .sc-scrub-bar { block-size: 0.25rem; border-radius: var(--brand-radius-pill); background: var(--brand-surface-2); overflow: hidden; }
   .sc-scrub-bar i { display: block; block-size: 100%; background: var(--brand-gradient); transform-origin: left center; transform: scaleX(var(--fx-progress, 1)); }
   .sc-step { display: grid; gap: var(--brand-space-3); padding: var(--brand-space-8) 0; border-block-start: var(--brand-border-width) solid var(--brand-border); }
-  .sc-step-num { font-family: var(--brand-font-mono); font-size: var(--brand-text-sm); color: var(--brand-accent); }
+  .sc-step-num { font-family: var(--brand-font-mono); font-size: var(--brand-text-sm); color: var(--brand-accent-text); }
   @media (max-width: 52rem) { .sc-pinned { grid-template-columns: 1fr; } }
 
   .sc-big-quote { display: grid; justify-items: center; gap: var(--brand-space-6); margin-block: 0; text-align: center; }

@@ -48,8 +48,8 @@ test('vitrines : le test de couleur détecte bien une valeur en dur (contre-épr
 });
 
 test('vitrines : chaque charte ne contient que des variables, en clair et en sombre', () => {
-  assert.deepEqual(THEMES.sort(), ['corporate.css', 'nature.css', 'saas.css']);
-  for (const theme of THEMES) {
+  assert.deepEqual(THEMES.sort(), ['corporate.css', 'nature.css', 'noraivoire.css', 'saas.css']);
+  for (const theme of THEMES.filter((t) => t !== 'noraivoire.css')) {
     const css = stripCssComments(read('themes', theme));
     const props = [...css.matchAll(/([\w-]+)\s*:\s*[^;{}]+;/g)].map((m) => m[1]);
     assert.ok(props.length > 20, theme);
@@ -58,6 +58,11 @@ test('vitrines : chaque charte ne contient que des variables, en clair et en som
     assert.match(css, /:root\[data-theme="dark"\]/, `${theme} : pas de variante sombre forcée`);
     assert.match(css, /@layer app\.theme/, `${theme} : hors de la couche app.theme`);
   }
+  // La charte NoraIvoire garde les tokens du framework : seulement des --brand-*, sans --nora-*.
+  const nora = stripCssComments(read('themes', 'noraivoire.css'));
+  const noraProps = [...nora.matchAll(/([\w-]+)\s*:\s*[^;{}]+;/g)].map((m) => m[1]);
+  assert.deepEqual(noraProps, ['--brand-accent-text'], 'noraivoire.css ne doit corriger que le texte en accent');
+  assert.match(nora, /@layer app\.theme/);
   // showcase.js connaît exactement ces chartes.
   const js = read('showcase.js');
   for (const theme of THEMES) assert.ok(js.includes(`themes/${theme}`), `showcase.js ne référence pas ${theme}`);
