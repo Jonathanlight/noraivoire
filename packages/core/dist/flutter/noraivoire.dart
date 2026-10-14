@@ -1228,6 +1228,7 @@ class NoraNavbar extends StatelessWidget {
             child: Align(
               alignment: AlignmentDirectional.centerStart,
               widthFactor: 1,
+              heightFactor: 1,
               child: DefaultTextStyle.merge(
                 style: TextStyle(color: fg, fontSize: fontSize * 1.125, fontWeight: FontWeight.w700),
                 child: brandWidget,
@@ -1262,11 +1263,13 @@ class NoraNavbar extends StatelessWidget {
                       ],
                     );
                   }
+                  // Marque à gauche (margin-inline-end: auto en CSS) : le menu prend sa largeur naturelle,
+                  // calé à droite, et ne défile que s'il manque de place.
                   return Row(
                     children: [
                       brandBox,
-                      const Spacer(),
-                      Flexible(child: menu),
+                      SizedBox(width: padX),
+                      Expanded(child: Align(alignment: AlignmentDirectional.centerEnd, heightFactor: 1, child: menu)),
                       SizedBox(width: padX),
                       actionBar,
                     ],
@@ -1333,6 +1336,7 @@ class _NoraNavbarLinkState extends State<_NoraNavbarLink> {
               padding: EdgeInsets.symmetric(horizontal: widget.fontSize * 0.75),
               child: Center(
                 widthFactor: 1,
+                heightFactor: 1,
                 child: Text(
                   item.label,
                   style: TextStyle(color: color, fontWeight: item.current ? FontWeight.w600 : FontWeight.w500),
