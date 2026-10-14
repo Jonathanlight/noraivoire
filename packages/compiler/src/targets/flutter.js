@@ -7,6 +7,7 @@
 import { resolveRef, camel, pascal, quote, docComment } from '../resolve.js';
 import { shapeFromRole } from '../validate.js';
 import { header } from '../header.js';
+import { pageWidget } from './flutter-page.js';
 
 const dartColor = (hex) => {
   const h = hex.replace('#', '').toUpperCase();
@@ -991,7 +992,7 @@ export function buildFlutter(model, meta) {
     if (shape === 'control') return controlWidget(c, model.tokens);
     if (shape === 'toggle') return c.a11y.role === 'radio' ? radioWidget(c, model.tokens) : toggleWidget(c, model.tokens);
     if (shape === 'group') return fieldWidget(c, model.tokens);
-    return staticWidget(c, model.tokens, shape);
+    return pageWidget(c, model.tokens, shape) ?? staticWidget(c, model.tokens, shape);
   });
   const hasForms = model.components.some((c) => ['control', 'toggle', 'group'].includes(shapeFromRole(c)));
   if (hasForms) widgets.push(FIELD_SCOPE);

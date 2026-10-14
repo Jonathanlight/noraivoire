@@ -6,7 +6,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
-  buildCatalog, distAssets, readTokenValues, contrast, prettify, toJsx, escapeHtml,
+  buildCatalog, distAssets, IMAGES, readTokenValues, contrast, prettify, toJsx, escapeHtml,
   pageOfComponent, pageOfEffect,
 } from '../../tools/catalog/build.mjs';
 import { checkSource } from '../../packages/cli/src/check.js';
@@ -69,8 +69,9 @@ test('catalogue : chaque page passe nora check sans erreur ni avertissement', ()
 });
 
 test('catalogue : liens internes et ressources valides', () => {
-  const assets = new Set([...Object.keys(files), ...distAssets(manifest).map((a) => `assets/${a}`), 'assets/catalog.js']);
+  const assets = new Set([...Object.keys(files), ...distAssets(manifest).map((a) => `assets/${a}`), 'assets/catalog.js', ...IMAGES.map((i) => `assets/img/${i}`)]);
   for (const a of distAssets(manifest)) assert.ok(existsSync(join(DIST, a)), `dist/${a}`);
+  for (const i of IMAGES) assert.ok(existsSync(join(root, 'tools', 'catalog', 'assets', i)), `tools/catalog/assets/${i}`);
   for (const [f, html] of pages) {
     const live = html.replace(/<pre[\s\S]*?<\/pre>/g, '');
     for (const [, href] of live.matchAll(/\s(?:href|src)="([^"#]+)(#[^"]*)?"/g)) {

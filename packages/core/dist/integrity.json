@@ -3,22 +3,22 @@
   "version": "0.1.0",
   "files": {
     "noraivoire.css": {
-      "sha256": "dca00edbfe726831f197a03d4036a3982dc527d77a53fa3bd8d902e8927c4808",
-      "sri": "sha384-Fu4QSpF+MToZ15IwU2/OXQf62BJe8eSx7GttU1qrc0uaGbImjA5cwFmFP3bdXXIs",
-      "bytes": 29537,
-      "gzip": 5450
+      "sha256": "1c56eeb7aad990c557f8cca3169fc98eeb0c5834068f5d01dab6c7e5144db530",
+      "sri": "sha384-F3PwlStJTYmGOIDiP5V2Jm+xr1J6OKyZUwvxhSMRiM5ZYljJd2q8sAhYX1a3FVG4",
+      "bytes": 38154,
+      "gzip": 6879
     },
     "noraivoire.min.css": {
-      "sha256": "0e89e984010394b9d5e6c8eeef3445246b95d0a105855c32409cddd247cdc18a",
-      "sri": "sha384-37Y63GryezOVn15R/iFsuNRECtcNumo+xzZ9pGjAfz5tCtWKa7XZJlg0JwSrsY7X",
-      "bytes": 25866,
-      "gzip": 5120
+      "sha256": "4fbb48bb6932dc75855ffa4685556a711530cde7f184079b60f62c959e01942a",
+      "sri": "sha384-rXkmTKumRZk4cGZPxAA2bfQE/3lm9mwK+GuopydNyxATKvgN1RVqPFuqrmAVYVYJ",
+      "bytes": 33431,
+      "gzip": 6463
     },
     "noraivoire.legacy.min.css": {
-      "sha256": "0160ea6d3340eafb076207bd97644de4cb6a9959e15ea493977671d3f0bd3ae6",
-      "sri": "sha384-sw0Ks+CMGXXCWbY/LXmLElvyhHoST+AGVRJfi48BkSRPvcovCFaFYDOPTTEQzihc",
-      "bytes": 25619,
-      "gzip": 5029
+      "sha256": "73617a95af31af0d05226c02a611989c5cdd2a8ae9e40a5639e2f04dc443f904",
+      "sri": "sha384-kMiHXNEllWVaA6V2oO9QEBQWYYu1y8Y66zi4ThCzWT64NtdrKCk401Y+3HTVuu3z",
+      "bytes": 33184,
+      "gzip": 6372
     },
     "noraivoire.engine.js": {
       "sha256": "0e3b958be6b32ef2669c64399689bbcf9e06ec64b793f2668a1c0e518eae3645",
@@ -39,28 +39,28 @@
       "gzip": 658
     },
     "noraivoire.types.ts": {
-      "sha256": "b9aa3577a233825cfa79aa71a34a3ec09191b8aadd5cf195a3fe961a712463d3",
-      "sri": "sha384-wCa/kXt4VTIZ/OFIYTIEy17Nrv3DMs1XCzFa2MoR2GDCTROSieVtBMdb7OlCYBE5",
-      "bytes": 2000,
-      "gzip": 930
+      "sha256": "b94687df32e4850bbb7b8e4fc89b97f26a77da981d072ae4bd3a91f839a49a6c",
+      "sri": "sha384-hX8Nc7hnJONeem2tfHG24mEsPIXXJuh2jxIs8bnzjYjKMq2zsLFn7aaYRZnqBIzb",
+      "bytes": 2087,
+      "gzip": 968
     },
     "flutter/noraivoire.dart": {
-      "sha256": "7d09534535640ecb22201af0a4309bed3ff74c9d2c536e0c477475cd1d5e8d49",
-      "sri": "sha384-pfBLPjgpcytJ4etByigqVBcpwLmEKhv07Ts81UqzkiXt4V2FTtX/P51KJ4IagoXn",
-      "bytes": 45195,
-      "gzip": 8166
+      "sha256": "77bd899dad3fd1c533c8cf71f2bab58af38fcc9d8df227529b2c2a1f3a5bcd6e",
+      "sri": "sha384-MvRBzO/DhfxqZxiqNja5VVIuukd2oWbv4cQUnd7iUOp/vIstKxD0ecA+3Bgx9dOr",
+      "bytes": 64230,
+      "gzip": 12127
     },
     "react-native/noraivoire.tsx": {
-      "sha256": "870cb3dfedb9beab1008d68e92ddc60436c5f9197f5e12792a05f59ffb6be088",
-      "sri": "sha384-0QAEOsh5Npu+/Ip2Ub9uckA1AZiQjiq+aWdL/3Robnm83wTqrvTdpB5+PbfgKUID",
-      "bytes": 38946,
-      "gzip": 7961
+      "sha256": "db2eb0611fe356c24ef9412cf0d9eed121aba1414466162ef2792744fcf535a6",
+      "sri": "sha384-agy7qVuCqrXBDsZNjN+9I0mMmXY/T0WBMxnENdm9w9mN4zWcWKaraCeGFmraQIoz",
+      "bytes": 53212,
+      "gzip": 11167
     },
     "symfony/src/NoraManifest.php": {
-      "sha256": "f136097239f0b86af8a3ffdf1ba5d3cf0d9942fa27d1fb5292d02ea2f7f8f8ef",
-      "sri": "sha384-DqPVSz25in35JAD6ajEr2x1A8Je8iwMfHIdkT+QBeRepm4G4V3k5mNDVU8rUGBcM",
-      "bytes": 4463,
-      "gzip": 1077
+      "sha256": "08f6635a31d3280bedbf3c5a84fc3e182fe11bbd3fe43985df75ceeea3396af1",
+      "sri": "sha384-DVUZZZ2igPvSUqVq36kcSDoZ5msljRiwgQhmc/cEyv36tZqjNleICTsoIhSSnelw",
+      "bytes": 6061,
+      "gzip": 1242
     },
     "symfony/src/Enum/NoraTone.php": {
       "sha256": "34df4a2e3369ce410e10e0db1c67d97f806509cafc4e0676a796f663cf7c8219",
@@ -69,16 +69,22 @@
       "gzip": 616
     },
     "symfony/src/Enum/NoraSize.php": {
-      "sha256": "11e6734dd4a5e6ce2bb28c9b2ea73bb30d814282f1ce45c5c8d0135756548746",
-      "sri": "sha384-Brzd7k8+P7ryubawb0wb9KfmJhBywAIAY9e8Oxkv2NmysYNf8qGj7ZnHv+mG2l6U",
-      "bytes": 967,
-      "gzip": 590
+      "sha256": "535df640752998bf864e85d2a9dd0bfaf805ff224cd8f21632e3093a89d7f667",
+      "sri": "sha384-6S47R+Y0DkzJiNbaHRO3X1I9DOjcSY0V1p1aOIRR4hx6BDGDQnY9B7xG5sqoPhkH",
+      "bytes": 1083,
+      "gzip": 632
     },
     "symfony/src/Enum/NoraComponent.php": {
-      "sha256": "044976168f54ffa7bae1f21395ed9b0c4885b8216f9ec3ec93dabc7f60da8c45",
-      "sri": "sha384-2e0rDAyCWHtnoTZkX/WtoswKjU+fzD7DcDCkTkVqyaegyIxmXQs2Iovf4a6Qmf0H",
-      "bytes": 841,
-      "gzip": 502
+      "sha256": "c37dcbf4bb9cdf41f17c874199dfe32dc6557b740847fec79e72211d1b0dc9d0",
+      "sri": "sha384-+e14ZlOrcezp2gfdv0JtT8wIxhehxpO7wM2O6McHAZXK+yP1jm0PdVuAXxDIrzL/",
+      "bytes": 947,
+      "gzip": 537
+    },
+    "symfony/templates/components/Nora/Avatar.html.twig": {
+      "sha256": "aa2057e14e64d9089a32fcb06fee205fbfde1165ab826f6520b621e0c852c79d",
+      "sri": "sha384-f+wkd+QyfkabSyLvtWbBAAHpD0QViBWlZdWyMOv06rRfzgZJw/9GROg9r2A9bcG1",
+      "bytes": 1048,
+      "gzip": 577
     },
     "symfony/templates/components/Nora/Badge.html.twig": {
       "sha256": "f7b8d9fa1d9ed77b2b38c18e7d158327bd8f208e31db4ae4e4795ec15ce98848",
@@ -116,6 +122,24 @@
       "bytes": 769,
       "gzip": 484
     },
+    "symfony/templates/components/Nora/Link.html.twig": {
+      "sha256": "095c71574352569c89015a9a4ab9c11ab465ae68bcf199cc04d0f08c1dea1f0e",
+      "sri": "sha384-KZjgYQLWlUfwKcBjU5uv2tOwIvNihsopf6fOYeZc0rdvstBxCOXbbHa78wv8qp3v",
+      "bytes": 1253,
+      "gzip": 658
+    },
+    "symfony/templates/components/Nora/Media.html.twig": {
+      "sha256": "2c8fbf2427e843caa3bd432d966c4c2ea6954ce12b96d02be99c212e6b06f86e",
+      "sri": "sha384-QBqIBB5wCa69n1fWBhMgXplRagtNZTCwbKcA9DlV7dxkZBBJEL9JJG8zuZ7Q5Sre",
+      "bytes": 1072,
+      "gzip": 584
+    },
+    "symfony/templates/components/Nora/Navbar.html.twig": {
+      "sha256": "eb42ff4e0175335ae0f8e94c780471255a868fa894de51787fa5bb6bf872ebc4",
+      "sri": "sha384-2KQba8lDpa3knss3cGp9iauMebdQmjjaP4oCMB8TmGM61e0VI2LWrndYA5HeZ1WK",
+      "bytes": 809,
+      "gzip": 510
+    },
     "symfony/templates/components/Nora/Radio.html.twig": {
       "sha256": "bbf5a772cae54a5c9bf1ab982e5bafecb223b636a887a422e232275f10ac20ae",
       "sri": "sha384-3evR9/u56rNXGfIcmGMRVkzLDZ1gKoGvhfF3+oGhADrrodZcdTcpe/3YjxlCeOFj",
@@ -141,16 +165,16 @@
       "gzip": 512
     },
     "manifest.json": {
-      "sha256": "be472a66d905015539df11112437951f61c8173fb5feda5b3b3a532a6b7e0ee7",
-      "sri": "sha384-f9JkW3lnelZShm6oBmtdsdQOGe+0JdnHvl0QJWLnb+WiZ4FzNLKT/QKX+fS2WYEy",
-      "bytes": 23113,
-      "gzip": 4569
+      "sha256": "7a8534b4b4c4f1c42f60df0b96fac954ce3b30c59800c64a1ccf99ec18a40fcc",
+      "sri": "sha384-5m9dWXSxjwwgTyiGmI5TWPuZkL73wx6xrHOiQGttvEOhn1ZSM6wvfnrCGYCYO50r",
+      "bytes": 28947,
+      "gzip": 5749
     },
     "llms-full.txt": {
-      "sha256": "7f89c10243108346e8edba709a2fed558141bd11e45882a09b69f6d56a07d2bf",
-      "sri": "sha384-z9gjpAQOUBUnQNCRqhboaH+nmv2UtNghSlS5KixsNtXcIJLB0C1dYn/12oBcnjIL",
-      "bytes": 12314,
-      "gzip": 3711
+      "sha256": "a10bcdf829d6c55342afe9599676820e3ff5a7cfa3bd2461951c1b17f4e3ad8a",
+      "sri": "sha384-zeMBzO6j8kAuehoLYT/KeFJu+e27HLo1Lm0knQDXkl19gDQRg6eR6FRyxhV9/mF2",
+      "bytes": 16005,
+      "gzip": 4775
     },
     "fx/fx-scroll.js": {
       "sha256": "acdab3b1772d615e0f07cc893408a6ba776b482239cb4a3aa3a2b25f5ee0de6c",

@@ -9,7 +9,7 @@ npm ci --ignore-scripts
 npm run build            # spec/ → packages/core/dist/ (ne jamais éditer dist à la main)
 npm test                 # node:test
 npm run check            # nora check sur templates/ et recipes/
-npm run audit:security   # 86 contrôles
+npm run audit:security   # 90 contrôles
 npm run verify           # tout
 npm run test:rn          # rendu React Native (Jest, hors verify)
 npm run audit:licenses   # aucune licence copyleft dans node_modules

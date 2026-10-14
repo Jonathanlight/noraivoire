@@ -95,6 +95,19 @@ Un contrôle de formulaire (`control`, `toggle`) exige `a11y.minTarget ≥ 44` e
 La case et l'interrupteur portent la classe sur le `<label>` : toute la ligne (case + texte) est la zone cliquable de 44 px minimum, et l'association label/contrôle est implicite. Les tons (`data-tone`) colorent la case cochée et l'interrupteur actif. En mode `forced-colors`, les contrôles natifs reprennent leur apparence système.
 
 Un champ invalide porte `aria-invalid="true"` et `aria-describedby` vers son `.field-error`.
+
+### 3.2.2 Composants de mise en page
+
+| Composant | Forme | Balisage web | Points clés |
+|---|---|---|---|
+| `.link` | link | `<a class="link" href="…">Texte</a>` | Souligné, focus visible ; sans `data-size`, hérite de la police du texte ; `rel="external"` ou `target="_blank"` : flèche décorative (`content: "↗" / ""`, non lue, `↖` en RTL) ; `data-visited` : couleur atténuée une fois visité |
+| `.navbar` | nav | `<nav class="navbar" aria-label="…">` : `.navbar-brand`, `<ul class="navbar-menu">` de liens (page courante : `aria-current="page"`), `.navbar-actions` | Liens ≥ 44 px ; sous 40rem, le menu passe sous la marque et défile horizontalement (sans JavaScript) ; page courante soulignée, et en `forced-colors` |
+| `.avatar` | avatar | `<img class="avatar" alt="Nom">` ou `<span class="avatar" role="img" aria-label="Nom">AK</span>` ; décoratif : `alt=""` / `aria-hidden="true"` | Côté fixe par taille (`sizes.*.box` → `--avatar-box`) ; `.avatar-group` : chevauchement d'un quart, anneau de la couleur de surface |
+| `.media` | media | `<figure class="media" data-size="wide">` + `<img alt loading="lazy">`, `.media-overlay`, `<figcaption class="media-caption">` | Format par taille (`sizes.*.ratio` → `--media-ratio`) : `wide` 16/9, `standard` 4/3, `square` 1/1, `portrait` 3/4 ; image recadrée (`object-fit: cover`) ; surimpression sur un dégradé de lisibilité (`--media-scrim`, tokens `color.scrim` / `color.on-scrim`) |
+
+Nouvelles clés de taille, en liste blanche dans `validate.js` : `box` (côté d'un avatar, 16–256 px, obligatoire pour la forme `avatar`, refusé ailleurs) et `ratio` (`[largeur, hauteur]` entiers 1–64, obligatoire pour la forme `media`, refusé ailleurs). Toute autre clé de taille est refusée. Une navigation exige la partie `menu` et une zone ≥ 44 px ; un lien est un `<a href>`.
+
+Contraste : tous les tons de `.link` atteignent 4,5:1 sur `surface`. En clair, `primary` (4,31:1) et `warning` (4,33:1) restent sous le seuil sur `surface-2` : y utiliser `data-tone="neutral"`. L'exception est figée par `tests/unit/page.test.js`.
 | `feedback.haptic` | `light` / `medium` / `heavy` (mobile) |
 
 ### 3.3 Effets (`spec/effects/*.nora.json`)
@@ -213,6 +226,8 @@ Le compilateur (`packages/compiler/src/fx.js`) lit `spec/fx/<paquet>/`, valide c
 - `MediaQuery.maybeDisableAnimationsOf` coupe toutes les animations si l'utilisateur l'a demandé.
 - Imports : `dart:*` et `package:flutter/*` uniquement.
 
+- Mise en page : `NoraLink` (`Semantics(link)`, activation au clavier, `size` nul = police héritée, `external` : flèche hors sémantique et indication), `NoraNavbar` + `NoraNavbarItem` (`Semantics` nommée par `label`, page courante en `selected`, liens ≥ 44 px, menu défilant sous la marque sous 640 px de large, sans onde en mouvement réduit), `NoraAvatar` (`Semantics(image)` nommée, ou exclu de la sémantique sans `label` ; repli sur les initiales si l'image échoue) et `NoraAvatarGroup`, `NoraMedia` (`AspectRatio` au format de la taille, surimpression sur `LinearGradient` du token `scrim`, légende).
+
 ### 6.2 React Native
 
 - `useNoraColors()` suit `useColorScheme()` ou `configureNora({ scheme })`.
@@ -220,6 +235,8 @@ Le compilateur (`packages/compiler/src/fx.js`) lit `spec/fx/<paquet>/`, valide c
 - Formulaires : `NoraRadioGroup` (contexte : valeur, `onChange`, désactivation ; `accessibilityRole="radiogroup"`) et `NoraRadio` (`accessibilityRole="radio"`, `accessibilityState.checked`) ; `NoraInput`, `NoraTextarea` (`TextInput`, bordure de focus), `NoraSelect` (le cœur de React Native n'a pas de liste déroulante : déclencheur `accessibilityRole="combobox"` et choix dans une `Modal`, options `radio`), `NoraCheckbox` et `NoraSwitch` (`Pressable`, rôles `checkbox` / `switch`, `accessibilityState={{ checked, disabled }}`, zone 44, glissement désactivé si mouvement réduit), `NoraField` (contexte `NoraFieldContext` : `accessibilityLabel` et `accessibilityHint` des contrôles ; erreur en `accessibilityLiveRegion="polite"`).
 - `configureNora({ haptic, orientation })` injecte expo-haptics / expo-sensors sans en dépendre.
 - `useNativeDriver` activé hors web.
+
+- Mise en page : `NoraLink` (`accessibilityRole="link"`, `href` ouvert par `configureNora({ openURL })` ou `Linking.openURL`, `onPress` prioritaire), `NoraNavbar` (`role="navigation"` + `accessibilityLabel`, liens `accessibilityState.selected` pour la page courante, `useWindowDimensions` sous 640 px), `NoraAvatar` (`accessibilityRole="image"` nommé ou caché s'il est décoratif) et `NoraAvatarGroup`, `NoraMedia` (`aspectRatio`, voile uniforme pour la surimpression : le cœur de React Native n'a pas de dégradé).
 
 ### 6.3 Symfony (`adapters/symfony-bundle/`)
 
@@ -273,7 +290,7 @@ Limites connues : une apostrophe dans du texte JSX placé **dans une valeur d'at
 
 ### 7.2 `nora audit`
 
-86 contrôles automatisés : licence, chaîne d'approvisionnement, validité de la spec, déterminisme, en-têtes de propriété (y compris Twig et PHP générés), motifs dangereux (moteur, paquets d'effets et CSS), écritures DOM des paquets d'effets, imports natifs, accessibilité, budgets de poids (dont 2 Kio par paquet d'effets), fraîcheur de `dist`. Voir [AUDIT-REPORT.md](AUDIT-REPORT.md).
+90 contrôles automatisés : licence, chaîne d'approvisionnement, validité de la spec, déterminisme, en-têtes de propriété (y compris Twig et PHP générés), motifs dangereux (moteur, paquets d'effets et CSS), écritures DOM des paquets d'effets, imports natifs, accessibilité, budgets de poids (dont 2 Kio par paquet d'effets), fraîcheur de `dist`. Voir [AUDIT-REPORT.md](AUDIT-REPORT.md).
 
 ### 7.3 Serveur MCP (`packages/mcp`)
 

@@ -39,7 +39,12 @@ final class TwigComponentsTest extends KernelTestCase
         $html = $this->render(\sprintf('<twig:%s>Contenu</twig:%s>', $c['twig'], $c['twig']));
         self::assertStringContainsString(\sprintf('class="%s"', $name), $html);
         self::assertStringContainsString(\sprintf('data-tone="%s"', $c['defaults']['tone']), $html);
-        self::assertStringContainsString(\sprintf('data-size="%s"', $c['defaults']['size']), $html);
+        if ('link' === $c['shape']) {
+            // Lien texte sans taille explicite : il hérite de la police du paragraphe.
+            self::assertStringNotContainsString('data-size', $html);
+        } else {
+            self::assertStringContainsString(\sprintf('data-size="%s"', $c['defaults']['size']), $html);
+        }
     }
 
     public function testBoutonValide(): void
@@ -181,5 +186,35 @@ final class TwigComponentsTest extends KernelTestCase
         self::assertStringContainsString('aria-describedby="cgu-erreur"', $html);
         self::assertStringContainsString('aria-invalid="true"', $html);
         self::assertStringContainsString('<input type="checkbox" id="cgu" aria-describedby="cgu-erreur" aria-invalid="true">', $html);
+    }
+
+    public function testLienTexteListeBlancheDUrlEtTailleOptionnelle(): void
+    {
+        $ok = $this->render('<twig:Nora:Link href="/tarifs" tone="neutral">Tarifs</twig:Nora:Link>');
+        self::assertSame('<a class="link" data-tone="neutral" href="/tarifs">Tarifs</a>', $ok);
+        $sized = $this->render('<twig:Nora:Link href="/a" size="lg">A</twig:Nora:Link>');
+        self::assertStringContainsString('data-size="lg"', $sized);
+        foreach (['javascript:alert(1)', '//evil.example', '/\\evil.example', 'data:text/html,x'] as $url) {
+            $html = $this->render('<twig:Nora:Link href="{{ u }}">Piège</twig:Nora:Link>', ['u' => $url]);
+            self::assertStringNotContainsString('href', $html, $url);
+            self::assertStringNotContainsString('="true"', $html, $url);
+        }
+    }
+
+    public function testAvatarInitialesEtImage(): void
+    {
+        $span = $this->render('<twig:Nora:Avatar as="span" tone="primary" size="lg" role="img" aria-label="Awa Koné">AK</twig:Nora:Avatar>');
+        self::assertSame('<span class="avatar" data-tone="primary" data-size="lg" role="img" aria-label="Awa Koné">AK</span>', $span);
+        $img = $this->render('<twig:Nora:Avatar src="/a.jpg" alt="Awa Koné" />');
+        self::assertSame('<img class="avatar" data-tone="neutral" data-size="md" src="/a.jpg" alt="Awa Koné">', $img);
+    }
+
+    public function testMediaFormatEnListeBlanche(): void
+    {
+        $html = $this->render('<twig:Nora:Media size="portrait"><img src="/p.jpg" alt="Plage"></twig:Nora:Media>');
+        self::assertStringStartsWith('<figure class="media" data-tone="neutral" data-size="portrait">', $html);
+        $bad = $this->render('<twig:Nora:Media size="16-9&quot; style=&quot;x"><img src="/p.jpg" alt="Plage"></twig:Nora:Media>');
+        self::assertStringContainsString('data-size="wide"', $bad);
+        self::assertStringNotContainsString('style', $bad);
     }
 }

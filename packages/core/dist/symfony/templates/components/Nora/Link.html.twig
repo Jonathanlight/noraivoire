@@ -1,0 +1,14 @@
+{#
+ # NoraIvoire 0.1.0 — fichier GÉNÉRÉ (twig) depuis la spec. Ne pas modifier à la main.
+ # © 2026 Jonathan KABLAN — Logiciel propriétaire, tous droits réservés.
+ # Usage soumis au contrat de licence NoraIvoire. Redistribution interdite.
+ #}
+{# Twig Component anonyme : <twig:Nora:Link tone="…" size="…">…</twig:Nora:Link>
+   Valeurs hors liste blanche → valeur par défaut. data-tone, data-size, href ne peuvent pas être forcés par attribut. #}
+{% props tone = 'primary', size = null, href = null %}
+{% set tone = tone in ['primary', 'neutral', 'danger', 'success', 'warning'] ? tone : 'primary' %}
+{% set size = size in ['sm', 'md', 'lg'] ? size : null %}
+{% set href = href is iterable or href is null ? null : href ~ '' %}
+{% set href = href and (href starts with '/' or href starts with '#' or href starts with 'https://' or href starts with 'http://' or href starts with 'mailto:' or href starts with 'tel:') and not (href starts with '//' or href starts with '/\\') ? href : null %}
+{% set attrs = attributes.without('data-tone', 'data-size', 'href') %}
+<a {{ attrs.defaults({class: 'link', 'data-tone': tone}|merge(size ? {'data-size': size} : {})|merge(href ? {href: href} : {})) }}>{% block content %}{% endblock %}</a>

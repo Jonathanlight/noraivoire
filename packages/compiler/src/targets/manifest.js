@@ -8,6 +8,9 @@ import { header } from '../header.js';
 
 const LAYOUT_CLASSES = ['container', 'stack', 'cluster', 'grid-auto', 'cq'];
 
+/** Variables de taille propres à une forme : `box` (avatar), `ratio` (média). */
+const sizeExtraKeys = (c) => ['box', 'ratio'].filter((k) => c.sizes[c.defaults.size][k] !== undefined);
+
 export function buildManifest(model, meta) {
   const components = {};
   for (const c of model.components) {
@@ -17,7 +20,7 @@ export function buildManifest(model, meta) {
       elements: c.elements,
       attributes: { 'data-tone': c.variants.tone, 'data-size': c.variants.size },
       defaults: c.defaults,
-      tokens: [...Object.keys(c.tokens), 'pad-y', 'pad-x', 'font'].map((k) => `--${c.component}-${k}`),
+      tokens: [...Object.keys(c.tokens), 'pad-y', 'pad-x', 'font', ...sizeExtraKeys(c)].map((k) => `--${c.component}-${k}`),
       parts: (c.parts ?? []).map((p) => `${c.component}-${p}`),
       states: Object.keys(c.states ?? {}),
       a11y: c.a11y,

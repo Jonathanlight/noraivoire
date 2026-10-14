@@ -11,12 +11,16 @@ namespace NoraIvoire\SymfonyBundle\Generated\Enum;
 /** Composants NoraIvoire. */
 enum NoraComponent: string
 {
+    case Avatar = 'avatar';
     case Badge = 'badge';
     case Btn = 'btn';
     case Card = 'card';
     case Checkbox = 'checkbox';
     case Field = 'field';
     case Input = 'input';
+    case Link = 'link';
+    case Media = 'media';
+    case Navbar = 'navbar';
     case Radio = 'radio';
     case Select = 'select';
     case Switch = 'switch';

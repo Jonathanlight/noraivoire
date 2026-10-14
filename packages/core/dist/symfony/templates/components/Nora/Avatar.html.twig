@@ -1,0 +1,17 @@
+{#
+ # NoraIvoire 0.1.0 — fichier GÉNÉRÉ (twig) depuis la spec. Ne pas modifier à la main.
+ # © 2026 Jonathan KABLAN — Logiciel propriétaire, tous droits réservés.
+ # Usage soumis au contrat de licence NoraIvoire. Redistribution interdite.
+ #}
+{# Twig Component anonyme : <twig:Nora:Avatar tone="…" size="…">…</twig:Nora:Avatar>
+   Valeurs hors liste blanche → valeur par défaut. data-tone, data-size ne peuvent pas être forcés par attribut. #}
+{% props tone = 'neutral', size = 'md', as = 'img' %}
+{% set tone = tone in ['primary', 'neutral', 'danger', 'success', 'warning'] ? tone : 'neutral' %}
+{% set size = size in ['sm', 'md', 'lg'] ? size : 'md' %}
+{% set as = as in ['img', 'span'] ? as : 'img' %}
+{% set attrs = attributes.without('data-tone', 'data-size') %}
+{% if as == 'img' %}
+  <img {{ attrs.defaults({class: 'avatar', 'data-tone': tone, 'data-size': size}) }}>
+{% else %}
+  <span {{ attrs.defaults({class: 'avatar', 'data-tone': tone, 'data-size': size}) }}>{% block content %}{% endblock %}</span>
+{% endif %}

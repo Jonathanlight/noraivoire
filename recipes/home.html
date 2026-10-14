@@ -10,13 +10,17 @@
   <script type="module" src="../packages/core/dist/noraivoire.auto.js"></script>
 </head>
 <body>
-  <header class="container cluster py-4">
-    <a class="font-bold text-lg" href="home.html">Boutique Démo</a>
-    <nav class="cluster" aria-label="Navigation principale">
-      <a href="products.html">Produits</a>
-      <a href="pricing.html">Tarifs</a>
-      <a href="search.html">Recherche</a>
-      <a class="btn" data-tone="neutral" data-size="sm" href="cart.html">Panier <span class="badge" data-tone="primary">2</span></a>
+  <header>
+    <nav class="navbar" aria-label="Navigation principale">
+      <a class="navbar-brand" href="home.html">Boutique Démo</a>
+      <ul class="navbar-menu">
+        <li><a href="products.html">Produits</a></li>
+        <li><a href="pricing.html">Tarifs</a></li>
+        <li><a href="search.html">Recherche</a></li>
+      </ul>
+      <div class="navbar-actions">
+        <a class="btn" data-tone="neutral" data-size="sm" href="cart.html">Panier <span class="badge" data-tone="primary">2</span></a>
+      </div>
     </nav>
   </header>
   <main class="stack">
@@ -45,7 +49,7 @@
     </section>
   </main>
   <footer class="container py-8 text-sm text-muted">
-    <p>© 2026 Boutique Démo — données fictives. <a href="contact.html">Contact</a> · <a href="about.html">À propos</a></p>
+    <p>© 2026 Boutique Démo — données fictives. <a class="link" data-tone="neutral" href="contact.html">Contact</a> · <a class="link" data-tone="neutral" href="about.html">À propos</a></p>
   </footer>
 </body>
 </html>

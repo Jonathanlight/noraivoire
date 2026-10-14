@@ -13,13 +13,22 @@ final class NoraManifest
 {
     public const VERSION = '0.1.0';
 
-    /** @var array<string, array{tones: list<string>, sizes: list<string>, defaults: array{tone: string, size: string}, elements: list<string>, twig: string}> */
+    /** @var array<string, array{tones: list<string>, sizes: list<string>, defaults: array{tone: string, size: string}, elements: list<string>, shape: string, twig: string}> */
     public const COMPONENTS = [
+        'avatar' => [
+            'tones' => ['primary', 'neutral', 'danger', 'success', 'warning'],
+            'sizes' => ['sm', 'md', 'lg'],
+            'defaults' => ['tone' => 'neutral', 'size' => 'md'],
+            'elements' => ['img', 'span'],
+            'shape' => 'avatar',
+            'twig' => 'Nora:Avatar',
+        ],
         'badge' => [
             'tones' => ['primary', 'neutral', 'danger', 'success', 'warning'],
             'sizes' => ['sm', 'md'],
             'defaults' => ['tone' => 'neutral', 'size' => 'sm'],
             'elements' => ['span'],
+            'shape' => 'label',
             'twig' => 'Nora:Badge',
         ],
         'btn' => [
@@ -27,6 +36,7 @@ final class NoraManifest
             'sizes' => ['sm', 'md', 'lg'],
             'defaults' => ['tone' => 'primary', 'size' => 'md'],
             'elements' => ['button', 'a'],
+            'shape' => 'interactive',
             'twig' => 'Nora:Btn',
         ],
         'card' => [
@@ -34,6 +44,7 @@ final class NoraManifest
             'sizes' => ['sm', 'md', 'lg'],
             'defaults' => ['tone' => 'neutral', 'size' => 'md'],
             'elements' => ['div', 'article', 'section', 'li'],
+            'shape' => 'container',
             'twig' => 'Nora:Card',
         ],
         'checkbox' => [
@@ -41,6 +52,7 @@ final class NoraManifest
             'sizes' => ['sm', 'md', 'lg'],
             'defaults' => ['tone' => 'primary', 'size' => 'md'],
             'elements' => ['label'],
+            'shape' => 'toggle',
             'twig' => 'Nora:Checkbox',
         ],
         'field' => [
@@ -48,6 +60,7 @@ final class NoraManifest
             'sizes' => ['sm', 'md', 'lg'],
             'defaults' => ['tone' => 'neutral', 'size' => 'md'],
             'elements' => ['div', 'fieldset'],
+            'shape' => 'group',
             'twig' => 'Nora:Field',
         ],
         'input' => [
@@ -55,13 +68,39 @@ final class NoraManifest
             'sizes' => ['sm', 'md', 'lg'],
             'defaults' => ['tone' => 'neutral', 'size' => 'md'],
             'elements' => ['input'],
+            'shape' => 'control',
             'twig' => 'Nora:Input',
+        ],
+        'link' => [
+            'tones' => ['primary', 'neutral', 'danger', 'success', 'warning'],
+            'sizes' => ['sm', 'md', 'lg'],
+            'defaults' => ['tone' => 'primary', 'size' => 'md'],
+            'elements' => ['a'],
+            'shape' => 'link',
+            'twig' => 'Nora:Link',
+        ],
+        'media' => [
+            'tones' => ['neutral'],
+            'sizes' => ['wide', 'standard', 'square', 'portrait'],
+            'defaults' => ['tone' => 'neutral', 'size' => 'wide'],
+            'elements' => ['figure', 'div'],
+            'shape' => 'media',
+            'twig' => 'Nora:Media',
+        ],
+        'navbar' => [
+            'tones' => ['neutral'],
+            'sizes' => ['sm', 'md', 'lg'],
+            'defaults' => ['tone' => 'neutral', 'size' => 'md'],
+            'elements' => ['nav'],
+            'shape' => 'nav',
+            'twig' => 'Nora:Navbar',
         ],
         'radio' => [
             'tones' => ['primary', 'neutral', 'danger', 'success', 'warning'],
             'sizes' => ['sm', 'md', 'lg'],
             'defaults' => ['tone' => 'primary', 'size' => 'md'],
             'elements' => ['label'],
+            'shape' => 'toggle',
             'twig' => 'Nora:Radio',
         ],
         'select' => [
@@ -69,6 +108,7 @@ final class NoraManifest
             'sizes' => ['sm', 'md', 'lg'],
             'defaults' => ['tone' => 'neutral', 'size' => 'md'],
             'elements' => ['select'],
+            'shape' => 'control',
             'twig' => 'Nora:Select',
         ],
         'switch' => [
@@ -76,6 +116,7 @@ final class NoraManifest
             'sizes' => ['sm', 'md', 'lg'],
             'defaults' => ['tone' => 'primary', 'size' => 'md'],
             'elements' => ['label'],
+            'shape' => 'toggle',
             'twig' => 'Nora:Switch',
         ],
         'textarea' => [
@@ -83,6 +124,7 @@ final class NoraManifest
             'sizes' => ['sm', 'md', 'lg'],
             'defaults' => ['tone' => 'neutral', 'size' => 'md'],
             'elements' => ['textarea'],
+            'shape' => 'control',
             'twig' => 'Nora:Textarea',
         ],
     ];

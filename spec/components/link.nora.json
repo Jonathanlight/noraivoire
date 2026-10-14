@@ -1,0 +1,30 @@
+{
+  "$nora": "component",
+  "$version": "1.0.0",
+  "component": "link",
+  "shape": "link",
+  "description": "Lien texte : <a class=\"link\" href=\"…\">. Souligné, focus visible, ton de couleur. Lien externe (target=\"_blank\" ou rel=\"external\") signalé par une flèche décorative ; data-visited distingue les liens déjà visités.",
+  "elements": ["a"],
+  "variants": {
+    "tone": ["primary", "neutral", "danger", "success", "warning"],
+    "size": ["sm", "md", "lg"]
+  },
+  "defaults": { "tone": "primary", "size": "md" },
+  "tokens": {
+    "fg": "{color.$tone}",
+    "visited": "{color.text-muted}",
+    "focus": "{color.focus}"
+  },
+  "sizes": {
+    "sm": { "pad-y": 0, "pad-x": 0, "font": "{font.sm}" },
+    "md": { "pad-y": 0, "pad-x": 0, "font": "{font.md}" },
+    "lg": { "pad-y": 0, "pad-x": 0, "font": "{font.lg}" }
+  },
+  "states": {
+    "focus": { "ring": 2, "token": "focus" }
+  },
+  "motion": { "press": { "duration": "{duration.fast}" } },
+  "a11y": { "role": "link", "minTarget": 0, "requiresLabel": true, "anchorRequiresHref": true },
+  "feedback": {},
+  "example": "<a class=\"link\" href=\"/tarifs\">Voir les tarifs</a>"
+}

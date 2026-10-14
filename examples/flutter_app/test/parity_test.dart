@@ -140,6 +140,93 @@ Future<Map<String, Object?>> _measure(WidgetTester tester, Map<String, dynamic> 
         'borderWidth': _n(outline.borderSide.width),
         'borderColor': _hex(outline.borderSide.color),
       };
+    case 'link':
+      await tester.pumpWidget(_app(
+        Column(mainAxisSize: MainAxisSize.min, children: [
+          NoraLink(key: const ValueKey('lien'), tone: tone, size: size, onPressed: () {}, child: const Text('Texte')),
+          NoraLink(key: const ValueKey('visite'), tone: tone, size: size, visited: true, onPressed: () {}, child: const Text('Vu')),
+        ]),
+        dark: dark,
+      ));
+      final style = _textStyle(tester, find.byKey(const ValueKey('lien')));
+      return {
+        'fg': _hex(style.color!),
+        'font': _n(style.fontSize!),
+        'underline': style.decoration == TextDecoration.underline,
+        'visited': _hex(_textStyle(tester, find.byKey(const ValueKey('visite'))).color!),
+      };
+    case 'avatar':
+      await tester.pumpWidget(_app(NoraAvatar(initials: 'AK', label: 'Personne', tone: tone, size: size), dark: dark));
+      final scope = find.byType(NoraAvatar);
+      final sz = tester.getSize(scope);
+      final clip = tester.widget<ClipRRect>(find.descendant(of: scope, matching: find.byType(ClipRRect)));
+      final style = _textStyle(tester, scope);
+      return {
+        'bg': _hex(tester.widget<ColoredBox>(find.descendant(of: scope, matching: find.byType(ColoredBox))).color),
+        'fg': _hex(style.color!),
+        'w': _n(sz.width),
+        'h': _n(sz.height),
+        'radius': _radius((clip.borderRadius as BorderRadius).topLeft.x, sz.width, sz.height),
+        'font': _n(style.fontSize!),
+      };
+    case 'navbar':
+      await tester.pumpWidget(_app(
+        NoraNavbar(
+          label: 'Mesure',
+          brand: const Text('Marque'),
+          size: size,
+          items: [NoraNavbarItem(label: 'Accueil', onTap: () {}), NoraNavbarItem(label: 'Boutique', current: true, onTap: () {})],
+        ),
+        dark: dark,
+      ));
+      final scope = find.byType(NoraNavbar);
+      final deco = tester.widget<DecoratedBox>(find.descendant(of: scope, matching: find.byType(DecoratedBox)).first);
+      final d = deco.decoration as BoxDecoration;
+      final pad = (deco.child! as Padding).padding as EdgeInsets;
+      final border = (d.border! as Border).bottom;
+      final plain = find.ancestor(of: find.text('Accueil'), matching: find.byType(InkWell));
+      final linkBox = tester.widget<ConstrainedBox>(
+        find.descendant(of: plain, matching: find.byWidgetPredicate((w) => w is ConstrainedBox && w.child is Padding)).first,
+      );
+      final linkPad = (linkBox.child! as Padding).padding as EdgeInsets;
+      return {
+        'bg': _hex(d.color!),
+        'fg': _hex(_textStyle(tester, find.ancestor(of: find.text('Marque'), matching: find.byType(DefaultTextStyle)).first).color!),
+        'padY': _n(pad.top),
+        'padX': _n(pad.left),
+        'borderWidth': _n(border.width),
+        'borderColor': _hex(border.color),
+        'linkMinHeight': _n(linkBox.constraints.minHeight),
+        'linkPadX': _n(linkPad.left),
+        'muted': _hex(_textStyle(tester, plain).color!),
+        'active': _hex(_textStyle(tester, find.ancestor(of: find.text('Boutique'), matching: find.byType(InkWell))).color!),
+      };
+    case 'media':
+      await tester.pumpWidget(_app(
+        SizedBox(
+          width: 320,
+          child: NoraMedia(size: size, overlay: const Text('Titre'), caption: const Text('Légende'), child: const SizedBox.expand()),
+        ),
+        dark: dark,
+      ));
+      final scope = find.byType(NoraMedia);
+      final ar = tester.widget<AspectRatio>(find.descendant(of: scope, matching: find.byType(AspectRatio)));
+      final clip = tester.widget<ClipRRect>(find.descendant(of: scope, matching: find.byType(ClipRRect)));
+      final gradient = tester.widget<DecoratedBox>(
+        find.descendant(of: scope, matching: find.byWidgetPredicate((w) => w is DecoratedBox && (w.decoration as BoxDecoration).gradient != null)),
+      );
+      final capPad = tester.widget<Padding>(find.ancestor(of: find.text('Légende'), matching: find.byType(Padding)).first);
+      final cap = _textStyle(tester, find.ancestor(of: find.text('Légende'), matching: find.byType(Padding)).first);
+      return {
+        // Texte exact à 3 décimales, comme tests/parity/model.mjs (ratio).
+        'ratio': ((ar.aspectRatio * 1000).round() / 1000).toStringAsFixed(3),
+        'radius': _radius((clip.borderRadius as BorderRadius).topLeft.x),
+        'captionFg': _hex(cap.color!),
+        'captionFont': _n(cap.fontSize!),
+        'captionPadY': _n((capPad.padding as EdgeInsets).top),
+        'scrim': _hex(((gradient.decoration as BoxDecoration).gradient! as LinearGradient).colors.first),
+        'onScrim': _hex(_textStyle(tester, find.ancestor(of: find.text('Titre'), matching: find.byType(Padding)).first).color!),
+      };
     default:
       // Deux exemplaires, coché et non coché, en mouvement réduit (rendu statique explicite).
       Widget one(bool on) => switch (comp) {

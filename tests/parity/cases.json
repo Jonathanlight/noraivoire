@@ -264,6 +264,111 @@
       "component": "radio",
       "tone": "primary",
       "size": "lg"
+    },
+    {
+      "component": "link",
+      "tone": "primary",
+      "size": "md"
+    },
+    {
+      "component": "link",
+      "tone": "neutral",
+      "size": "md"
+    },
+    {
+      "component": "link",
+      "tone": "danger",
+      "size": "md"
+    },
+    {
+      "component": "link",
+      "tone": "success",
+      "size": "md"
+    },
+    {
+      "component": "link",
+      "tone": "warning",
+      "size": "md"
+    },
+    {
+      "component": "link",
+      "tone": "primary",
+      "size": "sm"
+    },
+    {
+      "component": "link",
+      "tone": "primary",
+      "size": "lg"
+    },
+    {
+      "component": "avatar",
+      "tone": "primary",
+      "size": "md"
+    },
+    {
+      "component": "avatar",
+      "tone": "neutral",
+      "size": "md"
+    },
+    {
+      "component": "avatar",
+      "tone": "danger",
+      "size": "md"
+    },
+    {
+      "component": "avatar",
+      "tone": "success",
+      "size": "md"
+    },
+    {
+      "component": "avatar",
+      "tone": "warning",
+      "size": "md"
+    },
+    {
+      "component": "avatar",
+      "tone": "neutral",
+      "size": "sm"
+    },
+    {
+      "component": "avatar",
+      "tone": "neutral",
+      "size": "lg"
+    },
+    {
+      "component": "navbar",
+      "tone": "neutral",
+      "size": "sm"
+    },
+    {
+      "component": "navbar",
+      "tone": "neutral",
+      "size": "md"
+    },
+    {
+      "component": "navbar",
+      "tone": "neutral",
+      "size": "lg"
+    },
+    {
+      "component": "media",
+      "tone": "neutral",
+      "size": "wide"
+    },
+    {
+      "component": "media",
+      "tone": "neutral",
+      "size": "standard"
+    },
+    {
+      "component": "media",
+      "tone": "neutral",
+      "size": "square"
+    },
+    {
+      "component": "media",
+      "tone": "neutral",
+      "size": "portrait"
     }
   ]
 }

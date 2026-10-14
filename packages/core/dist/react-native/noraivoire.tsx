@@ -6,13 +6,18 @@ import * as React from 'react';
 import {
   AccessibilityInfo,
   Animated,
+  Image,
+  Linking,
   Modal,
   Platform,
   Pressable,
+  ScrollView,
   Text,
   TextInput,
   View,
   useColorScheme,
+  useWindowDimensions,
+  type ImageSourcePropType,
   type PressableProps,
   type StyleProp,
   type TextInputProps,
@@ -24,7 +29,7 @@ import {
 export const noraVersion = '0.1.0';
 
 export type NoraTone = 'primary' | 'neutral' | 'danger' | 'success' | 'warning';
-export type NoraSize = 'sm' | 'md' | 'lg';
+export type NoraSize = 'sm' | 'md' | 'lg' | 'wide' | 'standard' | 'square' | 'portrait';
 
 export const noraColors = {
   light: {
@@ -44,6 +49,8 @@ export const noraColors = {
     textMuted: '#5C626B',
     border: '#DDE0E4',
     focus: '#1C7ED6',
+    scrim: '#0B0C0F',
+    onScrim: '#FFFFFF',
   },
   dark: {
     primary: '#FF8A3D',
@@ -62,6 +69,8 @@ export const noraColors = {
     textMuted: '#A0A6AF',
     border: '#2E323A',
     focus: '#74C0FC',
+    scrim: '#0B0C0F',
+    onScrim: '#FFFFFF',
   },
 } as const;
 
@@ -107,6 +116,8 @@ export type NoraConfig = {
   orientation?: (listener: (x: number, y: number) => void) => () => void;
   /** Forcer un thème ; par défaut : thème système. */
   scheme?: 'light' | 'dark';
+  /** Ouverture des liens (NoraLink, NoraNavbar) ; par défaut : Linking.openURL. */
+  openURL?: (url: string) => void;
 };
 
 export const noraConfig: NoraConfig = {};
@@ -159,6 +170,16 @@ export function withAlpha(hex: string, alpha: number) {
   const [r, g, b] = hexToRgb(hex);
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
+
+const avatarSpec = {
+  bg: { primary: 'primary', neutral: 'neutral', danger: 'danger', success: 'success', warning: 'warning' } as Partial<Record<NoraTone, ColorKey>>,
+  fg: { primary: 'onPrimary', neutral: 'onNeutral', danger: 'onDanger', success: 'onSuccess', warning: 'onWarning' } as Partial<Record<NoraTone, ColorKey>>,
+  colors: { ring: 'surface' } as const,
+  sizes: { sm: { padY: 0, padX: 0, font: 14, box: 32 }, md: { padY: 0, padX: 0, font: 16, box: 40 }, lg: { padY: 0, padX: 0, font: 24, box: 64 } } as Partial<Record<NoraSize, { padY: number; padX: number; font: number; box: number }>>,
+  radius: 9999,
+  defaults: { tone: 'neutral' as NoraTone, size: 'md' as NoraSize },
+  minTarget: 0,
+} as const;
 
 const badgeSpec = {
   bg: { primary: 'primary', neutral: 'neutral', danger: 'danger', success: 'success', warning: 'warning' } as Partial<Record<NoraTone, ColorKey>>,
@@ -218,6 +239,34 @@ const inputSpec = {
   radius: 8,
   ring: 2,
   disabledOpacity: 0.5,
+  defaults: { tone: 'neutral' as NoraTone, size: 'md' as NoraSize },
+  minTarget: 44,
+} as const;
+
+const linkSpec = {
+  fg: { primary: 'primary', neutral: 'neutral', danger: 'danger', success: 'success', warning: 'warning' } as Partial<Record<NoraTone, ColorKey>>,
+  colors: { visited: 'textMuted', focus: 'focus' } as const,
+  ring: 2,
+  sizes: { sm: { padY: 0, padX: 0, font: 14 }, md: { padY: 0, padX: 0, font: 16 }, lg: { padY: 0, padX: 0, font: 18 } } as Partial<Record<NoraSize, { padY: number; padX: number; font: number }>>,
+  radius: 0,
+  defaults: { tone: 'primary' as NoraTone, size: 'md' as NoraSize },
+  minTarget: 0,
+} as const;
+
+const mediaSpec = {
+  colors: { bg: 'surface2', fg: 'textMuted', scrim: 'scrim', onScrim: 'onScrim' } as const,
+  sizes: { wide: { padY: 8, padX: 16, font: 14, ratio: 16 / 9 }, standard: { padY: 8, padX: 16, font: 14, ratio: 4 / 3 }, square: { padY: 8, padX: 16, font: 14, ratio: 1 / 1 }, portrait: { padY: 8, padX: 16, font: 14, ratio: 3 / 4 } } as Partial<Record<NoraSize, { padY: number; padX: number; font: number; ratio: number }>>,
+  radius: 16,
+  defaults: { tone: 'neutral' as NoraTone, size: 'wide' as NoraSize },
+  minTarget: 0,
+} as const;
+
+const navbarSpec = {
+  colors: { bg: 'surface', fg: 'text', muted: 'textMuted', border: 'border', active: 'primary', focus: 'focus' } as const,
+  border: 1,
+  linkRadius: 8,
+  sizes: { sm: { padY: 4, padX: 12, font: 14 }, md: { padY: 8, padX: 16, font: 16 }, lg: { padY: 12, padX: 24, font: 18 } } as Partial<Record<NoraSize, { padY: number; padX: number; font: number }>>,
+  radius: 0,
   defaults: { tone: 'neutral' as NoraTone, size: 'md' as NoraSize },
   minTarget: 44,
 } as const;
@@ -337,6 +386,84 @@ export function NoraReveal({ children, visible, distance = 24, duration = 400, s
     >
       {children}
     </Animated.View>
+  );
+}
+
+export type NoraAvatarProps = ViewProps & {
+  source?: ImageSourcePropType;
+  /** Initiales affichées sans image (ou si l'image ne se charge pas). */
+  initials?: string;
+  /** Nom annoncé ; absent = avatar décoratif (équivalent d'alt=""). */
+  label?: string;
+  tone?: NoraTone;
+  size?: NoraSize;
+};
+
+/** Avatar rond : <img class="avatar" src="…" alt="Nom"> ou initiales <span class="avatar" role="img" aria-label="Nom">AK</span> (alt="" ou aria-hidden="true" s'il est décoratif). Groupe empilé avec chevauchement : <div class="avatar-group">. */
+export function NoraAvatar({ source, initials, label, tone, size, style, ...rest }: NoraAvatarProps) {
+  const colors = useNoraColors();
+  const [failed, setFailed] = React.useState(false);
+  const t = tone ?? avatarSpec.defaults.tone;
+  const s = avatarSpec.sizes[size ?? avatarSpec.defaults.size] ?? avatarSpec.sizes[avatarSpec.defaults.size]!;
+  const bg = colors[avatarSpec.bg[t] ?? avatarSpec.bg[avatarSpec.defaults.tone]!];
+  const fg = colors[avatarSpec.fg[t] ?? avatarSpec.fg[avatarSpec.defaults.tone]!];
+  const decorative = !label;
+  return (
+    <View
+      accessible={!decorative}
+      accessibilityRole={decorative ? undefined : 'image'}
+      accessibilityLabel={label}
+      accessibilityElementsHidden={decorative}
+      importantForAccessibility={decorative ? 'no-hide-descendants' : 'auto'}
+      style={[
+        {
+          width: s.box,
+          height: s.box,
+          borderRadius: avatarSpec.radius,
+          backgroundColor: bg,
+          overflow: 'hidden',
+          alignItems: 'center',
+          justifyContent: 'center',
+          paddingVertical: s.padY,
+          paddingHorizontal: s.padX,
+        },
+        style,
+      ]}
+      {...rest}
+    >
+      {source && !failed ? (
+        <Image source={source} accessible={false} resizeMode="cover" onError={() => setFailed(true)} style={{ width: s.box, height: s.box }} />
+      ) : (
+        <Text style={{ color: fg, fontSize: s.font, fontWeight: '600' }}>{(initials ?? '').toUpperCase()}</Text>
+      )}
+    </View>
+  );
+}
+
+export type NoraAvatarGroupProps = ViewProps & { children: React.ReactNode; size?: NoraSize };
+
+/** Groupe d'avatars empilés avec chevauchement (équivalent de .avatar-group). */
+export function NoraAvatarGroup({ children, size, style, ...rest }: NoraAvatarGroupProps) {
+  const colors = useNoraColors();
+  const s = avatarSpec.sizes[size ?? avatarSpec.defaults.size] ?? avatarSpec.sizes[avatarSpec.defaults.size]!;
+  const items = React.Children.toArray(children);
+  return (
+    <View style={[{ flexDirection: 'row', alignItems: 'center' }, style]} {...rest}>
+      {items.map((child, i) => (
+        <View
+          key={i}
+          style={{
+            marginStart: i === 0 ? 0 : -s.box * 0.25,
+            borderRadius: avatarSpec.radius,
+            borderWidth: 2,
+            margin: -2,
+            borderColor: colors[avatarSpec.colors.ring],
+          }}
+        >
+          {child}
+        </View>
+      ))}
+    </View>
   );
 }
 
@@ -638,6 +765,213 @@ export function NoraInput({ size, invalid, disabled, label, style, onFocus, onBl
       style={[box, { color: colors[inputSpec.colors.fg], fontSize: s.font }, style]}
       {...rest}
     />
+  );
+}
+
+export type NoraLinkProps = Omit<PressableProps, 'children' | 'style'> & {
+  children: React.ReactNode;
+  /** URL ouverte par configureNora({ openURL }) ou, à défaut, Linking.openURL (si onPress est absent). */
+  href?: string;
+  tone?: NoraTone;
+  /** Absent : hérite de la police du texte parent (équivalent d'un lien sans data-size). */
+  size?: NoraSize;
+  /** Lien qui quitte l'application : flèche décorative et indication vocale. */
+  external?: boolean;
+  /** Lien déjà visité (équivalent de data-visited). */
+  visited?: boolean;
+  style?: StyleProp<TextStyle>;
+};
+
+/** Lien texte : <a class="link" href="…">. Souligné, focus visible, ton de couleur. Lien externe (target="_blank" ou rel="external") signalé par une flèche décorative ; data-visited distingue les liens déjà visités. */
+export function NoraLink({ children, href, tone, size, external = false, visited = false, onPress, style, accessibilityLabel, ...rest }: NoraLinkProps) {
+  const colors = useNoraColors();
+  const [focused, setFocused] = React.useState(false);
+  const t = tone ?? linkSpec.defaults.tone;
+  const s = size ? linkSpec.sizes[size] ?? linkSpec.sizes[linkSpec.defaults.size] : undefined;
+  const fg = colors[visited ? linkSpec.colors.visited : linkSpec.fg[t] ?? linkSpec.fg[linkSpec.defaults.tone]!];
+  const ring = linkSpec.ring;
+  return (
+    <Pressable
+      accessibilityRole="link"
+      accessibilityLabel={accessibilityLabel ?? (typeof children === 'string' ? children : undefined)}
+      accessibilityHint={external ? 'ouvre une autre application ou fenêtre' : undefined}
+      hitSlop={8}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
+      onPress={(e) => {
+        if (onPress) onPress(e);
+        else if (href) (noraConfig.openURL ?? Linking.openURL)(href);
+      }}
+      style={{ alignSelf: 'flex-start', borderRadius: 2, borderWidth: ring, margin: -ring, borderColor: focused ? colors[linkSpec.colors.focus] : 'transparent' }}
+      {...rest}
+    >
+      <Text style={[{ color: fg, fontSize: s?.font, textDecorationLine: 'underline', textDecorationColor: fg }, style]}>
+        {children}
+        {external ? <Text accessibilityElementsHidden importantForAccessibility="no">{' \u2197'}</Text> : null}
+      </Text>
+    </Pressable>
+  );
+}
+
+export type NoraMediaProps = ViewProps & {
+  source?: ImageSourcePropType;
+  /** Texte alternatif de l'image (obligatoire si elle porte une information). */
+  alt?: string;
+  /** Visuel personnalisé à la place de source. */
+  children?: React.ReactNode;
+  overlay?: React.ReactNode;
+  caption?: React.ReactNode;
+  /** Format : wide 16/9, standard 4/3, square 1/1, portrait 3/4. */
+  size?: NoraSize;
+};
+
+/**
+ * Bloc image ou illustration : <figure class="media" data-size="wide"> avec <img alt="…" loading="lazy">, légende .media-caption (<figcaption>) et texte en surimpression .media-overlay (dégradé de lisibilité). data-size fixe le format : wide 16/9, standard 4/3, square 1/1, portrait 3/4.
+ * Le cœur de React Native n'a pas de dégradé : la surimpression utilise un voile uniforme (scrim à 65 %).
+ */
+export function NoraMedia({ source, alt, children, overlay, caption, size, style, ...rest }: NoraMediaProps) {
+  const colors = useNoraColors();
+  const c = mediaSpec.colors;
+  const s = mediaSpec.sizes[size ?? mediaSpec.defaults.size] ?? mediaSpec.sizes[mediaSpec.defaults.size]!;
+  return (
+    <View style={style} {...rest}>
+      <View style={{ aspectRatio: s.ratio, borderRadius: mediaSpec.radius, overflow: 'hidden', backgroundColor: colors[c.bg] }}>
+        {source ? (
+          <Image
+            source={source}
+            accessible={!!alt}
+            accessibilityRole="image"
+            accessibilityLabel={alt}
+            resizeMode="cover"
+            style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, width: '100%', height: '100%' }}
+          />
+        ) : (
+          children
+        )}
+        {overlay != null ? (
+          <View
+            style={{
+              position: 'absolute',
+              left: 0,
+              right: 0,
+              bottom: 0,
+              paddingTop: s.padY * 2,
+              paddingBottom: s.padY,
+              paddingHorizontal: s.padX,
+              backgroundColor: withAlpha(colors[c.scrim], 0.65),
+            }}
+          >
+            {typeof overlay === 'string' ? <Text style={{ color: colors[c.onScrim], fontWeight: '600' }}>{overlay}</Text> : overlay}
+          </View>
+        ) : null}
+      </View>
+      {caption != null ? (
+        <View style={{ paddingTop: s.padY }}>
+          {typeof caption === 'string' ? <Text style={{ color: colors[c.fg], fontSize: s.font }}>{caption}</Text> : caption}
+        </View>
+      ) : null}
+    </View>
+  );
+}
+
+/** Lien d'une NoraNavbar : `current` marque la page courante (aria-current="page"). */
+export type NoraNavbarItem = { label: string; href?: string; onPress?: () => void; current?: boolean };
+
+export type NoraNavbarProps = ViewProps & {
+  /** Nom de la navigation (équivalent d'aria-label). */
+  label: string;
+  brand?: React.ReactNode;
+  items?: NoraNavbarItem[];
+  actions?: React.ReactNode;
+  size?: NoraSize;
+};
+
+function NoraNavbarLink({ item, font }: { item: NoraNavbarItem; font: number }) {
+  const colors = useNoraColors();
+  const c = navbarSpec.colors;
+  const current = !!item.current;
+  return (
+    <Pressable
+      accessibilityRole="link"
+      accessibilityState={{ selected: current }}
+      accessibilityValue={current ? { text: 'page courante' } : undefined}
+      onPress={() => {
+        if (item.onPress) item.onPress();
+        else if (item.href) (noraConfig.openURL ?? Linking.openURL)(item.href);
+      }}
+      style={({ pressed }) => ({
+        minHeight: navbarSpec.minTarget,
+        justifyContent: 'center',
+        paddingHorizontal: font * 0.75,
+        borderRadius: navbarSpec.linkRadius,
+        borderBottomWidth: 2,
+        borderBottomColor: current ? colors[c.active] : 'transparent',
+        backgroundColor: pressed ? withAlpha(colors[c.fg], 0.06) : 'transparent',
+      })}
+    >
+      <Text style={{ color: colors[current ? c.active : c.muted], fontSize: font, fontWeight: current ? '600' : '500' }}>{item.label}</Text>
+    </Pressable>
+  );
+}
+
+/** Barre de navigation : <nav class="navbar" aria-label="…"> avec .navbar-brand, une liste .navbar-menu de liens (page courante : aria-current="page") et .navbar-actions. Sans JavaScript : sur petit écran, le menu passe sous la marque et défile horizontalement. */
+export function NoraNavbar({ label, brand, items = [], actions, size, style, ...rest }: NoraNavbarProps) {
+  const colors = useNoraColors();
+  const c = navbarSpec.colors;
+  const s = navbarSpec.sizes[size ?? navbarSpec.defaults.size] ?? navbarSpec.sizes[navbarSpec.defaults.size]!;
+  const { width } = useWindowDimensions();
+  // Petit écran (< 640 px, comme la règle CSS à 40rem) : le menu passe sous la marque et défile.
+  const narrow = width < 640;
+  const brandNode = brand == null ? null : (
+    <View style={{ minHeight: navbarSpec.minTarget, justifyContent: 'center' }}>
+      {typeof brand === 'string' ? <Text style={{ color: colors[c.fg], fontSize: s.font * 1.125, fontWeight: '700' }}>{brand}</Text> : brand}
+    </View>
+  );
+  const menu = (
+    <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ alignItems: 'center', gap: s.font * 0.25 }}>
+      {items.map((item) => (
+        <NoraNavbarLink key={item.label} item={item} font={s.font} />
+      ))}
+    </ScrollView>
+  );
+  const actionsNode = actions == null ? null : <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}>{actions}</View>;
+  return (
+    <View
+      role="navigation"
+      accessibilityLabel={label}
+      style={[
+        {
+          backgroundColor: colors[c.bg],
+          borderBottomWidth: navbarSpec.border,
+          borderBottomColor: colors[c.border],
+          paddingVertical: s.padY,
+          paddingHorizontal: s.padX,
+          flexDirection: narrow ? 'column' : 'row',
+          alignItems: narrow ? 'stretch' : 'center',
+          columnGap: s.padX,
+          rowGap: s.padY,
+        },
+        style,
+      ]}
+      {...rest}
+    >
+      {narrow ? (
+        <>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ flex: 1 }}>{brandNode}</View>
+            {actionsNode}
+          </View>
+          {menu}
+        </>
+      ) : (
+        <>
+          {brandNode}
+          <View style={{ flex: 1 }} />
+          {menu}
+          {actionsNode}
+        </>
+      )}
+    </View>
   );
 }
 

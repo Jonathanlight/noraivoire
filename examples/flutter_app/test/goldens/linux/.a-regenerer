@@ -1,0 +1,11 @@
+# Goldens Linux à produire par le workflow « goldens » (gh workflow run goldens), puis à versionner ici.
+# Ajoutés avec les composants link, navbar, avatar et media (test/page_test.dart).
+# Tant qu'ils manquent, le job CI « flutter » échoue sur ces 8 tests ; supprimer ce fichier une fois versionnés.
+light/nora_link.png
+light/nora_navbar.png
+light/nora_avatar.png
+light/nora_media.png
+dark/nora_link.png
+dark/nora_navbar.png
+dark/nora_avatar.png
+dark/nora_media.png

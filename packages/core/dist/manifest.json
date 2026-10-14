@@ -29,7 +29,9 @@
       "--nora-color-text",
       "--nora-color-text-muted",
       "--nora-color-border",
-      "--nora-color-focus"
+      "--nora-color-focus",
+      "--nora-color-scrim",
+      "--nora-color-on-scrim"
     ],
     "space": [
       "--nora-space-0",
@@ -61,6 +63,55 @@
     ]
   },
   "components": {
+    "avatar": {
+      "description": "Avatar rond : <img class=\"avatar\" src=\"…\" alt=\"Nom\"> ou initiales <span class=\"avatar\" role=\"img\" aria-label=\"Nom\">AK</span> (alt=\"\" ou aria-hidden=\"true\" s'il est décoratif). Groupe empilé avec chevauchement : <div class=\"avatar-group\">.",
+      "shape": "avatar",
+      "elements": [
+        "img",
+        "span"
+      ],
+      "attributes": {
+        "data-tone": [
+          "primary",
+          "neutral",
+          "danger",
+          "success",
+          "warning"
+        ],
+        "data-size": [
+          "sm",
+          "md",
+          "lg"
+        ]
+      },
+      "defaults": {
+        "tone": "neutral",
+        "size": "md"
+      },
+      "tokens": [
+        "--avatar-bg",
+        "--avatar-fg",
+        "--avatar-radius",
+        "--avatar-ring",
+        "--avatar-pad-y",
+        "--avatar-pad-x",
+        "--avatar-font",
+        "--avatar-box"
+      ],
+      "parts": [
+        "avatar-group"
+      ],
+      "states": [],
+      "a11y": {
+        "role": "img",
+        "minTarget": 0,
+        "requiresLabel": true,
+        "anchorRequiresHref": false
+      },
+      "example": "<div class=\"avatar-group\"><img class=\"avatar\" src=\"/avatars/awa.jpg\" alt=\"Awa Koné\"><span class=\"avatar\" data-tone=\"primary\" role=\"img\" aria-label=\"Yao Kouassi\">YK</span></div>",
+      "flutter": "NoraAvatar",
+      "reactNative": "NoraAvatar"
+    },
     "badge": {
       "description": "Étiquette courte de statut.",
       "shape": "label",
@@ -345,6 +396,149 @@
       "example": "<label class=\"field-label\" for=\"email\">E-mail</label> <input class=\"input\" id=\"email\" type=\"email\" name=\"email\" autocomplete=\"email\">",
       "flutter": "NoraInput",
       "reactNative": "NoraInput"
+    },
+    "link": {
+      "description": "Lien texte : <a class=\"link\" href=\"…\">. Souligné, focus visible, ton de couleur. Lien externe (target=\"_blank\" ou rel=\"external\") signalé par une flèche décorative ; data-visited distingue les liens déjà visités.",
+      "shape": "link",
+      "elements": [
+        "a"
+      ],
+      "attributes": {
+        "data-tone": [
+          "primary",
+          "neutral",
+          "danger",
+          "success",
+          "warning"
+        ],
+        "data-size": [
+          "sm",
+          "md",
+          "lg"
+        ]
+      },
+      "defaults": {
+        "tone": "primary",
+        "size": "md"
+      },
+      "tokens": [
+        "--link-fg",
+        "--link-visited",
+        "--link-focus",
+        "--link-pad-y",
+        "--link-pad-x",
+        "--link-font"
+      ],
+      "parts": [],
+      "states": [
+        "focus"
+      ],
+      "a11y": {
+        "role": "link",
+        "minTarget": 0,
+        "requiresLabel": true,
+        "anchorRequiresHref": true
+      },
+      "example": "<a class=\"link\" href=\"/tarifs\">Voir les tarifs</a>",
+      "flutter": "NoraLink",
+      "reactNative": "NoraLink"
+    },
+    "media": {
+      "description": "Bloc image ou illustration : <figure class=\"media\" data-size=\"wide\"> avec <img alt=\"…\" loading=\"lazy\">, légende .media-caption (<figcaption>) et texte en surimpression .media-overlay (dégradé de lisibilité). data-size fixe le format : wide 16/9, standard 4/3, square 1/1, portrait 3/4.",
+      "shape": "media",
+      "elements": [
+        "figure",
+        "div"
+      ],
+      "attributes": {
+        "data-tone": [
+          "neutral"
+        ],
+        "data-size": [
+          "wide",
+          "standard",
+          "square",
+          "portrait"
+        ]
+      },
+      "defaults": {
+        "tone": "neutral",
+        "size": "wide"
+      },
+      "tokens": [
+        "--media-bg",
+        "--media-fg",
+        "--media-radius",
+        "--media-scrim",
+        "--media-on-scrim",
+        "--media-pad-y",
+        "--media-pad-x",
+        "--media-font",
+        "--media-ratio"
+      ],
+      "parts": [
+        "media-caption",
+        "media-overlay"
+      ],
+      "states": [],
+      "a11y": {
+        "role": "figure",
+        "minTarget": 0,
+        "requiresLabel": true,
+        "anchorRequiresHref": false
+      },
+      "example": "<figure class=\"media\" data-size=\"wide\"><img src=\"/images/plage.jpg\" alt=\"Plage de Grand-Bassam au coucher du soleil\" loading=\"lazy\"><div class=\"media-overlay\">Grand-Bassam</div><figcaption class=\"media-caption\">Photo : équipe NoraIvoire</figcaption></figure>",
+      "flutter": "NoraMedia",
+      "reactNative": "NoraMedia"
+    },
+    "navbar": {
+      "description": "Barre de navigation : <nav class=\"navbar\" aria-label=\"…\"> avec .navbar-brand, une liste .navbar-menu de liens (page courante : aria-current=\"page\") et .navbar-actions. Sans JavaScript : sur petit écran, le menu passe sous la marque et défile horizontalement.",
+      "shape": "nav",
+      "elements": [
+        "nav"
+      ],
+      "attributes": {
+        "data-tone": [
+          "neutral"
+        ],
+        "data-size": [
+          "sm",
+          "md",
+          "lg"
+        ]
+      },
+      "defaults": {
+        "tone": "neutral",
+        "size": "md"
+      },
+      "tokens": [
+        "--navbar-bg",
+        "--navbar-fg",
+        "--navbar-muted",
+        "--navbar-border",
+        "--navbar-active",
+        "--navbar-focus",
+        "--navbar-pad-y",
+        "--navbar-pad-x",
+        "--navbar-font"
+      ],
+      "parts": [
+        "navbar-brand",
+        "navbar-menu",
+        "navbar-actions"
+      ],
+      "states": [
+        "focus"
+      ],
+      "a11y": {
+        "role": "navigation",
+        "minTarget": 44,
+        "requiresLabel": true,
+        "anchorRequiresHref": true
+      },
+      "example": "<nav class=\"navbar\" aria-label=\"Principale\"><a class=\"navbar-brand\" href=\"/\">Marque</a><ul class=\"navbar-menu\"><li><a href=\"/\" aria-current=\"page\">Accueil</a></li><li><a href=\"/produits\">Produits</a></li><li><a href=\"/contact\">Contact</a></li></ul><div class=\"navbar-actions\"><a class=\"btn\" data-size=\"sm\" href=\"/connexion\">Connexion</a></div></nav>",
+      "flutter": "NoraNavbar",
+      "reactNative": "NoraNavbar"
     },
     "radio": {
       "description": "Bouton radio : un <label class=\"radio\"> contenant <input type=\"radio\" name=\"…\"> et son texte (zone cliquable ≥ 44 px). Grouper les options d'une même question dans un <fieldset class=\"field\"> avec <legend class=\"field-label\">.",

@@ -153,6 +153,7 @@ export function checkSource(text, file, manifest) {
         push('error', 'a11y-label', `<button class="${comp}"> sans texte ni aria-label`, 'ajouter un texte ou aria-label="…"');
       }
       checkFormComponent(comp, spec, el, text, tokens, elements, form, push);
+      checkPageComponent(comp, spec, el, text, tokens, elements, push);
     }
 
     if (attrs['aria-invalid'] === 'true' && attrs['aria-describedby'] === undefined && attrs['aria-errormessage'] === undefined) {
@@ -253,6 +254,55 @@ function checkFormComponent(comp, spec, el, text, tokens, elements, form, push) 
       || (isStatic(d.attrs.class) && d.attrs.class.split(/\s+/).includes(`${comp}-label`)));
     if (!hasLabel && !inner.some(opaque)) {
       push('warning', 'field-label-missing', `.${comp} sans libellé`, `ajouter <label class="${comp}-label" for="…">…</label> (ou <legend> dans un <fieldset>)`);
+    }
+  }
+}
+
+// ───────────── Mise en page : lien, navigation, avatar, média ─────────────
+
+/** Classes qui signalent visuellement l'élément courant d'une navigation (Bootstrap, Tailwind, maison). */
+const ACTIVE_CLASSES = new Set(['active', 'is-active', 'current', 'is-current', 'selected', 'router-link-active', 'router-link-exact-active']);
+const classesOf = (el) => (isStatic(el.attrs.class) ? el.attrs.class.split(/\s+/).filter(Boolean) : []);
+const hasName = (a) => (a['aria-label'] !== undefined && a['aria-label'] !== '') || a['aria-labelledby'] !== undefined;
+const isHidden = (a) => a['aria-hidden'] === 'true' || a['aria-hidden'] === DYNAMIC;
+
+/** Une image a-t-elle un texte alternatif déclaré (alt, même vide pour une image décorative) ? */
+function imgAltOk(img) {
+  const a = img.attrs;
+  return a.alt !== undefined || a[':alt'] !== undefined || a['[alt]'] !== undefined || hasName(a) || isHidden(a) || a.role === 'presentation' || a.role === 'none';
+}
+
+function checkPageComponent(comp, spec, el, text, tokens, elements, push) {
+  const shape = spec.shape;
+  const tag = el.name;
+  const a = el.attrs;
+  if (shape === 'link') {
+    if (tag === 'a' && !hasName(a) && !hasAccessibleContent(text, tokens, el)) {
+      push('error', 'a11y-label', `<a class="${comp}"> sans texte ni aria-label`, 'ajouter le texte du lien (il doit dire où il mène)');
+    }
+  } else if (shape === 'avatar') {
+    if (tag === 'img' && !imgAltOk(el)) {
+      push('error', 'a11y-img-alt', `<img class="${comp}"> sans alt`, 'ajouter alt="Nom de la personne" (ou alt="" si l\'avatar est décoratif)');
+    } else if (tag !== 'img' && !hasName(a) && !isHidden(a)) {
+      push('error', 'a11y-img-alt', `<${tag} class="${comp}"> (initiales) sans nom accessible`, 'ajouter role="img" aria-label="Nom de la personne" (ou aria-hidden="true" si décoratif)');
+    } else if (tag !== 'img' && hasName(a) && a.role !== 'img' && a.role !== DYNAMIC) {
+      push('warning', 'a11y-img-role', `<${tag} class="${comp}" aria-label> sans role="img"`, 'ajouter role="img" : sans rôle, aria-label est ignoré sur un <span>');
+    }
+  } else if (shape === 'media') {
+    for (const img of descendants(el, elements).filter((d) => d.name === 'img')) {
+      if (!imgAltOk(img)) {
+        push('error', 'a11y-img-alt', `<img> de .${comp} sans alt`, 'décrire l\'image dans alt="…" (ou alt="" si elle est purement décorative)');
+      }
+    }
+  } else if (shape === 'nav') {
+    if (!hasName(a)) {
+      push('warning', 'a11y-nav-label', `<${tag} class="${comp}"> sans aria-label`, 'ajouter aria-label="Principale" (ou aria-labelledby) : plusieurs navigations doivent se distinguer');
+    }
+    for (const d of descendants(el, elements).filter((x) => x.name === 'a')) {
+      const flagged = [d, d.parent].some((x) => x && classesOf(x).some((k) => ACTIVE_CLASSES.has(k)));
+      if (flagged && d.attrs['aria-current'] === undefined) {
+        push('warning', 'a11y-nav-current', `lien actif de .${comp} sans aria-current`, 'ajouter aria-current="page" sur le lien de la page courante (la classe seule n\'est pas annoncée)');
+      }
     }
   }
 }

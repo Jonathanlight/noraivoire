@@ -8,6 +8,7 @@
 import { resolveRef, camel, pascal, quote, docComment } from '../resolve.js';
 import { shapeFromRole } from '../validate.js';
 import { header } from '../header.js';
+import { PAGE_SHAPES, pageMaps, pageComp } from './react-native-page.js';
 
 function union(components, axis) {
   const s = new Set();
@@ -699,11 +700,15 @@ export function buildReactNative(model, meta) {
     if (shape === 'control') return controlComp(c);
     if (shape === 'toggle') return c.a11y.role === 'radio' ? radioComp(c) : toggleComp(c);
     if (shape === 'group') return fieldComp(c);
-    return staticComp(c, shape);
+    return pageComp(c, shape) ?? staticComp(c, shape);
   });
   const hasForms = model.components.some((c) => FORM_SHAPES.has(shapeFromRole(c)));
+  const shapes = new Set(model.components.map((c) => shapeFromRole(c)));
+  const hasLinks = shapes.has('link') || shapes.has('nav');
+  const hasImages = shapes.has('avatar') || shapes.has('media');
   const maps = model.components.map((c) => {
     const shape = shapeFromRole(c);
+    if (PAGE_SHAPES.has(shape)) return pageMaps(c, model.tokens, shape);
     return FORM_SHAPES.has(shape) ? formMaps(c, model.tokens, shape) : componentMaps(c, model.tokens);
   });
 
@@ -712,14 +717,14 @@ export function buildReactNative(model, meta) {
 import * as React from 'react';
 import {
   AccessibilityInfo,
-  Animated,${hasForms ? '\n  Modal,' : ''}
+  Animated,${hasImages ? '\n  Image,' : ''}${hasLinks ? '\n  Linking,' : ''}${hasForms ? '\n  Modal,' : ''}
   Platform,
-  Pressable,
+  Pressable,${shapes.has('nav') ? '\n  ScrollView,' : ''}
   Text,${hasForms ? '\n  TextInput,' : ''}
   View,
-  useColorScheme,
+  useColorScheme,${shapes.has('nav') ? '\n  useWindowDimensions,' : ''}${hasImages ? '\n  type ImageSourcePropType,' : ''}
   type PressableProps,
-  type StyleProp,${hasForms ? '\n  type TextInputProps,\n  type TextStyle,' : ''}
+  type StyleProp,${hasForms ? '\n  type TextInputProps,' : ''}${hasForms || hasLinks ? '\n  type TextStyle,' : ''}
   type ViewProps,
   type ViewStyle,
 } from 'react-native';
@@ -764,6 +769,8 @@ export type NoraConfig = {
   orientation?: (listener: (x: number, y: number) => void) => () => void;
   /** Forcer un thème ; par défaut : thème système. */
   scheme?: 'light' | 'dark';
+  /** Ouverture des liens (NoraLink, NoraNavbar) ; par défaut : Linking.openURL. */
+  openURL?: (url: string) => void;
 };
 
 export const noraConfig: NoraConfig = {};

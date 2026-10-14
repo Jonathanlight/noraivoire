@@ -23,7 +23,14 @@ export const FIELDS = Object.freeze({
   checkbox: TOGGLE,
   radio: TOGGLE,
   switch: [...TOGGLE, 'ind.offMark'],
+  link: ['fg', 'font', 'underline', 'visited'],
+  avatar: ['bg', 'fg', 'w', 'h', 'radius', 'font'],
+  navbar: ['bg', 'fg', 'padY', 'padX', 'borderWidth', 'borderColor', 'linkMinHeight', 'linkPadX', 'muted', 'active'],
+  media: ['ratio', 'radius', 'captionFg', 'captionFont', 'captionPadY', 'scrim', 'onScrim'],
 });
+
+/** Format d'un média, comparé en texte exact (la tolérance de ± 1 px le rendrait muet) : « 1.778 ». */
+export const ratio = (r) => (r == null ? null : (Math.round(Number(r) * 1000) / 1000).toFixed(3));
 
 export const caseKey = (theme, c) => `${theme}/${c.component}/${c.tone}/${c.size}`;
 

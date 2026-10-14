@@ -114,7 +114,9 @@ function buildComponent(name, c, meta) {
   const fallback = others[0] ?? 'a';
   const tag = `Nora:${pascal(name)}`;
 
-  const props = [`tone = ${phpQuote(tone)}`, `size = ${phpQuote(size)}`];
+  // Lien texte (forme link) : sans taille explicite, il hérite de la police du paragraphe.
+  const inheritSize = c.shape === 'link';
+  const props = [`tone = ${phpQuote(tone)}`, `size = ${inheritSize ? 'null' : phpQuote(size)}`];
   if (hasLink) props.push('href = null');
   if (hasButton) props.push("type = 'button'");
   if (others.length > 1) props.push(`as = ${phpQuote(fallback)}`);
@@ -125,7 +127,7 @@ function buildComponent(name, c, meta) {
     `   Valeurs hors liste blanche → valeur par défaut. data-tone, data-size${hasLink ? ', href' : ''}${hasButton ? ', type' : ''} ne peuvent pas être forcés par attribut. #}`,
     `{% props ${props.join(', ')} %}`,
     `{% set tone = tone in ${list(tones, `${name}.tone`)} ? tone : ${phpQuote(tone)} %}`,
-    `{% set size = size in ${list(sizes, `${name}.size`)} ? size : ${phpQuote(size)} %}`,
+    `{% set size = size in ${list(sizes, `${name}.size`)} ? size : ${inheritSize ? 'null' : phpQuote(size)} %}`,
   ];
   if (hasLink) lines.push(hrefExpression());
   if (hasButton) lines.push(`{% set type = type in ${list(BUTTON_TYPES, 'type')} ? type : 'button' %}`);
@@ -150,10 +152,15 @@ function buildComponent(name, c, meta) {
       const isLast = i === branches.length - 1;
       lines.push(i === 0 ? `{% if ${b.cond} %}` : isLast ? '{% else %}' : `{% elseif ${b.cond} %}`);
     }
-    const defaults = [`class: ${phpQuote(name)}`, `'data-tone': tone`, `'data-size': size`];
-    if (b.extra) defaults.push(b.extra);
+    const defaults = [`class: ${phpQuote(name)}`, `'data-tone': tone`];
+    if (!inheritSize) defaults.push(`'data-size': size`);
+    // Une valeur null serait rendue comme attribut booléen : href et data-size optionnels ne sont fusionnés que s'ils existent.
+    const optional = [];
+    if (inheritSize) optional.push(`size ? {'data-size': size} : {}`);
+    if (b.extra === 'href: href' && branches.length === 1) optional.push('href ? {href: href} : {}');
+    else if (b.extra) defaults.push(b.extra);
     const indent = branches.length > 1 ? '  ' : '';
-    const open = `<${b.el} {{ attrs.defaults({${defaults.join(', ')}}) }}>`;
+    const open = `<${b.el} {{ attrs.defaults({${defaults.join(', ')}}${optional.map((o) => `|merge(${o})`).join('')}) }}>`;
     if (VOID_ELEMENTS.has(b.el)) {
       lines.push(`${indent}${open}`);
     } else {
@@ -214,6 +221,7 @@ function buildManifestClass(manifest, meta) {
             'sizes' => ${list(c.attributes['data-size'], `${n}.size`)},
             'defaults' => ['tone' => ${phpQuote(safe(c.defaults.tone, n))}, 'size' => ${phpQuote(safe(c.defaults.size, n))}],
             'elements' => ${list(c.elements, `${n}.elements`)},
+            'shape' => ${phpQuote(safe(c.shape, `${n}.shape`))},
             'twig' => ${phpQuote(`Nora:${pascal(n)}`)},
         ],`).join('\n');
   const effects = Object.keys(manifest.effects).filter((e) => manifest.effects[e].kind !== 'surface-glass');
@@ -224,7 +232,7 @@ final class NoraManifest
 {
     public const VERSION = ${phpQuote(meta.version)};
 
-    /** @var array<string, array{tones: list<string>, sizes: list<string>, defaults: array{tone: string, size: string}, elements: list<string>, twig: string}> */
+    /** @var array<string, array{tones: list<string>, sizes: list<string>, defaults: array{tone: string, size: string}, elements: list<string>, shape: string, twig: string}> */
     public const COMPONENTS = [
 ${comps}
     ];
