@@ -1,6 +1,7 @@
 # NoraIvoire — Rapport d'audit
 
 **Version auditée :** 0.1.0 · **Date :** 14 octobre 2026 · **Périmètre :** dépôt complet
+**CI GitHub :** 10 jobs réussis le 14 octobre 2026 (Node 20 et 22, Flutter, Playwright, Symfony PHP 8.4 et 8.5, JSP/Tomcat, React Native types et rendu).
 **Méthode :** audit automatisé (`nora audit`, 86 contrôles), 162 tests node, 29 tests Flutter et 54 tests PHPUnit, 94 tests de rendu React Native (Jest), 14 tests JSP dans Tomcat, 21 tests Playwright (captures + axe-core), vérification TypeScript stricte, `npm audit`, revue manuelle du code.
 © Jonathan KABLAN — Document confidentiel
 
@@ -66,7 +67,7 @@
 
 ## 4. Conditions avant commercialisation
 
-1. ~~Lever **A-01**~~ : fait (`examples/flutter_app/`, analyse et goldens). Reste à exécuter le job CI `flutter` sur Linux et à ajuster la tolérance si besoin.
+1. ~~Lever **A-01**~~ : fait (`examples/flutter_app/`, analyse et goldens). Job CI `flutter` exécuté sur GitHub (Linux, Flutter 3.47.7) avec des goldens de référence propres à Linux (exécution 38489740274 : les 10 jobs du CI réussis).
 2. ~~Ajouter la **régression visuelle** web et un test **axe-core**~~ : fait (`tests/visual/`, 12 captures, axe-core sans violation sérieuse ni critique, rendu sans JS vérifié). axe a révélé un contraste insuffisant du ton `primary` en clair (`#E8590C` sur blanc : 3,58:1) : corrigé dans la spec (`#C94A0B`, 4,70:1) et verrouillé par `tests/unit/contrast.test.js`.
 3. Faire relire **LICENSE** et rédiger le **contrat de licence** par un avocat ; déposer la marque.
 
