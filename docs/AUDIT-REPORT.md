@@ -1,7 +1,7 @@
 # NoraIvoire — Rapport d'audit
 
 **Version auditée :** 0.1.0 · **Date :** 14 octobre 2026 · **Périmètre :** dépôt complet
-**Méthode :** audit automatisé (`nora audit`, 86 contrôles), 160 tests node, 29 tests Flutter et 54 tests PHPUnit, 14 tests JSP dans Tomcat, 21 tests Playwright (captures + axe-core), vérification TypeScript stricte, `npm audit`, revue manuelle du code.
+**Méthode :** audit automatisé (`nora audit`, 86 contrôles), 162 tests node, 29 tests Flutter et 54 tests PHPUnit, 94 tests de rendu React Native (Jest), 14 tests JSP dans Tomcat, 21 tests Playwright (captures + axe-core), vérification TypeScript stricte, `npm audit`, revue manuelle du code.
 © Jonathan KABLAN — Document confidentiel
 
 ## 1. Synthèse
@@ -9,7 +9,7 @@
 | Domaine | Résultat | Commentaire |
 |---|---|---|
 | Licence et confidentialité | ✅ Conforme | LICENSE propriétaire, 8 `package.json` privés `UNLICENSED` (racine + 7 paquets), bundle Symfony `proprietary`, en-tête sur les 27 fichiers générés (CSS, JS, Dart, TSX, Twig, PHP) |
-| Chaîne d'approvisionnement | ✅ Conforme | 0 dépendance runtime ; 1 dépendance de dev npm (jsdom, MIT) ; `npm audit` : 0 vulnérabilité ; Composer : symfony/* et twig/* (MIT, BSD-3), contrôle des licences en CI |
+| Chaîne d'approvisionnement | ✅ Conforme (runtime) · ⚠️ outillage de dev | 0 dépendance runtime (`npm audit --omit=dev` : 0 vulnérabilité) ; dépendances de dev en versions exactes (jsdom, Playwright, axe-core, Jest, React Native et Testing Library pour les tests de rendu), licences de tout l'arbre contrôlées (`npm run audit:licenses`, aucune copyleft) ; `npm audit` complet : 2 avis sans correctif dans l'outillage Jest (`braces`, `sprintf-js`, déni de service sur entrées forgées), jamais distribués ; Composer : symfony/* et twig/* (MIT, BSD-3), contrôle des licences en CI |
 | Sécurité du compilateur | ✅ Conforme | Liste blanche stricte ; 8 tests d'attaque (injection, pollution de prototype, DoS, symlink, description multi-ligne dans les commentaires natifs) |
 | Sécurité du moteur web | ✅ Conforme | 11 motifs dangereux absents ; écriture limitée aux variables `--fx-*` |
 | Sécurité du serveur MCP | ✅ Conforme | Lecture seule (contrôle `mcp:read-only`) ; accès confiné au manifest et à `recipes/` ; tailles bornées ; spec MCP `2026-07-28` et versions à `initialize` |
@@ -26,7 +26,7 @@
 
 | Indicateur | Valeur |
 |---|---|
-| Tests | 160 / 160 réussis (node) · 29 / 29 (Flutter, dont 12 goldens) · 54 / 54 (PHPUnit, bundle Symfony) · 21 / 21 (Playwright : 12 captures, 4 axe-core, 2 sans JS, 2 legacy, 1 parité) · 14 / 14 (JSP dans Tomcat 11) |
+| Tests | 162 / 162 réussis (node) · 94 / 94 (rendu React Native, Jest) · 29 / 29 (Flutter, dont 12 goldens) · 54 / 54 (PHPUnit, bundle Symfony) · 21 / 21 (Playwright : 12 captures, 4 axe-core, 2 sans JS, 2 legacy, 1 parité) · 14 / 14 (JSP dans Tomcat 11) |
 | Contrôles d'audit | 86 / 86 réussis |
 | Modèles validés par `nora check` | 13 fichiers + 20 recettes, 0 erreur, 0 avertissement |
 | Erreurs TypeScript (strict) sur le TSX généré | 0 |
@@ -62,6 +62,7 @@
 | A-12 | Faible | Twig Components des contrôles de formulaire génériques ; `Nora:Field` relie libellé, aide et erreur, mais `aria-describedby` / `aria-invalid` restent à poser sur le contrôle. | **Corrigé** — `Nora:Field` expose `control` (étalement `{{ ...control }}`) et `controlHtml` (input brut) : `id`, `aria-describedby`, `aria-invalid` transmis sans pose manuelle ; 2 tests PHPUnit |
 | A-13 | Faible | Rendu statique Flutter (mouvement réduit) des cases, radios et interrupteurs à tailles fixes (18, 20, 52 × 32 px), différentes des proportions de la spec rendues par CSS et React Native. | **Corrigé** — générateur aligné sur la spec (1,25 em ; 2,25 em × 1,25 em) ; détecté par la parité mesurée (`tests/unit/parity.test.js`) |
 | A-14 | Moyenne | Le tag JSP `<nora:btn>` acceptait `href="/\hôte"`, que les navigateurs lisent comme l'URL relative au protocole `//hôte` (redirection ouverte, lien vers un domaine tiers) ; `type="reset"` était ramené à `button`, contrairement aux Twig Components. | **Corrigé** — refus de `/\` aligné sur `URL_DENIED_PREFIXES` de `targets/symfony.js`, `type` aligné sur `BUTTON_TYPES` ; révélé par l'exécution réelle dans Tomcat (`npm run test:jsp`), figé sans Java par `tests/unit/jsp-template.test.js` |
+| A-15 | Faible | React Native : la coche `✓` d'une case cochée était lue par les lecteurs d'écran (nom « ✓ J'accepte ») ; `NoraTilt` s'abonnait au capteur d'orientation avant de connaître la préférence de mouvement réduit (lecture asynchrone, `false` par défaut) ; le modèle utilisait `SafeAreaView` du cœur, déprécié. | **Corrigé** — coche masquée (`importantForAccessibility="no"`, `accessibilityElementsHidden`) et nom explicite des cases, interrupteurs et radios ; `useMotionPreference()` (vrai / faux / inconnu) : capteur seulement une fois le mouvement confirmé autorisé ; modèle sur `View`, `SafeAreaView` de react-native-safe-area-context recommandé ; détectés par les tests de rendu (`tests/rn/`) |
 
 ## 4. Conditions avant commercialisation
 

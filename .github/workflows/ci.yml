@@ -115,6 +115,23 @@ jobs:
           npm i --ignore-scripts --no-save typescript@5 react@19 @types/react@19 react-native@0.81
           npx tsc --strict --noEmit --jsx react-jsx --skipLibCheck --moduleResolution bundler --module esnext --target es2022 App.tsx src/noraivoire.tsx src/noraivoire-fx.tsx
 
+  react-native-render:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run build
+      - name: dist identique à la spec
+        run: git diff --exit-code packages/core/dist
+      - name: aucune licence copyleft ni dépendance runtime dans l'arbre npm
+        run: npm run audit:licenses
+      - name: rendu réel des composants React Native générés et du modèle (Jest + Testing Library)
+        run: npm run test:rn -- --ci
+
   symfony:
     runs-on: ubuntu-latest
     strategy:

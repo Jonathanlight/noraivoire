@@ -241,3 +241,20 @@ test('flutter : rendu statique des indicateurs aux proportions de la spec (parit
   assert.match(cls('NoraSwitch '), /width: fontSize \* 1\.25 - 8,/);
   for (const n of ['NoraCheckbox ', 'NoraRadio<T> ', 'NoraSwitch ']) assert.doesNotMatch(cls(n), /width: (18|20|40|52),/, n);
 });
+
+test('react native : coche décorative cachée, nom accessible explicite des cases, interrupteurs et radios', () => {
+  const tsx = compile(SPEC).files['react-native/noraivoire.tsx'];
+  assert.match(tsx, /<Text importantForAccessibility="no" accessibilityElementsHidden [^>]*>✓<\/Text>/);
+  for (const role of ['checkbox', 'switch', 'radio']) {
+    const i = tsx.indexOf(`accessibilityRole="${role}"\n`);
+    assert.ok(i > 0, role);
+    assert.match(tsx.slice(i, i + 200), /accessibilityLabel=\{typeof children === 'string' \? children : undefined\}/, role);
+  }
+});
+
+test('react native : NoraTilt n\'écoute le capteur qu\'une fois le mouvement confirmé autorisé', () => {
+  const tsx = compile(SPEC).files['react-native/noraivoire.tsx'];
+  assert.match(tsx, /export function useMotionPreference\(\): boolean \| null/);
+  const tilt = tsx.slice(tsx.indexOf('export function NoraTilt'), tsx.indexOf('export type NoraRevealProps'));
+  assert.match(tilt, /if \(motion !== false \|\| !noraConfig\.orientation\) return;/);
+});

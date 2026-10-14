@@ -15,6 +15,11 @@ Aucun. Les fichiers de `packages/core/dist/` ne contiennent aucun code tiers.
 | Apache Tomcat 11 | Apache-2.0 | Exécution réelle des modèles JSP (`npm run test:jsp`) ; installé sur le poste ou téléchargé par le CI (SHA-512 vérifiée) |
 | JDK (OpenJDK / Temurin 21) | GPL-2.0 avec Classpath Exception | Environnement d'exécution de Tomcat pour les tests ; ni embarqué, ni lié, ni distribué |
 | Jakarta Standard Tag Library 3.0 (API 3.0.2, implémentation GlassFish 3.0.1) | EPL-2.0 ou GPL-2.0 avec Classpath Exception (choix : EPL-2.0) | Requise par les modèles JSP (`jakarta.tags.*`) ; téléchargée depuis Maven Central par `jsp:sync`, SHA-256 vérifiée, mise en cache hors suivi git, jamais versionnée ni distribuée |
+| react-native, react, @react-native/jest-preset, @react-native/babel-preset | MIT | Rendu réel des composants React Native générés dans les tests (`tests/rn/`) |
+| jest, @babel/core et leurs dépendances | MIT | Exécution des tests de rendu React Native |
+| @testing-library/react-native, test-renderer | MIT | Requêtes par rôle et nom accessible, interactions |
+
+L'arbre complet (537 paquets à la création) est contrôlé par `npm run audit:licenses` : MIT, ISC, BSD-2/3-Clause, Apache-2.0, 0BSD, MIT-0, CC0-1.0, CC-BY-4.0 (données), et MPL-2.0 pour axe-core uniquement ; toute autre licence, copyleft ou absente, fait échouer le contrôle et le job CI `react-native-render`.
 
 Ces outils servent uniquement aux tests : ils ne sont ni copiés dans `packages/core/dist/`, ni distribués aux licenciés. MPL-2.0 est un copyleft faible au niveau du fichier : sans modification ni redistribution d'axe-core, aucune obligation ne s'applique au code NoraIvoire.
 
