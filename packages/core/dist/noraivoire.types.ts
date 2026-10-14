@@ -1,4 +1,4 @@
-// NoraIvoire 0.1.0 — fichier GÉNÉRÉ (ts) depuis la spec. Ne pas modifier à la main.
+// NoraIvoire 0.1.1 — fichier GÉNÉRÉ (ts) depuis la spec. Ne pas modifier à la main.
 // © 2026 Jonathan KABLAN — Logiciel propriétaire, tous droits réservés.
 // Usage soumis au contrat de licence NoraIvoire. Redistribution interdite.
 // Types web : React / Next.js (JSX), Vue (Volar) et Angular via ce module.
@@ -23,4 +23,4 @@ export function nora(component: NoraComponent, v: { tone?: NoraTone; size?: Nora
   return props;
 }
 
-export const noraManifestVersion = '0.1.0';
+export const noraManifestVersion = '0.1.1';

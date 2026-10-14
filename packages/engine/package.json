@@ -1,13 +1,17 @@
 {
   "name": "@jonathankablan/noraivoire-engine",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "license": "UNLICENSED",
   "description": "Moteur d'effets web NoraIvoire (defineEffect, data-fx). Propriétaire.",
   "author": "Jonathan KABLAN",
   "type": "module",
   "main": "src/engine.js",
-  "sideEffects": ["src/auto.js"],
-  "engines": { "node": ">=20" },
+  "sideEffects": [
+    "src/auto.js"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
   "dependencies": {}
 }

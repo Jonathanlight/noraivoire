@@ -1,14 +1,18 @@
 {
   "name": "@jonathankablan/noraivoire-fx-scroll",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "license": "UNLICENSED",
   "description": "Effets de défilement optionnels NoraIvoire (pin, scrub, parallax), chargés à la demande. Propriétaire.",
   "author": "Jonathan KABLAN",
   "type": "module",
   "main": "src/index.js",
-  "exports": { ".": "./src/index.js" },
+  "exports": {
+    ".": "./src/index.js"
+  },
   "sideEffects": false,
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "dependencies": {}
 }

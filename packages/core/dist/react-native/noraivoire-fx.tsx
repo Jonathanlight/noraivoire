@@ -1,4 +1,4 @@
-// NoraIvoire 0.1.0 — fichier GÉNÉRÉ (tsx) depuis la spec. Ne pas modifier à la main.
+// NoraIvoire 0.1.1 — fichier GÉNÉRÉ (tsx) depuis la spec. Ne pas modifier à la main.
 // © 2026 Jonathan KABLAN — Logiciel propriétaire, tous droits réservés.
 // Usage soumis au contrat de licence NoraIvoire. Redistribution interdite.
 // Effets optionnels (paquets fx-*). À copier à côté de noraivoire.tsx.

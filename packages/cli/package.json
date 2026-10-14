@@ -1,6 +1,6 @@
 {
   "name": "@jonathankablan/noraivoire-cli",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "license": "UNLICENSED",
   "description": "CLI NoraIvoire : validation des templates (nora check) et audit (nora audit). Propriétaire.",

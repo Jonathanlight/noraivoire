@@ -1,13 +1,17 @@
 {
   "name": "@jonathankablan/noraivoire-compiler",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "license": "UNLICENSED",
   "description": "Compilateur NoraIvoire : spec → CSS, Flutter, React Native, manifest. Propriétaire.",
   "author": "Jonathan KABLAN",
   "type": "module",
   "main": "src/index.js",
-  "bin": { "noractl": "src/cli.js" },
-  "engines": { "node": ">=20" },
+  "bin": {
+    "noractl": "src/cli.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
   "dependencies": {}
 }

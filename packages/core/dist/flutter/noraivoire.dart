@@ -1,4 +1,4 @@
-// NoraIvoire 0.1.0 — fichier GÉNÉRÉ (dart) depuis la spec. Ne pas modifier à la main.
+// NoraIvoire 0.1.1 — fichier GÉNÉRÉ (dart) depuis la spec. Ne pas modifier à la main.
 // © 2026 Jonathan KABLAN — Logiciel propriétaire, tous droits réservés.
 // Usage soumis au contrat de licence NoraIvoire. Redistribution interdite.
 // ignore_for_file: lines_longer_than_80_chars
@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 /// Version de la spec NoraIvoire ayant produit ce fichier.
-const String noraVersion = '0.1.0';
+const String noraVersion = '0.1.1';
 
 enum NoraTone { primary, neutral, danger, success, warning }
 

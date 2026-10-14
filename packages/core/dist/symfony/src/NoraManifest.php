@@ -1,6 +1,6 @@
 <?php
 
-// NoraIvoire 0.1.0 — fichier GÉNÉRÉ (php) depuis la spec. Ne pas modifier à la main.
+// NoraIvoire 0.1.1 — fichier GÉNÉRÉ (php) depuis la spec. Ne pas modifier à la main.
 // © 2026 Jonathan KABLAN — Logiciel propriétaire, tous droits réservés.
 // Usage soumis au contrat de licence NoraIvoire. Redistribution interdite.
 
@@ -8,10 +8,10 @@ declare(strict_types=1);
 
 namespace NoraIvoire\SymfonyBundle\Generated;
 
-/** Contrat NoraIvoire 0.1.0 exposé à PHP (lecture seule). */
+/** Contrat NoraIvoire 0.1.1 exposé à PHP (lecture seule). */
 final class NoraManifest
 {
-    public const VERSION = '0.1.0';
+    public const VERSION = '0.1.1';
 
     /** @var array<string, array{tones: list<string>, sizes: list<string>, defaults: array{tone: string, size: string}, elements: list<string>, shape: string, twig: string}> */
     public const COMPONENTS = [
