@@ -1,0 +1,8 @@
+{
+  "name": "sharp",
+  "version": "0.0.0-noraivoire",
+  "private": true,
+  "license": "UNLICENSED",
+  "description": "Remplaçant vide de sharp : l'exemple n'utilise pas next/image, et les binaires libvips de sharp sont sous LGPL-3.0 (copyleft exclu du dépôt).",
+  "main": "index.js"
+}

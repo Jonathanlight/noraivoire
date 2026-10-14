@@ -2,6 +2,7 @@
 
 ## Non publié
 
+- README : section « Essayer en 2 minutes » — galerie de captures réelles (HTML, React, Vue, Next.js, Angular, Twig/Symfony, JSP, Flutter, React Native via react-native-web, mosaïque des 20 recettes) et commande de lancement de chaque modèle ; exemples lançables `examples/{react,vue,nextjs,angular,react-native-web,twig}/` (dépendances propres à chaque exemple, versions exactes, licences contrôlées) ; `npm run gallery` (captures dans `docs/gallery/`, 760 Kio) ; `npm run jsp:serve` ; démarrage de Tomcat factorisé dans `examples/jsp-app/tool/tomcat.mjs` ; `check-licenses.mjs --dir=` pour les exemples.
 - JSP (constat A-14 levé) : modèles exécutés réellement dans Tomcat 11 (`examples/jsp-app/`, `npm run jsp:sync`, `npm run test:jsp`, job CI `jsp` avec Tomcat vérifié par SHA-512) ; le tag `<nora:btn>` refuse désormais `/\hôte` et accepte `type="reset"`, comme les Twig Components. 14 tests Tomcat, 3 tests node.
 - Dépôt : ajout de `.npmrc` (`ignore-scripts=true`), `.gitignore` et `.github/workflows/ci.yml` (jobs `verify`, `flutter`, `react-native-types`).
 - Benchmark IA (`bench/`) : 50 tâches UI, interrogation de plusieurs modèles avec et sans `llms-full.txt`, score `nora check`, rapport Markdown ; mode `--dry-run` sans réseau, clés en variables d'environnement uniquement ; 13 tests.

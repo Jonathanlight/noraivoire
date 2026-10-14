@@ -126,6 +126,21 @@ Champs comparés (`tests/parity/model.mjs`) : couleurs de fond, de texte et de b
 - Après un changement volontaire de la spec : `npm run parity:update`, puis vérifier le diff des trois JSON.
 - Écart trouvé et corrigé à la mise en place : rendu statique Flutter (mouvement réduit) des cases, radios et interrupteurs à tailles fixes (18, 20, 52 × 32 px) au lieu des proportions de la spec (1,25 em, 2,25 em × 1,25 em) ; le générateur suit désormais la spec.
 
+### Galerie du README (`npm run gallery`)
+
+`tests/gallery/run.mjs` produit les captures de la section « Essayer en 2 minutes » du README dans `docs/gallery/` (PNG optimisés sans perte par `oxipng`, MIT, s'il est installé : `brew install oxipng`). Ce n'est pas un test de non-régression (les captures de référence restent celles de `tests/visual/`) : la galerie montre le rendu réel de chaque modèle.
+
+| Cible | Comment la capture est obtenue | Prérequis |
+|---|---|---|
+| HTML, 20 recettes | Page servie par le serveur statique des tests visuels (`resolveSafe`, lecture seule, 127.0.0.1) | Node |
+| React, Vue, Angular, React Native | `npm ci --ignore-scripts` si besoin puis `npm run build` de `examples/<cible>/`, `dist/` servi en statique ; React Native via react-native-web | Node |
+| Next.js | `next build` puis `next start` sur 127.0.0.1 et un port libre | Node |
+| Twig | `npm run symfony:sync`, Composer, puis `php -S` sur `examples/twig/public/index.php` (vraie application Symfony, bundle NoraIvoire) | PHP 8.4+, Composer |
+| JSP | `jsp:sync` puis Tomcat isolé (`examples/jsp-app/tool/tomcat.mjs`, partagé avec `npm run test:jsp`) | JDK 17+, Tomcat 10.1+ |
+| Flutter | `flutter test --update-goldens tool/gallery_test.dart` (hors de `test/`), police Roboto et icônes Material chargées depuis le SDK au lieu de la police de test à glyphes carrés | Flutter |
+
+Chromium en 1280 × 800 (390 × 844 pour React Native), `reducedMotion: 'reduce'`, clair et sombre pour HTML, React, Vue, Flutter et React Native ; vignettes des recettes à l'échelle 0,5. Une erreur JavaScript de la page fait échouer la capture ; une cible dont l'outil manque est listée comme ignorée (code de sortie 1), jamais simulée. `npm run gallery -- --only=react,vue` limite les cibles. Les licences des arbres npm des exemples se contrôlent avec `node tests/rn/check-licenses.mjs --dir=examples/<cible>`.
+
 ## 3. Benchmark IA
 
 `npm run bench:dry` exécute tout le pipeline de `bench/` avec des réponses simulées (aucun réseau). Les appels réels exigent les clés en variables d'environnement et `--yes`. Voir `bench/README.md`.

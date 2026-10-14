@@ -1,0 +1,29 @@
+{
+    "name": "noraivoire/example-twig",
+    "description": "NoraIvoire — application Symfony minimale qui rend templates/twig/ avec le bundle NoraIvoire. Logiciel propriétaire © Jonathan KABLAN.",
+    "type": "project",
+    "license": "proprietary",
+    "require": {
+        "php": ">=8.4",
+        "noraivoire/symfony-bundle": "*@dev",
+        "symfony/asset": "^7.3 || ^8.0",
+        "symfony/asset-mapper": "^7.3 || ^8.0",
+        "symfony/framework-bundle": "^7.3 || ^8.0",
+        "symfony/security-csrf": "^7.3 || ^8.0",
+        "symfony/twig-bundle": "^7.3 || ^8.0",
+        "symfony/ux-twig-component": "^2.25",
+        "twig/twig": "^3.15"
+    },
+    "repositories": [
+        { "type": "path", "url": "../../adapters/symfony-bundle", "options": { "symlink": true } }
+    ],
+    "autoload": {
+        "psr-4": { "App\\": "src/" }
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {}
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

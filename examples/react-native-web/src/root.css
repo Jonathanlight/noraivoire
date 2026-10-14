@@ -1,0 +1,3 @@
+/* NoraIvoire — conteneur plein écran attendu par react-native-web. © 2026 Jonathan KABLAN — Propriétaire. */
+html, body, #root { height: 100%; margin: 0; }
+#root { display: flex; }

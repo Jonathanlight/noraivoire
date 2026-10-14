@@ -19,6 +19,19 @@ Aucun. Les fichiers de `packages/core/dist/` ne contiennent aucun code tiers.
 | jest, @babel/core et leurs dépendances | MIT | Exécution des tests de rendu React Native |
 | @testing-library/react-native, test-renderer | MIT | Requêtes par rôle et nom accessible, interactions |
 
+### Exemples lançables (`examples/`, hors dépôt npm de la racine)
+
+Chaque exemple a son propre `package.json` ou `composer.json` ; ces dépendances ne sont installées que pour essayer un modèle et ne sont jamais distribuées avec NoraIvoire.
+
+| Exemple | Dépendances principales | Licences |
+|---|---|---|
+| `examples/react`, `examples/vue`, `examples/react-native-web` | React 19, Vue 3, react-native-web, Vite 8 (avec lightningcss) | MIT ; lightningcss MPL-2.0 (minifieur CSS de Vite, utilisé sans modification) |
+| `examples/nextjs` | Next.js 16, React 19, TypeScript | MIT, Apache-2.0, CC-BY-4.0 (données caniuse-lite) ; `sharp` remplacé par un paquet vide du dépôt (`tool/no-sharp`) car ses binaires libvips sont sous LGPL-3.0 |
+| `examples/angular` | Angular 22, `@angular/build`, TypeScript, RxJS | MIT, Apache-2.0, 0BSD ; lightningcss MPL-2.0 |
+| `examples/twig` | Symfony 7.3+/8, Twig, Symfony UX Twig Component | MIT, BSD-3-Clause (47 paquets, contrôlés par `adapters/symfony-bundle/tool/check-licenses.php`) |
+
+Contrôle : `node tests/rn/check-licenses.mjs --dir=examples/<cible>`. Galerie du README : polices Roboto et Material Icons du SDK Flutter (Apache-2.0) chargées pour les captures Flutter ; `oxipng` (MIT) pour l'optimisation des PNG.
+
 L'arbre complet (537 paquets à la création) est contrôlé par `npm run audit:licenses` : MIT, ISC, BSD-2/3-Clause, Apache-2.0, 0BSD, MIT-0, CC0-1.0, CC-BY-4.0 (données), et MPL-2.0 pour axe-core uniquement ; toute autre licence, copyleft ou absente, fait échouer le contrôle et le job CI `react-native-render`.
 
 Ces outils servent uniquement aux tests : ils ne sont ni copiés dans `packages/core/dist/`, ni distribués aux licenciés. MPL-2.0 est un copyleft faible au niveau du fichier : sans modification ni redistribution d'axe-core, aucune obligation ne s'applique au code NoraIvoire.
