@@ -26,6 +26,8 @@
 - Symfony (constat A-12 levé) : `Nora:Field` expose `control` et `controlHtml` à son contenu ; `id`, `aria-describedby` et `aria-invalid` arrivent sur le contrôle sans pose manuelle (`{{ ...control }}`). 2 tests PHPUnit.
 - Tests : fuzzing déterministe sans dépendance (`tests/unit/fuzz.test.js`) de `parseOptions`, `parseEffectList`, `safeParse` / validation des specs et du tokenizer de `nora check` ; 1 500 tours par défaut, 30 000 vérifiés localement. 4 tests.
 - Tests : parité cross-cible **mesurée** (CSS via Playwright, Flutter via l'arbre de widgets, React Native via le TSX généré et ses liaisons de style), 52 cas × 2 thèmes, aucun écart toléré hors ± 1 px ; `npm run parity:update`. Écart corrigé dans le générateur Flutter : le rendu statique (mouvement réduit) des cases, radios et interrupteurs suit désormais les proportions de la spec (1,25 em ; 2,25 em × 1,25 em) au lieu de tailles fixes. 7 tests node, 2 tests Flutter, 1 test Playwright.
+- Tests de rendu React Native (`tests/rn/`, `npm run test:rn`, job CI `react-native-render`) : Jest 29 + preset officiel React Native 0.87 + Testing Library 14, dépendances de dev en versions exactes ; 94 tests (styles conformes à `tests/parity/rn.json`, rôles et états accessibles, `NoraField`, `NoraSelect` en modale, mouvement réduit, `configureNora`, modèle `App.tsx`). Contrôle des licences de tout l'arbre npm (`npm run audit:licenses`).
+- React Native (constat A-14) : coche décorative de `NoraCheckbox` masquée aux lecteurs d'écran et nom accessible explicite des cases, interrupteurs et radios ; `useMotionPreference()` : `NoraTilt` n'écoute plus le capteur avant de connaître la préférence de mouvement réduit ; modèle sans `SafeAreaView` déprécié. 2 tests node.
 
 ## 0.1.0 — 14 octobre 2026
 

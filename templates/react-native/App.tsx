@@ -1,7 +1,7 @@
 // NoraIvoire — modèle React Native / Expo (iOS, Android, Web). © 2026 Jonathan KABLAN — Propriétaire.
 // Copier packages/core/dist/react-native/noraivoire.tsx dans src/noraivoire.tsx.
 import * as React from 'react';
-import { SafeAreaView, ScrollView, Text } from 'react-native';
+import { ScrollView, Text, View } from 'react-native';
 import {
   NoraBadge,
   NoraBtn,
@@ -72,7 +72,9 @@ function DeliveryForm() {
 export default function App() {
   const colors = useNoraColors();
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.surface2 }}>
+    // SafeAreaView du cœur est déprécié : envelopper l'application dans le SafeAreaProvider de
+    // react-native-safe-area-context (Expo l'inclut) et remplacer cette View par SafeAreaView de ce paquet.
+    <View style={{ flex: 1, backgroundColor: colors.surface2 }}>
       <ScrollView contentContainerStyle={{ padding: noraSpace['4'], gap: noraSpace['4'] }}>
         <Text style={{ fontSize: noraFont.xl, fontWeight: '700', color: colors.text }}>Boutique</Text>
         <NoraReveal>
@@ -87,6 +89,6 @@ export default function App() {
         </NoraReveal>
         <DeliveryForm />
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }

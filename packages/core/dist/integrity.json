@@ -51,10 +51,10 @@
       "gzip": 8166
     },
     "react-native/noraivoire.tsx": {
-      "sha256": "4474010e3dab8f5552c49b6e1311955118c814fc693c6da655d849bd5d1c73d6",
-      "sri": "sha384-LJs00yAn2x+LeGEQyNkpZA8O2GU8yITe/7MaLP9ZP53LkzIRxFZqcd6kpv1eElzy",
-      "bytes": 38005,
-      "gzip": 7634
+      "sha256": "870cb3dfedb9beab1008d68e92ddc60436c5f9197f5e12792a05f59ffb6be088",
+      "sri": "sha384-0QAEOsh5Npu+/Ip2Ub9uckA1AZiQjiq+aWdL/3Robnm83wTqrvTdpB5+PbfgKUID",
+      "bytes": 38946,
+      "gzip": 7961
     },
     "symfony/src/NoraManifest.php": {
       "sha256": "f136097239f0b86af8a3ffdf1ba5d3cf0d9942fa27d1fb5292d02ea2f7f8f8ef",

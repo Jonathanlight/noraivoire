@@ -14,7 +14,7 @@ Version 0.1.0 · 14 octobre 2026 · © Jonathan KABLAN — Propriétaire
 | Vue 3 / Nuxt | Import CSS ; directive `v-fx` | Oui (projet) | `templates/vue/vFx.ts` | Modèle fourni |
 | Angular 17+ | `angular.json › styles` ; directive `[noraFx]` | Oui (projet) | `templates/angular/nora-fx.directive.ts` | Modèle fourni |
 | Flutter 3.35+ | Copie de `noraivoire.dart` | Non | — | Généré ; `flutter analyze` sans problème et goldens (`examples/flutter_app/`) |
-| React Native 0.76+ / Expo | Copie de `noraivoire.tsx` | Non | `configureNora()` | Généré ; **TypeScript strict vérifié** (RN 0.81, React 19) |
+| React Native 0.76+ / Expo | Copie de `noraivoire.tsx` | Non | `configureNora()` | Généré ; **TypeScript strict vérifié** (RN 0.81 et 0.87, React 19) ; **rendu testé** (Jest + Testing Library, RN 0.87, 94 tests) |
 
 ## 2. Politique de support navigateurs
 
@@ -91,6 +91,8 @@ Limites : `NoraParallax` (RN) doit être un enfant direct du contenu du `ScrollV
 | Moteur web | Aucune | Très faible |
 | Flutter | SDK Flutter | API utilisées stables ; `Color.withValues` impose Flutter 3.27+, `RadioGroup` (boutons radio) Flutter 3.35+ |
 | React Native | `react`, `react-native` | `Animated` et `Pressable` sont des API publiques stables |
+
+React Native : la préférence « réduire les animations » est lue de façon asynchrone (`AccessibilityInfo.isReduceMotionEnabled`) ; `useMotionPreference()` renvoie `null` tant qu'elle est inconnue, et `NoraTilt` n'écoute le capteur d'orientation qu'une fois le mouvement confirmé autorisé. Le modèle n'utilise plus `SafeAreaView` du cœur (déprécié) : dans une application, `SafeAreaView` de `react-native-safe-area-context` (inclus dans Expo).
 | Symfony | `symfony/*` (framework, twig, console, process, asset-mapper), `symfony/ux-twig-component`, `twig/twig` — MIT / BSD-3 | Syntaxe `<twig:…>` et `attributes.without()` d'UX TwigComponent 2.x ; `nora:check` exige Node.js (développement et CI seulement) |
 
 ## 6. Limites de la version 0.1

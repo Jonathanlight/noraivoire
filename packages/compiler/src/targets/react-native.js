@@ -293,7 +293,8 @@ function toggleComp(c) {
           justifyContent: 'center',
         }}
       >
-        {checked ? <Text style={{ color: onAccent, fontSize: s.font * 0.85, fontWeight: '700', lineHeight: s.font }}>✓</Text> : null}
+        {/* Coche décorative : l'état est porté par accessibilityState.checked, le glyphe n'est pas lu. */}
+        {checked ? <Text importantForAccessibility="no" accessibilityElementsHidden style={{ color: onAccent, fontSize: s.font * 0.85, fontWeight: '700', lineHeight: s.font }}>✓</Text> : null}
       </View>`;
   const anim = isSwitch
     ? `  const reduce = useReducedMotion();
@@ -334,6 +335,7 @@ ${anim}
   return (
     <Pressable
       accessibilityRole="${isSwitch ? 'switch' : 'checkbox'}"
+      accessibilityLabel={typeof children === 'string' ? children : undefined}
       accessibilityState={{ checked, disabled: isDisabled }}
       accessibilityHint={field?.error ?? field?.help}
       disabled={isDisabled}
@@ -418,6 +420,7 @@ export function ${P}<T extends ${P}Value>({ value, children, tone, size, invalid
   return (
     <Pressable
       accessibilityRole="radio"
+      accessibilityLabel={typeof children === 'string' ? children : undefined}
       accessibilityState={{ checked, disabled: isDisabled }}
       accessibilityHint={field?.error ?? field?.help}
       disabled={isDisabled}
@@ -623,7 +626,8 @@ function effects(model) {
 
 /** ${docComment(tilt.description)} Toucher par défaut ; gyroscope si configureNora({ orientation }) est fourni. */
 export function NoraTilt({ children, max = ${tilt.options.max?.default ?? 10}, style, ...rest }: NoraTiltProps) {
-  const reduce = useReducedMotion();
+  const motion = useMotionPreference();
+  const reduce = motion === true;
   const rx = React.useRef(new Animated.Value(0)).current;
   const ry = React.useRef(new Animated.Value(0)).current;
   const size = React.useRef({ w: 1, h: 1 });
@@ -638,9 +642,10 @@ export function NoraTilt({ children, max = ${tilt.options.max?.default ?? 10}, s
   };
 
   React.useEffect(() => {
-    if (reduce || !noraConfig.orientation) return;
+    // Capteur seulement quand le mouvement est confirmé autorisé (jamais pendant la lecture de la préférence).
+    if (motion !== false || !noraConfig.orientation) return;
     return noraConfig.orientation((x, y) => set(x, y));
-  }, [reduce]);
+  }, [motion]);
 
   if (reduce) return <View style={style} {...rest}>{children}</View>;
 
@@ -772,18 +777,29 @@ export function useNoraColors() {
   return noraColors[(noraConfig.scheme ?? system) === 'dark' ? 'dark' : 'light'];
 }
 
-export function useReducedMotion() {
-  const [reduce, setReduce] = React.useState(false);
+/**
+ * Préférence « réduire les animations » : true, false, ou null tant que la lecture asynchrone
+ * n'a pas abouti. Un effet qui démarre un mouvement continu (capteurs) attend une valeur false.
+ */
+export function useMotionPreference(): boolean | null {
+  const [reduce, setReduce] = React.useState<boolean | null>(null);
   React.useEffect(() => {
     let alive = true;
-    AccessibilityInfo.isReduceMotionEnabled().then((v) => alive && setReduce(v)).catch(() => {});
-    const sub = AccessibilityInfo.addEventListener('reduceMotionChanged', setReduce);
+    const update = (v: boolean) => {
+      if (alive) setReduce(v);
+    };
+    AccessibilityInfo.isReduceMotionEnabled().then(update).catch(() => {});
+    const sub = AccessibilityInfo.addEventListener('reduceMotionChanged', update);
     return () => {
       alive = false;
       sub.remove();
     };
   }, []);
   return reduce;
+}
+
+export function useReducedMotion() {
+  return useMotionPreference() ?? false;
 }
 
 function hexToRgb(hex: string) {

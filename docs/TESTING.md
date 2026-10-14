@@ -5,7 +5,9 @@ Version 0.1.0 · 14 octobre 2026 · © Jonathan KABLAN — Propriétaire
 ## 1. Commandes
 
 ```bash
-npm test                    # 157 tests (node:test, aucun framework)
+npm test                    # 159 tests (node:test, aucun framework)
+npm run test:rn             # 94 tests de rendu React Native (Jest + Testing Library, preset officiel RN)
+npm run audit:licenses      # licences de tout l'arbre npm : aucune licence copyleft ni dépendance runtime
 npm run test:visual         # 21 tests Playwright : 12 captures + axe-core + rendu sans JS + variante legacy + mesures de parité (navigateurs requis)
 npm run parity:update       # régénère les mesures de parité CSS / Flutter / React Native (navigateurs et Flutter requis)
 npm run check               # valide les modèles et les recettes
@@ -19,7 +21,7 @@ npm run verify              # tout, dans l'ordre
 |---|---|---|
 | `tests/unit/compiler.test.js` | 25 | Compilation des 4 cibles, déterminisme, layers, thème, mouvement réduit, Flutter, React Native, manifest, intégrité, **7 tests de sécurité** |
 | `tests/unit/check.test.js` | 8 | Modèles livrés sans erreur, 15 règles déclenchées sur la fixture, suggestions, valeurs dynamiques, JSX, numéros de ligne |
-| `tests/unit/forms.test.js` | 16 | Composants de formulaire : spec et manifest (ajouts seulement), liste blanche (états, parties, forme, `minTarget`, `inputType`), CSS (focus, invalide, désactivé, 44 px, `:where()`), Flutter (widgets, sémantique, `NoraFieldScope`), React Native (rôles, états, imports), règles `nora check` (label associé, case/interrupteur, `aria-invalid`, `.field`) |
+| `tests/unit/forms.test.js` | 18 | Composants de formulaire : spec et manifest (ajouts seulement), liste blanche (états, parties, forme, `minTarget`, `inputType`), CSS (focus, invalide, désactivé, 44 px, `:where()`), Flutter (widgets, sémantique, `NoraFieldScope`), React Native (rôles, états, imports), règles `nora check` (label associé, case/interrupteur, `aria-invalid`, `.field`) |
 | `tests/unit/tokenize.test.js` | 19 | Tokenizer de `nora check` : valeurs sans guillemets, attributs multi-lignes, JSX imbriqué (blocs, gabarits, balises en valeur d'attribut), commentaires HTML/Twig/JSP, Twig et EL dans les valeurs, `<script>`/`<style>` bruts, liaisons Vue/Angular, boutons auto-fermants, constructions non fermées, relations `label`/`id`/parent, **8 entrées pathologiques** (temps linéaire) |
 | `tests/unit/engine.test.js` | 8 | Analyse des options (bornes, types, pollution, troncature), liste d'effets, enregistrement, SSR |
 | `tests/unit/engine-dom.test.js` | 7 | Moteur dans un DOM (jsdom) : montage initial, montage SPA, tilt, démontage, changement d'attribut, isolation et annulation des erreurs |
@@ -35,6 +37,10 @@ npm run verify              # tout, dans l'ordre
 | `tests/unit/parity.test.js` | 6 | Parité cross-cible : couverture des cas et des champs, mêmes valeurs CSS / Flutter / React Native (couleurs exactes, dimensions ± 1 px), zone tactile ≥ 44 px partout, aucune exception morte, `rn.json` à jour par rapport au TSX, extraction RN (annotations retirées, liaison manquante détectée) |
 | `tests/unit/audit.test.js` | 1 | L'audit complet passe (86/86) |
 | `examples/flutter_app/test/fx_test.dart` (Flutter) | 3 | `NoraScramble` : texte final, label sémantique, mouvement réduit ; `NoraParallax` : décalage au défilement, aucun en mouvement réduit |
+| `tests/rn/components.test.tsx` (Jest) | 79 | Rendu réel de `NoraBtn` (5 tons × 3 tailles, clair et sombre), `NoraBadge`, `NoraCard` : styles appliqués identiques à `tests/parity/rn.json` ; appui, désactivation, haptique injectée ; formulaires : rôles et états (`checkbox`, `switch`, `radio`, `combobox`, `radiogroup`), noms accessibles, `NoraField` (libellé, aide, erreur en indice et région live, désactivation), focus visible, `NoraSelect` (ouverture, choix, fermeture), zone ≥ 44 ; mouvement réduit (aucun ressort, aucune transition, modale sans animation) avec contre-épreuve |
+| `tests/rn/effects.test.tsx` (Jest) | 11 | `configureNora` (thème forcé, abonnement / désabonnement à l'orientation, rotation pilotée), mouvement réduit de `NoraTilt` (aucun abonnement au capteur), `NoraReveal`, `NoraParallax`, `NoraScramble` ; `scrambleText`, carte verre |
+| `tests/rn/app.test.tsx` (Jest) | 3 | Modèle `templates/react-native/App.tsx` : chaque contrôle nommé et atteignable, parcours de livraison (conditions, erreur du téléphone, ville, créneau, express) |
+| `tests/rn/smoke.test.tsx` (Jest) | 1 | Rendu minimal (le preset et la transformation TSX fonctionnent) |
 | `adapters/symfony-bundle/tests/` (PHPUnit) | 54 | Code PHP généré (enums, `NoraManifest`, `safeHref`), rendu réel des Twig Components dans un noyau Symfony (listes blanches, URL dangereuses, attributs verrouillés, échappement), AssetMapper, commande `nora:check` (texte, JSON, chemins refusés) |
 | `examples/flutter_app/test/parity_test.dart` (Flutter) | 2 | Mesures de parité des widgets (clair et sombre) comparées à `test/parity/flutter.json` ; couleurs du rendu Material identiques à celles du rendu statique |
 | `examples/flutter_app/test/goldens_test.dart` (Flutter) | 8 | Goldens `NoraBtn` (5 tons × 3 tailles), `NoraCard(glass: true)`, `NoraBadge`, clair et sombre ; sémantique bouton et zone ≥ 44 ; montage du modèle `templates/flutter/main.dart` (formulaire compris) |
@@ -44,8 +50,9 @@ npm run verify              # tout, dans l'ordre
 
 Vérifications complémentaires effectuées lors de la création :
 
-- **TypeScript strict** sur `noraivoire.tsx` et `noraivoire.types.ts` avec React 19 et React Native 0.81 : 0 erreur.
-- `npm audit` : 0 vulnérabilité.
+- **TypeScript strict** sur `noraivoire.tsx`, `noraivoire-fx.tsx` et le modèle avec React 19 et React Native 0.87 : 0 erreur.
+- `npm audit --omit=dev` (dépendances runtime, `npm run audit:deps`) : 0 vulnérabilité.
+- `npm audit` complet (outillage de dev) : 2 avis racines sans version corrigée, propagés à 42 entrées (5 modérées, 37 élevées) : `braces` (GHSA-vfj7-8cjw-p6xm, épuisement de pile sur motifs glob très imbriqués) et `sprintf-js` (GHSA-hp3w-g68c-fv3c, précision non bornée). Tous deux sont tirés par Jest / Babel / Istanbul (`npm run test:rn`), ne reçoivent que des motifs et chaînes du dépôt, ne sont jamais distribués ; à surveiller et à mettre à jour dès qu'un correctif paraît.
 
 ### Golden tests Flutter
 
@@ -80,6 +87,13 @@ npm run test:visual:update -- --linux   # Linux seulement
 - **Après un changement volontaire** du CSS, de la spec ou de la page (ex. composants de formulaire) : `npm run test:visual:update`, vérifier les images, les versionner.
 - `npm run verify` n'exige pas de navigateur : les tests Playwright sont hors de `tests/unit/`.
 
+### Rendu React Native (Jest + Testing Library)
+
+`tests/rn/` rend **réellement** `packages/core/dist/react-native/noraivoire.tsx`, `noraivoire-fx.tsx` et `templates/react-native/App.tsx` avec le preset officiel `@react-native/jest-preset` (React Native 0.87.1, React 19.2.3, Jest 29.7.0, `@testing-library/react-native` 14.0.1, `test-renderer` 1.3.0 ; versions exactes, dépendances de dev uniquement). Les composants natifs sont simulés par le preset ; les requêtes passent par les rôles et noms accessibles, comme un lecteur d'écran. La configuration Babel est portée par `tests/rn/jest.config.cjs` (aucun `babel.config` à la racine). `AccessibilityInfo.isReduceMotionEnabled` est simulé pour chaque test.
+
+- `npm run test:rn` n'est pas inclus dans `npm run verify` (outillage lourd : environ 200 Mo dans `node_modules`) ; job CI `react-native-render`.
+- Défauts trouvés et corrigés à la mise en place (constat A-14) : la coche `✓` d'une case cochée était lue par les lecteurs d'écran (nom « ✓ J'accepte ») ; `NoraTilt` s'abonnait au capteur d'orientation avant de connaître la préférence de mouvement réduit (lecture asynchrone) ; le modèle utilisait `SafeAreaView` du cœur, déprécié.
+
 ### Parité cross-cible mesurée (CSS, Flutter, React Native)
 
 Aucune comparaison de pixels (les polices diffèrent d'une plateforme à l'autre) : chaque cible produit les **valeurs de design rendues** pour les 52 cas de `tests/parity/cases.json` (`btn` 5 tons × 3 tailles, `badge`, `card`, `input`, `checkbox`, `switch`, `radio`), en clair et en sombre.
@@ -106,6 +120,7 @@ Champs comparés (`tests/parity/model.mjs`) : couleurs de fond, de texte et de b
 2. `flutter` : `npm run flutter:sync`, puis dans `examples/flutter_app/` `flutter analyze --fatal-infos --fatal-warnings` et `flutter test` (goldens, `NORA_GOLDEN_TOLERANCE=0.02`).
 3. `visual` : dans le conteneur Playwright officiel (navigateurs inclus, aucun cache à gérer), build, `dist` identique, puis `npm run test:visual` ; rapport HTML et résultats publiés en artefact en cas d'échec.
 4. `react-native-types` : TypeScript strict du TSX généré (dont `noraivoire-fx.tsx`) et du modèle `templates/react-native/App.tsx`.
+5. `react-native-render` : build, `dist` identique, `npm run audit:licenses`, puis `npm run test:rn`.
 
 `noraivoire_fx.dart` est copié par `flutter:sync` et donc analysé par le job `flutter`. `noraivoire_fx.dart` et `noraivoire-fx.tsx` ont été vérifiés localement : `flutter analyze` sans remarque, 3 tests de widgets dans un projet jetable (`NoraScramble` : texte final et sémantique, mouvement réduit ; `NoraParallax` au défilement), `tsc --strict` sans erreur (React 19, RN 0.81). Ces 3 tests de widgets sont dans `examples/flutter_app/test/fx_test.dart`.
 
@@ -114,7 +129,6 @@ Champs comparés (`tests/parity/model.mjs`) : couleurs de fond, de texte et de b
 | Priorité | Test | Outil |
 |---|---|---|
 | P1 | Exécution du job `flutter` sur le dépôt privé (Linux) | GitHub Actions |
-| P2 | Tests de rendu React Native | `@testing-library/react-native` |
 | P2 | Régression visuelle et axe-core des autres modèles (après les recettes) | Playwright |
 | P3 | Exécution réelle des modèles Twig (Symfony) et JSP (Tomcat) | Projets d'exemple en CI |
 | P3 | Benchmark « IA » : exécution réelle des 50 tâches de `bench/` (code livré, voir `bench/README.md`) | `npm run bench -- --yes` |

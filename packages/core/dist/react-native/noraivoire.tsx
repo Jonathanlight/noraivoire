@@ -120,18 +120,29 @@ export function useNoraColors() {
   return noraColors[(noraConfig.scheme ?? system) === 'dark' ? 'dark' : 'light'];
 }
 
-export function useReducedMotion() {
-  const [reduce, setReduce] = React.useState(false);
+/**
+ * Préférence « réduire les animations » : true, false, ou null tant que la lecture asynchrone
+ * n'a pas abouti. Un effet qui démarre un mouvement continu (capteurs) attend une valeur false.
+ */
+export function useMotionPreference(): boolean | null {
+  const [reduce, setReduce] = React.useState<boolean | null>(null);
   React.useEffect(() => {
     let alive = true;
-    AccessibilityInfo.isReduceMotionEnabled().then((v) => alive && setReduce(v)).catch(() => {});
-    const sub = AccessibilityInfo.addEventListener('reduceMotionChanged', setReduce);
+    const update = (v: boolean) => {
+      if (alive) setReduce(v);
+    };
+    AccessibilityInfo.isReduceMotionEnabled().then(update).catch(() => {});
+    const sub = AccessibilityInfo.addEventListener('reduceMotionChanged', update);
     return () => {
       alive = false;
       sub.remove();
     };
   }, []);
   return reduce;
+}
+
+export function useReducedMotion() {
+  return useMotionPreference() ?? false;
 }
 
 function hexToRgb(hex: string) {
@@ -270,7 +281,8 @@ export type NoraTiltProps = ViewProps & { children: React.ReactNode; max?: numbe
 
 /** Incline l'élément selon l'orientation de l'utilisateur : souris sur desktop, gyroscope sur mobile. Toucher par défaut ; gyroscope si configureNora({ orientation }) est fourni. */
 export function NoraTilt({ children, max = 10, style, ...rest }: NoraTiltProps) {
-  const reduce = useReducedMotion();
+  const motion = useMotionPreference();
+  const reduce = motion === true;
   const rx = React.useRef(new Animated.Value(0)).current;
   const ry = React.useRef(new Animated.Value(0)).current;
   const size = React.useRef({ w: 1, h: 1 });
@@ -285,9 +297,10 @@ export function NoraTilt({ children, max = 10, style, ...rest }: NoraTiltProps) 
   };
 
   React.useEffect(() => {
-    if (reduce || !noraConfig.orientation) return;
+    // Capteur seulement quand le mouvement est confirmé autorisé (jamais pendant la lecture de la préférence).
+    if (motion !== false || !noraConfig.orientation) return;
     return noraConfig.orientation((x, y) => set(x, y));
-  }, [reduce]);
+  }, [motion]);
 
   if (reduce) return <View style={style} {...rest}>{children}</View>;
 
@@ -493,6 +506,7 @@ export function NoraCheckbox({ checked, onChange, children, tone, size, invalid,
   return (
     <Pressable
       accessibilityRole="checkbox"
+      accessibilityLabel={typeof children === 'string' ? children : undefined}
       accessibilityState={{ checked, disabled: isDisabled }}
       accessibilityHint={field?.error ?? field?.help}
       disabled={isDisabled}
@@ -526,7 +540,8 @@ export function NoraCheckbox({ checked, onChange, children, tone, size, invalid,
           justifyContent: 'center',
         }}
       >
-        {checked ? <Text style={{ color: onAccent, fontSize: s.font * 0.85, fontWeight: '700', lineHeight: s.font }}>✓</Text> : null}
+        {/* Coche décorative : l'état est porté par accessibilityState.checked, le glyphe n'est pas lu. */}
+        {checked ? <Text importantForAccessibility="no" accessibilityElementsHidden style={{ color: onAccent, fontSize: s.font * 0.85, fontWeight: '700', lineHeight: s.font }}>✓</Text> : null}
       </View>
       {typeof children === 'string' ? <Text style={{ color: colors[checkboxSpec.colors.fg], fontSize: s.font, flexShrink: 1 }}>{children}</Text> : children}
     </Pressable>
@@ -678,6 +693,7 @@ export function NoraRadio<T extends NoraRadioValue>({ value, children, tone, siz
   return (
     <Pressable
       accessibilityRole="radio"
+      accessibilityLabel={typeof children === 'string' ? children : undefined}
       accessibilityState={{ checked, disabled: isDisabled }}
       accessibilityHint={field?.error ?? field?.help}
       disabled={isDisabled}
@@ -852,6 +868,7 @@ export function NoraSwitch({ checked, onChange, children, tone, size, invalid, h
   return (
     <Pressable
       accessibilityRole="switch"
+      accessibilityLabel={typeof children === 'string' ? children : undefined}
       accessibilityState={{ checked, disabled: isDisabled }}
       accessibilityHint={field?.error ?? field?.help}
       disabled={isDisabled}
