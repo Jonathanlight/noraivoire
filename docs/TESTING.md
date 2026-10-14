@@ -5,14 +5,14 @@ Version 0.1.0 · 14 octobre 2026 · © Jonathan KABLAN — Propriétaire
 ## 1. Commandes
 
 ```bash
-npm test                    # 171 tests (node:test, aucun framework)
-npm run test:rn             # 94 tests de rendu React Native (Jest + Testing Library, preset officiel RN)
+npm test                    # 185 tests (node:test, aucun framework)
+npm run test:rn             # 136 tests de rendu React Native (Jest + Testing Library, preset officiel RN)
 npm run audit:licenses      # licences de tout l'arbre npm : aucune licence copyleft ni dépendance runtime
-npm run test:visual         # 35 tests Playwright : 12 captures + axe-core + rendu sans JS + variante legacy + mesures de parité + catalogue (navigateurs requis)
+npm run test:visual         # 43 tests Playwright : 12 captures + axe-core + rendu sans JS + variante legacy + mesures de parité + catalogue (navigateurs requis)
 npm run parity:update       # régénère les mesures de parité CSS / Flutter / React Native (navigateurs et Flutter requis)
 npm run test:jsp            # 14 tests : modèles JSP exécutés dans Tomcat (JDK 17+ et Tomcat 10.1+ requis)
 npm run check               # valide les modèles et les recettes
-npm run audit:security      # 86 contrôles
+npm run audit:security      # 90 contrôles
 npm run verify              # tout, dans l'ordre
 ```
 
@@ -21,7 +21,7 @@ npm run verify              # tout, dans l'ordre
 | Fichier | Tests | Couvre |
 |---|---|---|
 | `tests/unit/compiler.test.js` | 25 | Compilation des 4 cibles, déterminisme, layers, thème, mouvement réduit, Flutter, React Native, manifest, intégrité, **7 tests de sécurité** |
-| `tests/unit/check.test.js` | 8 | Modèles livrés sans erreur, 15 règles déclenchées sur la fixture, suggestions, valeurs dynamiques, JSX, numéros de ligne |
+| `tests/unit/check.test.js` | 10 | Modèles livrés sans erreur, 19 règles déclenchées sur la fixture, suggestions, valeurs dynamiques, JSX, numéros de ligne |
 | `tests/unit/forms.test.js` | 18 | Composants de formulaire : spec et manifest (ajouts seulement), liste blanche (états, parties, forme, `minTarget`, `inputType`), CSS (focus, invalide, désactivé, 44 px, `:where()`), Flutter (widgets, sémantique, `NoraFieldScope`), React Native (rôles, états, imports), règles `nora check` (label associé, case/interrupteur, `aria-invalid`, `.field`) |
 | `tests/unit/tokenize.test.js` | 19 | Tokenizer de `nora check` : valeurs sans guillemets, attributs multi-lignes, JSX imbriqué (blocs, gabarits, balises en valeur d'attribut), commentaires HTML/Twig/JSP, Twig et EL dans les valeurs, `<script>`/`<style>` bruts, liaisons Vue/Angular, boutons auto-fermants, constructions non fermées, relations `label`/`id`/parent, **8 entrées pathologiques** (temps linéaire) |
 | `tests/unit/engine.test.js` | 8 | Analyse des options (bornes, types, pollution, troncature), liste d'effets, enregistrement, SSR |
@@ -38,18 +38,21 @@ npm run verify              # tout, dans l'ordre
 | `tests/unit/parity.test.js` | 6 | Parité cross-cible : couverture des cas et des champs, mêmes valeurs CSS / Flutter / React Native (couleurs exactes, dimensions ± 1 px), zone tactile ≥ 44 px partout, aucune exception morte, `rn.json` à jour par rapport au TSX, extraction RN (annotations retirées, liaison manquante détectée) |
 | `tests/unit/jsp-template.test.js` | 3 | Tag JSP `<nora:btn>` aligné sur les listes blanches des Twig Components : préfixes d'URL autorisés, refus de `//` et `/\`, types de bouton |
 | `tests/unit/catalog.test.js` | 9 | Catalogue (`tools/catalog`) : une page par composant et effet du manifest, composant ajouté → page générée, aucun script / style / gestionnaire inline, code affiché identique au rendu, `nora check` sans erreur ni avertissement sur chaque page, liens et ressources valides, structure accessible, tokens clair / sombre et contraste, `prettify` / JSX |
-| `tests/unit/audit.test.js` | 1 | L'audit complet passe (86/86) |
+| `tests/unit/page.test.js` | 12 | Composants de mise en page `link`, `navbar`, `avatar`, `media` : manifest (ajouts seulement), liste blanche de `box` / `ratio` / clés de taille et contraintes de forme, contraste des liens sur les surfaces (exception figée : `primary` et `warning` sur `surface-2` en clair), CSS (soulignement, focus, lien externe, liens de navigation ≥ 44 px, page courante, menu défilant, format fixe, surimpression, contraste forcé, `:where()`), widgets Flutter et composants React Native (rôles, sémantique, mouvement réduit, imports) |
+| `tests/unit/audit.test.js` | 1 | L'audit complet passe (90/90) |
 | `examples/flutter_app/test/fx_test.dart` (Flutter) | 3 | `NoraScramble` : texte final, label sémantique, mouvement réduit ; `NoraParallax` : décalage au défilement, aucun en mouvement réduit |
 | `tests/jsp/run.mjs` (Tomcat, `npm run test:jsp`) | 14 | `page.jsp` et `<nora:btn>` exécutés dans Tomcat 11 : HTTP 200 sans erreur Jasper, `nora check`, échappement, 10 URL dangereuses refusées, URL autorisées échappées, ton / taille / type en liste blanche |
 | `tests/rn/components.test.tsx` (Jest) | 79 | Rendu réel de `NoraBtn` (5 tons × 3 tailles, clair et sombre), `NoraBadge`, `NoraCard` : styles appliqués identiques à `tests/parity/rn.json` ; appui, désactivation, haptique injectée ; formulaires : rôles et états (`checkbox`, `switch`, `radio`, `combobox`, `radiogroup`), noms accessibles, `NoraField` (libellé, aide, erreur en indice et région live, désactivation), focus visible, `NoraSelect` (ouverture, choix, fermeture), zone ≥ 44 ; mouvement réduit (aucun ressort, aucune transition, modale sans animation) avec contre-épreuve |
 | `tests/rn/effects.test.tsx` (Jest) | 11 | `configureNora` (thème forcé, abonnement / désabonnement à l'orientation, rotation pilotée), mouvement réduit de `NoraTilt` (aucun abonnement au capteur), `NoraReveal`, `NoraParallax`, `NoraScramble` ; `scrambleText`, carte verre |
 | `tests/rn/app.test.tsx` (Jest) | 3 | Modèle `templates/react-native/App.tsx` : chaque contrôle nommé et atteignable, parcours de livraison (conditions, erreur du téléphone, ville, créneau, express) |
+| `tests/rn/page.test.tsx` (Jest) | 42 | Rendu réel de `NoraLink` (5 tons, clair et sombre, ouverture d'URL via `configureNora({ openURL })` ou `Linking`, flèche externe cachée), `NoraNavbar` (rôle navigation, page courante sélectionnée, liens ≥ 44 px), `NoraAvatar` / `NoraAvatarGroup` (initiales, décoratif caché, repli si l'image échoue, chevauchement), `NoraMedia` (4 formats, légende, surimpression) : styles identiques à `tests/parity/rn.json` |
 | `tests/rn/smoke.test.tsx` (Jest) | 1 | Rendu minimal (le preset et la transformation TSX fonctionnent) |
-| `adapters/symfony-bundle/tests/` (PHPUnit) | 54 | Code PHP généré (enums, `NoraManifest`, `safeHref`), rendu réel des Twig Components dans un noyau Symfony (listes blanches, URL dangereuses, attributs verrouillés, échappement), AssetMapper, commande `nora:check` (texte, JSON, chemins refusés) |
+| `adapters/symfony-bundle/tests/` (PHPUnit) | 61 | Code PHP généré (enums, `NoraManifest`, `safeHref`), rendu réel des Twig Components dans un noyau Symfony (listes blanches, URL dangereuses, attributs verrouillés, échappement), AssetMapper, commande `nora:check` (texte, JSON, chemins refusés) |
 | `examples/flutter_app/test/parity_test.dart` (Flutter) | 2 | Mesures de parité des widgets (clair et sombre) comparées à `test/parity/flutter.json` ; couleurs du rendu Material identiques à celles du rendu statique |
 | `examples/flutter_app/test/goldens_test.dart` (Flutter) | 8 | Goldens `NoraBtn` (5 tons × 3 tailles), `NoraCard(glass: true)`, `NoraBadge`, clair et sombre ; sémantique bouton et zone ≥ 44 ; montage du modèle `templates/flutter/main.dart` (formulaire compris) |
 | `examples/flutter_app/test/radio_test.dart` (Flutter) | 5 | Goldens `NoraRadio` (sélectionné, invalide, désactivé, ton), clair et sombre ; sémantique checked + groupe exclusif, sélection au toucher, zone ≥ 44, en mouvement normal et réduit (aucune animation) ; groupe désactivé |
 | `examples/flutter_app/test/reduced_motion_test.dart` (Flutter) | 4 | Mouvement réduit : `NoraCheckbox` / `NoraSwitch` statiques, aucune animation au changement, sémantique checked / toggled et libellé ; contrôle Material conservé sinon |
+| `examples/flutter_app/test/page_test.dart` (Flutter) | 15 | Goldens `NoraLink`, `NoraNavbar`, `NoraAvatar` / `NoraAvatarGroup`, `NoraMedia` (clair et sombre) ; lien : rôle, indication externe, activation au clavier ; barre : libellé, page courante, liens ≥ 44 px, menu sous la marque sur petit écran, aucune onde en mouvement réduit ; avatar : image nommée, décoratif caché, repli sur les initiales ; média : format exact, surimpression sur le visuel |
 | `examples/flutter_app/test/forms_test.dart` (Flutter) | 7 | Goldens `NoraField` + `NoraInput` / `NoraSelect` / `NoraTextarea` (aide, erreur, désactivé) et `NoraCheckbox` / `NoraSwitch` (tons, invalide, désactivé), clair et sombre ; sémantique : libellé et erreur du champ portés par le `TextField`, case cochée/libellé fusionné/bascule au toucher, interrupteur désactivé ; zones ≥ 44 |
 
 Vérifications complémentaires effectuées lors de la création :

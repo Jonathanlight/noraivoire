@@ -59,11 +59,15 @@ Le seul attribut posé sur `<html>` par le moteur est `data-nora-engine` (d'où 
 | Bouton radio | `<input type="radio">` dessiné en CSS (pastille), groupe en `<fieldset>` + `<legend>` | `Radio<T>` Material sous `RadioGroup<T>` (`NoraRadioGroup`, flèches du clavier) ; rendu statique en mouvement réduit | Vue dessinée (pastille), `NoraRadioGroup` en `accessibilityRole="radiogroup"` | Flutter : en mouvement réduit, la navigation aux flèches du groupe n'est plus disponible (Tab + Entrée / Espace restent) |
 | Interrupteur | `<input role="switch">` dessiné en CSS | `Switch` Material 3 | Piste + pouce animés | Proportions du `Switch` Material 3 différentes (pouce agrandi quand actif) |
 | Association libellé | `<label for>` / `aria-describedby` | `NoraFieldScope` (sémantique) | `NoraFieldContext` (`accessibilityLabel` / `Hint`) | Même contrat, mécanisme propre à chaque plateforme |
+| Lien texte | `<a class="link">` souligné ; flèche externe en `::after` | `NoraLink` (`Semantics(link)`, `FocusableActionDetector`) | `NoraLink` (`Pressable` + `Text`) | Ouverture d'URL : navigateur / `onPressed` / `configureNora({ openURL })` ou `Linking` |
+| Barre de navigation | `<nav>` + `aria-current="page"` ; menu défilant sous 40rem de **fenêtre** | `NoraNavbar` : page courante en `selected` ; bascule sous 640 px de **largeur de la barre** (`LayoutBuilder`) | `NoraNavbar` : `accessibilityState.selected` ; bascule sous 640 px de **fenêtre** | Pas de `aria-current` hors web : « page courante » est portée par `selected` et une valeur annoncée |
+| Avatar | `<img>` / `<span role="img">`, `object-fit: cover` | `NoraAvatar` (`Image` + `ClipRRect`) | `NoraAvatar` (`Image`, `overflow: hidden`) | Repli sur les initiales si l'image échoue (Flutter, RN) ; en web, prévoir `<span>` |
+| Média et surimpression | `aspect-ratio` + dégradé `linear-gradient` du voile | `AspectRatio` + `LinearGradient` | `aspectRatio` + **voile uniforme** à 65 % | Le cœur de React Native n'a pas de dégradé ; mêmes couleurs (`scrim`, `on-scrim`) |
 | Mouvement réduit (formulaires) | Transitions coupées (`prefers-reduced-motion`) | Case et interrupteur rendus statiquement (mêmes couleurs, `Semantics` checked / toggled), `InkWell` sans onde ni fondu | Glissement du pouce coupé | Flutter : `Checkbox` / `Switch` Material n'exposent pas leur durée, d'où le rendu statique quand `MediaQuery.disableAnimations` est vrai |
 
 ### 4.0 Parité mesurée
 
-Les valeurs de design rendues (couleurs, marges, rayons, zones tactiles, bordures, indicateurs des contrôles) sont **mesurées** sur les trois cibles et comparées par `tests/unit/parity.test.js` (voir TESTING.md) : 52 cas × 2 thèmes, **aucun écart** et aucune exception.
+Les valeurs de design rendues (couleurs, marges, rayons, zones tactiles, bordures, indicateurs des contrôles) sont **mesurées** sur les trois cibles et comparées par `tests/unit/parity.test.js` (voir TESTING.md) : 77 cas × 2 thèmes (dont `link`, `avatar`, `navbar`, `media`), **aucun écart** et aucune exception. Le format d'un média est comparé en texte exact (`1.778`), pour échapper à la tolérance de ± 1 px.
 
 | Hors mesure (volontaire) | Raison |
 |---|---|

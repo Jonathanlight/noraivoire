@@ -2,7 +2,7 @@
 
 **Version auditée :** 0.1.0 · **Date :** 14 octobre 2026 · **Périmètre :** dépôt complet
 **CI GitHub :** 10 jobs réussis le 14 octobre 2026 (Node 20 et 22, Flutter, Playwright, Symfony PHP 8.4 et 8.5, JSP/Tomcat, React Native types et rendu).
-**Méthode :** audit automatisé (`nora audit`, 86 contrôles), 171 tests node, 29 tests Flutter et 54 tests PHPUnit, 94 tests de rendu React Native (Jest), 14 tests JSP dans Tomcat, 35 tests Playwright (captures, axe-core, catalogue), vérification TypeScript stricte, `npm audit`, revue manuelle du code.
+**Méthode :** audit automatisé (`nora audit`, 90 contrôles), 185 tests node, 44 tests Flutter et 61 tests PHPUnit, 136 tests de rendu React Native (Jest), 14 tests JSP dans Tomcat, 35 tests Playwright (captures, axe-core, catalogue), vérification TypeScript stricte, `npm audit`, revue manuelle du code.
 © Jonathan KABLAN — Document confidentiel
 
 ## 1. Synthèse
@@ -19,7 +19,7 @@
 | Accessibilité | ✅ Conforme (base) | Mouvement réduit sur 4 cibles, focus visible, zone tactile 44 px sur 3 cibles ; formulaires : label associé obligatoire (`nora check`), `aria-invalid` relié au message, sémantique Flutter / React Native vérifiée ; axe-core : 0 violation sérieuse ou critique (clair et sombre) ; contraste AA testé pour chaque ton |
 | Performance | ✅ Sous budget | CSS 5,0 Kio gzip (budget 15) ; moteur 3,3 Kio gzip (budget 4) |
 | Déterminisme | ✅ Conforme | Deux compilations : octets identiques |
-| Portabilité native | ✅ Conforme | TSX vérifié (TypeScript strict, RN 0.81) ; Dart analysé (`flutter analyze --fatal-infos`, 0 problème) et rendu par 29 tests de widgets dont 12 goldens (Flutter 3.47) ; parité mesurée CSS / Flutter / React Native : 0 écart sur 52 cas × 2 thèmes ; Twig Components rendus par 54 tests PHPUnit (PHP 8.5, Symfony 8.1) |
+| Portabilité native | ✅ Conforme | TSX vérifié (TypeScript strict, RN 0.81) ; Dart analysé (`flutter analyze --fatal-infos`, 0 problème) et rendu par 44 tests de widgets dont 20 goldens (Flutter 3.47) ; parité mesurée CSS / Flutter / React Native : 0 écart sur 77 cas × 2 thèmes ; Twig Components rendus par 61 tests PHPUnit (PHP 8.5, Symfony 8.1) |
 
 **Verdict : apte pour un usage interne et une phase pilote.** Trois points doivent être levés avant toute licence commerciale (section 4).
 
@@ -27,8 +27,8 @@
 
 | Indicateur | Valeur |
 |---|---|
-| Tests | 171 / 171 réussis (node) · 94 / 94 (rendu React Native, Jest) · 29 / 29 (Flutter, dont 12 goldens) · 54 / 54 (PHPUnit, bundle Symfony) · 35 / 35 (Playwright : 12 captures, 4 axe-core, 2 sans JS, 2 legacy, 1 parité, 14 catalogue) · 14 / 14 (JSP dans Tomcat 11) |
-| Contrôles d'audit | 86 / 86 réussis |
+| Tests | 185 / 185 réussis (node) · 136 / 136 (rendu React Native, Jest) · 44 / 44 (Flutter, dont 20 goldens) · 61 / 61 (PHPUnit, bundle Symfony) · 43 / 43 (Playwright : 12 captures, 4 axe-core, 2 sans JS, 2 legacy, 1 parité, 22 catalogue) · 14 / 14 (JSP dans Tomcat 11) |
+| Contrôles d'audit | 90 / 90 réussis |
 | Modèles validés par `nora check` | 13 fichiers + 20 recettes, 0 erreur, 0 avertissement |
 | Erreurs TypeScript (strict) sur le TSX généré | 0 |
 | Vulnérabilités `npm audit` | 0 |
@@ -64,6 +64,8 @@
 | A-13 | Faible | Rendu statique Flutter (mouvement réduit) des cases, radios et interrupteurs à tailles fixes (18, 20, 52 × 32 px), différentes des proportions de la spec rendues par CSS et React Native. | **Corrigé** — générateur aligné sur la spec (1,25 em ; 2,25 em × 1,25 em) ; détecté par la parité mesurée (`tests/unit/parity.test.js`) |
 | A-14 | Moyenne | Le tag JSP `<nora:btn>` acceptait `href="/\hôte"`, que les navigateurs lisent comme l'URL relative au protocole `//hôte` (redirection ouverte, lien vers un domaine tiers) ; `type="reset"` était ramené à `button`, contrairement aux Twig Components. | **Corrigé** — refus de `/\` aligné sur `URL_DENIED_PREFIXES` de `targets/symfony.js`, `type` aligné sur `BUTTON_TYPES` ; révélé par l'exécution réelle dans Tomcat (`npm run test:jsp`), figé sans Java par `tests/unit/jsp-template.test.js` |
 | A-15 | Faible | React Native : la coche `✓` d'une case cochée était lue par les lecteurs d'écran (nom « ✓ J'accepte ») ; `NoraTilt` s'abonnait au capteur d'orientation avant de connaître la préférence de mouvement réduit (lecture asynchrone, `false` par défaut) ; le modèle utilisait `SafeAreaView` du cœur, déprécié. | **Corrigé** — coche masquée (`importantForAccessibility="no"`, `accessibilityElementsHidden`) et nom explicite des cases, interrupteurs et radios ; `useMotionPreference()` (vrai / faux / inconnu) : capteur seulement une fois le mouvement confirmé autorisé ; modèle sur `View`, `SafeAreaView` de react-native-safe-area-context recommandé ; détectés par les tests de rendu (`tests/rn/`) |
+| A-16 | Faible | Contraste : un lien `.link` en ton `primary` (4,31:1) ou `warning` (4,33:1) sur `surface-2` reste sous 4,5:1 en thème clair (tous les tons passent sur `surface`). | Ouvert — documenté (TECHNICAL §3.2.2) ; exception figée par `tests/unit/page.test.js` ; corriger exigerait d'assombrir la couleur de marque |
+| A-17 | Faible | Flutter : `NoraNavbar` s'étirait sur toute la hauteur disponible (`Center` / `Align` sans `heightFactor`) et le menu partageait l'espace à 50/50 avec un `Spacer` au lieu de prendre sa largeur naturelle. | **Corrigé** — révélé par les goldens ; menu calé à droite dans un `Expanded`, comme `margin-inline-end: auto` en CSS |
 
 ## 4. Conditions avant commercialisation
 
