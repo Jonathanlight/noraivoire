@@ -9,13 +9,16 @@
 <%@ attribute name="type" required="false" %>
 <c:set var="safeTone" value="${tone eq 'neutral' or tone eq 'danger' or tone eq 'success' or tone eq 'warning' ? tone : 'primary'}"/>
 <c:set var="safeSize" value="${size eq 'sm' or size eq 'lg' ? size : 'md'}"/>
-<%-- Schémas d'URL autorisés : chemins relatifs, ancres, http(s), mailto, tel. Bloque javascript:, data:… --%>
-<c:set var="safeHref" value="${(fn:startsWith(href, '/') and not fn:startsWith(href, '//')) or fn:startsWith(href, '#') or fn:startsWith(href, 'https://') or fn:startsWith(href, 'http://') or fn:startsWith(href, 'mailto:') or fn:startsWith(href, 'tel:') ? href : ''}"/>
+<%-- Schémas d'URL autorisés (même liste blanche que les Twig Components, targets/symfony.js) : chemin absolu,
+     ancre, http(s), mailto, tel. Refusés : javascript:, data:…, et les URL relatives au protocole « //hôte »
+     et « /\hôte » (les navigateurs lisent l'antislash comme une barre oblique). --%>
+<c:set var="slash2" value="${fn:substring(href, 1, 2)}"/>
+<c:set var="safeHref" value="${(fn:startsWith(href, '/') and slash2 ne '/' and slash2 ne '\\\\') or fn:startsWith(href, '#') or fn:startsWith(href, 'https://') or fn:startsWith(href, 'http://') or fn:startsWith(href, 'mailto:') or fn:startsWith(href, 'tel:') ? href : ''}"/>
 <c:choose>
   <c:when test="${not empty safeHref}">
     <a class="btn" data-tone="${safeTone}" data-size="${safeSize}" href="${fn:escapeXml(safeHref)}"><jsp:doBody/></a>
   </c:when>
   <c:otherwise>
-    <button class="btn" data-tone="${safeTone}" data-size="${safeSize}" type="${type eq 'submit' ? 'submit' : 'button'}"><jsp:doBody/></button>
+    <button class="btn" data-tone="${safeTone}" data-size="${safeSize}" type="${type eq 'submit' or type eq 'reset' ? type : 'button'}"><jsp:doBody/></button>
   </c:otherwise>
 </c:choose>

@@ -1,7 +1,7 @@
 # NoraIvoire — Rapport d'audit
 
 **Version auditée :** 0.1.0 · **Date :** 14 octobre 2026 · **Périmètre :** dépôt complet
-**Méthode :** audit automatisé (`nora audit`, 86 contrôles), 157 tests node, 29 tests Flutter et 54 tests PHPUnit, 21 tests Playwright (captures + axe-core), vérification TypeScript stricte, `npm audit`, revue manuelle du code.
+**Méthode :** audit automatisé (`nora audit`, 86 contrôles), 160 tests node, 29 tests Flutter et 54 tests PHPUnit, 14 tests JSP dans Tomcat, 21 tests Playwright (captures + axe-core), vérification TypeScript stricte, `npm audit`, revue manuelle du code.
 © Jonathan KABLAN — Document confidentiel
 
 ## 1. Synthèse
@@ -26,7 +26,7 @@
 
 | Indicateur | Valeur |
 |---|---|
-| Tests | 157 / 157 réussis (node) · 29 / 29 (Flutter, dont 12 goldens) · 54 / 54 (PHPUnit, bundle Symfony) · 21 / 21 (Playwright : 12 captures, 4 axe-core, 2 sans JS, 2 legacy, 1 parité) |
+| Tests | 160 / 160 réussis (node) · 29 / 29 (Flutter, dont 12 goldens) · 54 / 54 (PHPUnit, bundle Symfony) · 21 / 21 (Playwright : 12 captures, 4 axe-core, 2 sans JS, 2 legacy, 1 parité) · 14 / 14 (JSP dans Tomcat 11) |
 | Contrôles d'audit | 86 / 86 réussis |
 | Modèles validés par `nora check` | 13 fichiers + 20 recettes, 0 erreur, 0 avertissement |
 | Erreurs TypeScript (strict) sur le TSX généré | 0 |
@@ -61,6 +61,7 @@
 | A-11 | Moyenne | Une description de spec sur plusieurs lignes pouvait sortir d'un commentaire `///` et injecter du code Dart (et `*/` fermer un commentaire TSX). | **Corrigé** — `docComment()` partagé par toutes les cibles natives ; test d'injection |
 | A-12 | Faible | Twig Components des contrôles de formulaire génériques ; `Nora:Field` relie libellé, aide et erreur, mais `aria-describedby` / `aria-invalid` restent à poser sur le contrôle. | **Corrigé** — `Nora:Field` expose `control` (étalement `{{ ...control }}`) et `controlHtml` (input brut) : `id`, `aria-describedby`, `aria-invalid` transmis sans pose manuelle ; 2 tests PHPUnit |
 | A-13 | Faible | Rendu statique Flutter (mouvement réduit) des cases, radios et interrupteurs à tailles fixes (18, 20, 52 × 32 px), différentes des proportions de la spec rendues par CSS et React Native. | **Corrigé** — générateur aligné sur la spec (1,25 em ; 2,25 em × 1,25 em) ; détecté par la parité mesurée (`tests/unit/parity.test.js`) |
+| A-14 | Moyenne | Le tag JSP `<nora:btn>` acceptait `href="/\hôte"`, que les navigateurs lisent comme l'URL relative au protocole `//hôte` (redirection ouverte, lien vers un domaine tiers) ; `type="reset"` était ramené à `button`, contrairement aux Twig Components. | **Corrigé** — refus de `/\` aligné sur `URL_DENIED_PREFIXES` de `targets/symfony.js`, `type` aligné sur `BUTTON_TYPES` ; révélé par l'exécution réelle dans Tomcat (`npm run test:jsp`), figé sans Java par `tests/unit/jsp-template.test.js` |
 
 ## 4. Conditions avant commercialisation
 

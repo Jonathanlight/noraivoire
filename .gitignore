@@ -14,3 +14,4 @@ bench/results/
 .env
 .env.*
 .claude/worktrees/
+examples/jsp-app/.cache/

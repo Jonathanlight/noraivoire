@@ -8,7 +8,7 @@ Version 0.1.0 · 14 octobre 2026 · © Jonathan KABLAN — Propriétaire
 |---|---|---|---|---|
 | HTML statique | `<link>` + `<script type="module">` | Non | Aucun | Modèle fourni, validé par `nora check` |
 | Twig / Symfony 7.3+ (PHP 8.4+) | Bundle : Twig Components `<twig:Nora:*>` générés, enums `NoraTone` / `NoraSize`, AssetMapper (`noraivoire/…`), `bin/console nora:check` | Non | `adapters/symfony-bundle/` (sans bundle : `templates/twig/components/Nora/Btn.html.twig`) | Généré depuis le manifest ; **54 tests PHPUnit exécutés** (PHP 8.5, Symfony 8.1, UX TwigComponent 2.36) ; CI PHP 8.4 et 8.5 |
-| JSP / Jakarta EE / Spring | Fichiers statiques + tag file `<nora:btn>` | Non | `templates/jsp/WEB-INF/tags/nora/btn.tag` | Modèle fourni, non exécuté dans un conteneur |
+| JSP / Jakarta EE / Spring | Fichiers statiques + tag file `<nora:btn>` | Non | `templates/jsp/WEB-INF/tags/nora/btn.tag` | Exécuté dans Tomcat 11 (Jakarta EE, JSTL 3.0) par `npm run test:jsp` ; requiert la JSTL dans l'application |
 | React (Vite) | Import CSS + `start()` ; hook `useFx` | Oui (projet) | `templates/react/useFx.ts` | Modèle fourni |
 | Next.js App Router | CSS dans `layout.tsx` ; `<NoraEngine/>` client | Oui (projet) | `templates/nextjs/components/NoraEngine.tsx` | Modèle fourni |
 | Vue 3 / Nuxt | Import CSS ; directive `v-fx` | Oui (projet) | `templates/vue/vFx.ts` | Modèle fourni |
@@ -96,5 +96,5 @@ Limites : `NoraParallax` (RN) doit être un enfant direct du contenu du `ScrollV
 ## 6. Limites de la version 0.1
 
 1. Le Dart généré est analysé et rendu en test (goldens Flutter, `examples/flutter_app/`) mais pas exécuté sur appareil réel.
-2. Les modèles JSP, Vue et Angular sont validés syntaxiquement par `nora check`, pas exécutés dans leur framework. Les Twig Components, eux, sont rendus par Symfony dans les tests PHPUnit du bundle.
+2. Les modèles Vue et Angular sont validés syntaxiquement par `nora check`, pas exécutés dans leur framework. Les Twig Components sont rendus par Symfony (PHPUnit du bundle) et les modèles JSP par Tomcat 11 (`npm run test:jsp`, `examples/jsp-app/`).
 3. Bundle Symfony : testé localement en PHP 8.5 / Symfony 8.1 ; PHP 8.4 est couvert par la matrice CI (non exécuté localement), Symfony 7.3 n'est couvert que par la contrainte Composer. Les contrôles (`input`, `select`, `textarea`, `checkbox`, `switch`) reçoivent un Twig Component générique (élément, ton, taille, attributs libres) ; `Nora:Field` est composé : `label`, `help` et `error` sont rendus et reliés au contrôle par `id` (`<label for>`, `<id>-aide`, `<id>-erreur`) ; son contenu reçoit `control` (à étaler : `{{ ...control }}`) et `controlHtml` (pour un `<input>` brut), qui portent `id`, `aria-describedby` et `aria-invalid`.

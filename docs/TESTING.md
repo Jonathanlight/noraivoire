@@ -5,9 +5,10 @@ Version 0.1.0 · 14 octobre 2026 · © Jonathan KABLAN — Propriétaire
 ## 1. Commandes
 
 ```bash
-npm test                    # 157 tests (node:test, aucun framework)
+npm test                    # 160 tests (node:test, aucun framework)
 npm run test:visual         # 21 tests Playwright : 12 captures + axe-core + rendu sans JS + variante legacy + mesures de parité (navigateurs requis)
 npm run parity:update       # régénère les mesures de parité CSS / Flutter / React Native (navigateurs et Flutter requis)
+npm run test:jsp            # 14 tests : modèles JSP exécutés dans Tomcat (JDK 17+ et Tomcat 10.1+ requis)
 npm run check               # valide les modèles et les recettes
 npm run audit:security      # 86 contrôles
 npm run verify              # tout, dans l'ordre
@@ -33,8 +34,10 @@ npm run verify              # tout, dans l'ordre
 | `tests/unit/visual-serve.test.js` | 3 | Serveur statique des tests visuels : confinement au dépôt (traversée, octet nul, `node_modules`, `.git`), 127.0.0.1, lecture seule |
 | `tests/unit/fuzz.test.js` | 4 | Fuzzing déterministe sans dépendance (xorshift, graine fixe) : `parseOptions` / `parseEffectList` bornés et typés, specs mutées → uniquement des `SpecError`, tokenizer + `nora check` sans exception ni ligne invalide sur du balisage aléatoire ; `NORA_FUZZ_RUNS=30000` pour une campagne longue |
 | `tests/unit/parity.test.js` | 6 | Parité cross-cible : couverture des cas et des champs, mêmes valeurs CSS / Flutter / React Native (couleurs exactes, dimensions ± 1 px), zone tactile ≥ 44 px partout, aucune exception morte, `rn.json` à jour par rapport au TSX, extraction RN (annotations retirées, liaison manquante détectée) |
+| `tests/unit/jsp-template.test.js` | 3 | Tag JSP `<nora:btn>` aligné sur les listes blanches des Twig Components : préfixes d'URL autorisés, refus de `//` et `/\`, types de bouton |
 | `tests/unit/audit.test.js` | 1 | L'audit complet passe (86/86) |
 | `examples/flutter_app/test/fx_test.dart` (Flutter) | 3 | `NoraScramble` : texte final, label sémantique, mouvement réduit ; `NoraParallax` : décalage au défilement, aucun en mouvement réduit |
+| `tests/jsp/run.mjs` (Tomcat, `npm run test:jsp`) | 14 | `page.jsp` et `<nora:btn>` exécutés dans Tomcat 11 : HTTP 200 sans erreur Jasper, `nora check`, échappement, 10 URL dangereuses refusées, URL autorisées échappées, ton / taille / type en liste blanche |
 | `adapters/symfony-bundle/tests/` (PHPUnit) | 54 | Code PHP généré (enums, `NoraManifest`, `safeHref`), rendu réel des Twig Components dans un noyau Symfony (listes blanches, URL dangereuses, attributs verrouillés, échappement), AssetMapper, commande `nora:check` (texte, JSON, chemins refusés) |
 | `examples/flutter_app/test/parity_test.dart` (Flutter) | 2 | Mesures de parité des widgets (clair et sombre) comparées à `test/parity/flutter.json` ; couleurs du rendu Material identiques à celles du rendu statique |
 | `examples/flutter_app/test/goldens_test.dart` (Flutter) | 8 | Goldens `NoraBtn` (5 tons × 3 tailles), `NoraCard(glass: true)`, `NoraBadge`, clair et sombre ; sémantique bouton et zone ≥ 44 ; montage du modèle `templates/flutter/main.dart` (formulaire compris) |
@@ -80,6 +83,20 @@ npm run test:visual:update -- --linux   # Linux seulement
 - **Après un changement volontaire** du CSS, de la spec ou de la page (ex. composants de formulaire) : `npm run test:visual:update`, vérifier les images, les versionner.
 - `npm run verify` n'exige pas de navigateur : les tests Playwright sont hors de `tests/unit/`.
 
+### Exécution réelle des modèles JSP (Tomcat)
+
+```bash
+npm run build && npm run test:jsp     # assemble examples/jsp-app, démarre Tomcat, vérifie, arrête
+```
+
+`tests/jsp/run.mjs` assemble l'application d'exemple (`npm run jsp:sync` : `templates/jsp/`, CSS et moteur de `dist`, JSTL 3.0 téléchargée depuis Maven Central et vérifiée par SHA-256), lance Tomcat avec un `CATALINA_BASE` temporaire (un connecteur sur `127.0.0.1`, port libre, aucun port d'arrêt) et vérifie le HTML réellement rendu :
+
+- `page.jsp` (via `orders.jsp`, données de démonstration dont des valeurs hostiles) : HTTP 200, aucune erreur Jasper, `nora check` sans erreur, valeurs hostiles échappées, CSS et moteur servis ;
+- `<nora:btn>` alimenté par la requête (`hostile.jsp`) : 10 URL dangereuses refusées (`javascript:` sous plusieurs casses et avec espace, `data:`, `vbscript:`, `file:`, `//hôte`, `/\hôte`, `\\hôte`), URL autorisées conservées et échappées pour un attribut, ton, taille et `type` hors liste blanche ramenés aux défauts, libellé échappé ;
+- Tomcat arrêté dans tous les cas (SIGTERM, puis SIGKILL après 15 s).
+
+Le rendu réel a révélé que le tag acceptait `/\hôte` (constat A-14, corrigé). `tests/unit/jsp-template.test.js` fige, sans Java, l'alignement du tag sur les listes blanches des Twig Components (`URL_ALLOWED_PREFIXES`, `URL_DENIED_PREFIXES`, `BUTTON_TYPES` de `targets/symfony.js`) ; `npm run verify` n'exige donc ni JDK ni Tomcat.
+
 ### Parité cross-cible mesurée (CSS, Flutter, React Native)
 
 Aucune comparaison de pixels (les polices diffèrent d'une plateforme à l'autre) : chaque cible produit les **valeurs de design rendues** pour les 52 cas de `tests/parity/cases.json` (`btn` 5 tons × 3 tailles, `badge`, `card`, `input`, `checkbox`, `switch`, `radio`), en clair et en sombre.
@@ -106,6 +123,8 @@ Champs comparés (`tests/parity/model.mjs`) : couleurs de fond, de texte et de b
 2. `flutter` : `npm run flutter:sync`, puis dans `examples/flutter_app/` `flutter analyze --fatal-infos --fatal-warnings` et `flutter test` (goldens, `NORA_GOLDEN_TOLERANCE=0.02`).
 3. `visual` : dans le conteneur Playwright officiel (navigateurs inclus, aucun cache à gérer), build, `dist` identique, puis `npm run test:visual` ; rapport HTML et résultats publiés en artefact en cas d'échec.
 4. `react-native-types` : TypeScript strict du TSX généré (dont `noraivoire-fx.tsx`) et du modèle `templates/react-native/App.tsx`.
+5. `symfony` (PHP 8.4 et 8.5) : `npm run symfony:sync`, Composer sans scripts ni plugins, contrôle des licences, PHPUnit.
+6. `jsp` : JDK 21 (Temurin), Tomcat 11.0.27 téléchargé depuis l'archive Apache avec somme SHA-512 vérifiée, puis `npm run test:jsp`.
 
 `noraivoire_fx.dart` est copié par `flutter:sync` et donc analysé par le job `flutter`. `noraivoire_fx.dart` et `noraivoire-fx.tsx` ont été vérifiés localement : `flutter analyze` sans remarque, 3 tests de widgets dans un projet jetable (`NoraScramble` : texte final et sémantique, mouvement réduit ; `NoraParallax` au défilement), `tsc --strict` sans erreur (React 19, RN 0.81). Ces 3 tests de widgets sont dans `examples/flutter_app/test/fx_test.dart`.
 
@@ -116,7 +135,6 @@ Champs comparés (`tests/parity/model.mjs`) : couleurs de fond, de texte et de b
 | P1 | Exécution du job `flutter` sur le dépôt privé (Linux) | GitHub Actions |
 | P2 | Tests de rendu React Native | `@testing-library/react-native` |
 | P2 | Régression visuelle et axe-core des autres modèles (après les recettes) | Playwright |
-| P3 | Exécution réelle des modèles Twig (Symfony) et JSP (Tomcat) | Projets d'exemple en CI |
 | P3 | Benchmark « IA » : exécution réelle des 50 tâches de `bench/` (code livré, voir `bench/README.md`) | `npm run bench -- --yes` |
 
 ## 6. Règle de contribution

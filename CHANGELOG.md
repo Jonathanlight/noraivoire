@@ -2,6 +2,7 @@
 
 ## Non publié
 
+- JSP (constat A-14 levé) : modèles exécutés réellement dans Tomcat 11 (`examples/jsp-app/`, `npm run jsp:sync`, `npm run test:jsp`, job CI `jsp` avec Tomcat vérifié par SHA-512) ; le tag `<nora:btn>` refuse désormais `/\hôte` et accepte `type="reset"`, comme les Twig Components. 14 tests Tomcat, 3 tests node.
 - Dépôt : ajout de `.npmrc` (`ignore-scripts=true`), `.gitignore` et `.github/workflows/ci.yml` (jobs `verify`, `flutter`, `react-native-types`).
 - Benchmark IA (`bench/`) : 50 tâches UI, interrogation de plusieurs modèles avec et sans `llms-full.txt`, score `nora check`, rapport Markdown ; mode `--dry-run` sans réseau, clés en variables d'environnement uniquement ; 13 tests.
 - Flutter (constat A-01 levé) : projet `examples/flutter_app/` (`npm run flutter:sync`), `flutter analyze` sans aucun problème, 8 tests de widgets dont 6 goldens (`NoraBtn` 5 tons × 3 tailles, `NoraCard(glass: true)`, `NoraBadge`, clair et sombre) avec comparateur à tolérance bornée ; le générateur n'émet plus de comparaison `borderColor == null` (`unnecessary_null_comparison`) ; job CI `flutter` qui lance `flutter test`.

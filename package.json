@@ -19,13 +19,15 @@
     "audit:deps": "npm audit --omit=dev --audit-level=moderate",
     "audit:security": "node packages/cli/src/cli.js audit",
     "flutter:sync": "node examples/flutter_app/tool/sync.mjs",
+    "jsp:sync": "node examples/jsp-app/tool/sync.mjs",
     "symfony:sync": "node adapters/symfony-bundle/tool/sync.mjs",
     "verify": "npm run build && npm test && npm run check && npm run audit:security",
     "bench": "node bench/run.js",
     "bench:dry": "node bench/run.js --dry-run",
     "test:visual": "playwright test",
     "test:visual:update": "node tests/visual/update.mjs",
-    "parity:update": "node tests/parity/update.mjs"
+    "parity:update": "node tests/parity/update.mjs",
+    "test:jsp": "node --test --test-concurrency=1 tests/jsp/run.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.13.0",
