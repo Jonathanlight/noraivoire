@@ -2,7 +2,7 @@
 
 **Version auditée :** 0.1.0 · **Date :** 14 octobre 2026 · **Périmètre :** dépôt complet
 **CI GitHub :** 10 jobs réussis le 14 octobre 2026 (Node 20 et 22, Flutter, Playwright, Symfony PHP 8.4 et 8.5, JSP/Tomcat, React Native types et rendu).
-**Méthode :** audit automatisé (`nora audit`, 90 contrôles), 194 tests node, 44 tests Flutter et 61 tests PHPUnit, 136 tests de rendu React Native (Jest), 14 tests JSP dans Tomcat, 90 tests Playwright (captures, axe-core, catalogue), vérification TypeScript stricte, `npm audit`, revue manuelle du code.
+**Méthode :** audit automatisé (`nora audit`, 90 contrôles), 199 tests node, 44 tests Flutter et 61 tests PHPUnit, 136 tests de rendu React Native (Jest), 14 tests JSP dans Tomcat, 98 tests Playwright (captures, axe-core, catalogue, vitrines), vérification TypeScript stricte, `npm audit`, revue manuelle du code.
 © Jonathan KABLAN — Document confidentiel
 
 ## 1. Synthèse
@@ -27,7 +27,7 @@
 
 | Indicateur | Valeur |
 |---|---|
-| Tests | 194 / 194 réussis (node) · 136 / 136 (rendu React Native, Jest) · 44 / 44 (Flutter, dont 20 goldens) · 61 / 61 (PHPUnit, bundle Symfony) · 90 / 90 (Playwright : 12 captures, 4 axe-core, 2 sans JS, 2 legacy, 1 parité, 22 catalogue, 47 vitrines) · 14 / 14 (JSP dans Tomcat 11) |
+| Tests | 199 / 199 réussis (node) · 136 / 136 (rendu React Native, Jest) · 44 / 44 (Flutter, dont 20 goldens) · 61 / 61 (PHPUnit, bundle Symfony) · 98 / 98 (Playwright : 12 captures, 4 axe-core, 2 sans JS, 2 legacy, 1 parité, 22 catalogue, 55 vitrines) · 14 / 14 (JSP dans Tomcat 11) |
 | Contrôles d'audit | 90 / 90 réussis |
 | Modèles validés par `nora check` | 13 fichiers + 20 recettes, 0 erreur, 0 avertissement |
 | Erreurs TypeScript (strict) sur le TSX généré | 0 |

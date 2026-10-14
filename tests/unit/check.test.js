@@ -22,7 +22,7 @@ test('la fixture « réflexes Bootstrap/Tailwind » déclenche toutes les règle
   const r = rules(checkSource(text, 'bad.html', manifest));
   for (const rule of ['foreign-class', 'invalid-variant', 'a11y-anchor-href', 'a11y-label', 'unknown-effect', 'unknown-utility', 'unknown-surface', 'orphan-variant', 'possible-typo',
     'a11y-form-label', 'a11y-invalid-message', 'field-label-missing', 'a11y-switch-role', 'a11y-toggle-input', 'a11y-radio-name',
-    'a11y-nav-label', 'a11y-nav-current', 'a11y-img-alt', 'a11y-img-role']) {
+    'a11y-nav-label', 'a11y-nav-current', 'a11y-img-alt', 'a11y-img-role', 'unexpected-element']) {
     assert.ok(r.includes(rule), `règle ${rule} attendue`);
   }
 });

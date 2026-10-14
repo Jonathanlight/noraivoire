@@ -70,7 +70,7 @@ Une charte définit deux familles de variables :
 
 ## Composants et effets utilisés
 
-Composants du framework : `navbar`, `btn`, `card`, `badge`, `avatar`, `avatar-group`, `link`, `media` (`media-caption`), `field`, `input`, `select`, `textarea`, `checkbox`, `radio`, surface `fx-glass`. Effets : `reveal`, `tilt`, `parallax`, `pin`, `scrub`, `split`, `scramble` — tous neutralisés en mouvement réduit, et le contenu reste lisible sans JavaScript. `showcase.css` ne fait que la mise en page des sections (couche `@layer app`, après les couches `nora.*`, sans `!important`) et raccorde la charte aux composants par leurs tokens publics (`--btn-radius`, `--navbar-active`, `--media-radius`…).
+Composants du framework : `navbar`, `btn`, `card`, `badge`, `avatar`, `avatar-group`, `link`, `media` (`media-caption`), `field`, `input`, `select`, `textarea`, `checkbox`, `radio`, surface `fx-glass`. Effets : `reveal`, `tilt`, `parallax`, `pin`, `scrub`, `split`, `scramble` — tous neutralisés en mouvement réduit, et le contenu reste lisible sans JavaScript. `showcase.css` ne fait que la mise en page des sections (couches `@layer app.*` : `brand`, `theme`, `base`, `ui`, `page`, après les couches `nora.*`, sans `!important`) et raccorde la charte aux composants par leurs tokens publics (`--btn-radius`, `--navbar-active`, `--media-radius`…).
 
 ## Photos
 
@@ -79,5 +79,5 @@ Composants du framework : `navbar`, `btn`, `card`, `badge`, `avatar`, `avatar-gr
 ## Tests
 
 - `tests/unit/showcase.test.js` : aucune couleur en dur hors de `themes/`, chartes réduites à des variables, pages compatibles CSP stricte, ressources locales, photos créditées et conformes, `nora check` sans erreur ni avertissement.
-- `tests/visual/showcase.spec.mjs` (Playwright) : axe-core en clair et sombre, console propre, aucun débordement à 375 px, mouvement réduit respecté, changement de charte effectif sur chaque page, affichage du mot de passe, bascule annuelle sans JavaScript, captures de référence.
+- `tests/visual/showcase.spec.mjs` (Playwright) : axe-core en clair et sombre, contraste AA de chacune des 4 chartes en clair et en sombre, console propre, aucun débordement à 375 px, mouvement réduit respecté, changement de charte effectif sur chaque page, affichage du mot de passe, bascule annuelle sans JavaScript, captures de référence.
 - Captures du README : `npm run showcase:shots` (JPEG 1280 × 800 dans `docs/gallery/showcase-*.jpg`).

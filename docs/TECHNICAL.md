@@ -2,6 +2,8 @@
 
 Version 0.1.0 · 14 octobre 2026 · © Jonathan KABLAN — Propriétaire
 
+> **Référence complète avec aperçus** : [docs/reference/](reference/README.md) — pour chaque composant, effet, token, utilitaire, primitive de mise en page et règle de `nora check`, un aperçu clair / sombre et le code pour chaque cible (HTML, React, Vue, Twig, JSP, Flutter, React Native). Générée depuis le manifest (§7.6) : ce document-ci décrit l'architecture, les formats et les garanties.
+
 ## 1. Vision et principes
 
 NoraIvoire résout trois problèmes à la fois :
@@ -29,21 +31,24 @@ Principes non négociables :
                                          │
                                     resolve.js ({groupe.clé}, $tone, $size)
                                          │
-     ┌───────────────┬───────────────────┼────────────────────┬─────────────────┐
-     ▼               ▼                   ▼                    ▼                 ▼
- targets/css.js  targets/flutter.js  targets/react-native.js  targets/manifest.js  engine (copie)
-     │               │                   │                    │                 │
- noraivoire.css  noraivoire.dart     noraivoire.tsx       manifest.json      noraivoire.engine.js
- noraivoire.min.css                                       llms-full.txt      noraivoire.auto.js
- noraivoire.legacy.min.css (sans @layer)
-                                                          noraivoire.types.ts
+     ┌───────────────┬───────────────────┼────────────────────┬─────────────────┬──────────────────────┐
+     ▼               ▼                   ▼                    ▼                 ▼                      ▼
+ targets/css.js  targets/flutter.js  targets/react-native.js  targets/manifest.js  engine (copie)   fx.js (spec/fx/<paquet>/)
+     │           + flutter-page.js   + react-native-page.js   │                 │                      │
+     │           (link, nav, avatar, media)                   │                 │                      │
+ noraivoire.css  flutter/            react-native/        manifest.json      noraivoire.engine.js   fx/fx-scroll.{js,css}
+ noraivoire.min.css  noraivoire.dart     noraivoire.tsx   llms-full.txt      noraivoire.engine.d.ts fx/fx-text.{js,css}
+ noraivoire.legacy.min.css (sans @layer)                  noraivoire.types.ts noraivoire.auto.js    flutter/noraivoire_fx.dart
+                                                                                                    react-native/noraivoire-fx.tsx
                                                                 │
                                                      targets/symfony.js (depuis le manifest)
                                                                 │
                                             symfony/templates/components/Nora/*.html.twig
                                             symfony/src/NoraManifest.php, Enum/Nora{Tone,Size,Component}.php
-                                         │
-                                  integrity.json (sha256 + SRI sha384 + tailles gzip)
+
+  integrity.json : sha256 + SRI sha384 + taille gzip de chaque sortie ci-dessus.
+  Consommateurs du manifest : nora check (packages/cli), serveur MCP (packages/mcp), catalogue (tools/catalog),
+  référence Markdown (tools/docs), Twig Components (targets/symfony.js).
 ```
 
 ## 3. Format de spec
@@ -65,19 +70,23 @@ Types acceptés : `color` (`#RRGGBB` ou `#RRGGBBAA`), `dimension` (px, 0–10000
 | Champ | Rôle |
 |---|---|
 | `component` | Nom de classe (`btn`) — `^[a-z][a-z0-9-]{0,31}$` |
+| `description` | Obligatoire, 500 caractères au plus ; reprise dans le manifest, les commentaires Dart / TSX (via `docComment()`) et la référence |
+| `example` | Fragment HTML d'exemple (manifest, `llms-full.txt`) |
 | `elements` | Balises HTML prévues (utilisées par `nora check`) |
 | `variants.tone` / `variants.size` | Valeurs autorisées de `data-tone` / `data-size` |
 | `defaults` | Valeurs par défaut (doivent appartenir aux variantes) |
 | `tokens` | Variables du composant, références `{color.$tone}` |
-| `sizes` | `pad-y`, `pad-x`, `font` par taille (nombre ou référence) |
-| `shape` | Forme explicite (facultative) : `interactive`, `container`, `label`, `control`, `toggle`, `group` |
-| `parts` | Sous-éléments stylés, liste fermée `label`, `help`, `error` → classes `.{composant}-{partie}` (ex. `.field-error`) |
+| `sizes` | `pad-y`, `pad-x`, `font` par taille (nombre ou référence) ; `box` (forme `avatar`) et `ratio` (forme `media`), voir 3.2.2 |
+| `shape` | Forme explicite (facultative) : `interactive`, `container`, `label`, `control`, `toggle`, `group`, `link`, `nav`, `avatar`, `media` (`SHAPES`, `validate.js`) |
+| `parts` | Sous-éléments stylés, liste fermée `label`, `help`, `error`, `brand`, `menu`, `actions`, `caption`, `overlay`, `group` → classes `.{composant}-{partie}` (ex. `.field-error`, `.navbar-menu`, `.avatar-group`) |
 | `states` | Liste fermée : `pressed`, `disabled`, `focus`, `invalid` (toute autre clé est refusée) |
 | `states.pressed` | `scale`, `darken` (%) |
 | `states.disabled` | `opacity` |
 | `states.focus` | `ring` (épaisseur 1–8 px), `token` (clé de `tokens` du composant, ex. `focus`) |
 | `states.invalid` | `token` (clé de `tokens` du composant, ex. `invalid`) — jamais une couleur libre |
-| `a11y` | `role` (détermine la forme si `shape` est absent : `button`→interactive, `status`→label, `textbox`/`combobox`→control, `checkbox`/`switch`→toggle, `group`→group, sinon container), `minTarget`, `requiresLabel`, `anchorRequiresHref`, `inputType` (toggle) |
+| `a11y` | `role` (détermine la forme si `shape` est absent : `button`→interactive, `status`→label, `textbox`/`combobox`→control, `checkbox`/`switch`/`radio`→toggle, `group`→group, `link`→link, `navigation`→nav, `img`→avatar, `figure`→media, sinon container), `minTarget`, `requiresLabel`, `anchorRequiresHref`, `inputType` (toggle) |
+| `motion.press.duration` | Durée de l'animation d'appui (ms, Flutter / React Native) |
+| `feedback.haptic` | `light` / `medium` / `heavy` (mobile) |
 
 Un contrôle de formulaire (`control`, `toggle`) exige `a11y.minTarget ≥ 44` et `a11y.requiresLabel: true` ; un `toggle` exige `a11y.inputType`. La compilation échoue sinon.
 
@@ -90,13 +99,14 @@ Un contrôle de formulaire (`control`, `toggle`) exige `a11y.minTarget ≥ 44` e
 | `.textarea` | control | `<textarea class="textarea" id="x">` (redimensionnable verticalement) | idem |
 | `.checkbox` | toggle | `<label class="checkbox"><input type="checkbox"> Texte</label>` | coché, indéterminé, focus, invalide, désactivé |
 | `.switch` | toggle | `<label class="switch"><input type="checkbox" role="switch"> Texte</label>` | activé, focus, invalide, désactivé ; sens RTL |
+| `.radio` | toggle | `<label class="radio"><input type="radio" name="…"> Texte</label>`, options groupées dans `<fieldset class="field">` + `<legend class="field-label">` | coché, focus, invalide, désactivé ; flèches du clavier (natif) |
 | `.field` | group | `<div class="field">` (ou `<fieldset>`) : `.field-label`, contrôle, `.field-help`, `.field-error` | `.field-error:empty` masqué ; libellé atténué si le contrôle est désactivé |
 
 La case et l'interrupteur portent la classe sur le `<label>` : toute la ligne (case + texte) est la zone cliquable de 44 px minimum, et l'association label/contrôle est implicite. Les tons (`data-tone`) colorent la case cochée et l'interrupteur actif. En mode `forced-colors`, les contrôles natifs reprennent leur apparence système.
 
 Un champ invalide porte `aria-invalid="true"` et `aria-describedby` vers son `.field-error`.
 
-### 3.2.2 Composants de mise en page
+### 3.2.2 Composants de page
 
 | Composant | Forme | Balisage web | Points clés |
 |---|---|---|---|
@@ -107,8 +117,21 @@ Un champ invalide porte `aria-invalid="true"` et `aria-describedby` vers son `.f
 
 Nouvelles clés de taille, en liste blanche dans `validate.js` : `box` (côté d'un avatar, 16–256 px, obligatoire pour la forme `avatar`, refusé ailleurs) et `ratio` (`[largeur, hauteur]` entiers 1–64, obligatoire pour la forme `media`, refusé ailleurs). Toute autre clé de taille est refusée. Une navigation exige la partie `menu` et une zone ≥ 44 px ; un lien est un `<a href>`.
 
-Contraste : tous les tons de `.link` atteignent 4,5:1 sur `surface`. En clair, `primary` (4,31:1) et `warning` (4,33:1) restent sous le seuil sur `surface-2` : y utiliser `data-tone="neutral"`. L'exception est figée par `tests/unit/page.test.js`.
-| `feedback.haptic` | `light` / `medium` / `heavy` (mobile) |
+Contraste : tous les tons de `.link` atteignent 4,5:1 sur `surface`. En clair, `primary` (4,31:1) et `warning` (4,33:1) restent sous le seuil sur `surface-2` : y utiliser `data-tone="neutral"`. L'exception est figée par `tests/unit/page.test.js` (constat A-16, ouvert). Les vitrines la contournent par charte avec `--brand-accent-text` (voir §10).
+
+### 3.2.3 Primitives de mise en page, utilitaires, surfaces
+
+Hors spec de composants, générées par `targets/css.js` et listées dans le manifest :
+
+| Clé du manifest | Contenu | Couche |
+|---|---|---|
+| `layout` | `container` (largeur bornée, centrée), `stack` (pile verticale), `cluster` (rangée qui s'enroule), `grid-auto` (grille auto-remplie), `cq` (conteneur de requêtes `@container`) | `nora.layout` |
+| `utilities` | 74 classes, grammaire `{propriété}-{échelle}` : `p-*`, `px-*`, `py-*`, `m-*`, `mx-*`, `my-*`, `gap-*` (échelle `space`), `rounded-*`, `text-*`, `shadow-*`, `font-bold`, `w-full`, `mx-auto`, `hidden`, `sr-only` | `nora.utilities` |
+| `surfaces` | `fx-glass` (verre dépoli) | `nora.effects` |
+| `tokens` | groupes `color`, `space`, `radius`, `font`, `duration` → `--nora-{groupe}-{clé}` | `nora.tokens` |
+| `themes` | `data-theme="light\|dark"` sur `<html>`, défaut : système | — |
+
+Aperçu et code de chaque élément : [utilitaires](reference/utilitaires.md), [mise en page](reference/mise-en-page.md), [fondations](reference/fondations.md).
 
 ### 3.3 Effets (`spec/effects/*.nora.json`)
 
@@ -119,6 +142,8 @@ Un effet décrit une **intention**, chaque cible choisit son implémentation :
 | `orientation-transform` (tilt) | pointeur ; gyroscope sur mobile sans permission | `NoraTilt` (pointeur ; `orientation` injectable) | `NoraTilt` (toucher ; `configureNora({ orientation })`) |
 | `scroll-reveal` (reveal) | `animation-timeline: view()`, repli IntersectionObserver | `NoraReveal` (montage ou `visible`) | `NoraReveal` (montage ou `visible`) |
 | `surface-glass` (glass) | `.fx-glass` + `backdrop-filter` avec repli `@supports` | `NoraCard(glass: true)` + `BackdropFilter` | `NoraCard glass` (alpha ; flou natif via adaptateur) |
+
+Champs : `effect` (nom), `kind`, `description`, `input` (`orientation`, `visibility`, `scroll`, `none`), `reducedMotion` (`disable` : état final affiché ; `keep` : conservé car sans mouvement induit), `options`, `platforms` (facultatif : mise en œuvre par cible), `package` (réservé à `spec/fx/`, voir §5.1). Types propres aux paquets : `scroll-pin`, `scroll-scrub`, `scroll-parallax`, `text-split`, `text-scramble`.
 
 Options : `number` (avec `min`, `max`, `default`) ou `boolean`.
 
@@ -153,7 +178,7 @@ Limite connue : un token de composant (`--btn-bg`) défini sur un **parent** n'e
 API (`@noraivoire/core/engine`, types dans `noraivoire.engine.d.ts`) :
 
 ```js
-import { defineEffect, start, stop, attach } from '@noraivoire/core/engine';
+import { defineEffect, hasEffect, start, stop, attach, parseOptions, parseEffectList } from '@noraivoire/core/engine';
 
 defineEffect('magnet', {
   options: { strength: { type: 'number', default: 0.3, min: 0, max: 1 } },
@@ -173,8 +198,11 @@ defineEffect('magnet', {
 | `ctx.set('--fx-*', v)` | Seule écriture de style autorisée (variables `--fx-*`) |
 | `ctx.signal` | `AbortSignal` : les écouteurs sont retirés automatiquement au démontage |
 | `ctx.reducedMotion` | `prefers-reduced-motion` |
+| `ctx.visible` | Visibilité courante de l'élément (mise à jour par l'observateur partagé) |
 | `ctx.onVisible(cb)` | IntersectionObserver partagé |
 | `ctx.lazy(() => import('…'))` | Chargement différé d'une librairie lourde |
+
+`mount()` peut renvoyer une fonction de nettoyage, appelée au démontage. Autres exports : `hasEffect(nom)`, `attach(el, nom, options)` (montage manuel, renvoie la fonction de démontage), `parseOptions(chaîne, schéma)` (lecture bornée de `data-fx-<nom>`), `parseEffectList(valeur)` (lecture de `data-fx`).
 
 Fonctionnement : un **seul** `MutationObserver` surveille `childList` et l'attribut `data-fx`. Un élément ajouté (navigation SPA, `v-if`, `@if`, Turbo) est monté ; retiré, il est démonté. Un effet qui lève une exception est isolé (journalisé, les autres continuent) et ses écritures sont annulées : les variables `--fx-*` et attributs `data-fx-*` relevés avant `mount()` sont restaurés.
 
@@ -212,7 +240,7 @@ Le compilateur (`packages/compiler/src/fx.js`) lit `spec/fx/<paquet>/`, valide c
 | `split` | pièces `<span data-fx-piece>` (`--fx-i`), `--fx-stagger`, `data-fx-visible` | Texte intact | Pas de découpe |
 | `scramble` | nœud texte animé puis DOM d'origine restauré | Texte intact | Désactivé |
 
-`install(moteur)` reçoit le module du moteur au lieu de l'importer : le paquet fonctionne avec la copie du moteur servie par la page (statique, AssetMapper, bundler) sans risque de double registre.
+`install(moteur)` reçoit le module du moteur au lieu de l'importer : le paquet fonctionne avec la copie du moteur servie par la page (statique, AssetMapper, bundler) sans risque de double registre. Avec le bundle Symfony, `symfony:sync` n'expose à AssetMapper que `noraivoire.css`, `noraivoire.min.css`, le moteur et `noraivoire.auto.js` : servir `fx/*` (et `noraivoire.legacy.min.css`) depuis `public/` ou un bundler.
 
 **Exception contrôlée au contrat du moteur (`fx-text` uniquement).** Découper ou brouiller un texte impose de créer des nœuds. `split` et `scramble` peuvent donc, et seulement eux : créer des `<span>` (`createElement` + `textContent`, jamais de HTML), poser `aria-hidden` et des attributs `data-fx-*`, écrire `--fx-i` sur leurs propres `<span>`. Ils n'agissent que sur un élément qui ne contient **que du texte** (≤ 500 caractères) ; les nœuds d'origine sont conservés et remis en place au démontage (mêmes objets). L'audit vérifie ces bornes (`fxDomViolations`). Pour l'accessibilité, le texte complet est placé dans une copie visuellement masquée (`data-fx-sr`) et la version animée est `aria-hidden` : un `aria-label` sur le parent aurait été ignoré sur les éléments génériques (`p`, `span`, `div`), où ARIA 1.2 l'interdit. À n'utiliser que sur du texte statique : un framework qui re-rend ce texte pendant l'effet modifierait des nœuds détachés.
 
@@ -244,14 +272,14 @@ La cible `targets/symfony.js` lit le **manifest** (pas la spec brute) : chaque c
 
 - **Twig Components** (`symfony/templates/components/Nora/*.html.twig`) : `tone` et `size` en liste blanche avec repli sur la valeur par défaut ; `href` filtré par la liste blanche de schémas (`/`, `#`, `https://`, `http://`, `mailto:`, `tel:` ; refus de `//` et `/\`) avec repli sur `<button>` ; `type` limité à `button | submit | reset` ; `as` limité aux `elements` du manifest ; `attributes.without('data-tone', 'data-size', 'href', 'type')` empêche de forcer ces attributs ; éléments vides (`input`, `img`…) émis sans contenu.
 - **PHP** (`symfony/src/`) : enums `NoraTone`, `NoraSize`, `NoraComponent` (`values()`, `isAllowedFor($composant)`) et classe `NoraManifest` (constantes du contrat, `safeHref()`).
-- **Bundle** : `NoraIvoireBundle` (clé de configuration `noraivoire:`) ajoute `generated/templates` aux chemins Twig, `generated/assets` à AssetMapper sous le préfixe `noraivoire/`, et la commande `bin/console nora:check`. `npm run symfony:sync` copie la sortie compilée dans `adapters/symfony-bundle/generated/` (non versionné, comme `examples/flutter_app/lib/`).
+- **Bundle** : `NoraIvoireBundle` (clé de configuration `noraivoire:`) ajoute `generated/templates` aux chemins Twig, `generated/assets` (`noraivoire.css`, `noraivoire.min.css`, `noraivoire.engine.js`, `noraivoire.auto.js`) à AssetMapper sous le préfixe `noraivoire/`, et la commande `bin/console nora:check`. `npm run symfony:sync` copie la sortie compilée dans `adapters/symfony-bundle/generated/` (non versionné, comme `examples/flutter_app/lib/`).
 - **`nora:check`** délègue au CLI Node (`nora check --format=json`) : une seule implémentation des règles (tokenizer, règles futures) plutôt qu'une réimplémentation PHP qui divergerait. Appel par `Process` avec un tableau d'arguments (aucun shell), chemins résolus par `realpath` et confinés au projet, transmis en absolu (jamais lus comme options), `NODE_OPTIONS` retiré, durée bornée. Node n'est requis qu'en développement et en CI.
 
 ## 7. Outillage
 
 ### 7.1 `nora check`
 
-Analyse les templates (`.html .twig .jsp .jsx .tsx .vue` et `*.component.html`) :
+Analyse les templates (`.html .htm .twig .jsp .jspx .tag .jsx .tsx .vue .svelte .astro` et `*.component.html`). 20 règles ; exemple fautif et corrigé de chacune, vérifiés par test : [référence › nora check](reference/nora-check.md).
 
 | Règle | Niveau | Exemple |
 |---|---|---|
@@ -270,6 +298,11 @@ Analyse les templates (`.html .twig .jsp .jsx .tsx .vue` et `*.component.html`) 
 | `a11y-switch-role` | erreur | `<label class="switch"><input type="checkbox">` sans `role="switch"` |
 | `a11y-invalid-message` | avertissement | `aria-invalid="true"` sans `aria-describedby` ni `aria-errormessage` |
 | `field-label-missing` | avertissement | `.field` sans `<label>`, `<legend>` ni `.field-label` |
+| `a11y-radio-name` | avertissement | `<input type="radio">` de `.radio` sans `name` |
+| `a11y-img-alt` | erreur | `<img class="avatar">` ou `<img>` de `.media` sans `alt` ; avatar à initiales sans nom accessible |
+| `a11y-img-role` | avertissement | `<span class="avatar" aria-label>` sans `role="img"` |
+| `a11y-nav-label` | avertissement | `.navbar` sans `aria-label` ni `aria-labelledby` |
+| `a11y-nav-current` | avertissement | lien actif (classe `active`…) de `.navbar` sans `aria-current="page"` |
 
 Pour l'association label/contrôle, un `id` ou un `for` calculé (`:id`, `id="{{ … }}"`, ``htmlFor={`${id}-x`}``) n'est pas signalé ; un composant de framework (`<Checkbox />`) dans un `.checkbox` non plus, son contenu étant inconnu.
 
@@ -314,35 +347,9 @@ stdout ◄── une réponse JSON par ligne ◄──────────�
 
 Négociation (serveur *dual-era*, spec MCP `2026-07-28`) : une requête dont le `_meta` porte `io.modelcontextprotocol/protocolVersion` est servie **sans état** selon `MODERN_VERSIONS` (`2026-07-28`) — `server/discover` disponible, `resultType: "complete"` et `serverInfo` dans le `_meta` de chaque résultat, `-32022` (`UnsupportedProtocolVersion`, avec `data.supported`) pour une version inconnue, `-32602` si `clientCapabilities` manque. Sans ce `_meta`, la poignée de main historique `initialize` s'applique : la version demandée est retenue si elle figure dans `PROTOCOL_VERSIONS` (`2025-11-25`, `2025-06-18`, `2025-03-26`, `2024-11-05`), sinon la plus récente. Les deux ères peuvent coexister sur le même processus. Erreurs : `-32700` JSON invalide, `-32600` requête invalide, lot ou message trop volumineux, `-32601` méthode inconnue, `-32602` outil inconnu ou `params` non objet. Une erreur d'usage d'un outil est un résultat `isError: true`.
 
-#### Format de `recipes/index.json`
+Format de l'index : §7.4. Correspondance : l'intention et chaque formulation (`id`, `title`, `intents`) sont normalisées (minuscules, sans accents ni ponctuation). Égalité exacte (score 100) > formulation contenue dans la demande ou l'inverse (50) > mots communs de plus de 2 lettres (10 par mot). La meilleure recette l'emporte ; à score nul, l'outil liste les intentions disponibles. Si `recipes/index.json` est absent, l'outil renvoie une erreur explicite, sans arrêter le serveur. Le dossier peut être remplacé par la variable `NORA_MCP_RECIPES`.
 
-```json
-{
-  "version": 1,
-  "recipes": [
-    {
-      "id": "login",
-      "title": "Connexion",
-      "intents": ["connexion", "login", "se connecter"],
-      "file": "login.html",
-      "components": ["btn", "field", "input"]
-    }
-  ]
-}
-```
-
-| Champ | Contrainte |
-|---|---|
-| `version` | `1` |
-| `id` | `^[a-z0-9][a-z0-9-]{0,63}$`, unique |
-| `title` | Libellé court en français |
-| `intents` | Formulations en français et en anglais ; la première sert d'exemple dans les messages |
-| `file` | `^[a-z0-9][a-z0-9-]{0,63}\.html$`, fichier ordinaire directement dans `recipes/` (ni sous-dossier, ni lien symbolique) |
-| `components` | Composants NoraIvoire utilisés |
-
-Correspondance : l'intention et chaque formulation (`id`, `title`, `intents`) sont normalisées (minuscules, sans accents ni ponctuation). Égalité exacte (score 100) > formulation contenue dans la demande ou l'inverse (50) > mots communs de plus de 2 lettres (10 par mot). La meilleure recette l'emporte ; à score nul, l'outil liste les intentions disponibles. Si `recipes/index.json` est absent, l'outil renvoie une erreur explicite, sans arrêter le serveur. Le dossier peut être remplacé par la variable `NORA_MCP_RECIPES`.
-
-### 7.3 Bibliothèque de recettes (`recipes/`)
+### 7.4 Bibliothèque de recettes (`recipes/`)
 
 20 écrans de référence en HTML NoraIvoire (connexion, inscription, mot de passe oublié, tarifs, tableau de bord, liste et fiche produit, panier, paiement, confirmation de commande, profil, paramètres, notifications, recherche, erreurs 404 et 500, maintenance, accueil marketing, à propos/équipe, contact). Chaque écran :
 
@@ -350,7 +357,7 @@ Correspondance : l'intention et chaque formulation (`id`, `title`, `intents`) so
 - est accessible : `lang`, un seul `h1`, landmarks (`header`, `nav` étiqueté, `main`), libellé associé à chaque champ (`<label for>` ↔ `id`) ;
 - ne contient ni JS inline, ni attribut `style`, ni ressource externe (CSP stricte) ;
 - n'utilise que des données fictives (`example.com`, « Utilisateur Démo ») ;
-- passe `nora check` sans erreur ni avertissement (`npm run check` couvre `templates/` et `recipes/`).
+- passe `nora check` sans erreur ni avertissement (`npm run check` couvre `templates/`, `recipes/` et `examples/showcase/`).
 
 Index `recipes/index.json`, lu par l'outil MCP `nora_recipe` :
 
@@ -364,11 +371,13 @@ Index `recipes/index.json`, lu par l'outil MCP `nora_recipe` :
 - `id` : kebab-case, unique ; `file` vaut `<id>.html`, sans sous-dossier ;
 - `intents` : au moins 3, en français et en anglais ; une intention normalisée (minuscules, sans accents) n'appartient qu'à une seule recette ;
 - `components` : exactement les composants du manifest présents dans le markup (vérifié par `tests/unit/recipes.test.js`) ;
-- `description` : champ facultatif, ignoré par les consommateurs qui ne le connaissent pas.
+- `title` : libellé court en français ; `description` : champ facultatif, ignoré par les consommateurs qui ne le connaissent pas.
 
-Les formulaires utilisent les composants `field` (avec `.field-label`, `.field-help`, `.field-error`), `input`, `select`, `textarea`, `checkbox` et `switch` ; `forgot-password.html` montre l'état invalide (`aria-invalid="true"` relié au message par `aria-describedby`). Les boutons radio restent natifs (aucun composant `radio` dans le manifest), groupés et étiquetés.
+Correspondance de l'outil MCP `nora_recipe` : voir §7.3.
 
-### 7.4 Catalogue des composants (`tools/catalog/`)
+Les formulaires utilisent les composants `field` (avec `.field-label`, `.field-help`, `.field-error`), `input`, `select`, `textarea`, `checkbox`, `switch` et `radio` (options groupées dans `<fieldset class="field">`, voir `checkout.html`) ; `forgot-password.html` montre l'état invalide (`aria-invalid="true"` relié au message par `aria-describedby`). Les pages utilisent `navbar`, `link` et `avatar`.
+
+### 7.5 Catalogue des composants (`tools/catalog/`)
 
 Site statique façon documentation Bootstrap / Tailwind, **généré depuis `packages/core/dist/manifest.json`** par `tools/catalog/build.mjs` (Node, sans dépendance) ; aucune liste de composants codée en dur : un composant ajouté à la spec obtient sa page au prochain build.
 
@@ -385,22 +394,55 @@ npm run catalog:shots    # captures du README dans docs/catalog/ (Playwright ; o
 | `effet-<nom>.html` | Démonstration interactive, chargement du paquet optionnel le cas échéant, options et bornes, comportement en mouvement réduit, mise en œuvre par cible |
 | `utilitaires.html`, `mise-en-page.html` | Chaque utilitaire et primitive de mise en page du manifest, démontré |
 
-- **Exemples dérivés de la forme** (`shape`) et du rôle d'accessibilité du composant (interactif, étiquette, conteneur, contrôle, case / interrupteur / radio, groupe) ; le même fragment HTML, mis en forme par `prettify()`, est **rendu et affiché** (vérifié par test).
+- **Exemples dérivés de la forme** (`shape`) et du rôle d'accessibilité du composant (interactif, étiquette, conteneur, contrôle, case / interrupteur / radio, groupe, lien, navigation, avatar, média) ; le même fragment HTML, mis en forme par `prettify()`, est **rendu et affiché** (vérifié par test).
 - **CSP stricte** : aucun script ni style inline ; `assets/catalog.js` (thème, filtre, onglets, copie, démonstration du focus, moteur et paquets d'effets via `assets/catalog-fx.js` généré) construit le DOM par `createElement` / `textContent`. Amélioration progressive : sans JS, les onglets sont déroulés et les boutons propres au JS masqués.
 - **Thème** : bascule système → clair → sombre par `data-theme` sur `<html>` (mécanisme existant de la CSS) ; préférence mémorisée dans `localStorage` si disponible (dans un `try`).
 - **Habillage** : `assets/catalog.css` (généré) dans `@layer catalog`, déclaré après les couches `nora.*` ; les démonstrations d'utilitaires utilisent des classes neutres (`.cat-demo`) pour que seul l'utilitaire agisse.
+
+### 7.6 Référence générée (`tools/docs/`, `docs/reference/`)
+
+Documentation Markdown versionnée, lisible directement sur GitHub, **générée depuis le manifest** par `tools/docs/reference.mjs` à partir des mêmes exemples que le catalogue (`componentExamples`, `frameworkSnippets`, `overrideFor`).
+
+```bash
+npm run docs:reference          # Markdown (déterministe)
+npm run docs:reference:shots    # aperçus clair / sombre (Playwright, oxipng si présent)
+```
+
+| Page | Contenu |
+|---|---|
+| `README.md` | Sommaire : vignette et description de chaque composant et effet |
+| `composants/<nom>.md` | Propriétés (classe, forme, éléments, tons, tailles, parties, états, Flutter, React Native, Twig) ; usage HTML / React / Vue / Twig / (JSP pour `btn`) / Flutter / React Native ; chaque groupe d'exemples avec aperçu clair et sombre, HTML et JSX ; tokens et exemple de surcharge ; accessibilité ; règles de `nora check` concernées |
+| `effets/<nom>.md` | Aperçu, usage web (chargement du paquet optionnel le cas échéant), Flutter, React Native, options et bornes, mouvement réduit, mise en œuvre par cible |
+| `fondations.md`, `utilitaires.md`, `mise-en-page.md` | Grammaire, thème, nuancier avec contrastes calculés, échelles ; chaque utilitaire et primitive |
+| `nora-check.md` | Les 20 règles : niveau, ce qu'elles détectent, exemple fautif et corrigé |
+
+Les aperçus (`apercus/*.png`) sont des captures de l'élément exact du catalogue dont le code est affiché. `tests/unit/reference.test.js` vérifie que la référence est à jour, qu'elle couvre chaque composant, effet, token et utilitaire du manifest, que chaque aperçu existe (sans image orpheline), qu'aucune balise brute n'échappe aux blocs de code, et que l'exemple fautif de chaque règle la déclenche et que l'exemple corrigé passe `nora check`.
 
 ## 8. Ajouter un composant
 
 1. Créer `spec/components/<nom>.nora.json`.
 2. `npm run build`.
-3. Ajouter un exemple dans `templates/html/index.html` et les tests dans `tests/unit/compiler.test.js`. Le Twig Component `Nora:<Nom>` et les cas d'enum PHP sont générés automatiquement ; `npm run symfony:sync` puis PHPUnit dans `adapters/symfony-bundle/` les vérifient.
-4. `npm run verify`.
+3. Ajouter un exemple dans `templates/html/index.html` et les tests dans le fichier thématique (`tests/unit/forms.test.js`, `tests/unit/page.test.js`…), les cas de parité dans `tests/parity/cases.json` (`npm run parity:update`), le rendu React Native dans `tests/rn/`, les goldens dans `examples/flutter_app/test/`. Le Twig Component `Nora:<Nom>` et les cas d'enum PHP sont générés automatiquement ; `npm run symfony:sync` puis PHPUnit dans `adapters/symfony-bundle/` les vérifient.
+4. `npm run docs:reference` et `npm run docs:reference:shots` (fiche et aperçus), `npm run catalog:shots` si les captures du README changent.
+5. `npm run verify`.
 
-Si le composant exige une forme nouvelle (ni interactive, ni label, ni container, ni control, ni toggle, ni group), l'ajouter à `SHAPES` et `shapeFromRole` puis aux trois cibles **dans le même commit**, avec un test par cible.
+Si le composant exige une forme absente de `SHAPES` (`validate.js`), l'ajouter à `SHAPES` et `shapeFromRole`, aux trois cibles (dont `flutter-page.js` / `react-native-page.js` pour une forme de page), aux exemples du catalogue (`tools/catalog/build.mjs`) et, si besoin, aux règles de `nora check`, **dans le même commit**, avec un test par cible.
 
 ## 9. Versionnage
 
 - Le **manifest est l'API publique**. Ajouter = mineure ; retirer ou renommer = majeure.
-- Une classe dépréciée reste fonctionnelle pendant toute la version majeure suivante et `nora check` émet un avertissement.
+- Une classe dépréciée reste fonctionnelle pendant toute la version majeure suivante. Prévu : avertissement de `nora check` sur les classes dépréciées (non implémenté en 0.1, aucune dépréciation à ce jour).
 - Chaque fichier généré porte la version de la spec qui l'a produit.
+
+## 10. Exemples, vitrines et vérification
+
+| Élément | Contenu | Commande |
+|---|---|---|
+| `templates/` | Modèles de départ : HTML, React, Next.js, Vue, Angular, Twig, JSP (`WEB-INF/tags/nora/btn.tag`), Flutter, React Native | `npm run check` |
+| `examples/{react,vue,nextjs,angular,react-native-web,twig}/` | Exemples lançables, dépendances propres et versions exactes | `npm run gallery` (captures `docs/gallery/`) |
+| `examples/flutter_app/`, `examples/jsp-app/`, `adapters/symfony-bundle/` | Exécution réelle : `flutter test` (goldens par plateforme, workflow `goldens.yml` pour Linux), Tomcat 11, PHPUnit | `npm run flutter:sync`, `npm run test:jsp`, `npm run symfony:sync` |
+| `examples/showcase/` | 7 pages corporate / SaaS et un index, re-thémables par un seul fichier `themes/<charte>.css` (`?charte=saas\|corporate\|nature\|noraivoire`) : tokens `--nora-*` du framework et `--brand-*` de mise en page, couches `@layer app.brand, app.theme, app.base, app.ui, app.page` ; `--brand-accent-text` pour le texte en accent ; contraste AA vérifié par axe pour chaque charte en clair et en sombre | `npm run showcase:serve`, `npm run showcase:shots` |
+| `recipes/` | 20 écrans de référence (§7.4) | `npm run check` |
+| `bench/` | Benchmark IA (50 tâches, avec et sans `llms-full.txt`), `--dry-run` sans réseau | `node bench/run.js --dry-run` |
+
+La stratégie de test (node, Playwright et axe-core, parité mesurée entre cibles, rendu React Native, goldens Flutter, PHPUnit, Tomcat, CI) est décrite dans [TESTING.md](TESTING.md) ; la portabilité par cible dans [PORTABILITY.md](PORTABILITY.md). Tailles actuelles (`packages/core/dist/integrity.json`) : CSS 6,3 Kio min + gzip (budget 15), moteur 3,3 Kio (budget 4), `fx-scroll` 1,3 Kio et `fx-text` 1,6 Kio (budget 2 chacun).

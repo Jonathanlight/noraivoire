@@ -34,6 +34,8 @@
     "catalog": "node tools/catalog/build.mjs",
     "catalog:serve": "node tools/catalog/serve.mjs --build",
     "catalog:shots": "node tools/catalog/shoot.mjs",
+    "docs:reference": "node tools/docs/reference.mjs",
+    "docs:reference:shots": "node tools/docs/shoot.mjs",
     "gallery": "node tests/gallery/run.mjs",
     "showcase:serve": "node tests/visual/serve.mjs",
     "showcase:shots": "node examples/showcase/tool/shoot.mjs"

@@ -7,14 +7,14 @@ Version 0.1.0 · 14 octobre 2026 · © Jonathan KABLAN — Propriétaire
 | Environnement | Mode d'intégration | Build requis | Adaptateur | État 0.1 |
 |---|---|---|---|---|
 | HTML statique | `<link>` + `<script type="module">` | Non | Aucun | Modèle fourni, validé par `nora check` |
-| Twig / Symfony 7.3+ (PHP 8.4+) | Bundle : Twig Components `<twig:Nora:*>` générés, enums `NoraTone` / `NoraSize`, AssetMapper (`noraivoire/…`), `bin/console nora:check` | Non | `adapters/symfony-bundle/` (sans bundle : `templates/twig/components/Nora/Btn.html.twig`) | Généré depuis le manifest ; **54 tests PHPUnit exécutés** (PHP 8.5, Symfony 8.1, UX TwigComponent 2.36) ; CI PHP 8.4 et 8.5 |
+| Twig / Symfony 7.3+ (PHP 8.4+) | Bundle : Twig Components `<twig:Nora:*>` générés, enums `NoraTone` / `NoraSize`, AssetMapper (`noraivoire/…`), `bin/console nora:check` | Non | `adapters/symfony-bundle/` (sans bundle : `templates/twig/components/Nora/Btn.html.twig`) | Généré depuis le manifest ; **61 tests PHPUnit exécutés** (PHP 8.5, Symfony 8.1, UX TwigComponent 2.36) ; CI PHP 8.4 et 8.5 |
 | JSP / Jakarta EE / Spring | Fichiers statiques + tag file `<nora:btn>` | Non | `templates/jsp/WEB-INF/tags/nora/btn.tag` | Exécuté dans Tomcat 11 (Jakarta EE, JSTL 3.0) par `npm run test:jsp` ; requiert la JSTL dans l'application |
-| React (Vite) | Import CSS + `start()` ; hook `useFx` | Oui (projet) | `templates/react/useFx.ts` | Modèle fourni |
-| Next.js App Router | CSS dans `layout.tsx` ; `<NoraEngine/>` client | Oui (projet) | `templates/nextjs/components/NoraEngine.tsx` | Modèle fourni |
-| Vue 3 / Nuxt | Import CSS ; directive `v-fx` | Oui (projet) | `templates/vue/vFx.ts` | Modèle fourni |
-| Angular 17+ | `angular.json › styles` ; directive `[noraFx]` | Oui (projet) | `templates/angular/nora-fx.directive.ts` | Modèle fourni |
+| React (Vite) | Import CSS + `start()` ; hook `useFx` | Oui (projet) | `templates/react/useFx.ts` | Modèle fourni ; exemple lançable `examples/react/` (capturé par `npm run gallery`) |
+| Next.js App Router | CSS dans `layout.tsx` ; `<NoraEngine/>` client | Oui (projet) | `templates/nextjs/components/NoraEngine.tsx` | Modèle fourni ; exemple lançable `examples/nextjs/` (capturé par `npm run gallery`) |
+| Vue 3 / Nuxt | Import CSS ; directive `v-fx` | Oui (projet) | `templates/vue/vFx.ts` | Modèle fourni ; exemple lançable `examples/vue/` (capturé par `npm run gallery`) |
+| Angular 17+ | `angular.json › styles` ; directive `[noraFx]` | Oui (projet) | `templates/angular/nora-fx.directive.ts` | Modèle fourni ; exemple lançable `examples/angular/` (capturé par `npm run gallery`) |
 | Flutter 3.35+ | Copie de `noraivoire.dart` | Non | — | Généré ; `flutter analyze` sans problème et goldens (`examples/flutter_app/`) |
-| React Native 0.76+ / Expo | Copie de `noraivoire.tsx` | Non | `configureNora()` | Généré ; **TypeScript strict vérifié** (RN 0.81 et 0.87, React 19) ; **rendu testé** (Jest + Testing Library, RN 0.87, 94 tests) |
+| React Native 0.76+ / Expo | Copie de `noraivoire.tsx` | Non | `configureNora()` | Généré ; **TypeScript strict vérifié** (RN 0.81 et 0.87, React 19) ; **rendu testé** (Jest + Testing Library, RN 0.87, 136 tests) |
 
 ## 2. Politique de support navigateurs
 
@@ -67,7 +67,7 @@ Le seul attribut posé sur `<html>` par le moteur est `data-nora-engine` (d'où 
 
 ### 4.0 Parité mesurée
 
-Les valeurs de design rendues (couleurs, marges, rayons, zones tactiles, bordures, indicateurs des contrôles) sont **mesurées** sur les trois cibles et comparées par `tests/unit/parity.test.js` (voir TESTING.md) : 77 cas × 2 thèmes (dont `link`, `avatar`, `navbar`, `media`), **aucun écart** et aucune exception. Le format d'un média est comparé en texte exact (`1.778`), pour échapper à la tolérance de ± 1 px.
+Les valeurs de design rendues (couleurs, marges, rayons, zones tactiles, bordures, indicateurs des contrôles) sont **mesurées** sur les trois cibles et comparées par `tests/unit/parity.test.js` (voir TESTING.md) : 73 cas × 2 thèmes (dont `link`, `avatar`, `navbar`, `media`), **aucun écart** et aucune exception. Le format d'un média est comparé en texte exact (`1.778`), pour échapper à la tolérance de ± 1 px.
 
 | Hors mesure (volontaire) | Raison |
 |---|---|
@@ -95,12 +95,12 @@ Limites : `NoraParallax` (RN) doit être un enfant direct du contenu du `ScrollV
 | Moteur web | Aucune | Très faible |
 | Flutter | SDK Flutter | API utilisées stables ; `Color.withValues` impose Flutter 3.27+, `RadioGroup` (boutons radio) Flutter 3.35+ |
 | React Native | `react`, `react-native` | `Animated` et `Pressable` sont des API publiques stables |
+| Symfony | `symfony/*` (framework, twig, console, process, asset-mapper), `symfony/ux-twig-component`, `twig/twig` — MIT / BSD-3 | Syntaxe `<twig:…>` et `attributes.without()` d'UX TwigComponent 2.x ; `nora:check` exige Node.js (développement et CI seulement) |
 
 React Native : la préférence « réduire les animations » est lue de façon asynchrone (`AccessibilityInfo.isReduceMotionEnabled`) ; `useMotionPreference()` renvoie `null` tant qu'elle est inconnue, et `NoraTilt` n'écoute le capteur d'orientation qu'une fois le mouvement confirmé autorisé. Le modèle n'utilise plus `SafeAreaView` du cœur (déprécié) : dans une application, `SafeAreaView` de `react-native-safe-area-context` (inclus dans Expo).
-| Symfony | `symfony/*` (framework, twig, console, process, asset-mapper), `symfony/ux-twig-component`, `twig/twig` — MIT / BSD-3 | Syntaxe `<twig:…>` et `attributes.without()` d'UX TwigComponent 2.x ; `nora:check` exige Node.js (développement et CI seulement) |
 
 ## 6. Limites de la version 0.1
 
 1. Le Dart généré est analysé et rendu en test (goldens Flutter, `examples/flutter_app/`) mais pas exécuté sur appareil réel.
-2. Les modèles Vue et Angular sont validés syntaxiquement par `nora check`, pas exécutés dans leur framework. Les Twig Components sont rendus par Symfony (PHPUnit du bundle) et les modèles JSP par Tomcat 11 (`npm run test:jsp`, `examples/jsp-app/`).
-3. Bundle Symfony : testé en PHP 8.5 (local et CI) et PHP 8.4 (CI GitHub) ; Symfony 7.3 n'est couvert que par la contrainte Composer (les installations résolvent la dernière version compatible). Les contrôles (`input`, `select`, `textarea`, `checkbox`, `switch`) reçoivent un Twig Component générique (élément, ton, taille, attributs libres) ; `Nora:Field` est composé : `label`, `help` et `error` sont rendus et reliés au contrôle par `id` (`<label for>`, `<id>-aide`, `<id>-erreur`) ; son contenu reçoit `control` (à étaler : `{{ ...control }}`) et `controlHtml` (pour un `<input>` brut), qui portent `id`, `aria-describedby` et `aria-invalid`.
+2. Les modèles Vue et Angular sont validés par `nora check`, construits (`npm run build` de `examples/vue`, `examples/angular`) et rendus dans Chromium par `npm run gallery`, sans assertion fonctionnelle ni CI. Les Twig Components sont rendus par Symfony (PHPUnit du bundle) et les modèles JSP par Tomcat 11 (`npm run test:jsp`, `examples/jsp-app/`).
+3. Bundle Symfony : testé en PHP 8.5 (local et CI) et PHP 8.4 (CI GitHub) ; Symfony 7.3 n'est couvert que par la contrainte Composer (les installations résolvent la dernière version compatible). Les contrôles (`input`, `select`, `textarea`, `checkbox`, `switch`, `radio`) reçoivent un Twig Component générique (élément, ton, taille, attributs libres) ; `Nora:Field` est composé : `label`, `help` et `error` sont rendus et reliés au contrôle par `id` (`<label for>`, `<id>-aide`, `<id>-erreur`) ; son contenu reçoit `control` (à étaler : `{{ ...control }}`) et `controlHtml` (pour un `<input>` brut), qui portent `id`, `aria-describedby` et `aria-invalid`. Les composants de page ont aussi leur Twig Component : `Nora:Link`, `Nora:Navbar`, `Nora:Avatar`, `Nora:Media`.

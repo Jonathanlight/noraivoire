@@ -4,9 +4,9 @@
 
 Intègre NoraIvoire dans une application Symfony 7.3+ (PHP 8.4+) :
 
-- **Twig Components** `<twig:Nora:Btn>`, `<twig:Nora:Card>`, `<twig:Nora:Badge>`… générés depuis le manifest (un composant ajouté à la spec apparaît automatiquement) ;
+- **Twig Components** `<twig:Nora:Btn>`, `<twig:Nora:Card>`, `<twig:Nora:Badge>`, contrôles de formulaire (dont `Nora:Radio`), `Nora:Field`, composants de page `Nora:Link`, `Nora:Navbar`, `Nora:Avatar`, `Nora:Media`… générés depuis le manifest (un composant ajouté à la spec apparaît automatiquement) ;
 - **enums PHP** `NoraTone`, `NoraSize`, `NoraComponent` et classe `NoraManifest` ;
-- **AssetMapper** : `noraivoire.css`, `noraivoire.min.css` et le moteur d'effets sous le préfixe `noraivoire/` ;
+- **AssetMapper** : `noraivoire.css`, `noraivoire.min.css`, `noraivoire.engine.js` et `noraivoire.auto.js` sous le préfixe `noraivoire/`. Les paquets d'effets optionnels (`fx/fx-scroll`, `fx/fx-text`) et `noraivoire.legacy.min.css` ne sont **pas** copiés par `symfony:sync` : les servir depuis `packages/core/dist/` si besoin ;
 - **`bin/console nora:check`** : validation des templates Twig avec les règles NoraIvoire.
 
 Rien dans `generated/` n'est écrit à la main : tout vient de `npm run build` puis `npm run symfony:sync` à la racine du dépôt.

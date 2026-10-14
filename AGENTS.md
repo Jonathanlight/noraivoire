@@ -8,11 +8,20 @@ Projet **propriétaire** (© Jonathan KABLAN). Ne jamais publier, copier hors du
 npm ci --ignore-scripts
 npm run build            # spec/ → packages/core/dist/ (ne jamais éditer dist à la main)
 npm test                 # node:test
-npm run check            # nora check sur templates/ et recipes/
+npm run check            # nora check sur templates/, recipes/ et examples/showcase/
 npm run audit:security   # 90 contrôles
 npm run verify           # tout
 npm run test:rn          # rendu React Native (Jest, hors verify)
 npm run audit:licenses   # aucune licence copyleft dans node_modules
+npm run test:visual      # Playwright : captures, axe-core, catalogue, vitrines (hors verify)
+npm run test:jsp         # modèles JSP dans Tomcat (JDK et Tomcat requis)
+npm run parity:update    # mesures de parité CSS / Flutter / React Native
+npm run symfony:sync     # copie le Twig généré dans adapters/symfony-bundle/
+npm run flutter:sync     # copie le Dart généré dans examples/flutter_app/
+npm run catalog          # catalogue des composants (site/, non versionné)
+npm run gallery          # captures du README (docs/gallery/)
+npm run docs:reference   # référence Markdown docs/reference/ (depuis le manifest)
+npm run docs:reference:shots  # aperçus clair / sombre de la référence (Playwright)
 ```
 
 ## Règles

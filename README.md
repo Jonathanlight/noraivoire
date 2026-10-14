@@ -6,10 +6,10 @@ NoraIvoire est un langage de design universel. Une **spec** (tokens, composants,
 
 | Cible | Sortie | Frameworks couverts |
 |---|---|---|
-| Web | `noraivoire.css` + moteur d'effets `noraivoire.engine.js` | HTML, Twig/Symfony, JSP, React, Next.js, Vue/Nuxt, Angular |
+| Web | `noraivoire.css` (+ `noraivoire.legacy.min.css` sans `@layer`), moteur d'effets `noraivoire.engine.js`, paquets optionnels `fx/fx-scroll`, `fx/fx-text` | HTML, Twig/Symfony, JSP, React, Next.js, Vue/Nuxt, Angular |
 | Flutter | `flutter/noraivoire.dart` (SDK Flutter uniquement) | iOS, Android, Web, Desktop |
 | React Native | `react-native/noraivoire.tsx` (React Native uniquement) | iOS, Android, Web (react-native-web) |
-| Agents IA | `manifest.json`, `llms-full.txt` | Claude, Codex, Qwen, DeepSeek, Mistral… |
+| Agents IA | `manifest.json`, `llms-full.txt`, serveur MCP `nora-mcp` (`packages/mcp`) | Claude, Codex, Qwen, DeepSeek, Mistral… |
 
 **Logiciel propriétaire — © 2026 Jonathan KABLAN — tous droits réservés.** Voir [LICENSE](LICENSE).
 
@@ -33,7 +33,7 @@ Les dépendances de chaque exemple (React, Vue, Next.js, Angular, Vite, react-na
 
 ### Vitrines — `examples/showcase/`
 
-Sept pages complètes au standard corporate / SaaS (landing, connexion, inscription, e-commerce, tableau de bord, portfolio, blog), avec photos, parallaxe, verre et superpositions — **re-thémables pour tout projet en changeant un seul fichier de charte** (aucune couleur, police, ombre ni rayon en dur, vérifié par un test). Mode d'emploi et variables de marque : [`examples/showcase/README.md`](examples/showcase/README.md).
+Sept pages complètes, plus une page d'accueil sélectrice de charte, au standard corporate / SaaS (landing, connexion, inscription, e-commerce, tableau de bord, portfolio, blog), avec photos, parallaxe, verre et superpositions — **re-thémables pour tout projet en changeant un seul fichier de charte** (aucune couleur, police, ombre ni rayon en dur, vérifié par un test). Mode d'emploi et variables de marque : [`examples/showcase/README.md`](examples/showcase/README.md).
 
 ```bash
 npm run showcase:serve    # puis http://127.0.0.1:4173/examples/showcase/index.html  (?charte=saas|corporate|nature|noraivoire)
@@ -96,6 +96,8 @@ Flutter : rendu du widget `DemoApp` par le moteur Flutter (police Roboto du SDK)
 
 ## Catalogue des composants
 
+> **[Référence complète](docs/reference/README.md)** : aperçu clair / sombre et code par cible pour chaque composant, effet, token, utilitaire et règle de `nora check`, générée depuis le manifest (`npm run docs:reference`).
+
 Toutes les fondations (couleurs clair/sombre et contrastes, espacements, rayons, typographie), chaque composant (tons × tailles, états, tokens, accessibilité, code HTML / React / Vue / Twig / Flutter / React Native à copier), chaque effet et chaque utilitaire, sur un site statique **généré depuis le manifest** — à la manière de la documentation Bootstrap ou Tailwind.
 
 ```bash
@@ -112,14 +114,14 @@ npm run catalog:serve     # génère site/ puis l'ouvre sur http://127.0.0.1:417
 
 ```bash
 npm ci --ignore-scripts
-npm run verify        # build + 194 tests + validation des modèles + audit (90 contrôles)
+npm run verify        # build + 199 tests + validation des modèles + audit (90 contrôles)
 ```
 
 Commandes unitaires :
 
 ```bash
 npm run build                                   # spec/ → packages/core/dist/
-node packages/cli/src/cli.js check <dossier>    # valide HTML, Twig, JSP, JSX, Vue, Angular
+node packages/cli/src/cli.js check <dossier>    # valide HTML, Twig, JSP, JSX, Vue, Angular, Svelte, Astro
 node packages/cli/src/cli.js check <dossier> --format=json   # sortie pour agents IA
 node packages/cli/src/cli.js audit              # audit sécurité / licence / perf / a11y
 ```
@@ -162,15 +164,19 @@ examples/jsp-app/     Application JSP : modèles exécutés dans Tomcat (npm run
 examples/{react,vue,nextjs,angular,react-native-web,twig}/  Exemples lançables des modèles (captures : npm run gallery)
 examples/showcase/    Vitrines corporate / SaaS re-thémables (themes/*.css, npm run showcase:serve)
 docs/gallery/         Captures de la galerie du README (générées)
-recipes/              20 écrans de référence indexés par intention (recipes/index.json)
+docs/reference/       Référence générée : une fiche par composant, effet, token, utilitaire et règle (npm run docs:reference)
 adapters/symfony-bundle/ Bundle Symfony : Twig Components Nora:*, enums PHP, AssetMapper, nora:check (npm run symfony:sync)
-tests/                194 tests node + 136 tests de rendu React Native (tests/rn, npm run test:rn)
+tests/                199 tests node + 136 tests de rendu React Native (tests/rn, npm run test:rn)
 docs/                 Documentation technique, portabilité, sécurité, audit, tests, licence
+tools/catalog/        Catalogue des composants généré depuis le manifest (site/, non versionné)
+tools/docs/           Générateur de la référence docs/reference/ et de ses aperçus
+bench/                Benchmark IA (50 tâches UI, --dry-run sans réseau)
 PROMPT.md             Prompt complet pour poursuivre le projet avec un agent IA
 ```
 
 ## Documentation
 
+- **[Référence complète](docs/reference/README.md)** : aperçu clair / sombre et code par cible pour chaque composant, effet, token, utilitaire et règle de `nora check`, générée depuis le manifest (`npm run docs:reference`).
 - [Document technique](docs/TECHNICAL.md)
 - [Portabilité](docs/PORTABILITY.md)
 - [Sécurité et modèle de menaces](docs/SECURITY.md)

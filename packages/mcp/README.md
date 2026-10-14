@@ -17,7 +17,7 @@ Serveur [Model Context Protocol](https://modelcontextprotocol.io) qui donne aux 
 | `nora_validate` | `markup`, `format` (`html` par défaut, `jsx`, `tsx`, `vue`, `twig`, `jsp`, `angular`, `svelte`) | `{ valid, errors, warnings, issues[] }`, chaque problème avec sa correction `fix` |
 | `nora_recipe` | `intent` (« connexion », « tarifs », « panier »…) | `{ id, title, components, html }` de l'écran de référence |
 
-Tous les outils portent `readOnlyHint: true`, `destructiveHint: false`, `openWorldHint: false`. Les résultats sont fournis en texte (JSON) et en `structuredContent`. Une erreur d'usage (composant inconnu, entrée trop longue, aucune recette) est un résultat `isError: true` lisible par l'agent, pas une erreur de protocole.
+Tous les outils portent `readOnlyHint: true`, `destructiveHint: false`, `idempotentHint: true`, `openWorldHint: false`. Les résultats sont fournis en texte (JSON) et en `structuredContent`. Une erreur d'usage (composant inconnu, entrée trop longue, aucune recette) est un résultat `isError: true` lisible par l'agent, pas une erreur de protocole.
 
 ## Fichiers lus
 
@@ -35,6 +35,7 @@ Le dossier des recettes peut être changé avec la variable `NORA_MCP_RECIPES`. 
 | Message JSON-RPC entrant | 2 Mio de caractères (au-delà : erreur `-32600`, le serveur continue) |
 | `markup` de `nora_validate` | 200 Kio de caractères |
 | Autres arguments | 256 caractères |
+| Portée de `nora_get_component` | Composants et effets uniquement : ni utilitaires ni primitives de mise en page (voir `llms-full.txt`) |
 | `recipes/index.json` / fichier de recette | 256 Kio chacun, 500 recettes au plus |
 
 Les lots JSON-RPC (tableaux) ne sont pas acceptés, conformément au protocole MCP depuis la version `2025-06-18`.
