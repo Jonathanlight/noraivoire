@@ -57,10 +57,10 @@
       "gzip": 11167
     },
     "symfony/src/NoraManifest.php": {
-      "sha256": "b95c90c2578e739ca63274681baf100a9c57050aa9e53fa79f7b6adeebcb3ae3",
-      "sri": "sha384-V0FJ0r7aJwrfVF2e8P49ZshZs7zlDLGqESA6XAwdJNG3bXZ9wk4e4VsSeluzpa59",
-      "bytes": 5581,
-      "gzip": 1175
+      "sha256": "08f6635a31d3280bedbf3c5a84fc3e182fe11bbd3fe43985df75ceeea3396af1",
+      "sri": "sha384-DVUZZZ2igPvSUqVq36kcSDoZ5msljRiwgQhmc/cEyv36tZqjNleICTsoIhSSnelw",
+      "bytes": 6061,
+      "gzip": 1242
     },
     "symfony/src/Enum/NoraTone.php": {
       "sha256": "34df4a2e3369ce410e10e0db1c67d97f806509cafc4e0676a796f663cf7c8219",
@@ -123,10 +123,10 @@
       "gzip": 484
     },
     "symfony/templates/components/Nora/Link.html.twig": {
-      "sha256": "3b25ffb1c8669e001787d636bb87ea03de89a81e9717087a5dced84cf404b4b6",
-      "sri": "sha384-2nx2UHpNTV7eb/5BNF0v+niaw+fFIMh66ilmuR4sSQwhceSgx+nxmfEEgEKrKjyk",
-      "bytes": 1213,
-      "gzip": 638
+      "sha256": "095c71574352569c89015a9a4ab9c11ab465ae68bcf199cc04d0f08c1dea1f0e",
+      "sri": "sha384-KZjgYQLWlUfwKcBjU5uv2tOwIvNihsopf6fOYeZc0rdvstBxCOXbbHa78wv8qp3v",
+      "bytes": 1253,
+      "gzip": 658
     },
     "symfony/templates/components/Nora/Media.html.twig": {
       "sha256": "2c8fbf2427e843caa3bd432d966c4c2ea6954ce12b96d02be99c212e6b06f86e",

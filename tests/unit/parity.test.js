@@ -72,6 +72,7 @@ test('parité : zone tactile ≥ 44 px pour chaque composant interactif, sur les
   for (const [name, data] of Object.entries(TARGETS)) {
     for (const [key, m] of Object.entries(data)) {
       if (/\/(btn|input|checkbox|switch|radio)\//.test(key)) assert.ok(m.minHeight >= 44, `${name} : ${key} minHeight ${m.minHeight}`);
+      if (/\/navbar\//.test(key)) assert.ok(m.linkMinHeight >= 44, `${name} : ${key} linkMinHeight ${m.linkMinHeight}`);
     }
   }
 });

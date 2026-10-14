@@ -5,7 +5,7 @@
 import { test, expect } from '@playwright/test';
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
-import { CASES, PARITY_DIR, caseKey, hex, radius, round, serialize } from '../parity/model.mjs';
+import { CASES, PARITY_DIR, caseKey, hex, radius, ratio, round, serialize } from '../parity/model.mjs';
 
 const OUT = join(PARITY_DIR, 'web.json');
 const TOGGLES = new Set(['checkbox', 'switch', 'radio']);
@@ -48,6 +48,52 @@ function measureAll({ cases, toggles }) {
         },
       };
     }
+    const varColor = (el, name) => getComputedStyle(el).getPropertyValue(name).trim();
+    if (c.component === 'link') {
+      const a = make('a', { class: 'link', 'data-tone': c.tone, 'data-size': c.size, href: '#mesures' }, 'Texte');
+      root.append(a);
+      const s = getComputedStyle(a);
+      return { fg: s.color, font: px(s.fontSize), underline: s.textDecorationLine === 'underline', visited: varColor(a, '--link-visited') };
+    }
+    if (c.component === 'avatar') {
+      const a = make('span', { class: 'avatar', 'data-tone': c.tone, 'data-size': c.size, role: 'img', 'aria-label': 'Personne' }, 'AK');
+      root.append(a);
+      const s = getComputedStyle(a);
+      const r = a.getBoundingClientRect();
+      return { bg: s.backgroundColor, fg: s.color, w: r.width, h: r.height, radius: px(s.borderTopLeftRadius), font: px(s.fontSize) };
+    }
+    if (c.component === 'navbar') {
+      const nav = make('nav', { class: 'navbar', 'data-size': c.size, 'aria-label': 'Mesure' });
+      const ul = make('ul', { class: 'navbar-menu' });
+      const plain = make('a', { href: '#mesures' }, 'Accueil');
+      const current = make('a', { href: '#mesures', 'aria-current': 'page' }, 'Boutique');
+      for (const a of [plain, current]) { const li = make('li', {}); li.append(a); ul.append(li); }
+      nav.append(make('a', { class: 'navbar-brand', href: '#mesures' }, 'Marque'), ul);
+      root.append(nav);
+      const s = getComputedStyle(nav);
+      const l = getComputedStyle(plain);
+      return {
+        bg: s.backgroundColor, fg: s.color, padY: px(s.paddingTop), padX: px(s.paddingLeft), borderWidth: px(s.borderBottomWidth),
+        borderColor: s.borderBottomColor, linkMinHeight: px(l.minHeight), linkPadX: px(l.paddingLeft), muted: l.color,
+        active: getComputedStyle(current).color,
+      };
+    }
+    if (c.component === 'media') {
+      const fig = make('figure', { class: 'media', 'data-size': c.size });
+      fig.style.width = '320px';
+      const visual = make('canvas', { width: '10', height: '10' });
+      const overlay = make('div', { class: 'media-overlay' }, 'Titre');
+      const caption = make('figcaption', { class: 'media-caption' }, 'Légende');
+      fig.append(visual, overlay, caption);
+      root.append(fig);
+      const r = visual.getBoundingClientRect();
+      const v = getComputedStyle(visual);
+      const cap = getComputedStyle(caption);
+      return {
+        ratio: r.width / r.height, radius: px(v.borderTopLeftRadius), captionFg: cap.color, captionFont: px(cap.fontSize),
+        captionPadY: px(cap.paddingTop), scrim: varColor(fig, '--media-scrim'), onScrim: getComputedStyle(overlay).color,
+      };
+    }
     const tag = { btn: 'button', badge: 'span', card: 'div', input: 'input' }[c.component];
     const el = make(tag, { class: c.component, 'data-tone': c.tone, 'data-size': c.size, ...(tag === 'input' ? { 'aria-label': 'Champ' } : {}) },
       tag === 'input' ? '' : 'Texte');
@@ -72,6 +118,23 @@ function normalize(c, raw) {
         onBg: hex(ind.onBg), onBorder: hex(ind.onBorder), offBg: hex(ind.offBg), offBorder: hex(ind.offBorder),
         mark: hex(ind.mark), ...(c.component === 'switch' ? { offMark: hex(ind.offMark) } : {}),
       },
+    };
+  }
+  if (c.component === 'link') return { fg: hex(raw.fg), font: round(raw.font), underline: raw.underline, visited: hex(raw.visited) };
+  if (c.component === 'avatar') {
+    return { bg: hex(raw.bg), fg: hex(raw.fg), w: round(raw.w), h: round(raw.h), radius: radius(raw.radius, raw.w, raw.h), font: round(raw.font) };
+  }
+  if (c.component === 'navbar') {
+    return {
+      bg: hex(raw.bg), fg: hex(raw.fg), padY: round(raw.padY), padX: round(raw.padX), borderWidth: round(raw.borderWidth),
+      borderColor: hex(raw.borderColor), linkMinHeight: round(raw.linkMinHeight), linkPadX: round(raw.linkPadX),
+      muted: hex(raw.muted), active: hex(raw.active),
+    };
+  }
+  if (c.component === 'media') {
+    return {
+      ratio: ratio(raw.ratio), radius: radius(raw.radius), captionFg: hex(raw.captionFg), captionFont: round(raw.captionFont),
+      captionPadY: round(raw.captionPadY), scrim: hex(raw.scrim), onScrim: hex(raw.onScrim),
     };
   }
   const out = {

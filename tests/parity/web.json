@@ -1,4 +1,60 @@
 {
+  "dark/avatar/danger/md": {
+    "bg": "#FF6B6B",
+    "fg": "#1F0A0A",
+    "font": 16,
+    "h": 40,
+    "radius": "full",
+    "w": 40
+  },
+  "dark/avatar/neutral/lg": {
+    "bg": "#D5D8DD",
+    "fg": "#14161A",
+    "font": 24,
+    "h": 64,
+    "radius": "full",
+    "w": 64
+  },
+  "dark/avatar/neutral/md": {
+    "bg": "#D5D8DD",
+    "fg": "#14161A",
+    "font": 16,
+    "h": 40,
+    "radius": "full",
+    "w": 40
+  },
+  "dark/avatar/neutral/sm": {
+    "bg": "#D5D8DD",
+    "fg": "#14161A",
+    "font": 14,
+    "h": 32,
+    "radius": "full",
+    "w": 32
+  },
+  "dark/avatar/primary/md": {
+    "bg": "#FF8A3D",
+    "fg": "#1A0F08",
+    "font": 16,
+    "h": 40,
+    "radius": "full",
+    "w": 40
+  },
+  "dark/avatar/success/md": {
+    "bg": "#51CF66",
+    "fg": "#08180C",
+    "font": 16,
+    "h": 40,
+    "radius": "full",
+    "w": 40
+  },
+  "dark/avatar/warning/md": {
+    "bg": "#FFC078",
+    "fg": "#1E1204",
+    "font": 16,
+    "h": 40,
+    "radius": "full",
+    "w": 40
+  },
   "dark/badge/danger/md": {
     "bg": "#FF6B6B",
     "borderWidth": 0,
@@ -443,6 +499,120 @@
     "padY": 6,
     "radius": 8
   },
+  "dark/link/danger/md": {
+    "fg": "#FF6B6B",
+    "font": 16,
+    "underline": true,
+    "visited": "#A0A6AF"
+  },
+  "dark/link/neutral/md": {
+    "fg": "#D5D8DD",
+    "font": 16,
+    "underline": true,
+    "visited": "#A0A6AF"
+  },
+  "dark/link/primary/lg": {
+    "fg": "#FF8A3D",
+    "font": 18,
+    "underline": true,
+    "visited": "#A0A6AF"
+  },
+  "dark/link/primary/md": {
+    "fg": "#FF8A3D",
+    "font": 16,
+    "underline": true,
+    "visited": "#A0A6AF"
+  },
+  "dark/link/primary/sm": {
+    "fg": "#FF8A3D",
+    "font": 14,
+    "underline": true,
+    "visited": "#A0A6AF"
+  },
+  "dark/link/success/md": {
+    "fg": "#51CF66",
+    "font": 16,
+    "underline": true,
+    "visited": "#A0A6AF"
+  },
+  "dark/link/warning/md": {
+    "fg": "#FFC078",
+    "font": 16,
+    "underline": true,
+    "visited": "#A0A6AF"
+  },
+  "dark/media/neutral/portrait": {
+    "captionFg": "#A0A6AF",
+    "captionFont": 14,
+    "captionPadY": 8,
+    "onScrim": "#FFFFFF",
+    "radius": 16,
+    "ratio": "0.750",
+    "scrim": "#0B0C0F"
+  },
+  "dark/media/neutral/square": {
+    "captionFg": "#A0A6AF",
+    "captionFont": 14,
+    "captionPadY": 8,
+    "onScrim": "#FFFFFF",
+    "radius": 16,
+    "ratio": "1.000",
+    "scrim": "#0B0C0F"
+  },
+  "dark/media/neutral/standard": {
+    "captionFg": "#A0A6AF",
+    "captionFont": 14,
+    "captionPadY": 8,
+    "onScrim": "#FFFFFF",
+    "radius": 16,
+    "ratio": "1.333",
+    "scrim": "#0B0C0F"
+  },
+  "dark/media/neutral/wide": {
+    "captionFg": "#A0A6AF",
+    "captionFont": 14,
+    "captionPadY": 8,
+    "onScrim": "#FFFFFF",
+    "radius": 16,
+    "ratio": "1.778",
+    "scrim": "#0B0C0F"
+  },
+  "dark/navbar/neutral/lg": {
+    "active": "#FF8A3D",
+    "bg": "#16181D",
+    "borderColor": "#2E323A",
+    "borderWidth": 1,
+    "fg": "#EDEEF0",
+    "linkMinHeight": 44,
+    "linkPadX": 13.5,
+    "muted": "#A0A6AF",
+    "padX": 24,
+    "padY": 12
+  },
+  "dark/navbar/neutral/md": {
+    "active": "#FF8A3D",
+    "bg": "#16181D",
+    "borderColor": "#2E323A",
+    "borderWidth": 1,
+    "fg": "#EDEEF0",
+    "linkMinHeight": 44,
+    "linkPadX": 12,
+    "muted": "#A0A6AF",
+    "padX": 16,
+    "padY": 8
+  },
+  "dark/navbar/neutral/sm": {
+    "active": "#FF8A3D",
+    "bg": "#16181D",
+    "borderColor": "#2E323A",
+    "borderWidth": 1,
+    "fg": "#EDEEF0",
+    "linkMinHeight": 44,
+    "linkPadX": 10.5,
+    "muted": "#A0A6AF",
+    "padX": 12,
+    "padY": 4
+  },
   "dark/radio/danger/md": {
     "fg": "#EDEEF0",
     "font": 16,
@@ -701,6 +871,62 @@
     },
     "minHeight": 44,
     "padY": 6
+  },
+  "light/avatar/danger/md": {
+    "bg": "#C92A2A",
+    "fg": "#FFFFFF",
+    "font": 16,
+    "h": 40,
+    "radius": "full",
+    "w": 40
+  },
+  "light/avatar/neutral/lg": {
+    "bg": "#3B3F46",
+    "fg": "#FFFFFF",
+    "font": 24,
+    "h": 64,
+    "radius": "full",
+    "w": 64
+  },
+  "light/avatar/neutral/md": {
+    "bg": "#3B3F46",
+    "fg": "#FFFFFF",
+    "font": 16,
+    "h": 40,
+    "radius": "full",
+    "w": 40
+  },
+  "light/avatar/neutral/sm": {
+    "bg": "#3B3F46",
+    "fg": "#FFFFFF",
+    "font": 14,
+    "h": 32,
+    "radius": "full",
+    "w": 32
+  },
+  "light/avatar/primary/md": {
+    "bg": "#C94A0B",
+    "fg": "#FFFFFF",
+    "font": 16,
+    "h": 40,
+    "radius": "full",
+    "w": 40
+  },
+  "light/avatar/success/md": {
+    "bg": "#1B7F3B",
+    "fg": "#FFFFFF",
+    "font": 16,
+    "h": 40,
+    "radius": "full",
+    "w": 40
+  },
+  "light/avatar/warning/md": {
+    "bg": "#B35C00",
+    "fg": "#FFFFFF",
+    "font": 16,
+    "h": 40,
+    "radius": "full",
+    "w": 40
   },
   "light/badge/danger/md": {
     "bg": "#C92A2A",
@@ -1145,6 +1371,120 @@
     "padX": 10,
     "padY": 6,
     "radius": 8
+  },
+  "light/link/danger/md": {
+    "fg": "#C92A2A",
+    "font": 16,
+    "underline": true,
+    "visited": "#5C626B"
+  },
+  "light/link/neutral/md": {
+    "fg": "#3B3F46",
+    "font": 16,
+    "underline": true,
+    "visited": "#5C626B"
+  },
+  "light/link/primary/lg": {
+    "fg": "#C94A0B",
+    "font": 18,
+    "underline": true,
+    "visited": "#5C626B"
+  },
+  "light/link/primary/md": {
+    "fg": "#C94A0B",
+    "font": 16,
+    "underline": true,
+    "visited": "#5C626B"
+  },
+  "light/link/primary/sm": {
+    "fg": "#C94A0B",
+    "font": 14,
+    "underline": true,
+    "visited": "#5C626B"
+  },
+  "light/link/success/md": {
+    "fg": "#1B7F3B",
+    "font": 16,
+    "underline": true,
+    "visited": "#5C626B"
+  },
+  "light/link/warning/md": {
+    "fg": "#B35C00",
+    "font": 16,
+    "underline": true,
+    "visited": "#5C626B"
+  },
+  "light/media/neutral/portrait": {
+    "captionFg": "#5C626B",
+    "captionFont": 14,
+    "captionPadY": 8,
+    "onScrim": "#FFFFFF",
+    "radius": 16,
+    "ratio": "0.750",
+    "scrim": "#0B0C0F"
+  },
+  "light/media/neutral/square": {
+    "captionFg": "#5C626B",
+    "captionFont": 14,
+    "captionPadY": 8,
+    "onScrim": "#FFFFFF",
+    "radius": 16,
+    "ratio": "1.000",
+    "scrim": "#0B0C0F"
+  },
+  "light/media/neutral/standard": {
+    "captionFg": "#5C626B",
+    "captionFont": 14,
+    "captionPadY": 8,
+    "onScrim": "#FFFFFF",
+    "radius": 16,
+    "ratio": "1.333",
+    "scrim": "#0B0C0F"
+  },
+  "light/media/neutral/wide": {
+    "captionFg": "#5C626B",
+    "captionFont": 14,
+    "captionPadY": 8,
+    "onScrim": "#FFFFFF",
+    "radius": 16,
+    "ratio": "1.778",
+    "scrim": "#0B0C0F"
+  },
+  "light/navbar/neutral/lg": {
+    "active": "#C94A0B",
+    "bg": "#FFFFFF",
+    "borderColor": "#DDE0E4",
+    "borderWidth": 1,
+    "fg": "#16181D",
+    "linkMinHeight": 44,
+    "linkPadX": 13.5,
+    "muted": "#5C626B",
+    "padX": 24,
+    "padY": 12
+  },
+  "light/navbar/neutral/md": {
+    "active": "#C94A0B",
+    "bg": "#FFFFFF",
+    "borderColor": "#DDE0E4",
+    "borderWidth": 1,
+    "fg": "#16181D",
+    "linkMinHeight": 44,
+    "linkPadX": 12,
+    "muted": "#5C626B",
+    "padX": 16,
+    "padY": 8
+  },
+  "light/navbar/neutral/sm": {
+    "active": "#C94A0B",
+    "bg": "#FFFFFF",
+    "borderColor": "#DDE0E4",
+    "borderWidth": 1,
+    "fg": "#16181D",
+    "linkMinHeight": 44,
+    "linkPadX": 10.5,
+    "muted": "#5C626B",
+    "padX": 12,
+    "padY": 4
   },
   "light/radio/danger/md": {
     "fg": "#16181D",
