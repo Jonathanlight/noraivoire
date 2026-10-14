@@ -1,0 +1,36 @@
+# NoraIvoire — régénère les goldens Flutter de référence pour Linux (© Jonathan KABLAN, propriétaire).
+# Lancement manuel (gh workflow run goldens) ; les images sont publiées en artefact,
+# à vérifier puis à versionner dans examples/flutter_app/test/goldens/linux/.
+name: goldens
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.47.7
+          channel: stable
+      - run: npm ci --ignore-scripts
+      - run: npm run build
+      - run: npm run flutter:sync
+      - name: goldens Linux
+        working-directory: examples/flutter_app
+        run: |
+          flutter pub get
+          flutter test --update-goldens
+      - uses: actions/upload-artifact@v4
+        with:
+          name: flutter-goldens-linux
+          path: examples/flutter_app/test/goldens/linux/
+          if-no-files-found: error

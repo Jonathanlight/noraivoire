@@ -1,11 +1,12 @@
 // NoraIvoire — configuration des tests Flutter. © 2026 Jonathan KABLAN — Propriétaire.
 //
-// Les goldens sont générés sur une machine de référence. Le rendu varie légèrement
-// d'une plateforme à l'autre (macOS / Linux : anticrénelage, flou de BackdropFilter).
-// Les tests utilisent la police de test du SDK (FlutterTest, glyphes carrés),
-// identique partout ; il reste des écarts de rastérisation de quelques pixels.
-// Parade sans dépendance tierce : un comparateur qui tolère un faible pourcentage
-// de pixels différents (NORA_GOLDEN_TOLERANCE, 0,5 % par défaut).
+// Le rendu varie d'une plateforme à l'autre (macOS / Linux : anticrénelage, flou de
+// BackdropFilter, rastérisation du texte) : 2,6 à 16 % de pixels différents mesurés
+// au premier passage du CI. Les goldens sont donc rangés PAR PLATEFORME
+// (`goldens/<macos|linux>/…`), comme les captures Playwright ; chaque plateforme
+// compare à ses propres références, avec une faible tolérance (NORA_GOLDEN_TOLERANCE,
+// 0,5 % par défaut, plafonnée à 5 %). Les références Linux sont produites par le
+// workflow `goldens` (même image et même version de Flutter que le CI).
 import 'dart:async';
 import 'dart:io';
 
@@ -34,6 +35,19 @@ class TolerantGoldenComparator extends LocalFileComparator {
       : assert(tolerance >= 0 && tolerance < 0.05, 'tolérance bornée à 5 %');
 
   final double tolerance;
+
+  /// `goldens/light/x.png` → `goldens/<os>/light/x.png`.
+  static Uri forPlatform(Uri golden) {
+    final path = golden.path;
+    if (!path.startsWith('goldens/')) return golden;
+    return Uri.parse('goldens/${Platform.operatingSystem}/${path.substring('goldens/'.length)}');
+  }
+
+  @override
+  Future<List<int>> getGoldenBytes(Uri golden) => super.getGoldenBytes(forPlatform(golden));
+
+  @override
+  Future<void> update(Uri golden, Uint8List imageBytes) => super.update(forPlatform(golden), imageBytes);
 
   @override
   Future<bool> compare(Uint8List imageBytes, Uri golden) async {

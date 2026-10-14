@@ -38,6 +38,8 @@ jobs:
           node-version: 22
       - uses: subosito/flutter-action@v2
         with:
+          # Version figée : les goldens Linux (test/goldens/linux) en dépendent.
+          flutter-version: 3.47.7
           channel: stable
       - run: npm ci --ignore-scripts
       - run: npm run build
@@ -51,9 +53,7 @@ jobs:
       # Inclut test/parity_test.dart : échoue si les mesures Flutter s'écartent de test/parity/flutter.json.
       - name: golden tests, tests de widgets et mesures de parité
         working-directory: examples/flutter_app
-        # Goldens générés sous macOS : tolérance élargie pour la rastérisation Linux.
-        env:
-          NORA_GOLDEN_TOLERANCE: '0.02'
+        # Goldens par plateforme : comparaison aux références Linux (workflow « goldens »).
         run: flutter test
       - name: diff des goldens en cas d'échec
         if: failure()

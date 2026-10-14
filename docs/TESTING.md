@@ -68,7 +68,7 @@ flutter test --update-goldens                  # après un changement volontaire
 ```
 
 Les copies dans `lib/` ne sont pas versionnées : la source de vérité reste `spec/` et `templates/flutter/`.
-Les goldens sont générés sous macOS. Le rendu Linux diffère de quelques pixels (anticrénelage, flou de `BackdropFilter`) ; les tests utilisent la police de test du SDK, identique partout. Parade sans dépendance tierce : `test/flutter_test_config.dart` installe un comparateur qui tolère un écart de pixels borné (`NORA_GOLDEN_TOLERANCE`, 0,5 % par défaut, 2 % en CI, plafonné à 5 %). Un changement de couleur d'un ton produit un écart de 8 à 12 % et reste détecté ; un écart très fin (rayon de 1 px) peut passer sous la tolérance CI. Si l'écart Linux dépasse 2 %, régénérer les goldens dans un conteneur Linux et les versionner à leur place.
+Les goldens sont rangés **par plateforme** (`test/goldens/macos/`, `test/goldens/linux/`), comme les captures Playwright : au premier passage du CI, le rendu Linux différait de 2,6 à 16 % des références macOS (rastérisation, texte), au-delà de toute tolérance raisonnable. Chaque plateforme compare à ses propres images avec une tolérance de 0,5 % (`NORA_GOLDEN_TOLERANCE`, plafonnée à 5 %). Références macOS : `flutter test --update-goldens` en local. Références Linux : `gh workflow run goldens` (même version de Flutter, 3.47.7, que le job CI), puis télécharger l'artefact `flutter-goldens-linux`, le vérifier et le versionner dans `test/goldens/linux/`.
 
 ### Régression visuelle et accessibilité web (Playwright)
 
@@ -133,7 +133,7 @@ Champs comparés (`tests/parity/model.mjs`) : couleurs de fond, de texte et de b
 ## 4. Jobs CI (`.github/workflows/ci.yml`)
 
 1. `verify` (Node 20 et 22) : build, `dist` identique à la spec, tests, check, audit, `npm audit`.
-2. `flutter` : `npm run flutter:sync`, puis dans `examples/flutter_app/` `flutter analyze --fatal-infos --fatal-warnings` et `flutter test` (goldens, `NORA_GOLDEN_TOLERANCE=0.02`).
+2. `flutter` : `npm run flutter:sync`, puis dans `examples/flutter_app/` `flutter analyze --fatal-infos --fatal-warnings` et `flutter test` (goldens Linux, Flutter 3.47.7 figé).
 3. `visual` : dans le conteneur Playwright officiel (navigateurs inclus, aucun cache à gérer), build, `dist` identique, puis `npm run test:visual` ; rapport HTML et résultats publiés en artefact en cas d'échec.
 4. `react-native-types` : TypeScript strict du TSX généré (dont `noraivoire-fx.tsx`) et du modèle `templates/react-native/App.tsx`.
 5. `symfony` (PHP 8.4 et 8.5) : `npm run symfony:sync`, Composer sans scripts ni plugins, contrôle des licences, PHPUnit.
