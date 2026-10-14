@@ -18,7 +18,7 @@ function describe(violations) {
 }
 
 for (const colorScheme of ['light', 'dark']) {
-  for (const file of ['index.html', 'composant-btn.html', 'composant-field.html', 'composant-radio.html']) {
+  for (const file of ['index.html', 'composant-btn.html', 'composant-field.html', 'composant-radio.html', 'composant-link.html', 'composant-navbar.html', 'composant-avatar.html', 'composant-media.html']) {
     test(`catalogue axe : ${file} (${colorScheme})`, async ({ page }) => {
       await page.emulateMedia({ colorScheme, reducedMotion: 'reduce' });
       await page.setViewportSize({ width: 1280, height: 900 });
@@ -97,7 +97,7 @@ test('catalogue : les effets s\'activent (moteur et paquets optionnels chargés)
 
 test('catalogue : aucun débordement horizontal de la page à 375 px', async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 800 });
-  for (const file of ['index.html', 'composant-btn.html', 'composant-field.html', 'utilitaires.html', 'mise-en-page.html', 'effet-glass.html']) {
+  for (const file of ['index.html', 'composant-btn.html', 'composant-field.html', 'utilitaires.html', 'mise-en-page.html', 'effet-glass.html', 'composant-navbar.html', 'composant-media.html']) {
     await page.goto(BASE + file);
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
     expect(overflow, file).toBeLessThanOrEqual(0);

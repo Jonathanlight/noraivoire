@@ -200,7 +200,7 @@ export function componentExamples(name, c, manifest) {
     case 'nav': {
       const p = (k) => `${name}-${k}`;
       const bar = (size, current, withActions = true) => `<nav class="${name}"${size ? ` data-size="${size}"` : ''} aria-label="Exemple ${size ?? 'principal'}">`
-        + `<a class="${p('brand')}" href="#exemples">Nora<strong>Ivoire</strong></a>`
+        + `<a class="${p('brand')}" href="#exemples">NoraIvoire</a>`
         + `<ul class="${p('menu')}">${['Accueil', 'Boutique', 'Journal', 'Contact'].map((l, i) => `<li><a href="#exemples"${i === current ? ' aria-current="page"' : ''}>${l}</a></li>`).join('')}</ul>`
         + (withActions && c.parts.includes(p('actions')) ? `<div class="${p('actions')}"><a class="btn" data-tone="neutral" data-size="sm" href="#exemples">Connexion</a><a class="btn" data-size="sm" href="#exemples">Essai gratuit</a></div>` : '')
         + '</nav>';
@@ -221,7 +221,7 @@ export function componentExamples(name, c, manifest) {
       groups.push({ title: 'Formats', note: `data-size fixe le format, l'image est recadrée (object-fit: cover) : ${sizes.join(', ')}.`,
         html: `<div class="grid-auto">${sizes.map((x) => `<figure class="${name}" data-size="${x}">${img('paysage.svg', 'Lagune au coucher du soleil')}${has2('caption') ? `<figcaption class="${name}-caption">Format ${x}</figcaption>` : ''}</figure>`).join('')}</div>` });
       if (has2('overlay')) groups.push({ title: 'Texte en surimpression', note: `.${name}-overlay : dégradé de lisibilité sous le texte, lisible sur toute image.`, html: `<figure class="${name}" data-size="${c.defaults.size}">${img('atelier.svg', 'Motif textile wax stylisé')}<div class="${name}-overlay"><p class="text-lg font-bold">Collection Abidjan</p><p>Pièces uniques, tissées à la main.</p></div>${has2('caption') ? `<figcaption class="${name}-caption">Illustration de démonstration</figcaption>` : ''}</figure>` });
-      groups.push({ title: 'Avec un effet', note: 'Tout effet s\'applique au bloc, par exemple data-fx="tilt" (coupé en mouvement réduit).', html: `<figure class="${name}" data-size="square" data-fx="tilt">${img('atelier.svg', 'Motif textile wax stylisé')}</figure>` });
+      groups.push({ title: 'Avec un effet', note: 'Tout effet s\'applique au bloc, par exemple data-fx="tilt" (coupé en mouvement réduit).', html: `<figure class="${name}" data-size="${c.defaults.size}" data-fx="tilt">${img('atelier.svg', 'Motif textile wax stylisé')}</figure>` });
       break;
     }
     default:
@@ -630,6 +630,8 @@ function catalogCss(manifest, values, overrides) {
   .cat-example { border: 1px solid var(--nora-color-border); border-radius: var(--nora-radius-md); overflow: hidden; }
   .cat-preview { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; padding: 1.25rem; background: var(--nora-color-surface); }
   .cat-preview > .stack, .cat-preview > fieldset, .cat-preview > .field { flex: 1 1 14rem; }
+  /* Blocs pleine largeur (grille, média, barre de navigation) : l'aperçu flex les réduirait à leur contenu. */
+  .cat-preview > .grid-auto, .cat-preview > figure, .cat-preview > nav { flex: 1 1 100%; }
   .cat-code { margin: 0; padding: 1rem; overflow: auto; background: var(--nora-color-surface-2); border-block-start: 1px solid var(--nora-color-border); font-size: 0.875rem; line-height: 1.5; }
   .cat-code code { white-space: pre; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
   .cat-code-bar { display: flex; justify-content: flex-end; padding: 0.25rem 0.5rem 0; background: var(--nora-color-surface-2); border-block-start: 1px solid var(--nora-color-border); }
