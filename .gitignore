@@ -15,3 +15,6 @@ bench/results/
 .env.*
 .claude/worktrees/
 examples/jsp-app/.cache/
+
+# Catalogue généré (npm run catalog)
+site/

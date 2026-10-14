@@ -1,7 +1,7 @@
 # NoraIvoire — Rapport d'audit
 
 **Version auditée :** 0.1.0 · **Date :** 14 octobre 2026 · **Périmètre :** dépôt complet
-**Méthode :** audit automatisé (`nora audit`, 86 contrôles), 162 tests node, 29 tests Flutter et 54 tests PHPUnit, 94 tests de rendu React Native (Jest), 14 tests JSP dans Tomcat, 21 tests Playwright (captures + axe-core), vérification TypeScript stricte, `npm audit`, revue manuelle du code.
+**Méthode :** audit automatisé (`nora audit`, 86 contrôles), 171 tests node, 29 tests Flutter et 54 tests PHPUnit, 94 tests de rendu React Native (Jest), 14 tests JSP dans Tomcat, 35 tests Playwright (captures, axe-core, catalogue), vérification TypeScript stricte, `npm audit`, revue manuelle du code.
 © Jonathan KABLAN — Document confidentiel
 
 ## 1. Synthèse
@@ -26,7 +26,7 @@
 
 | Indicateur | Valeur |
 |---|---|
-| Tests | 162 / 162 réussis (node) · 94 / 94 (rendu React Native, Jest) · 29 / 29 (Flutter, dont 12 goldens) · 54 / 54 (PHPUnit, bundle Symfony) · 21 / 21 (Playwright : 12 captures, 4 axe-core, 2 sans JS, 2 legacy, 1 parité) · 14 / 14 (JSP dans Tomcat 11) |
+| Tests | 171 / 171 réussis (node) · 94 / 94 (rendu React Native, Jest) · 29 / 29 (Flutter, dont 12 goldens) · 54 / 54 (PHPUnit, bundle Symfony) · 35 / 35 (Playwright : 12 captures, 4 axe-core, 2 sans JS, 2 legacy, 1 parité, 14 catalogue) · 14 / 14 (JSP dans Tomcat 11) |
 | Contrôles d'audit | 86 / 86 réussis |
 | Modèles validés par `nora check` | 13 fichiers + 20 recettes, 0 erreur, 0 avertissement |
 | Erreurs TypeScript (strict) sur le TSX généré | 0 |
